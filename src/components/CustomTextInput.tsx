@@ -1,0 +1,137 @@
+import React, { useState } from 'react';
+import {
+  DimensionValue,
+  StyleSheet,
+  TextInput,
+  TextInputProps,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { width } from '../utilities';
+import { colors } from '../utilities/colors';
+
+interface CustomTextInputProps extends TextInputProps {
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  inputWidth?: DimensionValue;
+  inputHeight?: DimensionValue;
+  isPassword?: boolean;
+  borderColor?: string;
+  borderWidth?: number;
+  borderRadius?: number;
+  backgroundColor?: string;
+  onRightIconPress?: () => void;
+}
+
+const CustomTextInput: React.FC<CustomTextInputProps> = ({
+  leftIcon,
+  rightIcon,
+  placeholder,
+  placeholderTextColor,
+  inputWidth = '100%' as DimensionValue,
+  inputHeight = 50 as DimensionValue,
+  isPassword = false,
+  keyboardType = 'default',
+  multiline = false,
+  borderColor = colors.gray,
+  borderWidth = 1,
+  borderRadius = 8,
+  backgroundColor,
+  onChangeText,
+  value,
+  onRightIconPress,
+  ...rest
+}) => {
+  const [showPassword, setShowPassword] = useState(true);
+
+  const handleRightIconPress = () => {
+    if (isPassword) {
+      setShowPassword(!showPassword);
+    } else if (onRightIconPress) {
+      onRightIconPress();
+    }
+  };
+
+  return (
+    <View
+      style={[
+        styles.container,
+        {
+          height: inputHeight,
+          width: inputWidth,
+          borderColor,
+          borderWidth,
+          borderRadius,
+          backgroundColor,
+        },
+      ]}
+    >
+      {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
+      <TextInput
+        placeholder={placeholder}
+        placeholderTextColor={
+          placeholderTextColor ||
+          (backgroundColor === colors.white ? colors.gray : colors.white)
+        }
+        multiline={multiline}
+        numberOfLines={multiline ? 4 : 1}
+        style={[
+          styles.input,
+          {
+            color:
+              backgroundColor === colors.darkBlue ? colors.white : colors.black,
+          },
+        ]}
+        secureTextEntry={isPassword ? showPassword : false}
+        keyboardType={keyboardType}
+        onChangeText={onChangeText}
+        value={value}
+        {...rest}
+      />
+
+      {rightIcon && (
+        <TouchableOpacity
+          style={styles.rightIcon}
+          onPress={handleRightIconPress}
+        >
+          {rightIcon}
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    position: 'relative',
+    // shadowColor: 'rgba(0, 0, 0, 0.3)',
+    // shadowOffset: {
+    // width: 5,
+    // height: 5,
+    // },
+    // shadowOpacity: 3,
+    // shadowRadius: 10,
+    // elevation: 9,
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingLeft: 10,
+    color: colors.white,
+  },
+  leftIcon: {
+    marginRight: 10,
+    left: 10,
+    backgroundColor: colors.white,
+  },
+  rightIcon: {
+    // position: 'absolute',
+    paddingLeft: width * 0.03,
+    right: 10,
+  },
+});
+
+export default CustomTextInput;
