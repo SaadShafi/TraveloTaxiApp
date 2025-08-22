@@ -5,9 +5,9 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import { fontFamily } from '../assets/fonts';
+import { fontFamily } from '../assets/Fonts';
 import { height, width } from '../utilities';
-import { fontSizes } from '../utilities/fontSizes';
+import { fontSizes } from '../utilities/fontsizes';
 
 interface CustomButtonProps {
   onPress?: (event: GestureResponderEvent) => void;
@@ -65,6 +65,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           backgroundColor: backgroundColor,
           borderWidth,
           borderColor,
+          borderRadius
         },
       ]}
       onPress={onPress}
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
   },
   customBtnText: {
-    fontFamily: fontFamily.JakartaBold,
+    fontFamily: fontFamily.SfProDisplayBold,
     fontSize: fontSizes.lg,
     textTransform: 'capitalize',
   },

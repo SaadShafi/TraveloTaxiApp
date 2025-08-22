@@ -1,0 +1,41 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/Fonts/ClashDisplay-Bold.ttf",
+      "sha1": "ad48ac96269d34e5ac4b3149edc0720f118fac06"
+    },
+    {
+      "path": "src/assets/Fonts/ClashDisplay-Extralight.ttf",
+      "sha1": "5c41f3ee91656387612a53a2773450022b9d5b2c"
+    },
+    {
+      "path": "src/assets/Fonts/ClashDisplay-Light.ttf",
+      "sha1": "8690274d9e6e5287f0f34f989c46019d97183196"
+    },
+    {
+      "path": "src/assets/Fonts/ClashDisplay-Medium.ttf",
+      "sha1": "3ab838ddae9140be8d61192e527ac5c526361038"
+    },
+    {
+      "path": "src/assets/Fonts/ClashDisplay-Regular.ttf",
+      "sha1": "18352f4b2de32328e43311a0365af391ded2bc0a"
+    },
+    {
+      "path": "src/assets/Fonts/ClashDisplay-Semibold.ttf",
+      "sha1": "0837f8844612c82b5067d898d3f0619af9aa86fa"
+    },
+    {
+      "path": "src/assets/Fonts/index.ts",
+      "sha1": "008740347c36a3de68c6ae13fe9cc11f0097a206"
+    },
+    {
+      "path": "src/assets/Fonts/SFPRODISPLAYBOLD.OTF",
+      "sha1": "100e7b7fd24facbca4db38e6d4d7e01c73b82818"
+    },
+    {
+      "path": "src/assets/Fonts/SFPRODISPLAYREGULAR.OTF",
+      "sha1": "e19df199e78d296e5b6491d4832a76756532ed43"
+    }
+  ]
+}
