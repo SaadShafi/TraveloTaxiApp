@@ -6,6 +6,7 @@ const images: { [key: string]: ImageSourcePropType } = {
   simpleBg: require('../Images/simpleBackground.png'),
   Vector: require('../Images/Vector.png'),
   arrowUp: require('../Images/ArrowUp.png'),
+  arrowleft: require('../Images/arrowleft.png'),
 };
 
 export default images;
