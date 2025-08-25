@@ -6,6 +6,9 @@ const images: { [key: string]: ImageSourcePropType } = {
   simpleBg: require('../Images/simpleBackground.png'),
   Vector: require('../Images/Vector.png'),
   arrowUp: require('../Images/ArrowUp.png'),
+  orLine: require('../Images/orBorder.png'),
+  googleIcon: require('../Images/GoogleIcon.png'),
+  appleIcon: require('../Images/AppleIcon.png'),
   arrowleft: require('../Images/arrowleft.png'),
 };
 
