@@ -1,27 +1,23 @@
-import { BlurView } from '@react-native-community/blur';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+// import { BlurView } from '@react-native-community/blur';
 import React, { useEffect, useState } from 'react';
 import {
   Image,
-  Modal,
   Platform,
   Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { fontFamily } from '../assets/fonts';
-import images from '../assets/images';
+import { fontFamily } from '../assets/Fonts';
+import images from '../assets/Images';
 import { height, width } from '../utilities';
 import { colors } from '../utilities/colors';
-import { fontSizes } from '../utilities/fontSizes';
+import { fontSizes } from '../utilities/fontsizes';
 // import CustomModal from "./CustomModal";
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import { useSelector } from 'react-redux';
-import CustomMultiInput from './CustomMultiInput';
+// import BouncyCheckbox from 'react-native-bouncy-checkbox';
+// import { useSelector } from 'react-redux';
 // import { apiHelper } from "../service";
 // import { useTranslation } from "react-i18next";
 
@@ -78,7 +74,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   skip = false,
   list = false,
 }) => {
-  const navigation = useNavigation<any>();
+  // const navigation = useNavigation<any>();
   const [disputeOpen, setdisputeOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -91,8 +87,8 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   const [isChecked5, setIsChecked5] = useState(false);
   const [isChecked6, setIsChecked6] = useState(false);
   const [isChecked7, setIsChecked7] = useState(false);
-  const freelancerId = useSelector((state: any) => state.role.freelancerId);
-  const token = useSelector((state: any) => state.role.userAuthToken);
+  // const freelancerId = useSelector((state: any) => state.role.freelancerId);
+  // const token = useSelector((state: any) => state.role.userAuthToken);
   const [value, setValue] = useState({
     reason: '',
   });
@@ -117,7 +113,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   };
 
   const handleDrawer = () => {
-    navigation.dispatch(DrawerActions.openDrawer());
+    // navigation.dispatch(DrawerActions.openDrawer());
   };
 
   const handlePress = () => {
@@ -284,71 +280,71 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   //   );
   // };
 
-  const bodyElem = () => {
-    return (
-      <View style={styles.checkboxMain}>
-        {[
-          {
-            state: isChecked,
-            setter: setIsChecked,
-            text: 'Inappropriate Content',
-          },
-          {
-            state: isChecked2,
-            setter: setIsChecked2,
-            text: 'Harassment or Bullying',
-          },
-          {
-            state: isChecked3,
-            setter: setIsChecked3,
-            text: 'Spam or Advertising',
-          },
-          { state: isChecked4, setter: setIsChecked4, text: 'Impersonation' },
-          { state: isChecked5, setter: setIsChecked5, text: 'Hate Speech' },
-          {
-            state: isChecked6,
-            setter: setIsChecked6,
-            text: 'Explicit Content',
-          },
-          { state: isChecked7, setter: setIsChecked7, text: 'Others' },
-        ].map((item, index) => (
-          <View key={index} style={{ flexDirection: 'row' }}>
-            <BouncyCheckbox
-              size={20}
-              fillColor={colors.darkBlue}
-              unFillColor={colors.lightBlue}
-              iconStyle={{
-                borderWidth: 2,
-                borderColor: colors.lightBlue,
-                borderRadius: 2,
-                left: width * 0.09,
-              }}
-              innerIconStyle={{
-                borderRadius: 1,
-              }}
-              isChecked={item.state}
-              onPress={(checked: boolean) => item.setter(checked)}
-            />
-            <Text style={styles.text}>{item.text}</Text>
-          </View>
-        ))}
-        <View style={{ left: width * 0.04 }}>
-          <CustomMultiInput
-            placeholder="Please specify (if Others is selected)"
-            placeholderTextColor={colors.black}
-            backgroundColor={colors.white}
-            keyboardType="default"
-            inputHeight={height * 0.13}
-            inputWidth={width * 0.7}
-            borderWidth={1}
-            borderColor={colors.lightBlue}
-            value={value.reason}
-            onChangeText={handleOtherReasonChange}
-          />
-        </View>
-      </View>
-    );
-  };
+  // const bodyElem = () => {
+  //   return (
+  //     <View style={styles.checkboxMain}>
+  //       {[
+  //         {
+  //           state: isChecked,
+  //           setter: setIsChecked,
+  //           text: 'Inappropriate Content',
+  //         },
+  //         {
+  //           state: isChecked2,
+  //           setter: setIsChecked2,
+  //           text: 'Harassment or Bullying',
+  //         },
+  //         {
+  //           state: isChecked3,
+  //           setter: setIsChecked3,
+  //           text: 'Spam or Advertising',
+  //         },
+  //         { state: isChecked4, setter: setIsChecked4, text: 'Impersonation' },
+  //         { state: isChecked5, setter: setIsChecked5, text: 'Hate Speech' },
+  //         {
+  //           state: isChecked6,
+  //           setter: setIsChecked6,
+  //           text: 'Explicit Content',
+  //         },
+  //         { state: isChecked7, setter: setIsChecked7, text: 'Others' },
+  //       ].map((item, index) => (
+  //         <View key={index} style={{ flexDirection: 'row' }}>
+  //           <BouncyCheckbox
+  //             size={20}
+  //             fillColor={colors.darkBlue}
+  //             unFillColor={colors.lightBlue}
+  //             iconStyle={{
+  //               borderWidth: 2,
+  //               borderColor: colors.lightBlue,
+  //               borderRadius: 2,
+  //               left: width * 0.09,
+  //             }}
+  //             innerIconStyle={{
+  //               borderRadius: 1,
+  //             }}
+  //             isChecked={item.state}
+  //             onPress={(checked: boolean) => item.setter(checked)}
+  //           />
+  //           <Text style={styles.text}>{item.text}</Text>
+  //         </View>
+  //       ))}
+  //       <View style={{ left: width * 0.04 }}>
+  //         <CustomMultiInput
+  //           placeholder="Please specify (if Others is selected)"
+  //           placeholderTextColor={colors.black}
+  //           backgroundColor={colors.white}
+  //           keyboardType="default"
+  //           inputHeight={height * 0.13}
+  //           inputWidth={width * 0.7}
+  //           borderWidth={1}
+  //           borderColor={colors.lightBlue}
+  //           value={value.reason}
+  //           onChangeText={handleOtherReasonChange}
+  //         />
+  //       </View>
+  //     </View>
+  //   );
+  // };
 
   const handleOtherReasonChange = (text: string) => {
     setValue(prev => ({ ...prev, reason: text }));
@@ -505,11 +501,11 @@ const TopHeader: React.FC<TopHeaderProps> = ({
           {isBack && (
             <Pressable
               style={styles.headerArrow}
-              onPress={() => {
-                navigation.canGoBack()
-                  ? navigation.goBack()
-                  : navigation.navigate('Home' as never);
-              }}
+              // onPress={() => {
+              //   navigation.canGoBack()
+              //     ? navigation.goBack()
+              //     : navigation.navigate('Home' as never);
+              // }}
             >
               <Image
                 source={
@@ -564,7 +560,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({
           {notification && (
             <View style={styles.headerBell}>
               <TouchableOpacity
-                onPress={() => navigation.navigate('notifications')}
+              // onPress={() => navigation.navigate('notifications')}
               >
                 {/* <Image source={images.bell} style={styles.bellImg}/> */}
                 <Image
@@ -617,7 +613,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({
             </TouchableOpacity>
           )}
 
-          <Modal
+          {/* <Modal
             animationType="fade"
             transparent={true}
             visible={disputeOpen}
@@ -667,7 +663,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({
                 </TouchableOpacity>
               </View>
             </View>
-          </Modal>
+          </Modal> */}
 
           {/* <CustomModal
             modalOpen={reportModal}
@@ -728,10 +724,10 @@ const styles = StyleSheet.create({
   },
   MainHeaderText: {
     fontSize: fontSizes.lg2,
-    fontFamily: fontFamily.JakartaBold,
+    fontFamily: fontFamily.ClashDisplayMedium,
   },
   backArrow: {
-    width: width * 0.025,
+    width: width * 0.04,
     resizeMode: 'contain',
   },
   closeTop: {

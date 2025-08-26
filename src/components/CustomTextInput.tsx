@@ -1,3 +1,4 @@
+import AntDesign from '@react-native-vector-icons/ant-design';
 import React, { useState } from 'react';
 import {
   DimensionValue,
@@ -79,7 +80,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           styles.input,
           {
             color:
-              backgroundColor === colors.darkBlue ? colors.white : colors.black,
+              backgroundColor === colors.white ? colors.white : colors.black,
           },
         ]}
         secureTextEntry={isPassword ? showPassword : false}
@@ -95,6 +96,19 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           onPress={handleRightIconPress}
         >
           {rightIcon}
+        </TouchableOpacity>
+      )}
+
+      {isPassword && (
+        <TouchableOpacity
+          style={styles.rightIcon}
+          onPress={handleRightIconPress}
+        >
+          <AntDesign
+            name={showPassword ? 'eye-invisible' : 'eye'}
+            size={22}
+            color={colors.darkGray}
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -120,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     paddingLeft: 10,
-    color: colors.white,
+    color: colors.black,
   },
   leftIcon: {
     marginRight: 10,

@@ -65,7 +65,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           backgroundColor: backgroundColor,
           borderWidth,
           borderColor,
-          borderRadius
+          borderRadius,
         },
       ]}
       onPress={onPress}
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
   },
   customBtnText: {
-    fontFamily: fontFamily.SfProDisplayBold,
+    fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.lg,
     textTransform: 'capitalize',
   },
