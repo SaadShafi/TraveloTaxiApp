@@ -9,12 +9,12 @@ import {
   View,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { fontFamily } from '../assets/fonts';
-import images from '../assets/images';
-import { globalStyle } from '../assets/styles';
+import { fontFamily } from '../assets/Fonts';
+import images from '../assets/Images';
+import { globalStyle } from '../assets/Styles';
 import { height, width } from '../utilities';
 import { colors } from '../utilities/colors';
-import { fontSizes } from '../utilities/fontSizes';
+import { fontSizes } from '../utilities/fontsizes';
 
 interface SelectElement {
   name: string;

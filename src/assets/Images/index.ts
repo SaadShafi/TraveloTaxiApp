@@ -10,6 +10,8 @@ const images: { [key: string]: ImageSourcePropType } = {
   googleIcon: require('../Images/GoogleIcon.png'),
   appleIcon: require('../Images/AppleIcon.png'),
   arrowleft: require('../Images/arrowleft.png'),
+  UK: require('../Images/UK.png'),
+  arrowdown: require('../Images/arrowdown.png'),
 };
 
 export default images;

@@ -10,4 +10,3 @@ import WelcomeFourth from './src/screens/Global/WelcomeFourth.tsx';
 import SignUpEmail from './src/screens/Global/SignUpEmail.tsx';
 
 AppRegistry.registerComponent(appName, () => SignUpEmail);
-AppRegistry.registerComponent(appName, () => SignIn);
