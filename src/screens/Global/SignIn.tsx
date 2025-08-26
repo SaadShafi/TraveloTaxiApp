@@ -18,7 +18,7 @@ const SignIn = () => {
         <CustomTextInput
           placeholder="*Enter your Email/Phone"
           placeholderTextColor={colors.black}
-          borderColor={colors.brown}
+          borderColor={colors.gray}
           borderRadius={30}
           inputWidth={width * 0.85}
           inputHeight={height * 0.06}
@@ -26,7 +26,7 @@ const SignIn = () => {
         <CustomTextInput
           placeholder="*Enter your Password"
           placeholderTextColor={colors.black}
-          borderColor={colors.brown}
+          borderColor={colors.gray}
           borderRadius={30}
           inputWidth={width * 0.85}
           inputHeight={height * 0.06}
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.sm,
   },
   bottomTextTwo: {
-    fontFamily: fontFamily.ClashDisplayMedium,
+    fontFamily: fontFamily.SfProDisplayBold,
     fontSize: fontSizes.sm,
     color: colors.black,
   },
