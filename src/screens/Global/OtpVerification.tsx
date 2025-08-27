@@ -3,6 +3,7 @@ import {
   Keyboard,
   StyleSheet,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -55,8 +56,11 @@ const OtpVerification = () => {
           />
           <View style={styles.recieveMain}>
             <Text style={styles.recieveTextOne}>Didn't recieve the code?</Text>
-            <Text style={styles.recieveTextTwo}>Resend Again</Text>
+            <TouchableOpacity activeOpacity={0.6}>
+              <Text style={styles.recieveTextTwo}>Resend Again</Text>
+            </TouchableOpacity>
           </View>
+
           <View style={styles.btnMain}>
             <CustomButton
               btnHeight={height * 0.06}
