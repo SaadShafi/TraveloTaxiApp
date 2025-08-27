@@ -11,6 +11,9 @@ const images: { [key: string]: ImageSourcePropType } = {
   appleIcon: require('../Images/AppleIcon.png'),
   eyeIcon: require('../Images/eyeIcon.png'),
   backArrow: require('../Images/backArrow.png'),
+  success: require('../Images/success.png'),
+  Shade: require('../Images/Shade.png'),
+  profile: require('../Images/profile.png'),
 };
 
 export default images;
