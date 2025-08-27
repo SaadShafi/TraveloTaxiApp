@@ -17,14 +17,15 @@ import { fontSizes } from '../../utilities/fontsizes';
 
 const WelcomeSec = () => {
   const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisibleSec, setModalVisibleSec] = useState(false);
 
   const handleUseLocation = () => {
-    // Implement location permission logic here
     setModalVisible(false);
   };
 
   const handleSkip = () => {
     setModalVisible(false);
+    setModalVisibleSec(true);
   };
   return (
     <ImageBackground source={images.simpleBg} style={styles.bgImg}>
@@ -48,13 +49,14 @@ const WelcomeSec = () => {
               <Text style={styles.modalTitleOne}>Enable</Text>
               <Text style={styles.modalTitleTwo}>Your Location</Text>
             </View>
-            <View></View>
-            <Text style={styles.modalDescription}>
-              Lorem ipsum dolor sit amet, consectetur
-            </Text>
-            <Text style={styles.modalDescription}>
-              adipiscing elit, sed do eiusmod.
-            </Text>
+            <View style={styles.modalDescriptionMain}>
+              <Text style={styles.modalDescription}>
+                Lorem ipsum dolor sit amet, consectetur
+              </Text>
+              <Text style={styles.modalDescription}>
+                adipiscing elit, sed do eiusmod.
+              </Text>
+            </View>
 
             <CustomButton
               btnHeight={height * 0.06}
@@ -68,6 +70,39 @@ const WelcomeSec = () => {
             <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
               <Text style={styles.skipButtonText}>Skip For Now</Text>
             </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisibleSec}
+        onRequestClose={() => setModalVisibleSec(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.contentMain}>
+              <Text style={styles.selectText}>Select One</Text>
+              <View style={styles.btnMain}>
+                <CustomButton
+                  btnHeight={height * 0.06}
+                  btnWidth={width * 0.7}
+                  text="User"
+                  backgroundColor={colors.brown}
+                  textColor={colors.white}
+                  borderRadius={30}
+                />
+                <CustomButton
+                  btnHeight={height * 0.06}
+                  btnWidth={width * 0.7}
+                  text="Driver"
+                  backgroundColor={colors.brown}
+                  textColor={colors.white}
+                  borderRadius={30}
+                />
+              </View>
+            </View>
           </View>
         </View>
       </Modal>
@@ -115,6 +150,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     width: width * 0.83,
     alignItems: 'center',
+    borderWidth: 0.3,
+    borderColor: colors.gray,
   },
   modalTitleOne: {
     fontFamily: fontFamily.ClashDisplaySemiBold,
@@ -127,6 +164,9 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.lg2,
     textAlign: 'center',
     color: colors.brown,
+  },
+  modalDescriptionMain: {
+    padding: 20,
   },
   modalDescription: {
     fontFamily: fontFamily.SfProDisplayRegular,
@@ -144,6 +184,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '500',
     fontSize: 16,
+  },
+  contentMain: {
+    alignItems: 'center',
+    padding: 30,
+  },
+  selectText: {
+    fontFamily: fontFamily.ClashDisplayRegular,
+    fontSize: fontSizes.lg2,
+    color: colors.white,
+  },
+  btnMain: {
+    gap: height * 0.02,
+    top: height * 0.014,
   },
 });
 

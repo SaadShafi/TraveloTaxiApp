@@ -22,6 +22,7 @@ interface CustomButtonProps {
   fontFamily?: string;
   backgroundColor?: string;
   borderRadius?: number;
+  disabled?: string;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -37,6 +38,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   backgroundColor,
   fontFamily,
   borderRadius,
+  disabled,
 }) => {
   const isGradient = Array.isArray(color) && !borderWidth;
 
@@ -70,6 +72,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       ]}
       onPress={onPress}
       activeOpacity={0.6}
+      disabled={disabled}
     >
       <Text style={[styles.customBtnText, { color: textColor, fontSize }]}>
         {text}

@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { OtpInput } from 'react-native-otp-entry';
 import { fontFamily } from '../../assets/Fonts';
 import CustomButton from '../../components/CustomButton';
@@ -8,51 +15,62 @@ import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
 const OtpVerification = () => {
+  const [otp, setOtp] = useState('');
+
+  const isOtpValid = otp.length === 5;
+
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
   return (
-    <View style={{ flex: 1 }}>
-      <TopHeader text="Otp Verificationnn" isBack={true} />
-      <View style={styles.otpContainer}>
-        <Text style={styles.otpText}>Enter Your OTP</Text>
-        <OtpInput
-          numberOfDigits={5}
-          focusColor={colors.brown}
-          autoFocus={false}
-          hideStick={true}
-          blurOnFilled={true}
-          disabled={false}
-          type="numeric"
-          secureTextEntry={false}
-          focusStickBlinkingDuration={500}
-          onFocus={() => console.log('Focused')}
-          onBlur={() => console.log('Blurred')}
-          onTextChange={text => console.log(text)}
-          //   onFilled={handleSubmit}
-          textInputProps={{
-            accessibilityLabel: 'One-Time Password',
-          }}
-          theme={{
-            containerStyle: styles.container,
-            pinCodeContainerStyle: styles.pinCodeContainer,
-            pinCodeTextStyle: styles.pinCodeText,
-            focusedPinCodeContainerStyle: styles.activePinCodeContainer,
-          }}
-        />
-        <View style={styles.recieveMain}>
-          <Text style={styles.recieveTextOne}>Didn't recieve the code?</Text>
-          <Text style={styles.recieveTextTwo}>Resend Again</Text>
-        </View>
-        <View style={styles.btnMain}>
-          <CustomButton
-            btnHeight={height * 0.06}
-            btnWidth={width * 0.81}
-            text="Verify"
-            backgroundColor={colors.gray}
-            textColor={colors.black}
-            borderRadius={30}
+    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <View style={{ flex: 1 }}>
+        <TopHeader text="Otp Verification" isBack={true} />
+        <View style={styles.otpContainer}>
+          <Text style={styles.otpText}>Enter Your OTP</Text>
+          <OtpInput
+            numberOfDigits={5}
+            focusColor={colors.brown}
+            autoFocus={false}
+            hideStick={true}
+            blurOnFilled={true}
+            disabled={false}
+            type="numeric"
+            secureTextEntry={false}
+            focusStickBlinkingDuration={500}
+            onFocus={() => console.log('Focused')}
+            onBlur={() => console.log('Blurred')}
+            onTextChange={setOtp}
+            //   onFilled={handleSubmit}
+            textInputProps={{
+              accessibilityLabel: 'One-Time Password',
+            }}
+            theme={{
+              containerStyle: styles.container,
+              pinCodeContainerStyle: styles.pinCodeContainer,
+              pinCodeTextStyle: styles.pinCodeText,
+              focusedPinCodeContainerStyle: styles.activePinCodeContainer,
+              filledPinCodeContainerStyle: styles.activePinCodeContainer,
+            }}
           />
+          <View style={styles.recieveMain}>
+            <Text style={styles.recieveTextOne}>Didn't recieve the code?</Text>
+            <Text style={styles.recieveTextTwo}>Resend Again</Text>
+          </View>
+          <View style={styles.btnMain}>
+            <CustomButton
+              btnHeight={height * 0.06}
+              btnWidth={width * 0.81}
+              text="Verify"
+              backgroundColor={isOtpValid ? colors.brown : colors.gray}
+              textColor={isOtpValid ? colors.white : colors.black}
+              borderRadius={30}
+              disabled={!isOtpValid}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -72,17 +90,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pinCodeContainer: {
-    backgroundColor: colors.lightBrown,
+    backgroundColor: colors.white,
     borderRadius: 30,
     padding: 10,
     marginBottom: height * 0.02,
     width: width * 0.13,
     height: width * 0.13,
-    borderColor: colors.brown,
+    borderColor: colors.gray,
     borderWidth: 1,
   },
   activePinCodeContainer: {
     borderColor: colors.brown,
+    backgroundColor: colors.lightBrown,
     borderWidth: 1,
     borderRadius: 7,
   },

@@ -44,6 +44,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   ...rest
 }) => {
   const [showPassword, setShowPassword] = useState(true);
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleRightIconPress = () => {
     if (isPassword) {
@@ -53,6 +54,8 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
     }
   };
 
+  const isActive = isFocused || (value && value.length > 0);
+
   return (
     <View
       style={[
@@ -60,10 +63,12 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
         {
           height: inputHeight,
           width: inputWidth,
-          borderColor,
+          // borderColor,
           borderWidth,
           borderRadius,
-          backgroundColor,
+          // backgroundColor,
+          borderColor: isActive ? colors.brown : colors.gray,
+          backgroundColor: isActive ? colors.lightBrown : colors.white,
         },
       ]}
     >
@@ -87,6 +92,8 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
         keyboardType={keyboardType}
         onChangeText={onChangeText}
         value={value}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         {...rest}
       />
 
