@@ -1,4 +1,5 @@
 import { BlurView } from '@react-native-community/blur';
+import AntDesign from '@react-native-vector-icons/ant-design';
 import React, { useEffect, useState } from 'react';
 import {
   Image,
@@ -8,7 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { fontFamily } from '../assets/Fonts';
 import images from '../assets/Images';
 import { globalStyle } from '../assets/Styles';
@@ -111,7 +111,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
               >
                 <Text style={styles.selectTabText}>{elm.name}</Text>
                 {elm.name === selectElem && (
-                  <Ionicons name="checkmark" size={20} color={colors.primary} />
+                  <AntDesign name="check" size={15} color={colors.black} />
                 )}
               </TouchableOpacity>
             ))}

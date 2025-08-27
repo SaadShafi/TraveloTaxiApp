@@ -126,6 +126,7 @@ const SignUpEmail = () => {
             borderRadius={30}
             onChangeText={value => setGender(value)}
             setSelectedElement={setGender}
+            defaultValue=""
           />
           <View style={styles.checkboxContainer}>
             <BouncyCheckbox
