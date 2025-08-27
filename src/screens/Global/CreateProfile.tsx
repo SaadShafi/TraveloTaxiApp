@@ -147,19 +147,18 @@ const CreateProfile = () => {
         </View>
         <View style={styles.btnMain}>
           <CustomButton
-            btnHeight={height * 0.06}
+            btnHeight={height * 0.075}
             btnWidth={width * 0.4}
             text="Cancel"
-            backgroundColor={isFormValid ? colors.brown : colors.black}
+            backgroundColor={colors.black}
             textColor={colors.white}
             borderRadius={30}
-            disabled={!isFormValid}
           />
           <CustomButton
-            btnHeight={height * 0.06}
+            btnHeight={height * 0.075}
             btnWidth={width * 0.4}
-            text="Continue"
-            backgroundColor={isFormValid ? colors.brown : colors.black}
+            text="Save"
+            backgroundColor={isFormValid ? colors.brown : colors.gray}
             textColor={colors.white}
             borderRadius={30}
             disabled={!isFormValid}
@@ -232,7 +231,11 @@ const styles = StyleSheet.create({
     bottom: height * 0.07,
   },
   btnMain: {
+    justifyContent: 'space-around',
+    alignItems: 'center',
     flexDirection: 'row',
+    bottom: height * 0.3,
+    paddingHorizontal: width * 0.06,
   },
 });
 
