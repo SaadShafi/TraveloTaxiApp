@@ -6,6 +6,7 @@ import {
   PanResponder,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { fontFamily } from '../../assets/Fonts';
@@ -13,8 +14,13 @@ import images from '../../assets/Images';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+// import { useNavigation, NavigationProp} from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { StackParamList } from '../../navigation/AuthStack';
 
-const WelcomeFirst = () => {
+type Props = NativeStackScreenProps<StackParamList, 'WelcomeFirst'>;
+
+const WelcomeFirst: React.FC<Props> = ({ navigation }) => {
   const translateX = useRef(new Animated.Value(0)).current;
   const slidePosition = useRef(new Animated.Value(0)).current;
   const textOpacity = useRef(new Animated.Value(0)).current;
@@ -95,6 +101,7 @@ const WelcomeFirst = () => {
             }),
           ]).start(() => {
             setIsUnlocked(true);
+           navigation.navigate('SignIn');
             // Here you would navigate to the next screen
           });
         } else {
@@ -132,6 +139,10 @@ const WelcomeFirst = () => {
     outputRange: ['rgba(0,0,0,0)', colors.brown],
   });
 
+  useEffect(() => {
+  console.log("Navigation prop:", navigation);
+}, [navigation]);
+
   return (
     <ImageBackground source={images.simpleBg} style={styles.bgImg}>
       <Animated.View style={{ flex: 1, transform: [{ translateX }] }}>
@@ -154,7 +165,8 @@ const WelcomeFirst = () => {
           <Image source={images.arrowUp} style={styles.arrowImg} />
         </TouchableOpacity> */}
 
-        <View style={styles.sliderContainer}>
+        
+          <View style={styles.sliderContainer}>
           <Animated.View
             style={[styles.sliderTrack, { backgroundColor }]}
             {...panResponder.panHandlers}

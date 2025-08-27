@@ -13,7 +13,6 @@ const images: { [key: string]: ImageSourcePropType } = {
   backArrow: require('../Images/backArrow.png'),
   success: require('../Images/success.png'),
   Shade: require('../Images/Shade.png'),
-  profile: require('../Images/profile.png'),
   UK: require('../Images/UK.png'),
   line: require('../Images/line.png'),
 };
