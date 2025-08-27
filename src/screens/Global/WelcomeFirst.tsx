@@ -13,16 +13,19 @@ import images from '../../assets/Images';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+// import { useNavigation, NavigationProp} from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { StackParamList } from '../../navigation/AuthStack';
 
-const WelcomeFirst = () => {
+type Props = NativeStackScreenProps<StackParamList, 'WelcomeFirst'>;
+
+const WelcomeFirst: React.FC<Props> = ({ navigation }) => {
   const translateX = useRef(new Animated.Value(0)).current;
   const slidePosition = useRef(new Animated.Value(0)).current;
   const textOpacity = useRef(new Animated.Value(0)).current;
   const arrowOpacity = useRef(new Animated.Value(0)).current;
   const trackBackground = useRef(new Animated.Value(0)).current;
   const [isUnlocked, setIsUnlocked] = useState(false);
-
-  // Calculate the maximum slide distance
   const maxSlideDistance = width * 0.88 - height * 0.075 - width * 0.04;
 
   useEffect(() => {
@@ -95,6 +98,7 @@ const WelcomeFirst = () => {
             }),
           ]).start(() => {
             setIsUnlocked(true);
+            navigation.navigate('WelcomeSec');
             // Here you would navigate to the next screen
           });
         } else {
@@ -126,11 +130,14 @@ const WelcomeFirst = () => {
     }),
   ).current;
 
-  // Interpolate the background color from transparent to brown
   const backgroundColor = trackBackground.interpolate({
     inputRange: [0, 1],
     outputRange: ['rgba(0,0,0,0)', colors.brown],
   });
+
+  useEffect(() => {
+    console.log('Navigation prop:', navigation);
+  }, [navigation]);
 
   return (
     <ImageBackground source={images.simpleBg} style={styles.bgImg}>

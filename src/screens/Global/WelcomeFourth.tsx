@@ -1,76 +1,81 @@
-import react from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image } from 'react-native';
-import { colors } from '../../utilities/colors';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { fontFamily } from '../../assets/Fonts';
-import { fontSizes } from '../../utilities/fontsizes';
 import images from '../../assets/Images';
-import { width } from '../../utilities';
-import { height } from '../../utilities';
 import CustomButton from '../../components/CustomButton';
+import type { StackParamList } from '../../navigation/AuthStack';
+import { height, width } from '../../utilities';
+import { colors } from '../../utilities/colors';
+import { fontSizes } from '../../utilities/fontsizes';
 
+type Props = NativeStackScreenProps<StackParamList, 'WelcomeFourth'>;
 
-const WelcomeFourth = () => {
+const WelcomeFourth: React.FC<Props> = ({ navigation }) => {
   return (
-        <ImageBackground source={images.background} style={styles.bgImg}>
-            <View style={styles.container}>
-                <Text style={styles.welcome}>Welcome</Text>
-                <View style={styles.paraMain}>
-                  <Text style={styles.paraText}>Lorem ipsum dolor sit amet, consectetur</Text>
-                <Text style={styles.paraText}>adipiscing elit, sed do</Text>
-                <Text style={styles.paraText}>eiusmod.</Text>
-                </View>
-                <View style={styles.btnMain}>
-                   <CustomButton
-                      text="Create An Account"
-                      btnWidth={width * 0.85}
-                      btnHeight={height * 0.067}
-                      backgroundColor={colors.brown}
-                      textColor={colors.white}
-                      borderRadius={30}
-                    />
-                  <CustomButton
-                    text="Sign In"
-                    btnWidth={width * 0.85}
-                    btnHeight={height * 0.067}
-                    backgroundColor={colors.white}
-                    textColor={colors.black}
-                    borderRadius={30}
-                  />
-                </View>
-            </View>
-        </ImageBackground> 
+    <ImageBackground source={images.background} style={styles.bgImg}>
+      <View style={styles.container}>
+        <Text style={styles.welcome}>Welcome</Text>
+        <View style={styles.paraMain}>
+          <Text style={styles.paraText}>
+            Lorem ipsum dolor sit amet, consectetur
+          </Text>
+          <Text style={styles.paraText}>adipiscing elit, sed do</Text>
+          <Text style={styles.paraText}>eiusmod.</Text>
+        </View>
+        <View style={styles.btnMain}>
+          <CustomButton
+            text="Create An Account"
+            btnWidth={width * 0.85}
+            btnHeight={height * 0.067}
+            backgroundColor={colors.brown}
+            textColor={colors.white}
+            borderRadius={30}
+            onPress={() => navigation.navigate('SignUpEmail')}
+          />
+          <CustomButton
+            text="Sign In"
+            btnWidth={width * 0.85}
+            btnHeight={height * 0.067}
+            backgroundColor={colors.white}
+            textColor={colors.black}
+            borderRadius={30}
+            onPress={() => navigation.navigate('SignIn')}
+          />
+        </View>
+      </View>
+    </ImageBackground>
   );
 };
 const styles = StyleSheet.create({
-   bgImg: {
+  bgImg: {
     flex: 1,
     width: width * 1,
     height: height * 1,
-   },
-   container: {
+  },
+  container: {
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: height * 0.6,
-   },
-   welcome:{
+  },
+  welcome: {
     fontFamily: fontFamily.ClashDisplayBold,
     color: colors.white,
-    fontSize: fontSizes.lg2
-   },
-   paraMain: {
+    fontSize: fontSizes.lg2,
+  },
+  paraMain: {
     marginTop: height * 0.01,
     alignItems: 'center',
-    gap: height * 0.005
-   },
-   paraText: {
-     fontFamily: fontFamily. ClashDisplayLight,
+    gap: height * 0.005,
+  },
+  paraText: {
+    fontFamily: fontFamily.ClashDisplayLight,
     color: colors.gray,
-    fontSize: fontSizes.sm2
-   },
-   btnMain: {
+    fontSize: fontSizes.sm2,
+  },
+  btnMain: {
     marginTop: height * 0.03,
-    gap: height * 0.02
-   }
+    gap: height * 0.02,
+  },
 });
 
 export default WelcomeFourth;

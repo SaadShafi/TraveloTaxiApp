@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useState } from 'react';
 import {
   Keyboard,
   StyleSheet,
@@ -11,11 +12,14 @@ import { OtpInput } from 'react-native-otp-entry';
 import { fontFamily } from '../../assets/Fonts';
 import CustomButton from '../../components/CustomButton';
 import TopHeader from '../../components/Topheader';
+import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-const OtpVerification = () => {
+type Props = NativeStackScreenProps<StackParamList, 'OtpVerification'>;
+
+const OtpVerification: React.FC<Props> = ({ navigation }) => {
   const [otp, setOtp] = useState('');
 
   const isOtpValid = otp.length === 5;
@@ -26,7 +30,11 @@ const OtpVerification = () => {
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1 }}>
-        <TopHeader text="Otp Verification" isBack={true} />
+        <TopHeader
+          text="Otp Verification"
+          isBack={true}
+          navigation={navigation}
+        />
         <View style={styles.otpContainer}>
           <Text style={styles.otpText}>Enter Your OTP</Text>
           <OtpInput
@@ -70,6 +78,7 @@ const OtpVerification = () => {
               textColor={isOtpValid ? colors.white : colors.black}
               borderRadius={30}
               disabled={!isOtpValid}
+              onPress={() => navigation.navigate('SetPassword')}
             />
           </View>
         </View>

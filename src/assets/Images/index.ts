@@ -18,6 +18,7 @@ const images: { [key: string]: ImageSourcePropType } = {
   camera: require('../Images/camera.png'),
   profGradient: require('../Images/ProfGradient.png'),
   profile: require('../Images/profile.png'),
+  secIcon: require('../Images/SecIcon.png'),
 };
 
 export default images;

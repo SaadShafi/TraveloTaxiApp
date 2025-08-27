@@ -1,3 +1,4 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import {
   Image,
@@ -13,11 +14,14 @@ import CustomButton from '../../components/CustomButton';
 import CustomSelect from '../../components/CustomSelect';
 import CustomTextInput from '../../components/CustomTextInput';
 import TopHeader from '../../components/Topheader';
+import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-const CreateProfile = () => {
+type Props = NativeStackScreenProps<StackParamList, 'CreateProfile'>;
+
+const CreateProfile: React.FC<Props> = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -54,7 +58,7 @@ const CreateProfile = () => {
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1, backgroundColor: colors.white }}>
-        <TopHeader text="Profile" isBack={true} />
+        <TopHeader text="Profile" isBack={true} navigation={navigation} />
         <View style={styles.imgMain}>
           <Image source={images.profGradient} style={styles.gradient} />
           <TouchableOpacity style={styles.profMain} activeOpacity={0.7}>
@@ -162,6 +166,7 @@ const CreateProfile = () => {
             textColor={colors.white}
             borderRadius={30}
             disabled={!isFormValid}
+            onPress={() => navigation.navigate('Congratulation')}
           />
         </View>
       </View>
