@@ -4,6 +4,6 @@
 
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
-import otpVerification from './src/screens/Global/OtpVerification';
+import SignUpEmail from './src/screens/Global/SignUpEmail';
 
-AppRegistry.registerComponent(appName, () => otpVerification);
+AppRegistry.registerComponent(appName, () => SignUpEmail);

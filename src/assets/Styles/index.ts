@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 import { height, isAndroid, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
-import { fontSizes } from '../../utilities/fontSizes';
-import { fontFamily } from '../fonts';
+import { fontSizes } from '../../utilities/fontsizes';
+import { fontFamily } from '../Fonts';
 
 interface GlobalStyles {
   secMain: StyleProp<ViewStyle>;
@@ -120,7 +120,7 @@ export const globalStyle = StyleSheet.create({
   selectText: {
     fontFamily: fontFamily.JakartaMedium,
     // fontWeight:'400',
-    color: colors.gray,
+    color: colors.black,
     fontSize: fontSizes.sm,
   },
   phoneInput: {
