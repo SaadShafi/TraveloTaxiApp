@@ -4,6 +4,6 @@
 
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
-import SignUpEmail from './src/screens/Global/SignUpEmail';
+import CreateProfile from './src/screens/Global/CreateProfile';
 
-AppRegistry.registerComponent(appName, () => SignUpEmail);
+AppRegistry.registerComponent(appName, () => CreateProfile);
