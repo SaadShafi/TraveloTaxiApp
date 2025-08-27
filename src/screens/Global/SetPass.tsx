@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { fontFamily } from '../../assets/Fonts';
 import CustomButton from '../../components/CustomButton';
@@ -8,6 +9,11 @@ import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
 const setPassword = () => {
+  const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
+
+  const isFormValid = password.length > 0 && rePassword.length > 0;
+
   return (
     <View style={{ flex: 1 }}>
       <TopHeader text="SetPassword" isBack={true} />
@@ -21,6 +27,8 @@ const setPassword = () => {
           inputWidth={width * 0.85}
           inputHeight={height * 0.06}
           isPassword={true}
+          value={password}
+          onChangeText={setPassword}
         />
         <CustomTextInput
           placeholder="*Re-Enter your Password"
@@ -30,6 +38,8 @@ const setPassword = () => {
           inputWidth={width * 0.85}
           inputHeight={height * 0.06}
           isPassword={true}
+          value={rePassword}
+          onChangeText={setRePassword}
         />
         <View style={styles.infoMain}>
           <Text style={styles.infoTextOne}>*Atleast</Text>
@@ -44,9 +54,15 @@ const setPassword = () => {
           btnHeight={height * 0.06}
           btnWidth={width * 0.81}
           text="Register"
-          backgroundColor={colors.gray}
-          textColor={colors.black}
+          backgroundColor={isFormValid ? colors.brown : colors.black}
+          textColor={colors.white}
           borderRadius={30}
+          onPress={() => {
+            if (isFormValid) {
+              console.log('Register pressed with', password, rePassword);
+            }
+          }}
+          disabled={!isFormValid}
         />
       </View>
     </View>

@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 import { CountryPicker } from 'react-native-country-codes-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { fontFamily } from '../assets/fonts';
-import { globalStyle } from '../assets/styles';
+import { fontFamily } from '../assets/Fonts';
+import { globalStyle } from '../assets/Styles';
 import { height, width } from '../utilities';
 import { colors } from '../utilities/colors';
-import { fontSizes } from '../utilities/fontSizes';
+import { fontSizes } from '../utilities/fontsizes';
 
 interface CustomPhoneInputProps {
   placeholder?: string;
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 5,
     elevation: 5,
-    borderColor: colors.lightBlue,
+    borderColor: colors.gray,
     borderWidth: 1,
   },
   phoneInputNum: {
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 5,
     elevation: 5,
-    borderColor: colors.lightBlue,
+    borderColor: colors.gray,
     borderWidth: 1,
   },
   numTextView: {

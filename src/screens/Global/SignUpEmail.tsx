@@ -1,155 +1,196 @@
-
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   Image,
+  Keyboard,
+  StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
-import BouncyCheckbox from "react-native-bouncy-checkbox";  // ✅ Import
-import { colors } from '../../utilities/colors';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { fontFamily } from '../../assets/Fonts';
-import { fontSizes } from '../../utilities/fontsizes';
 import images from '../../assets/Images';
-import { width, height } from '../../utilities';
 import CustomButton from '../../components/CustomButton';
-import CustomTextInput from '../../components/CustomTextInput';
 import CustomSelect from '../../components/CustomSelect';
+import CustomTextInput from '../../components/CustomTextInput';
+import TopHeader from '../../components/Topheader';
+import { height, width } from '../../utilities';
+import { colors } from '../../utilities/colors';
+import { fontSizes } from '../../utilities/fontsizes';
 
 const SignUpEmail = () => {
-  const [gender, setGender] = useState<string>("");
-  const [agree, setAgree] = useState(false); // ✅ checkbox state
+  const [name, setName] = useState('');
+  const [isNameFocused, setIsNameFocused] = useState(false);
+
+  const [phone, setPhone] = useState('');
+  const [isPhoneFocused, setIsPhoneFocused] = useState(false);
+
+  const [email, setEmail] = useState('');
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+
+  const [gender, setGender] = useState('');
+  const [agree, setAgree] = useState(false);
 
   const genderOptions = [
-    { name: "Select Gender", id: "" },
-    { name: "Male", id: "male" },
-    { name: "Female", id: "female" },
-    { name: "Other", id: "other" },
+    { name: 'Select Gender', id: '' },
+    { name: 'Male', id: 'male' },
+    { name: 'Female', id: 'female' },
+    { name: 'Other', id: 'other' },
   ];
 
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
+  const isNameValid = name.trim().length >= 4;
+  const isPhoneValid = phone.trim().length > 7;
+  const isEmailValid = email.includes('@');
+  const isGenderValid = gender !== '';
+  const isFormValid =
+    isNameValid && isPhoneValid && isEmailValid && isGenderValid && agree;
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.signup}>Sign Up With Your</Text>
-      <Text style={styles.signup}>Email Or Phone Number</Text>
-
-      {/* Name Field */}
-      <View style={styles.emailContainer}>
-        <CustomTextInput
-          placeholder="*Enter Your Name."
-          placeholderTextColor={colors.black}
-          borderColor={colors.brown}
-          borderRadius={30}
-          inputWidth={width * 0.85}
-          inputHeight={height * 0.06}
-        />
-      </View>
-
-      {/* Phone Field */}
-      <View style={styles.phoneContainer}>
-        <View style={styles.phoneRow}>
-          <Image source={images.UK} style={styles.flag} />
-          <Text style={styles.code}>+1</Text>
-          <TextInput
-            style={styles.phoneInput}
-            placeholder="Enter phone number"
+    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <View style={styles.container}>
+        <TopHeader isBack={true} />
+        <View style={styles.headerMain}>
+          <Text style={styles.signup}>Sign Up With Your</Text>
+          <Text style={styles.signup}>Email Or Phone Number</Text>
+        </View>
+        <View style={styles.inputMain}>
+          <CustomTextInput
+            placeholder="*Enter Your Name."
             placeholderTextColor={colors.black}
-            keyboardType="phone-pad"
+            borderColor={colors.brown}
+            borderRadius={30}
+            inputWidth={width * 0.85}
+            inputHeight={height * 0.06}
+            value={name}
+            onChangeText={setName}
           />
+          {/* <View style={styles.phoneRow}>
+            <Image source={images.UK} style={styles.flag} />
+            <Image source={images.line} style={styles.lineImg} />
+            <TextInput
+              style={styles.phoneInput}
+              placeholder="Enter phone number"
+              placeholderTextColor={colors.black}
+              keyboardType="phone-pad"
+            />
+          </View> */}
+
+          <View
+            style={[
+              styles.phoneRow,
+              {
+                borderColor:
+                  isPhoneFocused || phone ? colors.brown : colors.gray,
+                backgroundColor:
+                  isPhoneFocused || phone ? colors.lightBrown : colors.whie,
+              },
+            ]}
+          >
+            <Image source={images.UK} style={styles.flag} />
+            <Image source={images.line} style={styles.lineImg} />
+            <TextInput
+              style={styles.phoneInput}
+              placeholder="Enter phone number"
+              placeholderTextColor={colors.black}
+              keyboardType="phone-pad"
+              value={phone}
+              onChangeText={setPhone}
+              onFocus={() => setIsPhoneFocused(true)}
+              onBlur={() => setIsPhoneFocused(false)}
+            />
+          </View>
+
+          <CustomTextInput
+            placeholder="*Enter Your Email."
+            placeholderTextColor={colors.black}
+            borderColor={isEmailFocused || email ? colors.brown : colors.gray}
+            borderRadius={30}
+            inputWidth={width * 0.85}
+            inputHeight={height * 0.06}
+            value={email}
+            onChangeText={setEmail}
+          />
+          <CustomSelect
+            inputWidth={width * 0.85}
+            inputHeight={height * 0.06}
+            selectElements={genderOptions}
+            borderColor={gender ? colors.brown : colors.gray}
+            borderWidth={1}
+            inputColor={gender ? colors.lightBrown : colors.white}
+            borderRadius={30}
+            onChangeText={value => setGender(value)}
+            setSelectedElement={setGender}
+          />
+          <View style={styles.checkboxContainer}>
+            <BouncyCheckbox
+              size={24}
+              fillColor={colors.brown}
+              unfillColor={colors.white}
+              isChecked={agree}
+              disableBuiltInState
+              iconStyle={{
+                borderColor: colors.brown,
+                borderWidth: 2,
+                borderRadius: 8,
+              }}
+              innerIconStyle={{
+                borderRadius: 8,
+              }}
+              text="By signing up, you agree to the Terms & Conditions and Privacy Policy"
+              textStyle={styles.checkboxText}
+              onPress={() => setAgree(!agree)}
+            />
+          </View>
+          <View style={styles.btnMain}>
+            <CustomButton
+              btnHeight={height * 0.06}
+              btnWidth={width * 0.85}
+              text="Create An Account"
+              backgroundColor={isFormValid ? colors.brown : colors.gray}
+              textColor={isFormValid ? colors.white : colors.black}
+              borderRadius={30}
+              disabled={!isFormValid}
+            />
+          </View>
+          <View>
+            <View style={{ paddingVertical: height * 0.03 }}>
+              <Image source={images.orLine} style={styles.orLine} />
+            </View>
+
+            <View style={{ gap: height * 0.01 }}>
+              <TouchableOpacity style={styles.belowBtn} activeOpacity={0.7}>
+                <Image source={images.googleIcon} style={styles.googleIcon} />
+                <Text style={styles.belowSignInText}>Sign Up with Gmail</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.belowBtn} activeOpacity={0.7}>
+                <Image source={images.appleIcon} style={styles.googleIcon} />
+                <Text style={styles.belowSignInText}>Sign Up with Apple</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.bottomMain}>
+            <Text style={styles.bottomTextOne}>Already have an Account?</Text>
+            <Text style={styles.bottomTextTwo}>SignIn</Text>
+          </View>
         </View>
       </View>
-
-      {/* Email Field */}
-      <View style={{ top: height * 0.17 }}>
-        <CustomTextInput
-          placeholder="*Enter Your Email."
-          placeholderTextColor={colors.black}
-          borderColor={colors.brown}
-          borderRadius={30}
-          inputWidth={width * 0.85}
-          inputHeight={height * 0.06}
-        />
-      </View>
-
-      {/* Gender Dropdown */}
-      <View style={styles.genderContainer}>
-        <CustomSelect
-          inputWidth={width * 0.85}
-          inputHeight={height * 0.06}
-          selectElements={genderOptions}
-          borderColor={colors.brown}
-          borderWidth={1}
-          inputColor={colors.white}
-          borderRadius={30}
-          onChangeText={(value) => setGender(value)}
-          setSelectedElement={setGender}
-          defaultValue=""
-        />
-      </View>
-
-      {/* ✅ Checkbox with Terms */}
-            <View style={styles.checkboxContainer}>
-        <BouncyCheckbox
-          size={24}
-          fillColor={colors.brown}
-          unfillColor="#FFFFFF"
-          isChecked={agree}
-          disableBuiltInState
-          iconStyle={{
-            borderColor: colors.brown,
-            borderWidth: 2,
-            borderRadius: 8, // Rounded square like your image
-          }}
-          innerIconStyle={{
-            borderRadius: 8,
-          }}
-          text="By signing up, you agree to the Terms & Conditions and Privacy Policy"
-          textStyle={styles.checkboxText} // ✅ styles applied here
-          onPress={() => setAgree(!agree)}
-        />
-      </View>
-      <View style={styles.btnMain}>
-         <CustomButton
-          btnHeight={height * 0.06}
-          btnWidth={width * 0.85}
-          text="Create An Account"
-          backgroundColor={colors.gray}
-          textColor={colors.black}
-          borderRadius={30}
-        />
-      </View>
-      <View>
-        <View style={{ paddingVertical: height * 0.03 }}>
-          <Image source={images.orLine} style={styles.orLine} />
-        </View>
-
-       <View style={{gap:height * 0.01}}>
-         <TouchableOpacity style={styles.belowBtn}>
-          <Image source={images.googleIcon} style={styles.googleIcon} />
-          <Text style={styles.belowSignInText}>Sign Up with Gmail</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.belowBtn}>
-          <Image source={images.appleIcon} style={styles.googleIcon} />
-          <Text style={styles.belowSignInText}>Sign Up with Apple</Text>
-        </TouchableOpacity>
-       </View>
-
-      </View>
-      <View style={styles.bottomMain}>
-        <Text style={styles.bottomTextOne}>Already have an Account?</Text>
-        <Text style={styles.bottomTextTwo}>SignIn</Text>
-      </View>
-      </View>
-
-
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  headerMain: {
+    alignItems: 'center',
+    bottom: height * 0.15,
+  },
   container: {
     flex: 1,
-    alignItems: "center",
   },
   signup: {
     color: colors.black,
@@ -157,17 +198,10 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.lg2,
     top: height * 0.1,
   },
-  emailContainer: {
-    top: height * 0.13,
-    fontFamily: fontFamily.ClashDisplayRegular,
-  },
-  phoneContainer: {
-    top: height * 0.15,
-  },
   phoneRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: colors.brown,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: colors.gray,
     borderWidth: 1,
     borderRadius: 30,
     paddingHorizontal: 12,
@@ -190,25 +224,20 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.xm2,
     color: colors.black,
   },
-  genderContainer: {
-    top: height * 0.19,
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: width * 0.82,
   },
- checkboxContainer: {
-  flexDirection: "row",
-  alignItems: "center",
-  width: width * 0.82,
-  marginTop: height * 0.21,
-},
-checkboxText: {
-  fontSize: fontSizes.xm2,
-  color: colors.black,
-  // fontFamily: fontFamily.ClashDisplayRegular,
-  textDecorationLine: "none", // removes underline from BouncyCheckbox
-},
+  checkboxText: {
+    fontSize: fontSizes.xm2,
+    color: colors.black,
+    textDecorationLine: 'none',
+  },
   linkText: {
     fontFamily: fontFamily.ClashDisplayMedium,
   },
-    btnMain: {
+  btnMain: {
     marginTop: height * 0.038,
     alignSelf: 'center',
   },
@@ -233,7 +262,7 @@ checkboxText: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.sm2,
   },
-   bottomMain: {
+  bottomMain: {
     flexDirection: 'row',
     top: height * 0.06,
   },
@@ -245,6 +274,15 @@ checkboxText: {
     fontFamily: fontFamily.SfProDisplayBold,
     fontSize: fontSizes.sm,
     color: colors.black,
+  },
+  inputMain: {
+    alignItems: 'center',
+    gap: height * 0.02,
+  },
+  lineImg: {
+    height: height * 0.024,
+    width: width * 0.01,
+    resizeMode: 'contain',
   },
 });
 
