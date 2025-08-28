@@ -201,9 +201,10 @@ const TopHeader: React.FC<TopHeaderProps> = ({
             <Pressable style={styles.headerArrow} onPress={handleDrawer}>
               {/* <Image source={images.DrawerImg} style={styles.menuIcon}/> */}
               <Image
-                source={
-                  menuSecond === 'MenuColor' ? images.menuImg : images.menuImg
-                }
+                // source={
+                //   menuSecond === 'MenuColor' ? images.menuImg : images.menuImg
+                // }
+                source={images.drawerIcon}
                 style={styles.menuIcon}
               />
             </Pressable>
@@ -292,6 +293,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     justifyContent: 'center',
+    // backgroundColor: colors.black,
   },
   headerBell: {
     position: 'absolute',

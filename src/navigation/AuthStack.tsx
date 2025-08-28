@@ -9,6 +9,7 @@ import SignUpEmail from '../screens/Global/SignUpEmail';
 import WelcomeFirst from '../screens/Global/WelcomeFirst';
 import WelcomeFourth from '../screens/Global/WelcomeFourth';
 import WelcomeSec from '../screens/Global/WelcomeSec';
+import PaymentUser from '../screens/User/payment';
 
 export type StackParamList = {
   WelcomeFirst: undefined;
@@ -20,6 +21,7 @@ export type StackParamList = {
   SetPassword: undefined;
   Congratulation: undefined;
   CreateProfile: undefined;
+  PaymentUser: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -39,6 +41,7 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="WelcomeFourth" component={WelcomeFourth} />
       <Stack.Screen name="Congratulation" component={Congratulation} />
       <Stack.Screen name="CreateProfile" component={CreateProfile} />
+      <Stack.Screen name="PaymentUser" component={PaymentUser} />
     </Stack.Navigator>
   );
 };
