@@ -26,7 +26,7 @@ const AuthStack: React.FC = () => {
   return (
     <Stack.Navigator
       initialRouteName="WelcomeFirst"
-    //   screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUpEmail" component={SignUpEmail} />
