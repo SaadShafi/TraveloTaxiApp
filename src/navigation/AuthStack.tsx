@@ -1,13 +1,15 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
-import SignIn from "../screens/Global/SignIn";
-import OtpVerification from "../screens/Global/OtpVerification";
-import WelcomeFirst from "../screens/Global/WelcomeFirst";
-import WelcomeSec from "../screens/Global/WelcomeSec";
-import WelcomeFourth from "../screens/Global/WelcomeFourth";
-import SignUpEmail from "../screens/Global/SignUpEmail";
-import Congratulation from "../screens/Global/Congratulation";
-import SetPassword from "../screens/Global/SetPass"; 
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import Congratulation from '../screens/Global/Congratulation';
+import CreateProfile from '../screens/Global/CreateProfile';
+import OtpVerification from '../screens/Global/OtpVerification';
+import SetPassword from '../screens/Global/SetPass';
+import SignIn from '../screens/Global/SignIn';
+import SignUpEmail from '../screens/Global/SignUpEmail';
+import WelcomeFirst from '../screens/Global/WelcomeFirst';
+import WelcomeFourth from '../screens/Global/WelcomeFourth';
+import WelcomeSec from '../screens/Global/WelcomeSec';
+import PaymentUser from '../screens/User/payment';
 
 export type StackParamList = {
   WelcomeFirst: undefined;
@@ -18,6 +20,8 @@ export type StackParamList = {
   OtpVerification: undefined;
   SetPassword: undefined;
   Congratulation: undefined;
+  CreateProfile: undefined;
+  PaymentUser: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -36,6 +40,8 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="WelcomeSec" component={WelcomeSec} />
       <Stack.Screen name="WelcomeFourth" component={WelcomeFourth} />
       <Stack.Screen name="Congratulation" component={Congratulation} />
+      <Stack.Screen name="CreateProfile" component={CreateProfile} />
+      <Stack.Screen name="PaymentUser" component={PaymentUser} />
     </Stack.Navigator>
   );
 };

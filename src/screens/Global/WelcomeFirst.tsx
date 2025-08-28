@@ -6,7 +6,6 @@ import {
   PanResponder,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { fontFamily } from '../../assets/Fonts';
@@ -27,8 +26,6 @@ const WelcomeFirst: React.FC<Props> = ({ navigation }) => {
   const arrowOpacity = useRef(new Animated.Value(0)).current;
   const trackBackground = useRef(new Animated.Value(0)).current;
   const [isUnlocked, setIsUnlocked] = useState(false);
-
-  // Calculate the maximum slide distance
   const maxSlideDistance = width * 0.88 - height * 0.075 - width * 0.04;
 
   useEffect(() => {
@@ -101,7 +98,7 @@ const WelcomeFirst: React.FC<Props> = ({ navigation }) => {
             }),
           ]).start(() => {
             setIsUnlocked(true);
-           navigation.navigate('SignIn');
+            navigation.navigate('WelcomeSec');
             // Here you would navigate to the next screen
           });
         } else {
@@ -133,15 +130,14 @@ const WelcomeFirst: React.FC<Props> = ({ navigation }) => {
     }),
   ).current;
 
-  // Interpolate the background color from transparent to brown
   const backgroundColor = trackBackground.interpolate({
     inputRange: [0, 1],
     outputRange: ['rgba(0,0,0,0)', colors.brown],
   });
 
   useEffect(() => {
-  console.log("Navigation prop:", navigation);
-}, [navigation]);
+    console.log('Navigation prop:', navigation);
+  }, [navigation]);
 
   return (
     <ImageBackground source={images.simpleBg} style={styles.bgImg}>
@@ -165,8 +161,7 @@ const WelcomeFirst: React.FC<Props> = ({ navigation }) => {
           <Image source={images.arrowUp} style={styles.arrowImg} />
         </TouchableOpacity> */}
 
-        
-          <View style={styles.sliderContainer}>
+        <View style={styles.sliderContainer}>
           <Animated.View
             style={[styles.sliderTrack, { backgroundColor }]}
             {...panResponder.panHandlers}

@@ -1,3 +1,4 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import {
   Image,
@@ -16,11 +17,14 @@ import CustomButton from '../../components/CustomButton';
 import CustomSelect from '../../components/CustomSelect';
 import CustomTextInput from '../../components/CustomTextInput';
 import TopHeader from '../../components/Topheader';
+import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-const SignUpEmail = () => {
+type Props = NativeStackScreenProps<StackParamList, 'SignUpEmail'>;
+
+const SignUpEmail: React.FC<Props> = ({ navigation }) => {
   const [name, setName] = useState('');
   const [isNameFocused, setIsNameFocused] = useState(false);
 
@@ -54,7 +58,7 @@ const SignUpEmail = () => {
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={styles.container}>
-        <TopHeader isBack={true} />
+        <TopHeader isBack={true} navigation={navigation} />
         <View style={styles.headerMain}>
           <Text style={styles.signup}>Sign Up With Your</Text>
           <Text style={styles.signup}>Email Or Phone Number</Text>
@@ -88,7 +92,7 @@ const SignUpEmail = () => {
                 borderColor:
                   isPhoneFocused || phone ? colors.brown : colors.gray,
                 backgroundColor:
-                  isPhoneFocused || phone ? colors.lightBrown : colors.whie,
+                  isPhoneFocused || phone ? colors.lightBrown : colors.gray,
               },
             ]}
           >
@@ -122,10 +126,11 @@ const SignUpEmail = () => {
             selectElements={genderOptions}
             borderColor={gender ? colors.brown : colors.gray}
             borderWidth={1}
-            inputColor={gender ? colors.lightBrown : colors.white}
+            inputColor={gender ? colors.lightBrown : colors.gray}
             borderRadius={30}
             onChangeText={value => setGender(value)}
             setSelectedElement={setGender}
+            defaultValue=""
           />
           <View style={styles.checkboxContainer}>
             <BouncyCheckbox
@@ -156,6 +161,7 @@ const SignUpEmail = () => {
               textColor={isFormValid ? colors.white : colors.black}
               borderRadius={30}
               disabled={!isFormValid}
+              onPress={() => navigation.navigate('OtpVerification')}
             />
           </View>
           <View>
@@ -176,7 +182,12 @@ const SignUpEmail = () => {
           </View>
           <View style={styles.bottomMain}>
             <Text style={styles.bottomTextOne}>Already have an Account?</Text>
-            <Text style={styles.bottomTextTwo}>SignIn</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SignIn')}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.bottomTextTwo}>SignIn</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -265,6 +276,7 @@ const styles = StyleSheet.create({
   bottomMain: {
     flexDirection: 'row',
     top: height * 0.06,
+    gap: height * 0.01,
   },
   bottomTextOne: {
     fontFamily: fontFamily.SfProDisplayRegular,
@@ -274,6 +286,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.SfProDisplayBold,
     fontSize: fontSizes.sm,
     color: colors.black,
+    textDecorationLine: 'underline',
   },
   inputMain: {
     alignItems: 'center',

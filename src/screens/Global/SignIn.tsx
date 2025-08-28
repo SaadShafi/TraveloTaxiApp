@@ -1,3 +1,4 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import {
   Image,
@@ -12,11 +13,14 @@ import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
+import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-const SignIn = () => {
+type Props = NativeStackScreenProps<StackParamList, 'SignIn'>;
+
+const SignIn: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dismissKeyboard = () => {
@@ -62,6 +66,7 @@ const SignIn = () => {
             textColor={colors.white}
             borderRadius={30}
             disabled={!isFormValid}
+            onPress={() => navigation.navigate('PaymentUser')}
           />
           <View style={{ paddingVertical: height * 0.03 }}>
             <Image source={images.orLine} style={styles.orLine} />
@@ -76,8 +81,13 @@ const SignIn = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.bottomMain}>
-          <Text style={styles.bottomTextOne}>Already have an Account?</Text>
-          <Text style={styles.bottomTextTwo}>SignIn</Text>
+          <Text style={styles.bottomTextOne}>Don't have an Account?</Text>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate('SignUpEmail')}
+          >
+            <Text style={styles.bottomTextTwo}>SignUp</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -125,6 +135,7 @@ const styles = StyleSheet.create({
   bottomMain: {
     flexDirection: 'row',
     top: height * 0.16,
+    gap: width * 0.01,
   },
   bottomTextOne: {
     fontFamily: fontFamily.SfProDisplayRegular,
@@ -134,6 +145,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.SfProDisplayBold,
     fontSize: fontSizes.sm,
     color: colors.black,
+    textDecorationLine: 'underline',
   },
 });
 

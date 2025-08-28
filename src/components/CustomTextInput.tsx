@@ -68,7 +68,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           borderRadius,
           // backgroundColor,
           borderColor: isActive ? colors.brown : colors.gray,
-          backgroundColor: isActive ? colors.lightBrown : colors.white,
+          backgroundColor: isActive ? colors.lightBrown : colors.gray,
         },
       ]}
     >

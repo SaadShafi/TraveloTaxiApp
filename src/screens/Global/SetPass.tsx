@@ -1,14 +1,18 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { fontFamily } from '../../assets/Fonts';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
 import TopHeader from '../../components/Topheader';
+import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-const setPassword = () => {
+type Props = NativeStackScreenProps<StackParamList, 'SetPassword'>;
+
+const setPassword: React.FC<Props> = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
 
@@ -16,7 +20,7 @@ const setPassword = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <TopHeader text="SetPassword" isBack={true} />
+      <TopHeader text="SetPassword" isBack={true} navigation={navigation} />
       <View style={styles.inputMain}>
         <Text style={styles.setPass}>Set Your Password</Text>
         <CustomTextInput
@@ -57,11 +61,7 @@ const setPassword = () => {
           backgroundColor={isFormValid ? colors.brown : colors.black}
           textColor={colors.white}
           borderRadius={30}
-          onPress={() => {
-            if (isFormValid) {
-              console.log('Register pressed with', password, rePassword);
-            }
-          }}
+          onPress={() => navigation.navigate('CreateProfile')}
           disabled={!isFormValid}
         />
       </View>

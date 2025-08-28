@@ -1,3 +1,4 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import {
   Image,
@@ -11,11 +12,14 @@ import {
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
+import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-const WelcomeSec = () => {
+type Props = NativeStackScreenProps<StackParamList, 'WelcomeSec'>;
+
+const WelcomeSec: React.FC<Props> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(true);
   const [modalVisibleSec, setModalVisibleSec] = useState(false);
 
@@ -26,6 +30,11 @@ const WelcomeSec = () => {
   const handleSkip = () => {
     setModalVisible(false);
     setModalVisibleSec(true);
+  };
+
+  const handleNavigation = () => {
+    setModalVisibleSec(false);
+    navigation.navigate('WelcomeFourth');
   };
   return (
     <ImageBackground source={images.simpleBg} style={styles.bgImg}>
@@ -92,6 +101,7 @@ const WelcomeSec = () => {
                   backgroundColor={colors.brown}
                   textColor={colors.white}
                   borderRadius={30}
+                  onPress={handleNavigation}
                 />
                 <CustomButton
                   btnHeight={height * 0.06}
