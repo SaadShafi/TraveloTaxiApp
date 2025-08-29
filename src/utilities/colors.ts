@@ -6,4 +6,9 @@ export const colors: { [key: string]: string } = {
   brown: '#950706',
   lightBrown: '#d49b9b',
   darkGray: '##8D8D8D',
+  lightGray: '#F4F4F4',
+  lightMarhoon:'#BD0706',
+  jetBlack:'#0A0A0E',
+  mediumGray:'#E6E6E6',
+
 };

@@ -24,6 +24,7 @@ type NavigationProp = NativeStackNavigationProp<
 
 interface TopHeaderProps {
   text?: string;
+  title?: string;
   transparent?: boolean;
   isBack?: boolean;
   steps?: string;
@@ -48,10 +49,14 @@ interface TopHeaderProps {
   skip?: boolean;
   list?: boolean;
   navigation: NavigationProp;
-}
+  backIcon?: boolean;
+};
+
 
 const TopHeader: React.FC<TopHeaderProps> = ({
   text,
+  title,
+  backIcon,
   transparent = false,
   isBack = false,
   steps,
