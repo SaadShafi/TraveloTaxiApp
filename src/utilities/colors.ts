@@ -1,6 +1,7 @@
 export const colors: { [key: string]: string } = {
   white: '#FFFFFF',
   black: '#000000',
+  shadeBlack: '#0A0A0E',
   transparent: 'rgba(0,0,0,0)',
   gray: '#D9D9D9',
   brown: '#950706',
@@ -11,4 +12,7 @@ export const colors: { [key: string]: string } = {
   jetBlack:'#0A0A0E',
   mediumGray:'#E6E6E6',
 
+  darkGray: '#8D8D8D',
+  lightGray: '#DEDEDE',
+  whiteShade: '#FAFAFA',
 };
