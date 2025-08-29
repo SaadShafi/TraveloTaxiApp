@@ -1,14 +1,19 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import Congratulation from '../screens/Global/Congratulation';
-import CreateProfile from '../screens/Global/CreateProfile';
-import OtpVerification from '../screens/Global/OtpVerification';
-import SetPassword from '../screens/Global/SetPass';
-import SignIn from '../screens/Global/SignIn';
-import SignUpEmail from '../screens/Global/SignUpEmail';
-import WelcomeFirst from '../screens/Global/WelcomeFirst';
-import WelcomeFourth from '../screens/Global/WelcomeFourth';
-import WelcomeSec from '../screens/Global/WelcomeSec';
+import Congratulation from '../screens/Auth/Congratulation';
+import CreateProfile from '../screens/Auth/CreateProfile';
+import OtpVerification from '../screens/Auth/OtpVerification';
+import SetPassword from '../screens/Auth/SetPass';
+import SignIn from '../screens/Auth/SignIn';
+import SignUpEmail from '../screens/Auth/SignUpEmail';
+import WelcomeFirst from '../screens/Auth/WelcomeFirst';
+import WelcomeFourth from '../screens/Auth/WelcomeFourth';
+import WelcomeSec from '../screens/Auth/WelcomeSec';
+import AboutUs from '../screens/Global/AboutUs';
+import ChangePassWord from '../screens/Global/changePassword';
+import ContactUs from '../screens/Global/ContactUs';
+import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
+import Setting from '../screens/Global/Setting';
 import PaymentUser from '../screens/User/payment';
 
 export type StackParamList = {
@@ -22,6 +27,11 @@ export type StackParamList = {
   Congratulation: undefined;
   CreateProfile: undefined;
   PaymentUser: undefined;
+  Setting: undefined;
+  ChangePass: undefined;
+  AboutUs: undefined;
+  PrivacyPolicy: undefined;
+  ContactUs: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -42,6 +52,11 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="Congratulation" component={Congratulation} />
       <Stack.Screen name="CreateProfile" component={CreateProfile} />
       <Stack.Screen name="PaymentUser" component={PaymentUser} />
+      <Stack.Screen name="Setting" component={Setting} />
+      <Stack.Screen name="ChangePass" component={ChangePassWord} />
+      <Stack.Screen name="AboutUs" component={AboutUs} />
+      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+      <Stack.Screen name="ContactUs" component={ContactUs} />
     </Stack.Navigator>
   );
 };

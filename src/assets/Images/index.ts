@@ -20,6 +20,14 @@ const images: { [key: string]: ImageSourcePropType } = {
   profile: require('../Images/profile.png'),
   secIcon: require('../Images/SecIcon.png'),
   drawerIcon: require('../Images/drawerIcon.png'),
+  visa: require('../Images/visa.png'),
+  masterCard: require('../Images/masterCard.png'),
+  greaterIcon: require('../Images/greaterIcon.png'),
+  phone: require('../Images/phone.png'),
+  email: require('../Images/email.png'),
+  facebook: require('../Images/facebook.png'),
+  instagram: require('../Images/instagram.png'),
+  twitter: require('../Images/twitter.png'),
 };
 
 export default images;
