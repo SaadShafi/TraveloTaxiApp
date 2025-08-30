@@ -8,4 +8,5 @@ import { name as appName } from './app.json';
 import RideDetails from './src/screens/Driver/RideDetails';
 import BankDetails from './src/screens/Driver/BankDetails';
 import NotificationScreen from './src/screens/Global/Notification'
-AppRegistry.registerComponent(appName, () => NotificationScreen);
+import DeleteAccount from './src/screens/Global/DeleteAccount.tsx'
+AppRegistry.registerComponent(appName, () => DeleteAccount);
