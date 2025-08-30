@@ -4,5 +4,6 @@
 
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
-import DriverHome from './src/screens/Driver/Home';
-AppRegistry.registerComponent(appName, () => DriverHome);
+import ChatMain from './src/screens/Global/Chat';
+
+AppRegistry.registerComponent(appName, () => ChatMain);

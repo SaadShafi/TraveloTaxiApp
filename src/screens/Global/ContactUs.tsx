@@ -8,7 +8,7 @@ import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-type Props = NativeStackScreenProps<StackParamList, 'Setting'>;
+type Props = NativeStackScreenProps<StackParamList, 'ContactUs'>;
 
 const ContactUs: React.FC<Props> = ({ navigation }) => {
   return (
