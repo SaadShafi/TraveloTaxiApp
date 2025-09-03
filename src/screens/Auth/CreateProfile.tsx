@@ -78,6 +78,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             inputHeight={height * 0.06}
             value={name}
             onChangeText={setName}
+            backgroundColor={colors.gray}
           />
 
           <View
@@ -87,7 +88,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
                 borderColor:
                   isPhoneFocused || phone ? colors.brown : colors.gray,
                 backgroundColor:
-                  isPhoneFocused || phone ? colors.lightBrown : colors.whie,
+                  isPhoneFocused || phone ? colors.lightBrown : colors.gray,
               },
             ]}
           >
@@ -113,6 +114,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             inputHeight={height * 0.06}
             value={email}
             onChangeText={setEmail}
+            backgroundColor={colors.gray}
           />
           <CustomTextInput
             placeholder="*Street"
@@ -123,6 +125,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             inputHeight={height * 0.06}
             value={street}
             onChangeText={setStreet}
+            backgroundColor={colors.gray}
           />
           <CustomSelect
             inputWidth={width * 0.85}
@@ -130,7 +133,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             selectElements={cityOptions}
             borderColor={city ? colors.brown : colors.gray}
             borderWidth={1}
-            inputColor={city ? colors.lightBrown : colors.white}
+            inputColor={city ? colors.lightBrown : colors.gray}
             borderRadius={30}
             onChangeText={value => setCity(value)}
             setSelectedElement={setCity}
@@ -142,7 +145,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             selectElements={genderOptions}
             borderColor={gender ? colors.brown : colors.gray}
             borderWidth={1}
-            inputColor={gender ? colors.lightBrown : colors.white}
+            inputColor={gender ? colors.lightBrown : colors.gray}
             borderRadius={30}
             onChangeText={value => setGender(value)}
             setSelectedElement={setGender}

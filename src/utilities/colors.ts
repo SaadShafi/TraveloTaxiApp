@@ -8,11 +8,8 @@ export const colors: { [key: string]: string } = {
   lightBrown: '#d49b9b',
   darkGray: '##8D8D8D',
   lightGray: '#F4F4F4',
-  lightMarhoon:'#BD0706',
-  jetBlack:'#0A0A0E',
-  mediumGray:'#E6E6E6',
-
-  darkGray: '#8D8D8D',
-  lightGray: '#DEDEDE',
+  lightMarhoon: '#BD0706',
+  jetBlack: '#0A0A0E',
+  mediumGray: '#E6E6E6',
   whiteShade: '#FAFAFA',
 };
