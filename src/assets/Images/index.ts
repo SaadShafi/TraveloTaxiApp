@@ -28,6 +28,8 @@ const images: { [key: string]: ImageSourcePropType } = {
   facebook: require('../Images/facebook.png'),
   instagram: require('../Images/instagram.png'),
   twitter: require('../Images/twitter.png'),
+  User: require('../Images/User.png'),
+  Location: require('../Images/Location.png')
 };
 
 export default images;
