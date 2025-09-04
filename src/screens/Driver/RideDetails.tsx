@@ -24,7 +24,7 @@ const RideDetails = () => {
 
       <View style={styles.subContainer}>
         <View style={styles.Precontainer}>
-          <Text style={styles.booking}>Pre-Booking</Text>
+          <Text style={styles.booking}>Book Now</Text>
         </View>
         <Image
         source={images.User}
@@ -32,7 +32,7 @@ const RideDetails = () => {
         />
 
         <View style={styles.user}>
-          <Text style={styles.userName}>User Name:</Text>
+          <Text style={styles.userName}>Passenger Name:</Text>
           <Text style={styles.adam}>Adam James</Text>
         </View>
 

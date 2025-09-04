@@ -31,6 +31,8 @@ const images: { [key: string]: ImageSourcePropType } = {
   sendBtn: require('../Images/sendBtn.png'),
   voice: require('../Images/voice.png'),
   check: require('../Images/check.png'),
+  User: require('../Images/User.png'),
+  Location: require('../Images/Location.png'),
 };
 
 export default images;
