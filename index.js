@@ -4,6 +4,6 @@
 
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
-import ChatMain from './src/screens/Global/Chat';
+import Schedule from './src/screens/User/Schedule';
 
-AppRegistry.registerComponent(appName, () => ChatMain);
+AppRegistry.registerComponent(appName, () => Schedule);
