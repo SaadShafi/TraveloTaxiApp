@@ -6,7 +6,7 @@ export const colors: { [key: string]: string } = {
   gray: '#D9D9D9',
   brown: '#950706',
   lightBrown: '#d49b9b',
-  darkGray: '##8D8D8D',
+  darkGray: '#8D8D8D',
   lightGray: '#F4F4F4',
   lightMarhoon: '#BD0706',
   jetBlack: '#0A0A0E',
