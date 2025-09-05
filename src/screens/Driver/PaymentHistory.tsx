@@ -28,9 +28,34 @@ const PaymentHistory = () => {
             <Text style={styles.adam}>10 Miles Away</Text>
         </View>
 
-        <View style={styles.location}>
 
+    <View style={{flexDirection:'row',}}>
+        <Image
+        source={images.guide}
+        style={styles.guide}
+        />
+         <View style={{gap: height * 0.01}}>
+            <View style={styles.location}>
+            <View style={{flexDirection:'row', gap:width * 0.02, alignItems:'center', left: width * 0.03, top: height* 0.01}}>
+                <Image source={images.Location} style={styles.locImg}/>
+                <Text style={styles.park}>Brooklyn Bridge Park</Text>
+            </View>
         </View>
+
+          <View style={styles.location}>
+            <View style={{flexDirection:'row', gap:width * 0.02, alignItems:'center', left: width * 0.03, top: height* 0.01}}>
+                <Image source={images.Location} style={styles.locImg}/>
+                <Text style={styles.park}>Empire State Building</Text>
+            </View>
+        </View>
+        </View>
+    </View>
+
+        <View style={styles.fareContainer}>
+            <Text style={styles.fare}>Fare:</Text>
+            <Text style={styles.dollar}>$60.00</Text>
+        </View>
+
       </View>
     </View>
   );
@@ -41,7 +66,7 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderColor:'#D4D4D4',
         backgroundColor:'#F4F4F4',
-        height: height * 0.3,
+        height: height * 0.4,
         width: width * 0.92, 
         borderRadius:20,
         alignSelf:'center',
@@ -80,7 +105,54 @@ const styles = StyleSheet.create({
     },
     location:{
         borderWidth:1,
-        borderColor: colors.brown
+        borderColor: colors.brown,
+        borderRadius:10,
+        height: height * 0.05,
+        width: width * 0.75,
+        left: width * 0.11,
+        backgroundColor:colors.white,
+        alignSelf:'center',
+    },
+    locImg:{
+        height: height * 0.027,
+        width: width * 0.05,
+    },
+    park:{
+        color: colors.black,
+        fontFamily: fontFamily.SfProDisplayMedium,
+        fontSize:20,
+    },
+    fareContainer:{
+        backgroundColor: colors.white,
+        borderRadius:10,
+        height: height * 0.08,
+        width: width * 0.85,
+        alignSelf:'center',
+        top:height * 0.04,
+        flexDirection:'row',
+        justifyContent:'space-between',
+    },
+    fare:{
+        fontFamily: fontFamily.SfProDisplaySemiBold,
+        fontSize:25,
+        fontWeight:"500",
+        color: colors.black,
+        width: width * 0.15,
+        alignSelf:"center",
+        left: width * 0.08,
+    },
+    dollar:{
+        fontFamily: fontFamily.SfProDisplaySemiBold,
+        fontSize:25,
+        fontWeight:"800",
+        color: colors.black,
+        width: width * 0.18,
+        alignSelf:"center",
+        right: width * 0.06,
+    },
+    guide:{
+        left: width * 0.06,
+        top: height * 0.02
     }
 });
 
