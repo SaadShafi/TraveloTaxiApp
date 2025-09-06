@@ -7,7 +7,7 @@ import { fontFamily } from '../../assets/Fonts';
 import { useState } from 'react';
 
 const History = () => {
-  const [activeTab, setActiveTab] = useState('Completed');
+  // const [activeTab, setActiveTab] = useState('Completed');
 
   return (
     <View style={{ flex: 1 }}>

@@ -32,6 +32,9 @@ const images: { [key: string]: ImageSourcePropType } = {
   Location: require('../Images/Location.png'),
   guide: require('../Images/guide.png'),
   card: require('../Images/card.png'),
+  clock: require('../Images/clock.png'),
+  pointer: require('../Images/pointer.png'),
+  star: require('../Images/star.png'),
 };
 
 export default images;

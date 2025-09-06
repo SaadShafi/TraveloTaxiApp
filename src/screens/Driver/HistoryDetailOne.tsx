@@ -1,0 +1,232 @@
+import { Image, StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import TopHeader from '../../components/Topheader';
+import { height, width } from '../../utilities';
+import images from '../../assets/Images';
+import { colors } from '../../utilities/colors';
+import { fontFamily } from '../../assets/Fonts';
+import { useState } from 'react';
+import { fontSizes } from '../../utilities/fontsizes';
+
+const HistoryDetailOne = () => {
+  // const [activeTab, setActiveTab] = useState('Completed');
+
+  return (
+    <View style={{ flex: 1 }}>
+      <TopHeader text="Details" isBack={true} />
+      
+      <View style={styles.mainContainer}>
+        <View style={styles.subConatiner}>
+            <Text style={styles.trackID}>Tracking ID: #844872348</Text>
+            <View style={styles.comContainer}>
+                <Text style={styles.comText}>Completed</Text>
+            </View>
+        </View>
+
+        <View style={styles.rideContainer}>
+            <Text style={styles.ride}>Ride Type:</Text>
+            <Text style={styles.preBooking}>Pre Booking</Text>
+        </View>
+
+        <View style={styles.dateContainer}>
+            <Text style={styles.ride}>Date & Time:</Text>
+            <Text style={styles.date}>Aug 20,2025 & 5:30 AM</Text>
+        </View>
+
+        <View style={styles.container}>
+            <View style={{flexDirection:'row',alignItems:'center',gap: width * 0.01,paddingVertical: height * 0.025, left: width * 0.09}}>
+                <Image source={images.clock}/>
+                <View>
+                <Text style={styles.ride}>Duration</Text>
+                <Text style={styles.date}>32 mins</Text>
+                </View>
+            </View>
+            
+            <View style={{flexDirection:'row',alignItems:'center',gap: width * 0.01, left: width * 0.54, bottom: height * 0.07}}>
+                <Image source={images.pointer}/>
+                <View>
+                <Text style={styles.ride}>Distance</Text>
+                <Text style={styles.date}>4.1 km</Text>
+                </View>
+            </View>
+        </View>
+
+        <Image source={images.guide} style={styles.guide}/>
+
+        <View style={{gap: height * 0.01,}}>
+            <View style={styles.location}>   
+            <View style={{flexDirection:'row', gap:width * 0.02, alignItems:'center', left: width * 0.03, top: height* 0.01}}>
+                <Image source={images.Location} style={styles.locImg}/>
+                <Text style={styles.park}>Brooklyn Bridge Park</Text>
+            </View>
+        </View>
+
+        <View style={styles.location}>
+            <View style={{flexDirection:'row', gap:width * 0.02, alignItems:'center', left: width * 0.03, top: height* 0.01}}>
+                <Image source={images.Location} style={styles.locImg}/>
+                <Text style={styles.park}>Empire State Building</Text>
+            </View>
+        </View>
+        </View>
+
+        <View style={{top: height * 0.03, gap: height * 0.01, left: width * 0.04}}>
+            <Text style={styles.ride}>Ratings</Text>
+            <Image source={images.star}/>
+        </View>
+
+        <Text style={styles.feed}>Feedback</Text>
+        <View style={styles.feedContainer}>
+        </View>
+
+        <Text style={styles.pay}>Payments</Text>
+        <View style={{top: height * 0.08, paddingHorizontal: width * 0.05}}>
+            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+            <Text style={styles.textOne}>Fare:</Text>
+            <Text style={styles.textOne}>$50</Text>
+        </View>
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+            <Text style={styles.textOne}>Tip:</Text>
+            <Text style={styles.textOne}>$10</Text>
+        </View>
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+            <Text style={styles.textOne}>Total:</Text>
+            <Text style={styles.textOne}>$60</Text>
+        </View>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+
+    mainContainer:{
+        borderWidth:1,
+        borderColor:colors.border,
+        borderRadius:20,
+        alignSelf:'center',
+        backgroundColor:colors.lightGray,
+        height: height * 0.85,
+        width: width * 0.9,
+        top: height * 0.012,
+    },
+    subConatiner:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        width: width * 0.9,
+        paddingVertical: width * 0.08,
+        paddingHorizontal: height * 0.02
+    },
+    comContainer:{
+        borderRadius:20,
+        backgroundColor: "rgba(30, 140, 54, 0.2)",
+        height: height * 0.03,
+        width: width * 0.23,
+        justifyContent:"center",
+    },
+    comText:{
+        color:colors.darkGreen,
+        fontFamily:fontFamily.SfProDisplayMedium,
+        fontWeight:"500",
+        fontSize:16,
+        alignSelf:'center',
+    },
+    trackID:{
+        color:colors.black,
+        fontFamily:fontFamily.SfProDisplayMedium,
+        fontWeight:"700",
+        fontSize:16,
+    },
+    ride:{
+        color:colors.black,
+        fontFamily:fontFamily.SfProDisplayMedium,
+        fontSize:17,
+        fontWeight:"700",
+    },
+    preBooking:{
+        color:colors.black,
+        fontFamily:fontFamily.SfProDisplayMedium,
+        fontSize:17,
+    },
+    date:{
+        color:colors.black,
+        fontFamily:fontFamily.SfProDisplayMedium,
+        fontSize:17,
+    },
+    rideContainer:{
+        flexDirection:'row',
+        justifyContent:"space-between",
+        width: width * 0.9,
+        paddingHorizontal: width * 0.05,
+    },
+    dateContainer:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        width: width * 0.9,
+        paddingHorizontal: width * 0.05,
+        top: height * 0.01,
+    },
+    container:{
+        backgroundColor:colors.white,
+        height: height * 0.1,
+        width: width * 0.85,
+        borderRadius:20,
+        alignSelf:'center',
+        top: height * 0.05,
+    },
+      location:{
+        borderWidth:1,
+        borderColor: colors.brown,
+        borderRadius:10,
+        height: height * 0.05,
+        width: width * 0.75,
+        left: width * 0.045,
+        backgroundColor:colors.white,
+        alignSelf:'center',
+        top: height * 0.01,
+    },
+     locImg:{
+        height: height * 0.027,
+        width: width * 0.05,
+    },
+    park:{
+        color: colors.black,
+        fontFamily: fontFamily.SfProDisplayMedium,
+        fontSize:20,
+    },
+    guide:{
+       top: height * 0.1,
+       left: width * 0.04 
+    },
+    feedContainer:{
+        backgroundColor:colors.white,
+        borderRadius:20,
+        height: height * 0.1,
+        width: width * 0.85,
+        alignSelf:"center",
+        top: height * 0.06,
+    },
+    feed:{
+        color:colors.black,
+        fontFamily:fontFamily.SfProDisplayMedium,
+        fontSize:17,
+        fontWeight:"700",
+        top: height * 0.05,
+        paddingHorizontal: width * 0.05
+    },
+    pay:{
+        color:colors.black,
+        fontFamily:fontFamily.SfProDisplayMedium,
+        fontSize:18,
+        fontWeight:"700",
+        paddingHorizontal: width * 0.05,
+        top: height * 0.07,
+    },
+    textOne: {
+        fontFamily: fontFamily.SfProDisplayMedium,
+        fontSize: fontSizes.sm2,
+         color: colors.black
+    }
+});
+
+export default HistoryDetailOne;
+

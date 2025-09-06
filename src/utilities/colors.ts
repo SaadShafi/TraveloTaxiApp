@@ -12,4 +12,7 @@ export const colors: { [key: string]: string } = {
   jetBlack:'#0A0A0E',
   mediumGray:'#E6E6E6',
   whiteShade: '#FAFAFA',
+  border:'#D4D4D4',
+  lighGreen:'#1E8C36',
+  darkGreen:'#1E8C36'
 };

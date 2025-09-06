@@ -10,5 +10,6 @@ import RideDetails from './src/screens/Driver/RideDetails.tsx'
 import PaymentHistory from './src/screens/Driver/PaymentHistory.tsx'
 import Wallet from './src/screens/Driver/Wallet.tsx'
 import History from './src/screens/Driver/History.tsx'
+import HistoryDetailOne from './src/screens/Driver/HistoryDetailOne.tsx'
 
 AppRegistry.registerComponent(appName, () => History);
