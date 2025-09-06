@@ -63,10 +63,8 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
         {
           height: inputHeight,
           width: inputWidth,
-          // borderColor,
           borderWidth,
           borderRadius,
-          // backgroundColor,
           borderColor: isActive ? colors.brown : colors.gray,
           backgroundColor: isActive ? colors.lightBrown : colors.gray,
         },
@@ -77,7 +75,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
         placeholder={placeholder}
         placeholderTextColor={
           placeholderTextColor ||
-          (backgroundColor === colors.white ? colors.gray : colors.white)
+          (backgroundColor === colors.gray ? colors.black : colors.black)
         }
         multiline={multiline}
         numberOfLines={multiline ? 4 : 1}
@@ -85,7 +83,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           styles.input,
           {
             color:
-              backgroundColor === colors.white ? colors.white : colors.black,
+              backgroundColor === colors.gray ? colors.black : colors.white,
           },
         ]}
         secureTextEntry={isPassword ? showPassword : false}

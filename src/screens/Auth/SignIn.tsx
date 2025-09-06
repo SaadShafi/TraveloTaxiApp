@@ -58,6 +58,13 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
             onChangeText={setPassword}
             isPassword={true}
           />
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.forgotPassMain}
+            onPress={() => navigation.navigate('ForgotPassword')}
+          >
+            <Text style={styles.forgotPass}>Forget Password?</Text>
+          </TouchableOpacity>
           <CustomButton
             btnHeight={height * 0.06}
             btnWidth={width * 0.85}
@@ -146,6 +153,15 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.sm,
     color: colors.black,
     textDecorationLine: 'underline',
+  },
+  forgotPassMain: {
+    alignSelf: 'flex-end',
+    width: width * 0.28,
+    cursor: 'pointer',
+  },
+  forgotPass: {
+    fontFamily: fontFamily.SfProDisplayRegular,
+    fontSize: fontSizes.xsm,
   },
 });
 

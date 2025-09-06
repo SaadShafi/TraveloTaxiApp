@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import Congratulation from '../screens/Auth/Congratulation';
 import CreateProfile from '../screens/Auth/CreateProfile';
+import ForgotPassword from '../screens/Auth/ForgotPasswrd';
 import OtpVerification from '../screens/Auth/OtpVerification';
 import SetPassword from '../screens/Auth/SetPass';
 import SignIn from '../screens/Auth/SignIn';
@@ -32,6 +33,7 @@ export type StackParamList = {
   AboutUs: undefined;
   PrivacyPolicy: undefined;
   ContactUs: undefined;
+  ForgotPassword: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -57,6 +59,7 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="AboutUs" component={AboutUs} />
       <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
       <Stack.Screen name="ContactUs" component={ContactUs} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
     </Stack.Navigator>
   );
 };

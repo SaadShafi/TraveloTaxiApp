@@ -73,18 +73,8 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
             inputHeight={height * 0.06}
             value={name}
             onChangeText={setName}
+            backgroundColor={colors.gray}
           />
-          {/* <View style={styles.phoneRow}>
-            <Image source={images.UK} style={styles.flag} />
-            <Image source={images.line} style={styles.lineImg} />
-            <TextInput
-              style={styles.phoneInput}
-              placeholder="Enter phone number"
-              placeholderTextColor={colors.black}
-              keyboardType="phone-pad"
-            />
-          </View> */}
-
           <View
             style={[
               styles.phoneRow,
@@ -119,6 +109,7 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
             inputHeight={height * 0.06}
             value={email}
             onChangeText={setEmail}
+            backgroundColor={colors.gray}
           />
           <CustomSelect
             inputWidth={width * 0.85}

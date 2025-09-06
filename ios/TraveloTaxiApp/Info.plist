@@ -56,5 +56,7 @@
 		<string>ClashDisplay-Regular.ttf</string>
 		<string>ClashDisplay-Semibold.ttf</string>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+<string>We need microphone access to record audio messages</string>
 </dict>
 </plist>

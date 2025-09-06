@@ -28,13 +28,12 @@ const images: { [key: string]: ImageSourcePropType } = {
   facebook: require('../Images/facebook.png'),
   instagram: require('../Images/instagram.png'),
   twitter: require('../Images/twitter.png'),
+  sendBtn: require('../Images/sendBtn.png'),
+  voice: require('../Images/voice.png'),
+  check: require('../Images/check.png'),
   User: require('../Images/User.png'),
   Location: require('../Images/Location.png'),
-  guide: require('../Images/guide.png'),
   card: require('../Images/card.png'),
-  clock: require('../Images/clock.png'),
-  pointer: require('../Images/pointer.png'),
-  star: require('../Images/star.png'),
 };
 
 export default images;

@@ -4,12 +4,6 @@
 
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
-import ChatMain from './src/screens/Global/Chat';
-import DriverHome from './src/screens/Driver/Home'
-import RideDetails from './src/screens/Driver/RideDetails.tsx'
-import PaymentHistory from './src/screens/Driver/PaymentHistory.tsx'
-import Wallet from './src/screens/Driver/Wallet.tsx'
-import History from './src/screens/Driver/History.tsx'
-import HistoryDetailOne from './src/screens/Driver/HistoryDetailOne.tsx'
+import AddPaymentMethod from './src/screens/User/AddPaymentUser';
 
-AppRegistry.registerComponent(appName, () => History);
+AppRegistry.registerComponent(appName, () => PaymentHistory);
