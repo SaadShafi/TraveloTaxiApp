@@ -11,6 +11,7 @@ import images from '../../assets/Images';
 import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
+import { fontSizes } from '../../utilities/fontsizes';
 
 interface tipsProp {
   image?: any;
@@ -84,7 +85,7 @@ const Schedule = () => {
             style={{
               width: width * 0.83,
               paddingHorizontal: width * 0.03,
-              gap: height * 0.01,
+              gap: -1,
             }}
           >
             <View
@@ -93,14 +94,14 @@ const Schedule = () => {
                 justifyContent: 'space-between',
               }}
             >
-              <Text>{item.text1}</Text>
-              <Text>{item.text2}</Text>
+              <Text style={styles.textOne}>{item.text1}</Text>
+              <Text style={styles.textTwo}>{item.text2}</Text>
             </View>
             <View
               style={{ flexDirection: 'row', justifyContent: 'space-between' }}
             >
-              <Text>{item.text3}</Text>
-              <Text>{item.text4}</Text>
+              <Text style={styles.textOne}>{item.text3}</Text>
+              <Text style={styles.textTwo}>{item.text4}</Text>
             </View>
           </View>
         </View>
@@ -158,6 +159,17 @@ const styles = StyleSheet.create({
   detailText: {
     textAlign: 'center',
     fontFamily: fontFamily.SfProDisplayRegular,
+    top: 2,
+  },
+  textOne: {
+    fontFamily: fontFamily.SfProDisplayMedium,
+    fontSize: fontSizes.xsm,
+    color: colors.black,
+  },
+  textTwo: {
+    fontFamily: fontFamily.SfProDisplayRegular,
+    fontSize: fontSizes.xsm,
+    color: colors.black,
   },
 });
 

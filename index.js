@@ -4,6 +4,6 @@
 
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
-import Schedule from './src/screens/User/Schedule';
+import AddPaymentMethod from './src/screens/User/AddPaymentUser';
 
-AppRegistry.registerComponent(appName, () => Schedule);
+AppRegistry.registerComponent(appName, () => AddPaymentMethod);

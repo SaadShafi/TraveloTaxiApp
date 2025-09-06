@@ -12,4 +12,6 @@ export const colors: { [key: string]: string } = {
   jetBlack: '#0A0A0E',
   mediumGray: '#E6E6E6',
   whiteShade: '#FAFAFA',
+  yellow: '#FFC107',
+  lightYellow: '#f7e4a9ff',
 };

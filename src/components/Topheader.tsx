@@ -48,10 +48,9 @@ interface TopHeaderProps {
   msgIcon?: boolean;
   skip?: boolean;
   list?: boolean;
-  navigation: NavigationProp;
+  navigation?: NavigationProp;
   backIcon?: boolean;
-};
-
+}
 
 const TopHeader: React.FC<TopHeaderProps> = ({
   text,
