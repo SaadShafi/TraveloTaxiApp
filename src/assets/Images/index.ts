@@ -34,6 +34,9 @@ const images: { [key: string]: ImageSourcePropType } = {
   User: require('../Images/User.png'),
   Location: require('../Images/Location.png'),
   card: require('../Images/card.png'),
+  guide: require('../Images/guide.png'),
+  cross: require('../Images/cross.png'),
+  arrow: require('../Images/arrow.png')
 };
 
 export default images;

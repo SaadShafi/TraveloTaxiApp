@@ -30,7 +30,7 @@ const AddPaymentMethod = () => {
     Keyboard.dismiss();
   };
 
-  const isFormValid = name.length > 4 && number.length;
+  const isFormValid = agree
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
