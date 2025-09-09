@@ -23,7 +23,7 @@ type Props = NativeStackScreenProps<StackParamList, 'SetPassword'>;
 const setPassword: React.FC<Props> = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const isFormValid = password.length > 0 && rePassword.length > 0;
 

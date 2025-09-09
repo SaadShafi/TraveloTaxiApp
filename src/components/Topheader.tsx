@@ -1,3 +1,4 @@
+import { DrawerActions } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
@@ -48,7 +49,7 @@ interface TopHeaderProps {
   msgIcon?: boolean;
   skip?: boolean;
   list?: boolean;
-  navigation?: NavigationProp;
+  navigation: NavigationProp;
   backIcon?: boolean;
 }
 
@@ -116,7 +117,9 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   };
 
   const handleDrawer = () => {
-    // navigation.dispatch(DrawerActions.openDrawer());
+    if (navigation) {
+      navigation.dispatch(DrawerActions.openDrawer());
+    }
   };
 
   const handlePress = () => {

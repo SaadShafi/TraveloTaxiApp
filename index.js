@@ -4,6 +4,6 @@
 
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
-import AddPaymentMethod from './src/screens/User/AddPaymentUser';
+import HomeUser from './src/screens/User/HomeUser';
 
-AppRegistry.registerComponent(appName, () => PaymentHistory);
+AppRegistry.registerComponent(appName, () => HomeUser);
