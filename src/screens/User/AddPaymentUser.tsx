@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   Image,
   Keyboard,
+  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -25,12 +26,33 @@ const AddPaymentMethod = () => {
   const [cvc, setCvc] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
   const [agree, setAgree] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
 
-  const isFormValid = agree
+  const validateDate = (value: string | null) => {
+    if (!value) return false;
+
+    const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    if (!regex.test(value)) return false;
+
+    const [month, year] = value.split('/').map(Number);
+    const currentYear = new Date().getFullYear() % 100;
+    const currentMonth = new Date().getMonth() + 1;
+
+    if (year < currentYear) return false;
+    if (year === currentYear && month < currentMonth) return false;
+
+    return true;
+  };
+
+  const isFormValid = agree;
+
+  const toggleModal = () => {
+    setModalVisible(prev => !prev);
+  };
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -158,6 +180,7 @@ const AddPaymentMethod = () => {
               textColor={isFormValid ? colors.white : colors.white}
               borderRadius={30}
               disabled={!isFormValid}
+              onPress={toggleModal}
             />
             <CustomButton
               btnHeight={height * 0.06}
@@ -169,6 +192,39 @@ const AddPaymentMethod = () => {
             />
           </View>
         </View>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Image source={images.cash} style={styles.cashImg} />
+              <Text style={styles.successText}>Add Success</Text>
+              <View
+                style={{
+                  alignItems: 'center',
+                  paddingVertical: height * 0.015,
+                }}
+              >
+                <Text style={styles.paraText}>Your Money has been Added</Text>
+                <Text style={styles.paraText}>Successfully</Text>
+              </View>
+              <View style={{ paddingVertical: height * 0.013 }}>
+                <CustomButton
+                  btnHeight={height * 0.055}
+                  btnWidth={width * 0.7}
+                  text="Back Home"
+                  backgroundColor={colors.brown}
+                  textColor={colors.white}
+                  borderRadius={30}
+                  onPress={() => setModalVisible(false)}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -234,6 +290,37 @@ const styles = StyleSheet.create({
   btnMain: {
     gap: height * 0.01,
     top: height * 0.2,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    width: width * 0.83,
+    alignItems: 'center',
+    borderWidth: 0.3,
+    borderColor: colors.gray,
+    padding: 20,
+  },
+  cashImg: {
+    width: width * 0.3,
+    height: height * 0.1,
+    resizeMode: 'contain',
+  },
+  successText: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    color: colors.black,
+    fontSize: fontSizes.md,
+  },
+  paraText: {
+    fontFamily: fontFamily.ClashDisplayRegular,
+    color: colors.black,
+    fontSize: fontSizes.sm,
   },
 });
 

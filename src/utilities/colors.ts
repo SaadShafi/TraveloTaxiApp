@@ -15,4 +15,6 @@ export const colors: { [key: string]: string } = {
   yellow: '#FFC107',
   lightYellow: '#f7e4a9ff',
   border:'#D4D4D4',
+  lightGreen: 'rgba(30,140,54,0.2)',
+  green: '#1E8C36',
 };
