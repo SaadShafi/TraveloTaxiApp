@@ -1,7 +1,6 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { fontFamily } from '../../assets/Fonts';
-import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
 import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
@@ -12,15 +11,15 @@ type Props = NativeStackScreenProps<StackParamList, 'WelcomeFourth'>;
 
 const WelcomeFourth: React.FC<Props> = ({ navigation }) => {
   return (
-    <ImageBackground source={images.background} style={styles.bgImg}>
+    <View style={{ flex: 1, backgroundColor: colors.lightGray }}>
+      {/* <ImageBackground source={images.background} style={styles.bgImg}> */}
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome</Text>
         <View style={styles.paraMain}>
           <Text style={styles.paraText}>
             Lorem ipsum dolor sit amet, consectetur
           </Text>
-          <Text style={styles.paraText}>adipiscing elit, sed do</Text>
-          <Text style={styles.paraText}>eiusmod.</Text>
+          <Text style={styles.paraText}>adipiscing elit, sed do eiusmod.</Text>
         </View>
         <View style={styles.btnMain}>
           <CustomButton
@@ -36,14 +35,15 @@ const WelcomeFourth: React.FC<Props> = ({ navigation }) => {
             text="Sign In"
             btnWidth={width * 0.85}
             btnHeight={height * 0.067}
-            backgroundColor={colors.white}
+            backgroundColor={colors.gray}
             textColor={colors.black}
             borderRadius={30}
             onPress={() => navigation.navigate('SignIn')}
           />
         </View>
       </View>
-    </ImageBackground>
+      {/* </ImageBackground> */}
+    </View>
   );
 };
 const styles = StyleSheet.create({
@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: height * 0.6,
+    marginTop: height * 0.7,
   },
   welcome: {
-    fontFamily: fontFamily.ClashDisplayBold,
-    color: colors.white,
+    fontFamily: fontFamily.ClashDisplayMedium,
+    color: colors.black,
     fontSize: fontSizes.lg2,
   },
   paraMain: {
@@ -69,11 +69,11 @@ const styles = StyleSheet.create({
   },
   paraText: {
     fontFamily: fontFamily.ClashDisplayLight,
-    color: colors.gray,
+    color: colors.darkGray,
     fontSize: fontSizes.sm2,
   },
   btnMain: {
-    marginTop: height * 0.03,
+    marginTop: height * 0.04,
     gap: height * 0.02,
   },
 });

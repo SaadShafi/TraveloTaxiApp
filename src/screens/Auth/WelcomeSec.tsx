@@ -2,17 +2,18 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import {
   Image,
-  ImageBackground,
   Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
 import type { StackParamList } from '../../navigation/AuthStack';
+import { setRole } from '../../redux/slice/roleSlice';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
@@ -20,6 +21,7 @@ import { fontSizes } from '../../utilities/fontsizes';
 type Props = NativeStackScreenProps<StackParamList, 'WelcomeSec'>;
 
 const WelcomeSec: React.FC<Props> = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(true);
   const [modalVisibleSec, setModalVisibleSec] = useState(false);
 
@@ -36,14 +38,22 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
     setModalVisibleSec(false);
     navigation.navigate('WelcomeFourth');
   };
+
+  const handleRoleSelect = (role: string) => {
+    dispatch(setRole(role));
+    navigation.navigate('WelcomeFourth');
+    console.log('Role Selection:', role);
+  };
+
   return (
-    <ImageBackground source={images.simpleBg} style={styles.bgImg}>
-      <View style={styles.logoMain}>
+    <View style={{ flex: 1 }}>
+      {/* <ImageBackground source={images.simpleBg} style={styles.bgImg}> */}
+      {/* <View style={styles.logoMain}>
         <Image source={images.logo} style={styles.logo} />
       </View>
       <View style={styles.vectormain}>
         <Image source={images.Vector} style={styles.vectorimg} />
-      </View>
+      </View> */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -74,6 +84,7 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
               backgroundColor={colors.brown}
               textColor={colors.white}
               borderRadius={30}
+              onPress={handleSkip}
             />
 
             <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
@@ -94,14 +105,15 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
             <View style={styles.contentMain}>
               <Text style={styles.selectText}>Select One</Text>
               <View style={styles.btnMain}>
-                <CustomButton
+                {/* <CustomButton
                   btnHeight={height * 0.06}
                   btnWidth={width * 0.7}
                   text="User"
                   backgroundColor={colors.brown}
                   textColor={colors.white}
                   borderRadius={30}
-                  onPress={handleNavigation}
+                  // onPress={handleNavigation}
+                  onPress={() => handleRoleSelect('user')}
                 />
                 <CustomButton
                   btnHeight={height * 0.06}
@@ -110,13 +122,27 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
                   backgroundColor={colors.brown}
                   textColor={colors.white}
                   borderRadius={30}
-                />
+                  onPress={() => handleRoleSelect('driver')}
+                /> */}
+                <TouchableOpacity
+                  style={styles.btn}
+                  activeOpacity={0.7}
+                  onPress={handleNavigation}
+                >
+                  <Image source={images.logoCustomer} />
+                  <Text style={styles.btnText}>Travelo Customer</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+                  <Image source={images.logoDriver} />
+                  <Text style={styles.btnText}>Travelo Driver</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
         </View>
       </Modal>
-    </ImageBackground>
+      {/* </ImageBackground> */}
+    </View>
   );
 };
 
@@ -150,24 +176,24 @@ const styles = StyleSheet.create({
 
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(255, 252, 252, 0.9)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
   modalContent: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.white,
     borderRadius: 16,
     width: width * 0.83,
     alignItems: 'center',
-    borderWidth: 0.3,
-    borderColor: colors.gray,
+    borderWidth: 0.9,
+    borderColor: colors.black,
   },
   modalTitleOne: {
     fontFamily: fontFamily.ClashDisplaySemiBold,
     fontSize: fontSizes.lg2,
     textAlign: 'center',
-    color: colors.white,
+    color: colors.brown,
   },
   modalTitleTwo: {
     fontFamily: fontFamily.ClashDisplaySemiBold,
@@ -181,7 +207,7 @@ const styles = StyleSheet.create({
   modalDescription: {
     fontFamily: fontFamily.SfProDisplayRegular,
     textAlign: 'center',
-    color: colors.white,
+    color: colors.darkGray,
     lineHeight: height * 0.03,
   },
   skipButton: {
@@ -190,7 +216,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   skipButtonText: {
-    color: '#666',
+    color: colors.brown,
     textAlign: 'center',
     fontWeight: '500',
     fontSize: 16,
@@ -202,11 +228,28 @@ const styles = StyleSheet.create({
   selectText: {
     fontFamily: fontFamily.ClashDisplayRegular,
     fontSize: fontSizes.lg2,
-    color: colors.white,
+    color: colors.black,
   },
   btnMain: {
     gap: height * 0.02,
     top: height * 0.014,
+    paddingVertical: height * 0.02,
+  },
+  btn: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderRadius: 50,
+    borderColor: colors.black,
+    backgroundColor: colors.lightGray,
+    alignItems: 'center',
+    width: width * 0.7,
+    paddingHorizontal: width * 0.09,
+  },
+  btnText: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.sm,
+    color: colors.black,
   },
 });
 

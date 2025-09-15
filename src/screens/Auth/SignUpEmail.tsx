@@ -90,7 +90,7 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
             <Image source={images.line} style={styles.lineImg} />
             <TextInput
               style={styles.phoneInput}
-              placeholder="Enter phone number"
+              placeholder="+1"
               placeholderTextColor={colors.black}
               keyboardType="phone-pad"
               value={phone}
@@ -123,25 +123,43 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
             setSelectedElement={setGender}
             defaultValue=""
           />
-          <View style={styles.checkboxContainer}>
-            <BouncyCheckbox
-              size={24}
-              fillColor={colors.brown}
-              unfillColor={colors.white}
-              isChecked={agree}
-              disableBuiltInState
-              iconStyle={{
-                borderColor: colors.brown,
-                borderWidth: 2,
-                borderRadius: 8,
-              }}
-              innerIconStyle={{
-                borderRadius: 8,
-              }}
-              text="By signing up, you agree to the Terms & Conditions and Privacy Policy"
-              textStyle={styles.checkboxText}
-              onPress={() => setAgree(!agree)}
-            />
+          <View style={styles.checkBoxMain}>
+            <View style={styles.checkboxContainer}>
+              <BouncyCheckbox
+                size={24}
+                fillColor={colors.brown}
+                unfillColor={colors.white}
+                isChecked={agree}
+                disableBuiltInState
+                iconStyle={{
+                  borderColor: colors.brown,
+                  borderWidth: 2,
+                  borderRadius: 8,
+                }}
+                innerIconStyle={{
+                  borderRadius: 8,
+                }}
+                // text="By signing up, you agree to the Terms & Conditions and Privacy Policy"
+                // textStyle={styles.checkboxText}
+                onPress={() => setAgree(!agree)}
+              />
+            </View>
+            <View style={styles.checkBoxTextMain}>
+              <View style={{ flexDirection: 'row', gap: height * 0.01 }}>
+                <Text style={styles.signIn}>
+                  By signing up, you agree to the
+                </Text>
+                <TouchableOpacity activeOpacity={0.7}>
+                  <Text style={styles.text}>Terms & Conditions</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flexDirection: 'row', gap: height * 0.01 }}>
+                <Text style={styles.signIn}>and</Text>
+                <TouchableOpacity activeOpacity={0.7}>
+                  <Text style={styles.text}>Privacy Policy</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
           <View style={styles.btnMain}>
             <CustomButton
@@ -226,10 +244,16 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.xm2,
     color: colors.black,
   },
+  checkBoxMain: {
+    flexDirection: 'row',
+    width: width * 0.8,
+  },
   checkboxContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    width: width * 0.82,
+  },
+  checkBoxTextMain: {
+    // flexDirection: 'row',
+    gap: width * 0.01,
   },
   checkboxText: {
     fontSize: fontSizes.xm2,
@@ -287,6 +311,15 @@ const styles = StyleSheet.create({
     height: height * 0.024,
     width: width * 0.01,
     resizeMode: 'contain',
+  },
+  text: {
+    fontFamily: fontFamily.ClshDisplayMedium,
+    color: colors.black,
+    textDecorationLine: 'underline',
+  },
+  signIn: {
+    fontFamily: fontFamily.ClshDisplayRegular,
+    color: colors.darkGray,
   },
 });
 

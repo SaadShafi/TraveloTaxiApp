@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Keyboard,
   StyleSheet,
@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import { OtpInput } from 'react-native-otp-entry';
-import Toast from 'react-native-toast-message';
 import { fontFamily } from '../../assets/Fonts';
 import CustomButton from '../../components/CustomButton';
 import TopHeader from '../../components/Topheader';
@@ -18,9 +17,9 @@ import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-type Props = NativeStackScreenProps<StackParamList, 'OtpVerification'>;
+type Props = NativeStackScreenProps<StackParamList, 'PhoneVerification'>;
 
-const OtpVerification: React.FC<Props> = ({ navigation }) => {
+const PhoneVerification: React.FC<Props> = ({ navigation }) => {
   const [otp, setOtp] = useState('');
 
   const isOtpValid = otp.length === 5;
@@ -29,17 +28,11 @@ const OtpVerification: React.FC<Props> = ({ navigation }) => {
     Keyboard.dismiss();
   };
 
-  useEffect(() => {
-    Toast.show({
-      type: 'custom_otp',
-      position: 'top',
-    });
-  }, []);
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1 }}>
         <TopHeader
-          text="Otp Verification"
+          text="Phone Verification"
           isBack={true}
           navigation={navigation}
         />
@@ -150,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OtpVerification;
+export default PhoneVerification;

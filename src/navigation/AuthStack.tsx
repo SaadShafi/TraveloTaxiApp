@@ -4,6 +4,7 @@ import Congratulation from '../screens/Auth/Congratulation';
 import CreateProfile from '../screens/Auth/CreateProfile';
 import ForgotPassword from '../screens/Auth/ForgotPasswrd';
 import OtpVerification from '../screens/Auth/OtpVerification';
+import PhoneVerification from '../screens/Auth/PhoneVerification';
 import SetPassword from '../screens/Auth/SetPass';
 import SignIn from '../screens/Auth/SignIn';
 import SignUpEmail from '../screens/Auth/SignUpEmail';
@@ -15,6 +16,7 @@ import ChangePassWord from '../screens/Global/changePassword';
 import ContactUs from '../screens/Global/ContactUs';
 import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
 import Setting from '../screens/Global/Setting';
+import HomeUser from '../screens/User/HomeUser';
 import PaymentUser from '../screens/User/payment';
 
 export type StackParamList = {
@@ -34,6 +36,8 @@ export type StackParamList = {
   PrivacyPolicy: undefined;
   ContactUs: undefined;
   ForgotPassword: undefined;
+  PhoneVerification: undefined;
+  HomeUser: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -60,6 +64,8 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
       <Stack.Screen name="ContactUs" component={ContactUs} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="PhoneVerification" component={PhoneVerification} />
+      <Stack.Screen name="HomeUser" component={HomeUser} />
     </Stack.Navigator>
   );
 };

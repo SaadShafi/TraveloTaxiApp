@@ -42,7 +42,7 @@ const setPassword: React.FC<Props> = ({ navigation }) => {
       <View style={{ flex: 1 }}>
         <TopHeader text="SetPassword" isBack={true} navigation={navigation} />
         <View style={styles.inputMain}>
-          <Text style={styles.setPass}>Set Your Passwordbbb</Text>
+          <Text style={styles.setPass}>Set Your Password</Text>
           <CustomTextInput
             placeholder="*Enter your Password"
             placeholderTextColor={colors.black}
@@ -79,11 +79,12 @@ const setPassword: React.FC<Props> = ({ navigation }) => {
           <CustomButton
             btnHeight={height * 0.06}
             btnWidth={width * 0.81}
-            text="Confirm"
+            text="Register"
             backgroundColor={isFormValid ? colors.brown : colors.black}
             textColor={colors.white}
             borderRadius={30}
             onPress={toggleModal}
+            // onPress={() => navigation.navigate('CreateProfile')}
             disabled={!isFormValid}
           />
         </View>

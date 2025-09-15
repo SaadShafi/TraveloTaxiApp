@@ -61,7 +61,7 @@ const ForgotPassword: React.FC<Props> = ({ navigation }) => {
               textColor={colors.white}
               borderRadius={30}
               disabled={!isFormValid}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate('PhoneVerification')}
             />
           </View>
         </View>

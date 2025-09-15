@@ -1,9 +1,5 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import {
-  CommonActions,
-  NavigationProp,
-  useNavigation,
-} from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import {
   Image,
@@ -17,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fontFamily } from '../assets/Fonts';
 import images from '../assets/Images';
 import { RootState } from '../redux/store';
+import { height, width } from '../utilities';
 import { colors } from '../utilities/colors';
 import DriverStack from './DriverStack';
 import UserStack from './UserStack';
@@ -53,29 +50,29 @@ const CustomDrawerContent = (props: any) => {
     navigation.navigate('roleSelector');
   };
 
-  const handleHomeNavigation = () => {
-    if (selectedRole === 'user') {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'homeUser' }],
-        }),
-      );
-      setTimeout(() => {
-        props.navigation.closeDrawer();
-      }, 100);
-    } else if (selectedRole === 'freelancer') {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'homeFreelancer' }],
-        }),
-      );
-      setTimeout(() => {
-        props.navigation.closeDrawer();
-      }, 100);
-    }
-  };
+  // const handleHomeNavigation = () => {
+  //   if (selectedRole === 'user') {
+  //     navigation.dispatch(
+  //       CommonActions.reset({
+  //         index: 0,
+  //         routes: [{ name: 'homeUser' }],
+  //       }),
+  //     );
+  //     setTimeout(() => {
+  //       props.navigation.closeDrawer();
+  //     }, 100);
+  //   } else if (selectedRole === 'driver') {
+  //     navigation.dispatch(
+  //       CommonActions.reset({
+  //         index: 0,
+  //         routes: [{ name: 'homeDriver' }],
+  //       }),
+  //     );
+  //     setTimeout(() => {
+  //       props.navigation.closeDrawer();
+  //     }, 100);
+  //   }
+  // };
 
   //   const logoutAcc = async (props) => {
   //     try {
@@ -124,6 +121,18 @@ const CustomDrawerContent = (props: any) => {
   //     }
   //   };
 
+  const handleHomeNavigation = () => {
+    if (selectedRole === 'user') {
+      navigation.navigate('UserStack', { screen: 'homeUser' });
+    } else if (selectedRole === 'driver') {
+      navigation.navigate('DriverStack', { screen: 'homeDriver' });
+    }
+
+    setTimeout(() => {
+      props.navigation.closeDrawer();
+    }, 100);
+  };
+
   const UserDrawerList = [
     { title: 'Home', icon: '🏠' },
     { title: 'History', icon: '🕐' },
@@ -133,7 +142,7 @@ const CustomDrawerContent = (props: any) => {
     { title: 'Settings', icon: '⚙️' },
     { title: 'Help & Support', icon: '❓' },
   ];
-  const FreelancerDrawerList = [
+  const DriverDrawerList = [
     { title: 'Home', icon: '🏠' },
     { title: 'History', icon: '🕐' },
     { title: 'Schedule', icon: '📅' },
@@ -168,51 +177,97 @@ const CustomDrawerContent = (props: any) => {
             <Text style={styles.profileEmail}>info@yourmail.com</Text>
           </View>
         </View>
-
         <View style={styles.menuContainer}>
-          {(selectedRole === 'user'
-            ? UserDrawerList
-            : FreelancerDrawerList
-          ).map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.menuItem}
-              onPress={() => {
-                let routeName = '';
-                switch (item.title) {
-                  case 'Home':
-                    handleHomeNavigation();
-                    return;
-                  case 'History':
-                    routeName = 'history';
-                    break;
-                  case 'Schedule':
-                    routeName = 'schedule';
-                    break;
-                  case 'Wallet':
-                    routeName = 'wallet';
-                    break;
-                  case 'Family Tree':
-                    routeName = 'familyTree';
-                    break;
-                  case 'Settings':
-                    routeName = 'settings';
-                    break;
-                  case 'Help & Support':
-                    routeName = 'helpSupport';
-                    break;
-                  default:
-                    routeName =
-                      selectedRole === 'user' ? 'UserStack' : 'DriverStack';
-                }
-                navigation.navigate(routeName);
-                props.navigation.closeDrawer();
-              }}
-            >
-              <Text style={styles.menuIcon}>{item.icon}</Text>
-              <Text style={styles.menuText}>{item.title}</Text>
-            </TouchableOpacity>
-          ))}
+          {selectedRole === 'user' &&
+            UserDrawerList.map((data, index) => (
+              <View style={styles.menuItemMain} key={index}>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => {
+                    let routeName = '';
+
+                    switch (data.title) {
+                      case 'Home':
+                        handleHomeNavigation();
+                        return;
+                      case 'My Account':
+                        routeName = 'myAccount';
+                        break;
+                      case 'Booking History':
+                        routeName = 'bookingHistory';
+                        break;
+                      case 'Gift Card':
+                        routeName = 'giftCard';
+                        break;
+                      case 'Favourites':
+                        routeName = 'favourite';
+                        break;
+                      case 'Settings':
+                        routeName = 'settings';
+                        break;
+                      default:
+                        routeName = 'UserStack';
+                    }
+                    // navigation.navigate(routeName);
+                    if (selectedRole === 'user') {
+                      navigation.navigate('UserStack', { screen: routeName });
+                    }
+                    props.navigation.closeDrawer();
+                  }}
+                  activeOpacity={0.5}
+                >
+                  <Image source={data.icon} style={styles.menuIcon} />
+                  <Text style={styles.menuText}>{data.title}</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          {selectedRole === 'freelancer' &&
+            DriverDrawerList.map((data, index) => (
+              <View style={styles.menuItemMain} key={index}>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => {
+                    let routeName = '';
+
+                    switch (data.title) {
+                      case 'Home':
+                        handleHomeNavigation();
+                        return;
+                      case 'My Account':
+                        routeName = 'myAccount';
+                        break;
+                      case 'Booking History':
+                        routeName = 'bookingHistory';
+                        break;
+                      case 'Payment History':
+                        routeName = 'paymentHistory';
+                        break;
+                      case 'Settings':
+                        routeName = 'settings';
+                        break;
+                      case 'Rating & Reviews':
+                        routeName = 'rateReview';
+                        break;
+                      case 'Service Statistics':
+                        routeName = 'serviceStatistics';
+                        break;
+                      default:
+                        routeName = 'DriverStack';
+                    }
+
+                    // navigation.navigate(routeName);
+                    if (selectedRole === 'driver') {
+                      navigation.navigate('DriverStack', { screen: routeName });
+                    }
+                    props.navigation.closeDrawer();
+                  }}
+                  activeOpacity={0.5}
+                >
+                  <Image source={data.icon} style={styles.menuIcon} />
+                  <Text style={styles.menuText}>{data.title}</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
         </View>
 
         <View style={styles.logoutSection}>
@@ -259,7 +314,7 @@ const Drawer = () => {
           }}
         />
       )}
-      {selectedRole === 'freelancer' && (
+      {selectedRole === 'driver' && (
         <Drawer.Screen
           name="DriverStack"
           component={DriverStack}
@@ -364,6 +419,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderBottomWidth: 0.5,
     borderBottomColor: 'rgba(0,0,0,0.1)',
+  },
+  menuItemMain: {
+    height: height * 0.06,
+    width: width * 0.65,
+    justifyContent: 'center',
+    borderBottomWidth: 1,
   },
   menuIcon: {
     fontSize: 20,

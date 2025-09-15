@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Image,
-  ImageBackground,
   PanResponder,
   StyleSheet,
   Text,
@@ -140,14 +139,18 @@ const WelcomeFirst: React.FC<Props> = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <ImageBackground source={images.simpleBg} style={styles.bgImg}>
-      <Animated.View style={{ flex: 1, transform: [{ translateX }] }}>
+    <View style={{ flex: 1 }}>
+      {/* <ImageBackground source={images.simpleBg} style={styles.bgImg}> */}
+      {/* <Animated.View style={{ flex: 1, transform: [{ translateX }] }}>
         <View style={styles.logoMain}>
           <Image source={images.logo} style={styles.logo} />
         </View>
-      </Animated.View>
-      <View style={styles.vectormain}>
+      </Animated.View> */}
+      {/* <View style={styles.vectormain}>
         <Image source={images.Vector} style={styles.vectorimg} />
+      </View> */}
+      <View style={styles.logoMain}>
+        <Image source={images.logo} style={styles.logo} />
       </View>
 
       <View style={styles.textContainer}>
@@ -193,7 +196,8 @@ const WelcomeFirst: React.FC<Props> = ({ navigation }) => {
           </Animated.View>
         </View>
       </View>
-    </ImageBackground>
+      {/* </ImageBackground> */}
+    </View>
   );
 };
 
@@ -205,12 +209,13 @@ const styles = StyleSheet.create({
   },
   logoMain: {
     alignItems: 'center',
-    top: height * 0.36,
-    right: width * 0.05,
+    // top: height * 0.36,
+    // right: width * 0.05,
   },
   logo: {
-    width: width * 0.8,
-    height: height * 0.19,
+    width: width * 0.5,
+    height: height * 0.16,
+    resizeMode: 'contain',
   },
   vectorimg: {
     width: width * 1,
@@ -229,7 +234,7 @@ const styles = StyleSheet.create({
     lineHeight: height * -0.09,
   },
   trusted: {
-    color: colors.white,
+    color: colors.black,
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.xxl,
   },
@@ -267,12 +272,11 @@ const styles = StyleSheet.create({
   },
   sliderTrack: {
     height: height * 0.075,
-    borderRadius: 30,
+    borderRadius: 40,
     justifyContent: 'center',
     overflow: 'hidden',
     position: 'relative',
-    // Removed the border property
-    borderWidth: 1,
+    borderWidth: 0.5,
   },
   sliderThumb: {
     position: 'absolute',

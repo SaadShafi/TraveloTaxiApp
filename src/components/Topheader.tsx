@@ -1,5 +1,10 @@
-import { DrawerActions } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+// import { DrawerActions, NavigationProp } from '@react-navigation/native';
+import {
+  DrawerActions,
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native';
+// import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
   Image,
@@ -13,15 +18,14 @@ import {
 } from 'react-native';
 import { fontFamily } from '../assets/Fonts';
 import images from '../assets/Images';
-import type { StackParamList } from '../navigation/AuthStack';
 import { height, width } from '../utilities';
 import { colors } from '../utilities/colors';
 import { fontSizes } from '../utilities/fontsizes';
 
-type NavigationProp = NativeStackNavigationProp<
-  StackParamList,
-  keyof StackParamList
->;
+// type NavigationProp = NativeStackNavigationProp<
+//   StackParamList,
+//   keyof StackParamList
+// >;
 
 interface TopHeaderProps {
   text?: string;
@@ -49,7 +53,7 @@ interface TopHeaderProps {
   msgIcon?: boolean;
   skip?: boolean;
   list?: boolean;
-  navigation: NavigationProp;
+  // navigation: NavigationProp;
   backIcon?: boolean;
 }
 
@@ -80,12 +84,11 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   msgIcon = false,
   skip = false,
   list = false,
-  navigation,
+  // navigation,
 }) => {
-  // const navigation = useNavigation<any>();
+  const navigation = useNavigation<NavigationProp<any>>();
   const [disputeOpen, setdisputeOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-
   const [reportModal, setReportModal] = useState(false);
   const [blockModal, setBlockModal] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -116,9 +119,25 @@ const TopHeader: React.FC<TopHeaderProps> = ({
     setBlockModal(true);
   };
 
+  // const handleDrawer = () => {
+  //   // if (navigation) {
+  //   //   navigation.dispatch(DrawerActions.openDrawer());
+  //   // }
+  //   // navigation.dispatch(DrawerActions.openDrawer());
+  //   navigation.getParent()?.dispatch(DrawerActions.openDrawer());
+  // };
+
   const handleDrawer = () => {
-    if (navigation) {
-      navigation.dispatch(DrawerActions.openDrawer());
+    try {
+      // Check if we're in a drawer context
+      const parent = navigation.getParent();
+      if (parent && typeof parent.dispatch === 'function') {
+        parent.dispatch(DrawerActions.openDrawer());
+      } else {
+        console.log('Drawer not available in this context');
+      }
+    } catch (error) {
+      console.warn('Could not open drawer:', error);
     }
   };
 

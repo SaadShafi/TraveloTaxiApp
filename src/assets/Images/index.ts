@@ -3,6 +3,8 @@ import { ImageSourcePropType } from 'react-native';
 const images: { [key: string]: ImageSourcePropType } = {
   background: require('../Images/background.png'),
   logo: require('../Images/logo.png'),
+  logoCustomer: require('../Images/logoCustomer.png'),
+  logoDriver: require('../Images/logoDriver.png'),
   simpleBg: require('../Images/simpleBackground.png'),
   Vector: require('../Images/Vector.png'),
   arrowUp: require('../Images/ArrowUp.png'),
@@ -37,7 +39,11 @@ const images: { [key: string]: ImageSourcePropType } = {
   cash: require('../Images/cash.png'),
   guide: require('../Images/guide.png'),
   cross: require('../Images/cross.png'),
-  arrow: require('../Images/arrow.png')
+  arrow: require('../Images/arrow.png'),
+  reverse: require('../Images/reverse.png'),
+  notification: require('../Images/notification.png'),
+  add: require('../Images/add.png'),
+  locationImage: require('../Images/locationImage.png'),
 };
 
 export default images;

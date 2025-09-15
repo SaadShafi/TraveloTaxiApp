@@ -96,7 +96,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             <Image source={images.line} style={styles.lineImg} />
             <TextInput
               style={styles.phoneInput}
-              placeholder="Enter phone number"
+              placeholder="+1"
               placeholderTextColor={colors.black}
               keyboardType="phone-pad"
               value={phone}

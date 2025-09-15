@@ -112,7 +112,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           <AntDesign
             name={showPassword ? 'eye-invisible' : 'eye'}
             size={22}
-            color={colors.darkGray}
+            color={colors.black}
           />
         </TouchableOpacity>
       )}
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   leftIcon: {
     marginRight: 10,
     left: 10,
-    backgroundColor: colors.white,
+    // backgroundColor: colors.white,
   },
   rightIcon: {
     // position: 'absolute',
