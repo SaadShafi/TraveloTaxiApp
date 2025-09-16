@@ -44,6 +44,9 @@ const images: { [key: string]: ImageSourcePropType } = {
   notification: require('../Images/notification.png'),
   add: require('../Images/add.png'),
   locationImage: require('../Images/locationImage.png'),
+  MAP: require('../Images/Map.png'),
+  CarIcon: require('../Images/CarIcon.png'),
+  messageIcon: require('../Images/messageIcon.png')
 };
 
 export default images;

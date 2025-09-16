@@ -34,7 +34,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
 }) => {
   return (
     <View style={styles.card}>
-      {/* Top Section */}
+
       <View style={styles.header}>
         <Image source={images.User} style={styles.avatar} />
         <View style={styles.typeTag}>
@@ -42,19 +42,19 @@ const BookingCard: React.FC<BookingCardProps> = ({
         </View>
       </View>
 
-      {/* Passenger Name */}
+
       <View style={styles.details}>
         <Text style={styles.label}>Passenger Name :</Text>
         <Text style={styles.value}>{passengerName}</Text>
       </View>
 
-      {/* Distance */}
+
       <View style={styles.details}>
         <Text style={styles.label}>Distance :</Text>
         <Text style={styles.value}>{distance} away</Text>
       </View>
 
-      {/* Fare */}
+
       <View style={styles.details}>
         <Text style={styles.label}>Fare :</Text>
         <TouchableOpacity onPress={onBid} style={styles.bidButton}>
@@ -63,7 +63,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
         <Text style={styles.fare}>{fare}</Text>
       </View>
 
-      {/* Action Buttons */}
+
       <View style={styles.actions}>
         <TouchableOpacity onPress={onCancel} style={styles.cancelBtn}>
           <Text style={styles.cancelText}>Cancel</Text>

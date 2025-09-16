@@ -7,6 +7,7 @@ import HomeDriver from '../screens/Driver/HomeDriver';
 import PaymentHistory from '../screens/Driver/PaymentHistory';
 import RideDetails from '../screens/Driver/RideDetails';
 import Wallet from '../screens/Driver/Wallet';
+import RideArriving from '../screens/Driver/RideArriving';
 
 export type StackParamList = {
   homeDriver: undefined;
@@ -16,6 +17,7 @@ export type StackParamList = {
   paymentHistory: undefined;
   rideDetails: undefined;
   wallet: undefined;
+  rideArriving: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -34,6 +36,7 @@ const DriverStack: React.FC = () => {
       <Stack.Screen name="paymentHistory" component={PaymentHistory} />
       <Stack.Screen name="rideDetails" component={RideDetails} />
       <Stack.Screen name="wallet" component={Wallet} />
+      <Stack.Screen name="rideArriving" component={RideArriving} />
     </Stack.Navigator>
   );
 };

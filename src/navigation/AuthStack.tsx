@@ -18,6 +18,9 @@ import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
 import Setting from '../screens/Global/Setting';
 import HomeUser from '../screens/User/HomeUser';
 import PaymentUser from '../screens/User/payment';
+import HomeDriver from '../screens/Driver/HomeDriver';
+import RideDetails from '../screens/Driver/RideDetails';
+import RideArriving from '../screens/Driver/RideArriving';
 
 export type StackParamList = {
   WelcomeFirst: undefined;
@@ -38,6 +41,9 @@ export type StackParamList = {
   ForgotPassword: undefined;
   PhoneVerification: undefined;
   HomeUser: undefined;
+  HomeDriver: undefined
+  RideDetails: undefined;
+  RideArriving: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -66,6 +72,9 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="PhoneVerification" component={PhoneVerification} />
       <Stack.Screen name="HomeUser" component={HomeUser} />
+      <Stack.Screen name="HomeDriver" component={HomeDriver} />
+      <Stack.Screen name="RideDetails" component={RideDetails} />
+      <Stack.Screen name="RideArriving" component={RideArriving} />
     </Stack.Navigator>
   );
 };
