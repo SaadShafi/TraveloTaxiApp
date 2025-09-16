@@ -44,6 +44,19 @@ const images: { [key: string]: ImageSourcePropType } = {
   notification: require('../Images/notification.png'),
   add: require('../Images/add.png'),
   locationImage: require('../Images/locationImage.png'),
+  ActionSheetBg: require('../Images/actionSheetBg.png'),
+  house: require('../Images/house.png'),
+  building: require('../Images/building.png'),
+  clockBlack: require('../Images/clockBlack.png'),
+  calendar: require('../Images/calendar.png'),
+  car: require('../Images/car.png'),
+  bike: require('../Images/bike.png'),
+  suv: require('../Images/suv.png'),
+  caution: require('../Images/caution.png'),
+  cautionBlack: require('../Images/cautionBlack.png'),
+  arrowDropDown: require('../Images/arrowDropDown.png'),
+  rating: require('../Images/rating.png'),
+  ratingWhite: require('../Images/ratingWhite.png'),
 };
 
 export default images;

@@ -1,8 +1,14 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
 // import { SafeAreaProvider } from 'react-native-safe-area-context';
 // import { Text } from 'react-native-gesture-handler';
-import { GestureHandlerRootView, Text } from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 import { Provider } from 'react-redux';
 import AuthStack from './src/navigation/AuthStack';

@@ -16,8 +16,11 @@ import ChangePassWord from '../screens/Global/changePassword';
 import ContactUs from '../screens/Global/ContactUs';
 import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
 import Setting from '../screens/Global/Setting';
+import DriverOfferings from '../screens/User/DriverOfferings';
+import FindingDriver from '../screens/User/FindingDriver';
 import HomeUser from '../screens/User/HomeUser';
 import PaymentUser from '../screens/User/payment';
+import TripOptions from '../screens/User/TripOptions';
 
 export type StackParamList = {
   WelcomeFirst: undefined;
@@ -38,6 +41,9 @@ export type StackParamList = {
   ForgotPassword: undefined;
   PhoneVerification: undefined;
   HomeUser: undefined;
+  TripOptions: undefined;
+  FindingDriver: undefined;
+  DriverOfferings: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -66,6 +72,9 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="PhoneVerification" component={PhoneVerification} />
       <Stack.Screen name="HomeUser" component={HomeUser} />
+      <Stack.Screen name="TripOptions" component={TripOptions} />
+      <Stack.Screen name="FindingDriver" component={FindingDriver} />
+      <Stack.Screen name="DriverOfferings" component={DriverOfferings} />
     </Stack.Navigator>
   );
 };

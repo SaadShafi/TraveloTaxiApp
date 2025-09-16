@@ -73,7 +73,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
             textColor={colors.white}
             borderRadius={30}
             disabled={!isFormValid}
-            onPress={() => navigation.navigate('HomeUser')}
+            onPress={() => navigation.navigate('DriverOfferings')}
           />
           <View style={{ paddingVertical: height * 0.03 }}>
             <Image source={images.orLine} style={styles.orLine} />
