@@ -15,9 +15,10 @@ import { height, width } from '../../utilities';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
-
+import { useNavigation } from '@react-navigation/native';
 
 const RideDetails = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TopHeader text="Ride Details" isMenu={true} />
@@ -93,6 +94,7 @@ const RideDetails = () => {
               backgroundColor={colors.black}
               textColor={colors.white}
               borderRadius={30}
+              onPress={() => navigation.goBack()} 
             />
           </View>
 
@@ -104,6 +106,7 @@ const RideDetails = () => {
               backgroundColor={colors.brown}
               textColor={colors.white}
               borderRadius={30}
+              onPress={() => navigation.navigate("RideArriving")}
             />
           </View>
         </View>

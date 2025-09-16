@@ -11,6 +11,9 @@ import SignUpEmail from '../screens/Auth/SignUpEmail';
 import WelcomeFirst from '../screens/Auth/WelcomeFirst';
 import WelcomeFourth from '../screens/Auth/WelcomeFourth';
 import WelcomeSec from '../screens/Auth/WelcomeSec';
+import HomeDriver from '../screens/Driver/HomeDriver';
+import RideArriving from '../screens/Driver/RideArriving';
+import RideDetails from '../screens/Driver/RideDetails';
 import AboutUs from '../screens/Global/AboutUs';
 import ChangePassWord from '../screens/Global/changePassword';
 import ContactUs from '../screens/Global/ContactUs';
@@ -41,6 +44,9 @@ export type StackParamList = {
   ForgotPassword: undefined;
   PhoneVerification: undefined;
   HomeUser: undefined;
+  HomeDriver: undefined;
+  RideDetails: undefined;
+  RideArriving: undefined;
   TripOptions: undefined;
   FindingDriver: undefined;
   DriverOfferings: undefined;
@@ -72,6 +78,9 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="PhoneVerification" component={PhoneVerification} />
       <Stack.Screen name="HomeUser" component={HomeUser} />
+      <Stack.Screen name="HomeDriver" component={HomeDriver} />
+      <Stack.Screen name="RideDetails" component={RideDetails} />
+      <Stack.Screen name="RideArriving" component={RideArriving} />
       <Stack.Screen name="TripOptions" component={TripOptions} />
       <Stack.Screen name="FindingDriver" component={FindingDriver} />
       <Stack.Screen name="DriverOfferings" component={DriverOfferings} />
