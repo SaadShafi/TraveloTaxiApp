@@ -60,6 +60,7 @@ const images: { [key: string]: ImageSourcePropType } = {
   arrowDropDown: require('../Images/arrowDropDown.png'),
   rating: require('../Images/rating.png'),
   ratingWhite: require('../Images/ratingWhite.png'),
+  Maptwo: require('../Images/Maptwo.png'),
 };
 
 export default images;

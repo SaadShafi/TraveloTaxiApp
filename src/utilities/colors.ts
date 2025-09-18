@@ -17,5 +17,6 @@ export const colors: { [key: string]: string } = {
   border:'#D4D4D4',
   lightGreen: 'rgba(30,140,54,0.2)',
   green: '#1E8C36',
-  splitGray: '#E8E8E8'
+  splitGray: '#E8E8E8',
+  peach: '#FFE9E9',
 };
