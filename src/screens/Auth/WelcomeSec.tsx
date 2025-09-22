@@ -127,13 +127,17 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
                 <TouchableOpacity
                   style={styles.btn}
                   activeOpacity={0.7}
-                  onPress={handleNavigation}
+                  onPress={() => handleRoleSelect('user')}
                 >
-                  <Image source={images.logoCustomer} />
+                  <Image source={images.logoCustomer} style={styles.btnImage}/>
                   <Text style={styles.btnText}>Travelo Customer</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
-                  <Image source={images.logoDriver} />
+                <TouchableOpacity
+                  style={styles.btn}
+                  activeOpacity={0.7}
+                  onPress={() => handleRoleSelect('driver')}
+                >
+                  <Image source={images.logoDriver} style={styles.btnImage}/>
                   <Text style={styles.btnText}>Travelo Driver</Text>
                 </TouchableOpacity>
               </View>
@@ -240,17 +244,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderWidth: 1,
     borderRadius: 50,
-    borderColor: colors.black,
+    borderColor: colors.darkGray,
     backgroundColor: colors.lightGray,
     alignItems: 'center',
     width: width * 0.7,
+    height: height * 0.09,
     paddingHorizontal: width * 0.09,
   },
   btnText: {
     fontFamily: fontFamily.ClashDisplayMedium,
-    fontSize: fontSizes.sm,
+    fontSize: fontSizes.sm2,
     color: colors.black,
   },
+  btnImage: {
+    width: width * 0.15,
+    height: height * 0.1,
+    resizeMode: "contain"
+  }
 });
 
 export default WelcomeSec;

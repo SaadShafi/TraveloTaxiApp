@@ -15,8 +15,12 @@ import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import CustomTextInput from '../../components/CustomTextInput';
 import CustomButton from '../../components/CustomButton';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackParamList } from '../../navigation/AuthStack';
 
-  const BankDetails = () => {
+type Props = NativeStackScreenProps<StackParamList, 'BankDetails'>;
+
+  const BankDetails: React.FC<Props> = ({ navigation }) => {
 
   const [bank, setBank] = useState('');
   const [name, setName] = useState('');
@@ -24,16 +28,16 @@ import CustomButton from '../../components/CustomButton';
   const [number, setAccount] = useState('');
   const [routing, setRouting] = useState('');
   const [accountholderName, setAccountholderName] = useState('');
-  const [rout, setRout] = useState('');
+  const [route, setRoute] = useState('');
   const [agree, setAgree] = useState(false);
     
   
   const isAccountNumber = accountNumber.trim().length >= 4;
   const isAccountholderName = accountholderName.trim().length > 7;
-  const isRoutingNumber = rout.trim().length > 7;
+  const isRoutingNumber = route.trim().length > 7;
   const isBankOptions = bank !== '';
    const isFormValid =
-    isAccountNumber && isAccountholderName && isRoutingNumber && isBankOptions && agree;
+    isAccountNumber && isAccountholderName && isRoutingNumber 
 
   const BankOptions = [
     { name: 'Select Bank', id: '' },
@@ -71,8 +75,9 @@ import CustomButton from '../../components/CustomButton';
             borderRadius={30}
             inputWidth={width * 0.85}
             inputHeight={height * 0.06}
-            value={name}
-            onChangeText={setName}
+            value={accountholderName}
+            keyboardType='default'
+            onChangeText={setAccountholderName}
           />
         </View>
 
@@ -84,8 +89,9 @@ import CustomButton from '../../components/CustomButton';
             borderRadius={30}
             inputWidth={width * 0.85}
             inputHeight={height * 0.06}
-            value={number}
-            onChangeText={setAccount}
+            value={accountNumber}
+            keyboardType='number-pad'
+            onChangeText={setAccountNumber}
           />
         </View>
 
@@ -97,8 +103,9 @@ import CustomButton from '../../components/CustomButton';
             borderRadius={30}
             inputWidth={width * 0.85}
             inputHeight={height * 0.06}
-            value={routing}
-            onChangeText={setRouting}
+            value={route}
+            keyboardType='number-pad'
+            onChangeText={setRoute}
           />
         </View>
 
@@ -111,6 +118,7 @@ import CustomButton from '../../components/CustomButton';
               textColor={isFormValid ? colors.white : colors.black}
               borderRadius={30}
               disabled={!isFormValid}
+              onPress={() => navigation.navigate('SignIn')}
             />
         </View>
         </View>

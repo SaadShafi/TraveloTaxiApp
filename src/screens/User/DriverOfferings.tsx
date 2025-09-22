@@ -60,7 +60,7 @@ const DriverOfferings = () => {
   const DrriverOffering = ({ item }: { item: DriverProps }) => {
     return (
       <View style={{ flex: 1 }}>
-        <View>d</View>
+        <View></View>
       </View>
     );
   };

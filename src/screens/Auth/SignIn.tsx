@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Image,
   Keyboard,
@@ -17,10 +17,15 @@ import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 type Props = NativeStackScreenProps<StackParamList, 'SignIn'>;
 
 const SignIn: React.FC<Props> = ({ navigation }) => {
+  const selectedRole = useSelector(
+    (state: RootState) => state.role.selectedRole,
+  );
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dismissKeyboard = () => {
@@ -28,6 +33,10 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
   };
 
   const isFormValid = email.includes('@') && password.length > 5;
+
+  useEffect(() => {
+    console.log('Selected Role:', selectedRole);
+  }, [selectedRole]);
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -73,7 +82,16 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
             textColor={colors.white}
             borderRadius={30}
             disabled={!isFormValid}
-            onPress={() => navigation.navigate('HomeDriver')}
+            // onPress={() => navigation.navigate('HomeUser')}
+            onPress={() => {
+              if (selectedRole === 'user') {
+                navigation.navigate('HomeUser');
+              } else if (selectedRole === 'driver') {
+                navigation.navigate('HomeDriver');
+              } else {
+                navigation.navigate('AboutUs'); // fallback if no role
+              }
+            }}
           />
           <View style={{ paddingVertical: height * 0.03 }}>
             <Image source={images.orLine} style={styles.orLine} />

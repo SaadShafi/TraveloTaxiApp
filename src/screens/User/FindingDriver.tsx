@@ -6,8 +6,12 @@ import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { StackParamList } from '../../navigation/AuthStack';
 
-const FindingDriver = () => {
+type Props = NativeStackScreenProps<StackParamList, 'FindingDriver'>;
+
+const FindingDriver: React.FC<Props>  = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <TopHeader text="Finding Driver" />
@@ -36,6 +40,7 @@ const FindingDriver = () => {
               backgroundColor={colors.black}
               text="Cancel Booking"
               textColor={colors.white}
+              onPress={() => navigation.navigate('DriverOfferings')}
             />
           </View>
         </View>

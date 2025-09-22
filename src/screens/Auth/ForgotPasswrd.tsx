@@ -56,7 +56,7 @@ const ForgotPassword: React.FC<Props> = ({ navigation }) => {
             <CustomButton
               btnHeight={height * 0.06}
               btnWidth={width * 0.85}
-              text="SignIn"
+              text="Continue"
               backgroundColor={isFormValid ? colors.brown : colors.black}
               textColor={colors.white}
               borderRadius={30}

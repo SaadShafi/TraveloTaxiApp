@@ -19,4 +19,5 @@ export const colors: { [key: string]: string } = {
   green: '#1E8C36',
   splitGray: '#E8E8E8',
   peach: '#FFE9E9',
+  ashGray: '#DEDEDE'
 };

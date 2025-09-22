@@ -8,7 +8,7 @@ import WalletUser from '../screens/User/WalletUser';
 import WalletUserSec from '../screens/User/WalletUserSec';
 
 export type StackParamList = {
-  homeUser: undefined;
+  HomeUser: undefined;
   addPaymentMethod: undefined;
   paymentUser: undefined;
   schedule: undefined;
@@ -22,10 +22,10 @@ const UserStack: React.FC = () => {
   return (
     <Stack.Navigator
       id="user-stack"
-      initialRouteName="homeUser"
+      initialRouteName="HomeUser"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="homeUser" component={HomeUser} />
+      <Stack.Screen name="HomeUser" component={HomeUser} />
       <Stack.Screen name="addPaymentMethod" component={AddPaymentMethod} />
       <Stack.Screen name="paymentUser" component={PaymentUser} />
       <Stack.Screen name="schedule" component={Schedule} />

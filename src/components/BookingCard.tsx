@@ -135,13 +135,13 @@ const styles = StyleSheet.create({
   },
   bidButton: {
     borderWidth: 1,
-    borderColor: "#B00020",
+    borderColor: colors.brown,
     backgroundColor: colors.lightBrown,
-    borderRadius: 6,
+    borderRadius: 30,
     paddingHorizontal: 8,
     paddingVertical: 2,
     left: width * 0.2,
-    height: height * 0.033,
+    height: height * 0.035,
     width: width * 0.18
   },
   bidText: {

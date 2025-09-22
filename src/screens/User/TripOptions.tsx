@@ -17,8 +17,12 @@ import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { StackParamList } from '../../navigation/AuthStack';
 
-const TripOptions = () => {
+type Props = NativeStackScreenProps<StackParamList, 'TripOptions'>;
+
+const TripOptions: React.FC<Props>  = ({ navigation }) => {
   const [passengers, setPassengers] = useState(1);
   const [isEnabled, setIsEnabled] = useState(false);
   const [showCaution, setShowCaution] = useState(false);
@@ -183,6 +187,7 @@ const TripOptions = () => {
             backgroundColor={colors.black}
             text="Continue"
             textColor={colors.white}
+            onPress={() => navigation.navigate('FindingDriver')}
           />
         </View>
       </ScrollView>

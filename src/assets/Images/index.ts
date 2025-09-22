@@ -61,6 +61,9 @@ const images: { [key: string]: ImageSourcePropType } = {
   rating: require('../Images/rating.png'),
   ratingWhite: require('../Images/ratingWhite.png'),
   Maptwo: require('../Images/Maptwo.png'),
+  approve: require('../Images/approve.png'),
+  Pickup: require('../Images/Pickup.png'),
+  arrived: require('../Images/arrived.png'),
 };
 
 export default images;

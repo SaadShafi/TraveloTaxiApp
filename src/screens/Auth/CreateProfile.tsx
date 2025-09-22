@@ -1,13 +1,16 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Image,
   Keyboard,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  ScrollView,
+  Modal,
 } from 'react-native';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
@@ -18,10 +21,19 @@ import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import DatePicker from 'react-native-date-picker';
+import { fontFamily } from '../../assets/Fonts';
+import { pick, types, isCancel } from '@react-native-documents/picker';
 
 type Props = NativeStackScreenProps<StackParamList, 'CreateProfile'>;
 
 const CreateProfile: React.FC<Props> = ({ navigation }) => {
+  const [openStartPicker, setOpenStartPicker] = useState(false);
+  const selectedRole = useSelector(
+    (state: RootState) => state.role.selectedRole,
+  );
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -29,6 +41,12 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
   const [isPhoneFocused, setIsPhoneFocused] = useState(false);
   const [gender, setGender] = useState('');
   const [city, setCity] = useState('');
+  const [rideType, setRideType] = useState('');
+  const [startDate, setStartDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    console.log('Selected Role in CreateProfile:', selectedRole);
+  }, [selectedRole]);
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -49,17 +67,656 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
     { name: 'Other', id: 'other' },
   ];
 
+  const rideOptions = [
+    { name: 'Select Ride Type', id: '' },
+    { name: 'Bike', id: 'bike' },
+    { name: 'Car', id: 'car' },
+    { name: 'SUV', id: 'suv' },
+  ];
+
+  const handleDateConfirm = (selectedDate: Date) => {
+    setOpenStartPicker(false);
+    setStartDate(selectedDate);
+  };
+
+  const formatDateForDisplay = (date: Date | null): string => {
+    if (!date) return '';
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
   const isFormValid =
     name.length > 4 &&
     email.includes('@') &&
     phone.length > 7 &&
     street.length > 5;
 
+  const UserScreens = () => {
+    return (
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <View style={styles.imgMain}>
+          <Image source={images.profGradient} style={styles.gradient} />
+          <TouchableOpacity style={styles.profMain} activeOpacity={0.7}>
+            <Image source={images.profile} style={styles.profile} />
+            <View style={styles.cameraMain}>
+              <Image source={images.camera} style={styles.camera} />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.inputMain}>
+          <CustomTextInput
+            placeholder="*Enter Your Name..."
+            placeholderTextColor={colors.black}
+            borderColor={colors.brown}
+            borderRadius={30}
+            inputWidth={width * 0.85}
+            inputHeight={height * 0.06}
+            value={name}
+            onChangeText={setName}
+            backgroundColor={colors.gray}
+          />
+
+          <View
+            style={[
+              styles.phoneRow,
+              {
+                borderColor:
+                  isPhoneFocused || phone ? colors.brown : colors.gray,
+                backgroundColor:
+                  isPhoneFocused || phone ? colors.lightBrown : colors.gray,
+              },
+            ]}
+          >
+            <Image source={images.UK} style={styles.flag} />
+            <Image source={images.line} style={styles.lineImg} />
+            <TextInput
+              style={styles.phoneInput}
+              placeholder="+1"
+              placeholderTextColor={colors.black}
+              keyboardType="phone-pad"
+              value={phone}
+              onChangeText={setPhone}
+              onFocus={() => setIsPhoneFocused(true)}
+              onBlur={() => setIsPhoneFocused(false)}
+            />
+          </View>
+          <CustomTextInput
+            placeholder="*Enter Your Email..."
+            placeholderTextColor={colors.black}
+            borderColor={colors.brown}
+            borderRadius={30}
+            inputWidth={width * 0.85}
+            inputHeight={height * 0.06}
+            value={email}
+            onChangeText={setEmail}
+            backgroundColor={colors.gray}
+          />
+          <CustomTextInput
+            placeholder="*Street"
+            placeholderTextColor={colors.black}
+            borderColor={colors.brown}
+            borderRadius={30}
+            inputWidth={width * 0.85}
+            inputHeight={height * 0.06}
+            value={street}
+            onChangeText={setStreet}
+            backgroundColor={colors.gray}
+          />
+          <CustomSelect
+            inputWidth={width * 0.85}
+            inputHeight={height * 0.06}
+            selectElements={cityOptions}
+            borderColor={city ? colors.brown : colors.gray}
+            borderWidth={1}
+            inputColor={city ? colors.lightBrown : colors.gray}
+            borderRadius={30}
+            onChangeText={value => setCity(value)}
+            setSelectedElement={setCity}
+            defaultValue=""
+          />
+          <CustomSelect
+            inputWidth={width * 0.85}
+            inputHeight={height * 0.06}
+            selectElements={genderOptions}
+            borderColor={gender ? colors.brown : colors.gray}
+            borderWidth={1}
+            inputColor={gender ? colors.lightBrown : colors.gray}
+            borderRadius={30}
+            onChangeText={value => setGender(value)}
+            setSelectedElement={setGender}
+            defaultValue=""
+          />
+        </View>
+        <View style={styles.btnMain}>
+          <CustomButton
+            btnHeight={height * 0.065}
+            btnWidth={width * 0.4}
+            text="Cancel"
+            backgroundColor={colors.black}
+            textColor={colors.white}
+            borderRadius={30}
+          />
+          <CustomButton
+            btnHeight={height * 0.065}
+            btnWidth={width * 0.4}
+            text="Save"
+            backgroundColor={isFormValid ? colors.brown : colors.gray}
+            textColor={colors.white}
+            borderRadius={30}
+            disabled={!isFormValid}
+            onPress={() => navigation.navigate('Congratulation')}
+          />
+        </View>
+      </View>
+    );
+  };
+
+  const DriverScreens = () => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [document, setDocument] = useState<{
+      name: string;
+      uri: string;
+      type?: string;
+      size?: number;
+    } | null>(null);
+
+    const handlePickDocument = async () => {
+      try {
+        // pick returns an array of files (even if one)
+        const results = await pick({
+          // types of files allowed
+          type: [types.allFiles],
+          // optionally: allowMultiple selection
+          allowMultiSelection: false,
+          // optionally: keep a local copy if needed
+          keepLocalCopy: true,
+        });
+
+        if (results && results.length > 0) {
+          const file = results[0];
+          setDocument({
+            name: file.name,
+            uri: file.uri,
+            type: file.type, // may or may not be defined
+            size: file.size, // size in bytes, if available
+          });
+        }
+      } catch (err: any) {
+        if (isCancel(err)) {
+          console.log('User cancelled document picker');
+        } else {
+          console.error('Document pick error:', err);
+        }
+      }
+    };
+
+    const toggleModal = () => {
+       setModalVisible(false);
+      navigation.navigate('BankDetails');
+    }
+    return (
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <ScrollView
+          contentContainerStyle={{
+            alignItems: 'center',
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.imgMain}>
+            <Image source={images.profGradient} style={styles.gradient} />
+            <TouchableOpacity style={styles.profMain} activeOpacity={0.7}>
+              <Image source={images.profile} style={styles.profile} />
+              <View style={styles.cameraMain}>
+                <Image source={images.camera} style={styles.camera} />
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.inputMain}>
+            <CustomTextInput
+              placeholder="*Enter Your Name..."
+              placeholderTextColor={colors.black}
+              borderColor={colors.brown}
+              borderRadius={30}
+              inputWidth={width * 0.85}
+              inputHeight={height * 0.06}
+              value={name}
+              onChangeText={setName}
+              backgroundColor={colors.gray}
+            />
+
+            <View
+              style={[
+                styles.phoneRow,
+                {
+                  borderColor:
+                    isPhoneFocused || phone ? colors.brown : colors.gray,
+                  backgroundColor:
+                    isPhoneFocused || phone ? colors.lightBrown : colors.gray,
+                },
+              ]}
+            >
+              <Image source={images.UK} style={styles.flag} />
+              <Image source={images.line} style={styles.lineImg} />
+              <TextInput
+                style={styles.phoneInput}
+                placeholder="+1"
+                placeholderTextColor={colors.black}
+                keyboardType="phone-pad"
+                value={phone}
+                onChangeText={setPhone}
+                onFocus={() => setIsPhoneFocused(true)}
+                onBlur={() => setIsPhoneFocused(false)}
+              />
+            </View>
+            <CustomTextInput
+              placeholder="*Enter Your Email..."
+              placeholderTextColor={colors.black}
+              borderColor={colors.brown}
+              borderRadius={30}
+              inputWidth={width * 0.85}
+              inputHeight={height * 0.06}
+              value={email}
+              onChangeText={setEmail}
+              backgroundColor={colors.gray}
+            />
+            <CustomTextInput
+              placeholder="*Street"
+              placeholderTextColor={colors.black}
+              borderColor={colors.brown}
+              borderRadius={30}
+              inputWidth={width * 0.85}
+              inputHeight={height * 0.06}
+              value={street}
+              onChangeText={setStreet}
+              backgroundColor={colors.gray}
+            />
+            <CustomSelect
+              inputWidth={width * 0.85}
+              inputHeight={height * 0.06}
+              selectElements={cityOptions}
+              borderColor={city ? colors.brown : colors.gray}
+              borderWidth={1}
+              inputColor={city ? colors.lightBrown : colors.gray}
+              borderRadius={30}
+              onChangeText={value => setCity(value)}
+              setSelectedElement={setCity}
+              defaultValue=""
+            />
+            <CustomSelect
+              inputWidth={width * 0.85}
+              inputHeight={height * 0.06}
+              selectElements={genderOptions}
+              borderColor={gender ? colors.brown : colors.gray}
+              borderWidth={1}
+              inputColor={gender ? colors.lightBrown : colors.gray}
+              borderRadius={30}
+              onChangeText={value => setGender(value)}
+              setSelectedElement={setGender}
+              defaultValue=""
+            />
+            <CustomTextInput
+              placeholder="*Date Of Birth"
+              placeholderTextColor={colors.black}
+              borderColor={colors.brown}
+              borderRadius={30}
+              inputWidth={width * 0.85}
+              inputHeight={height * 0.06}
+              // value={street}
+              onChangeText={setStreet}
+              backgroundColor={colors.gray}
+              editable={false}
+              value={formatDateForDisplay(startDate)}
+              rightIcon={
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => setOpenStartPicker(true)}
+                >
+                  <Image source={images.calendar} />
+                </TouchableOpacity>
+              }
+            />
+
+            <DatePicker
+              modal
+              open={openStartPicker}
+              date={startDate || new Date()}
+              mode="date"
+              onConfirm={handleDateConfirm}
+              onCancel={() => setOpenStartPicker(false)}
+              // minimumDate={new Date()}
+            />
+
+            <CustomSelect
+              inputWidth={width * 0.85}
+              inputHeight={height * 0.06}
+              selectElements={rideOptions}
+              borderColor={rideType ? colors.brown : colors.gray}
+              borderWidth={1}
+              inputColor={rideType ? colors.lightBrown : colors.gray}
+              borderRadius={30}
+              onChangeText={value => setRideType(value)}
+              setSelectedElement={setRideType}
+              defaultValue=""
+            />
+
+            <CustomTextInput
+              placeholder="*ID Card Number"
+              placeholderTextColor={colors.black}
+              borderColor={colors.brown}
+              borderRadius={30}
+              inputWidth={width * 0.85}
+              inputHeight={height * 0.06}
+              // value={street}
+              // onChangeText={setStreet}
+              backgroundColor={colors.gray}
+            />
+            <View style={styles.DocumentUpload}>
+              <Text style={styles.documentUploadText}>Document Uploads:</Text>
+              <Text style={styles.label}>Driving License:*</Text>
+              <View style={styles.container}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handlePickDocument}
+                >
+                  <Text style={styles.buttonText}>Choose File</Text>
+                </TouchableOpacity>
+
+                {!document && (
+                  <Text style={styles.title}>No File Selected</Text>
+                )}
+
+                {document && (
+                  <View style={styles.preview}>
+                    <Text style={styles.fileLabel}>Selected File:</Text>
+                    <Text style={styles.fileName}>{document.name}</Text>
+                    <Text style={styles.fileUri}>{document.uri}</Text>
+                    {document.type && (
+                      <Text style={styles.fileUri}>Type: {document.type}</Text>
+                    )}
+                    {document.size && (
+                      <Text style={styles.fileUri}>
+                        Size: {document.size} bytes
+                      </Text>
+                    )}
+                  </View>
+                )}
+              </View>
+              <TextInput
+                placeholder="*Add Expiry Date"
+                placeholderTextColor={colors.darkGray}
+                style={styles.AddExpiryDate}
+                keyboardType="number-pad"
+              />
+
+              <Text style={styles.label}>Private Hire Driver License:*</Text>
+              <View style={styles.container}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handlePickDocument}
+                >
+                  <Text style={styles.buttonText}>Choose File</Text>
+                </TouchableOpacity>
+
+                {!document && (
+                  <Text style={styles.title}>No File Selected</Text>
+                )}
+
+                {document && (
+                  <View style={styles.preview}>
+                    <Text style={styles.fileLabel}>Selected File:</Text>
+                    <Text style={styles.fileName}>{document.name}</Text>
+                    <Text style={styles.fileUri}>{document.uri}</Text>
+                    {document.type && (
+                      <Text style={styles.fileUri}>Type: {document.type}</Text>
+                    )}
+                    {document.size && (
+                      <Text style={styles.fileUri}>
+                        Size: {document.size} bytes
+                      </Text>
+                    )}
+                  </View>
+                )}
+              </View>
+              <TextInput
+                placeholder="*Add Expiry Date"
+                placeholderTextColor={colors.darkGray}
+                style={styles.AddExpiryDate}
+                keyboardType="number-pad"
+              />
+
+              <Text style={styles.label}>LogBook V5:*</Text>
+              <View style={styles.container}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handlePickDocument}
+                >
+                  <Text style={styles.buttonText}>Choose File</Text>
+                </TouchableOpacity>
+
+                {!document && (
+                  <Text style={styles.title}>No File Selected</Text>
+                )}
+
+                {document && (
+                  <View style={styles.preview}>
+                    <Text style={styles.fileLabel}>Selected File:</Text>
+                    <Text style={styles.fileName}>{document.name}</Text>
+                    <Text style={styles.fileUri}>{document.uri}</Text>
+                    {document.type && (
+                      <Text style={styles.fileUri}>Type: {document.type}</Text>
+                    )}
+                    {document.size && (
+                      <Text style={styles.fileUri}>
+                        Size: {document.size} bytes
+                      </Text>
+                    )}
+                  </View>
+                )}
+              </View>
+              <TextInput
+                placeholder="*Add Expiry Date"
+                placeholderTextColor={colors.darkGray}
+                style={styles.AddExpiryDate}
+                keyboardType="number-pad"
+              />
+
+              <Text style={styles.label}>Private Hire Vehicle License:*</Text>
+              <View style={styles.container}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handlePickDocument}
+                >
+                  <Text style={styles.buttonText}>Choose File</Text>
+                </TouchableOpacity>
+
+                {!document && (
+                  <Text style={styles.title}>No File Selected</Text>
+                )}
+
+                {document && (
+                  <View style={styles.preview}>
+                    <Text style={styles.fileLabel}>Selected File:</Text>
+                    <Text style={styles.fileName}>{document.name}</Text>
+                    <Text style={styles.fileUri}>{document.uri}</Text>
+                    {document.type && (
+                      <Text style={styles.fileUri}>Type: {document.type}</Text>
+                    )}
+                    {document.size && (
+                      <Text style={styles.fileUri}>
+                        Size: {document.size} bytes
+                      </Text>
+                    )}
+                  </View>
+                )}
+              </View>
+              <TextInput
+                placeholder="*Add Expiry Date"
+                placeholderTextColor={colors.darkGray}
+                style={styles.AddExpiryDate}
+                keyboardType="number-pad"
+              />
+
+              <Text style={styles.label}>Insurance:*</Text>
+              <View style={styles.container}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handlePickDocument}
+                >
+                  <Text style={styles.buttonText}>Choose File</Text>
+                </TouchableOpacity>
+
+                {!document && (
+                  <Text style={styles.title}>No File Selected</Text>
+                )}
+
+                {document && (
+                  <View style={styles.preview}>
+                    <Text style={styles.fileLabel}>Selected File:</Text>
+                    <Text style={styles.fileName}>{document.name}</Text>
+                    <Text style={styles.fileUri}>{document.uri}</Text>
+                    {document.type && (
+                      <Text style={styles.fileUri}>Type: {document.type}</Text>
+                    )}
+                    {document.size && (
+                      <Text style={styles.fileUri}>
+                        Size: {document.size} bytes
+                      </Text>
+                    )}
+                  </View>
+                )}
+              </View>
+              <TextInput
+                placeholder="*Add Expiry Date"
+                placeholderTextColor={colors.darkGray}
+                style={styles.AddExpiryDate}
+                keyboardType="number-pad"
+              />
+
+              <Text style={styles.label}>MOT:*</Text>
+              <View style={styles.container}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handlePickDocument}
+                >
+                  <Text style={styles.buttonText}>Choose File</Text>
+                </TouchableOpacity>
+
+                {!document && (
+                  <Text style={styles.title}>No File Selected</Text>
+                )}
+
+                {document && (
+                  <View style={styles.preview}>
+                    <Text style={styles.fileLabel}>Selected File:</Text>
+                    <Text style={styles.fileName}>{document.name}</Text>
+                    <Text style={styles.fileUri}>{document.uri}</Text>
+                    {document.type && (
+                      <Text style={styles.fileUri}>Type: {document.type}</Text>
+                    )}
+                    {document.size && (
+                      <Text style={styles.fileUri}>
+                        Size: {document.size} bytes
+                      </Text>
+                    )}
+                  </View>
+                )}
+              </View>
+              <TextInput
+                placeholder="*Add Expiry Date"
+                placeholderTextColor={colors.darkGray}
+                style={styles.AddExpiryDate}
+                keyboardType="number-pad"
+              />
+
+              <Text style={styles.label}>Hire Agreement (if Applicable):</Text>
+              <View style={styles.container}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handlePickDocument}
+                >
+                  <Text style={styles.buttonText}>Choose File</Text>
+                </TouchableOpacity>
+
+                {!document && (
+                  <Text style={styles.title}>No File Selected</Text>
+                )}
+
+                {document && (
+                  <View style={styles.preview}>
+                    <Text style={styles.fileLabel}>Selected File:</Text>
+                    <Text style={styles.fileName}>{document.name}</Text>
+                    <Text style={styles.fileUri}>{document.uri}</Text>
+                    {document.type && (
+                      <Text style={styles.fileUri}>Type: {document.type}</Text>
+                    )}
+                    {document.size && (
+                      <Text style={styles.fileUri}>
+                        Size: {document.size} bytes
+                      </Text>
+                    )}
+                  </View>
+                )}
+              </View>
+              <TextInput
+                placeholder="*Add Expiry Date"
+                placeholderTextColor={colors.darkGray}
+                style={styles.AddExpiryDate}
+                keyboardType="number-pad"
+              />
+            </View>
+          </View>
+          <View style={styles.btnMain}>
+            <CustomButton
+              btnHeight={height * 0.075}
+              btnWidth={width * 0.85}
+              text="Continue"
+              backgroundColor={isFormValid ? colors.brown : colors.black}
+              textColor={colors.white}
+              borderRadius={30}
+              disabled={!isFormValid}
+              // onPress={() => navigation.navigate('Congratulation')}
+              onPress={() => setModalVisible(true)}
+            />
+          </View>
+        </ScrollView>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalText}>Admin Approval</Text>
+              <Image source={images.approve} />
+              <View style={styles.paraMain}>
+                <Text style={styles.modalText}>Your Request Has Been</Text>
+                <Text style={styles.modalText}>Accepted! </Text>
+              </View>
+              <CustomButton
+                text="Confirm"
+                textColor={colors.white}
+                backgroundColor={colors.brown}
+                btnHeight={height * 0.06}
+                btnWidth={width * 0.75}
+                borderRadius={30}
+                onPress={toggleModal}
+              />
+            </View>
+          </View>
+        </Modal>
+      </View>
+    );
+  };
+
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1, backgroundColor: colors.white }}>
         <TopHeader text="Profile" isBack={true} navigation={navigation} />
-        <View style={styles.imgMain}>
+        {/* <View style={styles.imgMain}>
           <Image source={images.profGradient} style={styles.gradient} />
           <TouchableOpacity style={styles.profMain} activeOpacity={0.7}>
             <Image source={images.profile} style={styles.profile} />
@@ -171,7 +828,9 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             disabled={!isFormValid}
             onPress={() => navigation.navigate('Congratulation')}
           />
-        </View>
+        </View> */}
+        {selectedRole === 'user' && <UserScreens />}
+        {selectedRole === 'driver' && <DriverScreens />}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -243,7 +902,105 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     bottom: height * 0.3,
-    paddingHorizontal: width * 0.06,
+    // paddingHorizontal: width * 0.05,
+    width: width * 0.85,
+  },
+  DocumentUpload: {},
+  documentUploadText: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.lg,
+    color: colors.black,
+  },
+  container: {
+    backgroundColor: colors.white,
+    height: height * 0.065,
+    width: width * 0.85,
+    borderRadius: 30,
+    marginTop: height * 0.02,
+    borderColor: colors.darkGray,
+    borderWidth: 1,
+    flexDirection: 'row',
+    paddingHorizontal: width * 0.05,
+    alignItems: 'center',
+    gap: width * 0.03,
+  },
+  title: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.sm,
+    color: colors.black,
+  },
+  button: {
+    backgroundColor: colors.gray,
+    height: height * 0.04,
+    width: width * 0.27,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    borderStyle: 'dashed',
+    borderWidth: 2,
+    borderColor: colors.darkGray,
+  },
+  buttonText: {
+    color: colors.black,
+    fontSize: fontSizes.sm,
+  },
+  preview: {
+    marginTop: height * 0.02,
+    alignItems: 'center',
+  },
+  fileLabel: {
+    // fontWeight: '600',
+    fontSize: fontSizes.sm2,
+  },
+  fileName: {
+    marginTop: height * 0.01,
+    fontSize: fontSizes.sm,
+    color: colors.darkGray,
+  },
+  fileUri: {
+    marginTop: 4,
+    fontSize: 12,
+    color: colors.gray,
+  },
+  AddExpiryDate: {
+    borderBottomWidth: 1,
+    borderColor: colors.darkGray,
+    marginTop: height * 0.01,
+    fontSize: fontSizes.sm,
+  },
+  label: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
+    marginTop: height * 0.025,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 252, 252, 0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    width: width * 0.83,
+    height: height * 0.32,
+    alignItems: 'center',
+    borderWidth: 0.9,
+    borderColor: colors.black,
+    padding: 20,
+    gap: height * 0.02,
+  },
+  modalText: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.md,
+    color: colors.black,
+  },
+  paraMain: {
+    alignItems: 'center',
+    top: height * 0.02,
+    marginBottom: height * 0.02,
   },
 });
 

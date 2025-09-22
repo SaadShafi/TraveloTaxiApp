@@ -8,6 +8,7 @@ import {
 import { fontFamily } from '../assets/Fonts';
 import { height, width } from '../utilities';
 import { fontSizes } from '../utilities/fontsizes';
+import { colors } from '../utilities/colors';
 
 interface CustomButtonProps {
   onPress?: (event: GestureResponderEvent) => void;
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.lg,
     textTransform: 'capitalize',
+    color: colors.black
   },
   customBtnGradient: {
     width: '100%',

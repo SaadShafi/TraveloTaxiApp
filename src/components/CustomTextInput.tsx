@@ -83,7 +83,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           styles.input,
           {
             color:
-              backgroundColor === colors.gray ? colors.black : colors.white,
+              backgroundColor === colors.gray ? colors.black : colors.black,
           },
         ]}
         secureTextEntry={isPassword ? showPassword : false}

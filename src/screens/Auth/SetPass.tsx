@@ -20,7 +20,7 @@ import { fontSizes } from '../../utilities/fontsizes';
 
 type Props = NativeStackScreenProps<StackParamList, 'SetPassword'>;
 
-const setPassword: React.FC<Props> = ({ navigation }) => {
+const setPassword: React.FC<Props> = ({ navigation, route }) => {
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,11 +32,30 @@ const setPassword: React.FC<Props> = ({ navigation }) => {
   };
   const toggleHome = () => {
     setModalVisible(false);
-    navigation.navigate('CreateProfile');
+    navigation.navigate('SignIn');
   };
   const bgPress = () => {
     setModalVisible(false);
   };
+
+    const handleRegister = () => {
+    // Get the navigation state
+    const state = navigation.getState();
+    const routes = state.routes;
+    const prevRoute = routes[routes.length - 2]; 
+    console.log("Navigation Routes:", routes);
+    console.log("Previous Route Object:", prevRoute);
+    console.log("Navigation State:", state);
+    console.log('Previous Route:', prevRoute?.name);
+
+    if (prevRoute?.name === 'PhoneVerification') {
+      setModalVisible(true);
+    } else {
+      // Otherwise go to CreateProfile
+      navigation.navigate('CreateProfile');
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={bgPress}>
       <View style={{ flex: 1 }}>
@@ -83,8 +102,9 @@ const setPassword: React.FC<Props> = ({ navigation }) => {
             backgroundColor={isFormValid ? colors.brown : colors.black}
             textColor={colors.white}
             borderRadius={30}
-            onPress={toggleModal}
-            // onPress={() => navigation.navigate('CreateProfile')}
+            onPress={handleRegister}
+            // onPress={toggleModal}
+            // onPress={() => navigation.navigate("CreateProfile")}
             disabled={!isFormValid}
           />
         </View>

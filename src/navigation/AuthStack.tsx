@@ -24,6 +24,7 @@ import FindingDriver from '../screens/User/FindingDriver';
 import HomeUser from '../screens/User/HomeUser';
 import PaymentUser from '../screens/User/payment';
 import TripOptions from '../screens/User/TripOptions';
+import BankDetails from '../screens/Driver/BankDetails';
 
 export type StackParamList = {
   WelcomeFirst: undefined;
@@ -50,6 +51,7 @@ export type StackParamList = {
   TripOptions: undefined;
   FindingDriver: undefined;
   DriverOfferings: undefined;
+  BankDetails: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -84,6 +86,7 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="TripOptions" component={TripOptions} />
       <Stack.Screen name="FindingDriver" component={FindingDriver} />
       <Stack.Screen name="DriverOfferings" component={DriverOfferings} />
+      <Stack.Screen name="BankDetails" component={BankDetails} />
     </Stack.Navigator>
   );
 };

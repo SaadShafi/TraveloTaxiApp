@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Image,
   Keyboard,
+  Modal,
   StyleSheet,
   Text,
   TextInput,
@@ -16,9 +17,19 @@ import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackParamList } from '../../navigation/AuthStack';
+import { fontSizes } from '../../utilities/fontsizes';
+import CustomTextInput from '../../components/CustomTextInput';
 
-const RideDetails = () => {
-  const navigation = useNavigation();
+type Props = NativeStackScreenProps<StackParamList, 'RideDetails'>;
+
+const RideDetails: React.FC<Props> = ({navigation}) => {
+   const [modalVisible, setModalVisible] = useState(false);
+
+   const toggleModal = () => {
+    setModalVisible(true)
+   }
   return (
     <View style={styles.container}>
       <TopHeader text="Ride Details" isMenu={true} />
@@ -106,21 +117,60 @@ const RideDetails = () => {
               backgroundColor={colors.brown}
               textColor={colors.white}
               borderRadius={30}
-              onPress={() => navigation.navigate("RideArriving")}
+              // onPress={() => navigation.navigate("RideArriving")}
+              onPress={toggleModal}
             />
           </View>
         </View>
 
         </View>
       </View>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitleOne}>Bidding</Text>
+            <CustomTextInput
+            placeholder='Enter Your Bid Amount'
+            placeholderTextColor={colors.black}
+            borderColor={colors.gray}
+            borderRadius={30}
+            borderWidth={1}
+            backgroundColor={colors.white}
+            inputHeight={height * 0.06}
+            inputWidth={width * 0.6}
+            keyboardType='numeric'
+            textAlign="center"
+            />
+
+            <CustomButton
+            text='Continue'
+            textColor={colors.white}
+            backgroundColor={colors.brown}
+            borderRadius={30}
+            btnHeight={height * 0.06}
+            btnWidth={width * 0.45}
+            onPress={() => {
+              setModalVisible(false);
+              navigation.goBack()
+            }}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
+    backgroundColor: colors.white,
   },
   subContainer:{
   height: height * 0.68,
@@ -290,7 +340,30 @@ const styles = StyleSheet.create({
     fontSize:21,
     left: width * 0.05,
     top: height * 0.013,
-  }
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 252, 252, 0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    width: width * 0.83,
+    alignItems: 'center',
+    borderWidth: 0.9,
+    borderColor: colors.black,
+    gap: height * 0.02,
+    paddingVertical: height * 0.02
+  },
+  modalTitleOne: {
+      fontFamily: fontFamily.ClashDisplayMedium,
+      fontSize: fontSizes.lg2,
+      textAlign: 'center',
+      color: colors.black,
+    },
 });
 
 export default RideDetails

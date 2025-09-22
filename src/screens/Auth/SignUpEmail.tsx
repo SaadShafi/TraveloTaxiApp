@@ -155,7 +155,7 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
               </View>
               <View style={{ flexDirection: 'row', gap: height * 0.01 }}>
                 <Text style={styles.signIn}>and</Text>
-                <TouchableOpacity activeOpacity={0.7}>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("PrivacyPolicy")}>
                   <Text style={styles.text}>Privacy Policy</Text>
                 </TouchableOpacity>
               </View>

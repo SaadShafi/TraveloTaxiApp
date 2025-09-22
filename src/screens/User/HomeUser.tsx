@@ -21,9 +21,9 @@ import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-type Props = NativeStackScreenProps<StackParamList, 'homeUser'>;
+type Props = NativeStackScreenProps<StackParamList, 'HomeUser'>;
 
-const HomeUser = () => {
+const HomeUser: React.FC<Props>  = ({ navigation }) => {
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const [activeTab, setActiveTab] = useState<'bookNow' | 'preBooking'>(
     'bookNow',
@@ -102,6 +102,7 @@ const HomeUser = () => {
             backgroundColor={colors.black}
             text="Continue"
             textColor={colors.white}
+            onPress={() => navigation.navigate('TripOptions')}
           />
         </View>
       </View>

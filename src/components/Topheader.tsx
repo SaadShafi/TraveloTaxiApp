@@ -128,17 +128,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   // };
 
   const handleDrawer = () => {
-    try {
-      // Check if we're in a drawer context
-      const parent = navigation.getParent();
-      if (parent && typeof parent.dispatch === 'function') {
-        parent.dispatch(DrawerActions.openDrawer());
-      } else {
-        console.log('Drawer not available in this context');
-      }
-    } catch (error) {
-      console.warn('Could not open drawer:', error);
-    }
+     navigation.dispatch(DrawerActions.openDrawer());
   };
 
   const handlePress = () => {

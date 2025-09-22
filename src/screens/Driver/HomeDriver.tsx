@@ -16,6 +16,7 @@ import images from '../../assets/Images';
 import { height, width } from '../../utilities';
 import { fontFamily } from '../../assets/Fonts';
 import { Text } from 'react-native-gesture-handler';
+import { fontSizes } from '../../utilities/fontsizes';
 
 const HomeDriver = () => {
   const navigation = useNavigation<any>();
@@ -44,12 +45,12 @@ const HomeDriver = () => {
 
   const iconTranslateX = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [width * 0.31, 10], 
+    outputRange: [width * 0.31, 10],
   });
 
   const textTranslateX = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [20, width * 0.1], 
+    outputRange: [20, width * 0.15],
   });
 
   return (
@@ -66,12 +67,14 @@ const HomeDriver = () => {
         </View>
 
         <View>
-          <Image
-          source={images.notification}
-          />
+          <Image source={images.notification} />
         </View>
       </View>
-      <TouchableOpacity activeOpacity={1} onPress={toggleOnline}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={toggleOnline}
+        style={{ marginTop: -height * 0.07 }}
+      >
         <Animated.View style={[styles.toggleButton, { backgroundColor }]}>
           <Animated.View
             style={[
@@ -115,14 +118,11 @@ const HomeDriver = () => {
           distance="10 miles"
           fare="$60.00"
           onCancel={() => console.log('Cancel Book Now')}
-         onAccept={() => navigation.navigate("RideDetails", { 
-            passengerName: "Adam James", 
-            distance: "10 miles", 
-            fare: "$60.00" 
-          })}
-          onBid={() => console.log('Bid Now')}
+          onAccept={() =>
+            navigation.navigate('RideArriving')
+          }
+          onBid={() => navigation.navigate("RideDetails")}
         />
-
         <BookingCard
           type="Pre-Booking"
           passengerName="Adam James"
@@ -130,8 +130,22 @@ const HomeDriver = () => {
           distance="10 miles"
           fare="$60.00"
           onCancel={() => console.log('Cancel Pre-Booking')}
-          onAccept={() => console.log('Accept Pre-Booking')}
-          onBid={() => console.log('Bid Now')}
+         onAccept={() =>
+            navigation.navigate('RideArriving')
+          }
+          onBid={() => navigation.navigate("RideDetails")}
+        />
+        <BookingCard
+          type="Book Now"
+          passengerName="Adam James"
+          passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
+          distance="10 miles"
+          fare="$60.00"
+          onCancel={() => console.log('Cancel Book Now')}
+          onAccept={() =>
+            navigation.navigate('RideArriving')
+          }
+          onBid={() => navigation.navigate("RideDetails")}
         />
       </ScrollView>
     </ImageBackground>
@@ -153,8 +167,7 @@ const styles = StyleSheet.create({
     borderColor: colors.splitGray,
   },
   toggleText: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: fontSizes.sm2,
     fontFamily: fontFamily.SfProDisplayMedium,
     position: 'absolute',
     zIndex: 3,
@@ -174,29 +187,29 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
-  alex:{
-    fontFamily:fontFamily.SfProDisplayBold,
-    fontWeight:"700",
-    color:colors.black,
-    fontSize:17,
+  alex: {
+    fontFamily: fontFamily.SfProDisplayBold,
+    fontWeight: '700',
+    color: colors.black,
+    fontSize: 17,
   },
-  ride:{
-    fontFamily:fontFamily.SfProDisplayBold,
-    fontWeight:"600",
-    color:colors.black,
+  ride: {
+    fontFamily: fontFamily.SfProDisplayBold,
+    fontWeight: '600',
+    color: colors.black,
   },
-  rideContainer:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    backgroundColor:colors.whiteShade,
+  rideContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colors.whiteShade,
     height: height * 0.09,
     width: width * 0.75,
-    borderRadius:20,
-    alignItems:'center',
-    paddingHorizontal:20,
-    left:width*0.2,
-    bottom:height*0.07,
-  }
+    borderRadius: 20,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    left: width * 0.2,
+    bottom: height * 0.07,
+  },
 });
 
 export default HomeDriver;
