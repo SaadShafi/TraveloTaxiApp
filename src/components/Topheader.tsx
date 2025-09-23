@@ -119,16 +119,8 @@ const TopHeader: React.FC<TopHeaderProps> = ({
     setBlockModal(true);
   };
 
-  // const handleDrawer = () => {
-  //   // if (navigation) {
-  //   //   navigation.dispatch(DrawerActions.openDrawer());
-  //   // }
-  //   // navigation.dispatch(DrawerActions.openDrawer());
-  //   navigation.getParent()?.dispatch(DrawerActions.openDrawer());
-  // };
-
   const handleDrawer = () => {
-     navigation.dispatch(DrawerActions.openDrawer());
+    navigation.dispatch(DrawerActions.openDrawer());
   };
 
   const handlePress = () => {

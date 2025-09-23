@@ -1,19 +1,25 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import AddPaymentMethod from '../screens/User/AddPaymentUser';
+import DriverOfferings from '../screens/User/DriverOfferings';
+import FindingDriver from '../screens/User/FindingDriver';
 import HomeUser from '../screens/User/HomeUser';
 import PaymentUser from '../screens/User/payment';
 import Schedule from '../screens/User/Schedule';
+import TripOptions from '../screens/User/TripOptions';
 import WalletUser from '../screens/User/WalletUser';
 import WalletUserSec from '../screens/User/WalletUserSec';
 
 export type StackParamList = {
   HomeUser: undefined;
-  addPaymentMethod: undefined;
-  paymentUser: undefined;
-  schedule: undefined;
-  walletUser: undefined;
-  walletUserSec: undefined;
+  AddPaymentMethod: undefined;
+  PaymentUser: undefined;
+  Schedule: undefined;
+  WalletUser: undefined;
+  WalletUserSec: undefined;
+  TripOptions: undefined;
+  FindingDriver: undefined;
+  DriverOfferings: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -26,11 +32,14 @@ const UserStack: React.FC = () => {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="HomeUser" component={HomeUser} />
-      <Stack.Screen name="addPaymentMethod" component={AddPaymentMethod} />
-      <Stack.Screen name="paymentUser" component={PaymentUser} />
-      <Stack.Screen name="schedule" component={Schedule} />
-      <Stack.Screen name="walletUser" component={WalletUser} />
-      <Stack.Screen name="walletUserSec" component={WalletUserSec} />
+      <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
+      <Stack.Screen name="PaymentUser" component={PaymentUser} />
+      <Stack.Screen name="Schedule" component={Schedule} />
+      <Stack.Screen name="WalletUser" component={WalletUser} />
+      <Stack.Screen name="WalletUserSec" component={WalletUserSec} />
+      <Stack.Screen name="TripOptions" component={TripOptions} />
+      <Stack.Screen name="FindingDriver" component={FindingDriver} />
+      <Stack.Screen name="DriverOfferings" component={DriverOfferings} />
     </Stack.Navigator>
   );
 };

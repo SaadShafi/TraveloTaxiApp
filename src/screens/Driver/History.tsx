@@ -1,4 +1,13 @@
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomTabs from '../../components/CustomTabs';
@@ -19,6 +28,7 @@ interface cardProp {
 }
 
 const History = () => {
+  const navigation = useNavigation<any>();
   const CompletedData = [
     {
       image: images.User,
@@ -87,7 +97,12 @@ const History = () => {
 
   const cardComplete = ({ item }: { item: cardProp }) => {
     return (
-      <View style={styles.centeredCard}>
+      <TouchableOpacity
+        style={styles.centeredCard}
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('HistoryDetailOne')}
+      >
+        {/* <View style={styles.centeredCard}> */}
         <View style={styles.cardContainer}>
           <View style={styles.imgMain}>
             <Image source={item.image} style={styles.cardImg} />
@@ -112,12 +127,14 @@ const History = () => {
             </View>
           </View>
         </View>
-      </View>
+        {/* </View> */}
+      </TouchableOpacity>
     );
   };
   const cardCanceled = ({ item }: { item: cardProp }) => {
     return (
-      <View style={styles.centeredCard}>
+      <TouchableOpacity style={styles.centeredCard} activeOpacity={0.7}>
+        {/* <View style={styles.centeredCard}> */}
         <View style={styles.cardContainer}>
           <View style={styles.imgMain}>
             <Image source={item.image} style={styles.cardImg} />
@@ -142,7 +159,8 @@ const History = () => {
             </View>
           </View>
         </View>
-      </View>
+        {/* </View> */}
+      </TouchableOpacity>
     );
   };
 

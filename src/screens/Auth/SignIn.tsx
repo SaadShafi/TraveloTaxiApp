@@ -1,3 +1,4 @@
+import { CommonActions } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import {
@@ -9,16 +10,22 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
 import type { StackParamList } from '../../navigation/AuthStack';
+import {
+  setFullName,
+  setLogin,
+  setUser,
+  setUserEmail,
+} from '../../redux/slice/roleSlice';
+import { RootState } from '../../redux/store';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 
 type Props = NativeStackScreenProps<StackParamList, 'SignIn'>;
 
@@ -26,6 +33,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
   const selectedRole = useSelector(
     (state: RootState) => state.role.selectedRole,
   );
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dismissKeyboard = () => {
@@ -37,6 +45,31 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
   useEffect(() => {
     console.log('Selected Role:', selectedRole);
   }, [selectedRole]);
+
+  const handleSignIn = () => {
+    // Mock user data for development
+    const mockUser = {
+      email: email,
+      fullName: 'Test User',
+      role: selectedRole || 'user',
+    };
+
+    // Update Redux state
+    dispatch(setLogin());
+    dispatch(setUser(mockUser));
+    dispatch(setUserEmail(email));
+    dispatch(setFullName(mockUser.fullName));
+
+    console.log('Mock login successful');
+
+    // Reset to AuthStack - the MainNavigator will automatically show Drawer
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'AuthStack' }], // Reset to AuthStack
+      }),
+    );
+  };
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -82,16 +115,16 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
             textColor={colors.white}
             borderRadius={30}
             disabled={!isFormValid}
-            // onPress={() => navigation.navigate('HomeUser')}
-            onPress={() => {
-              if (selectedRole === 'user') {
-                navigation.navigate('HomeUser');
-              } else if (selectedRole === 'driver') {
-                navigation.navigate('HomeDriver');
-              } else {
-                navigation.navigate('AboutUs'); // fallback if no role
-              }
-            }}
+            // onPress={() => {
+            //   if (selectedRole === 'user') {
+            //     navigation.navigate('HomeUser');
+            //   } else if (selectedRole === 'driver') {
+            //     navigation.navigate('HomeDriver');
+            //   } else {
+            //     console.log('No Naviagtion screen found'); // fallback if no role
+            //   }
+            // }}
+            onPress={handleSignIn}
           />
           <View style={{ paddingVertical: height * 0.03 }}>
             <Image source={images.orLine} style={styles.orLine} />
