@@ -5,19 +5,19 @@ import History from '../screens/Driver/History';
 import HistoryDetailOne from '../screens/Driver/HistoryDetailOne';
 import HomeDriver from '../screens/Driver/HomeDriver';
 import PaymentHistory from '../screens/Driver/PaymentHistory';
+import RideArriving from '../screens/Driver/RideArriving';
 import RideDetails from '../screens/Driver/RideDetails';
 import Wallet from '../screens/Driver/Wallet';
-import RideArriving from '../screens/Driver/RideArriving';
 
 export type StackParamList = {
-  homeDriver: undefined;
-  bankDetails: undefined;
-  history: undefined;
-  historyDetailOne: undefined;
-  paymentHistory: undefined;
-  rideDetails: undefined;
-  wallet: undefined;
-  rideArriving: undefined;
+  HomeDriver: undefined;
+  BankDetails: undefined;
+  History: undefined;
+  HistoryDetailOne: undefined;
+  PaymentHistory: undefined;
+  RideDetails: undefined;
+  Wallet: undefined;
+  RideArriving: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -26,17 +26,17 @@ const DriverStack: React.FC = () => {
   return (
     <Stack.Navigator
       id="driver-stack"
-      initialRouteName="homeDriver"
+      initialRouteName="HomeDriver"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="homeDriver" component={HomeDriver} />
-      <Stack.Screen name="bankDetails" component={BankDetails} />
-      <Stack.Screen name="history" component={History} />
-      <Stack.Screen name="historyDetailOne" component={HistoryDetailOne} />
-      <Stack.Screen name="paymentHistory" component={PaymentHistory} />
-      <Stack.Screen name="rideDetails" component={RideDetails} />
-      <Stack.Screen name="wallet" component={Wallet} />
-      <Stack.Screen name="rideArriving" component={RideArriving} />
+      <Stack.Screen name="HomeDriver" component={HomeDriver} />
+      <Stack.Screen name="BankDetails" component={BankDetails} />
+      <Stack.Screen name="History" component={History} />
+      <Stack.Screen name="HistoryDetailOne" component={HistoryDetailOne} />
+      <Stack.Screen name="PaymentHistory" component={PaymentHistory} />
+      <Stack.Screen name="RideDetails" component={RideDetails} />
+      <Stack.Screen name="Wallet" component={Wallet} />
+      <Stack.Screen name="RideArriving" component={RideArriving} />
     </Stack.Navigator>
   );
 };

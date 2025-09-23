@@ -6,14 +6,52 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import 'react-native-gesture-handler';
+import 'react-native-reanimated';
 // import { SafeAreaProvider } from 'react-native-safe-area-context';
 // import { Text } from 'react-native-gesture-handler';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import AuthStack from './src/navigation/AuthStack';
+import Drawer from './src/navigation/Drawer';
 import { store } from './src/redux/store';
 import { colors } from './src/utilities/colors';
+
+const Stack = createNativeStackNavigator();
+
+// function AppNavigator() {
+//   const isLoggedIn = useSelector((state: any) => state.role.isLogin);
+//   const selectedRole = useSelector((state: any) => state.role.selectedRole);
+
+//   // Use explicit return with NO extra spaces
+//   if (isLoggedIn && selectedRole) {
+//     return (
+//       <Stack.Navigator screenOptions={{ headerShown: false }}>
+//         <Stack.Screen name="MainApp" component={Drawer} />
+//       </Stack.Navigator>
+//     );
+//   }
+
+//   return (
+//     <Stack.Navigator screenOptions={{ headerShown: false }}>
+//       <Stack.Screen name="Auth" component={AuthStack} />
+//     </Stack.Navigator>
+//   );
+// }
+
+function AppNavigator() {
+  const isLoggedIn = useSelector((state: any) => state.role.isLogin);
+  const selectedRole = useSelector((state: any) => state.role.selectedRole);
+
+  // Return the component directly, no navigator wrapper
+  if (isLoggedIn && selectedRole) {
+    return <Drawer />;
+  }
+
+  return <AuthStack />;
+}
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -23,7 +61,8 @@ function App() {
       <Provider store={store}>
         <NavigationContainer>
           <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-          <AuthStack />
+          {/* <AuthStack /> */}
+          <AppNavigator />
           <Toast
             config={{
               custom_otp: ({ text1, text2 }) => (

@@ -1,8 +1,13 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {
+  CommonActions,
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native';
 import { useState } from 'react';
 import {
   Image,
+  Modal,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -12,165 +17,160 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { fontFamily } from '../assets/Fonts';
 import images from '../assets/Images';
+import CustomButton from '../components/CustomButton';
+import { logout } from '../redux/slice/authSlice';
+import { removeUser } from '../redux/slice/roleSlice';
 import { RootState } from '../redux/store';
 import { height, width } from '../utilities';
 import { colors } from '../utilities/colors';
+import { fontSizes } from '../utilities/fontsizes';
 import DriverStack from './DriverStack';
 import UserStack from './UserStack';
-
-type Props = {
-  navigation: NavigationProp<any>;
-  selectedRole: number;
-  toggleModal: () => void;
-};
 
 const CustomDrawerContent = (props: any) => {
   const selectedRole = useSelector(
     (state: RootState) => state.role.selectedRole,
   );
   const navigation = useNavigation<NavigationProp<any>>();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalToggle, setModalToggle] = useState(false);
-  const Email = useSelector((state: any) => state.role.userEmail);
-  const FullName = useSelector((state: any) => state.role.fullName);
-  const profilePic = useSelector((state: any) => state.role.profilePic);
-  const user = useSelector((state: any) => state.role.user);
   const dispatch = useDispatch();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
   };
 
-  const handleCancelPress = () => {
-    setModalOpen(false);
-  };
-
   const handleLogout = () => {
+    // Reset both auth and role states
+    dispatch(removeUser());
+    dispatch(logout());
+
+    // Close any modals
     setModalOpen(false);
-    navigation.navigate('roleSelector');
+
+    // Navigate back to auth stack
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'AuthStack' }],
+      }),
+    );
+
+    console.log('User logged out successfully');
   };
-
-  // const handleHomeNavigation = () => {
-  //   if (selectedRole === 'user') {
-  //     navigation.dispatch(
-  //       CommonActions.reset({
-  //         index: 0,
-  //         routes: [{ name: 'homeUser' }],
-  //       }),
-  //     );
-  //     setTimeout(() => {
-  //       props.navigation.closeDrawer();
-  //     }, 100);
-  //   } else if (selectedRole === 'driver') {
-  //     navigation.dispatch(
-  //       CommonActions.reset({
-  //         index: 0,
-  //         routes: [{ name: 'homeDriver' }],
-  //       }),
-  //     );
-  //     setTimeout(() => {
-  //       props.navigation.closeDrawer();
-  //     }, 100);
-  //   }
-  // };
-
-  //   const logoutAcc = async (props) => {
-  //     try {
-  //       const { response, error } = await apiHelper(
-  //         "POST",
-  //         "auth/logout",
-  //         {},
-  //         {}
-  //       );
-
-  //       if (response) {
-  //         Toast.show({
-  //           text1: "Success",
-  //           text2: response.data.message || "User Logged Out Successfully",
-  //           type: "success",
-  //         });
-
-  //         console.log("Response Logout:", response);
-
-  //         dispatch(removeUser());
-  //         navigation.dispatch(
-  //           CommonActions.reset({
-  //             index: 0,
-  //             routes: [{ name: "roleSelector" }],
-  //           })
-  //         );
-  //         // props.navigation.closeDrawer()
-  //         if (props?.navigation?.closeDrawer) {
-  //           props.navigation.closeDrawer();
-  //         }
-  //       } else {
-  //         Toast.show({
-  //           type: "error",
-  //           text1: "Error",
-  //           text2: response?.data?.data?.message || "Failed to Logout",
-  //         });
-  //       }
-  //     } catch (err) {
-  //       Toast.show({
-  //         text1: "Error",
-  //         text2: typeof err === "string" ? err : "Failed to logout",
-  //         type: "error",
-  //       });
-  //     } finally {
-  //       setModalOpen(false);
-  //     }
-  //   };
 
   const handleHomeNavigation = () => {
     if (selectedRole === 'user') {
-      navigation.navigate('UserStack', { screen: 'homeUser' });
+      navigation.navigate('UserApp', { screen: 'HomeUser' });
     } else if (selectedRole === 'driver') {
-      navigation.navigate('DriverStack', { screen: 'homeDriver' });
+      navigation.navigate('DriverApp', { screen: 'HomeDriver' });
     }
+    props.navigation.closeDrawer();
+  };
 
-    setTimeout(() => {
-      props.navigation.closeDrawer();
-    }, 100);
+  const handleNavigation = (routeName: string) => {
+    if (selectedRole === 'user') {
+      navigation.navigate('UserApp', { screen: routeName });
+    } else if (selectedRole === 'driver') {
+      navigation.navigate('DriverApp', { screen: routeName });
+    }
+    props.navigation.closeDrawer();
   };
 
   const UserDrawerList = [
-    { title: 'Home', icon: '🏠' },
-    { title: 'History', icon: '🕐' },
-    { title: 'Schedule', icon: '📅' },
-    { title: 'Wallet', icon: '💳' },
-    { title: 'Family Tree', icon: '👥' },
-    { title: 'Settings', icon: '⚙️' },
-    { title: 'Help & Support', icon: '❓' },
+    {
+      title: 'Home',
+      icon: images.homeIcon,
+      screen: 'HomeUser',
+    },
+    {
+      title: 'History',
+      icon: images.historyIcon,
+      screen: 'BookingHistory',
+    },
+    {
+      title: 'Schedule',
+      icon: images.scheduleIcon,
+      screen: 'Schedule',
+    },
+    {
+      title: 'Wallet',
+      icon: images.walletIcon,
+      screen: 'Wallet',
+    },
+    {
+      title: 'Settings',
+      icon: images.settingsIcon,
+      screen: 'Settings',
+    },
+    {
+      title: 'Help & Support',
+      icon: images.helpSupportIcon,
+      screen: 'HelpSupport',
+    },
+    {
+      title: 'Logout',
+      icon: images.logoutIcon,
+      screen: 'Logout',
+      onPress: () => toggleModal(),
+    },
   ];
+
   const DriverDrawerList = [
-    { title: 'Home', icon: '🏠' },
-    { title: 'History', icon: '🕐' },
-    { title: 'Schedule', icon: '📅' },
-    { title: 'Wallet', icon: '💳' },
-    { title: 'Family Tree', icon: '👥' },
-    { title: 'Settings', icon: '⚙️' },
-    { title: 'Help & Support', icon: '❓' },
+    {
+      title: 'Home',
+      icon: images.homeIcon,
+      screen: 'HomeDriver',
+    },
+    {
+      title: 'History',
+      icon: images.historyIcon,
+      screen: 'History',
+    },
+    {
+      title: 'Schedule',
+      icon: images.scheduleIcon,
+      screen: 'Schedule',
+    },
+    {
+      title: 'Wallet',
+      icon: images.walletIcon,
+      screen: 'Wallet',
+    },
+    {
+      title: 'Settings',
+      icon: images.settingsIcon,
+      screen: 'Settings',
+    },
+    {
+      title: 'Help & Support',
+      icon: images.helpSupportIcon,
+      screen: 'HelpSupport',
+    },
+    {
+      title: 'Logout',
+      icon: images.logoutIcon,
+      screen: 'Logout',
+      onPress: () => toggleModal(),
+    },
   ];
 
   return (
     <View style={styles.gradientContainer}>
       <View style={styles.gradientTop} />
-      <View style={styles.gradientMiddle} />
-      <View style={styles.gradientBottom} />
-
+      <View style={styles.gradientMiddle}>
+        <Image source={images.drawerBg} style={styles.drawerBgImg} />
+      </View>
       <SafeAreaView style={styles.container}>
-        <View style={styles.closeButtonContainer}>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => props.navigation.closeDrawer()}
-          >
-            <Text style={styles.closeButtonText}>← Close</Text>
-          </TouchableOpacity>
-        </View>
-
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={() => props.navigation.closeDrawer()}
+        >
+          <Image source={images.drawerBack} style={styles.drawerBackIcon} />
+          <Text style={styles.closeButtonText}> Close</Text>
+        </TouchableOpacity>
         <View style={styles.profileSection}>
-          <View style={styles.profileImageContainer}>
-            <Image source={images.User} style={styles.profileImage} />
+          <View style={{ right: width * 0.04 }}>
+            <Image source={images.drawerProf} style={styles.profileImage} />
           </View>
           <View style={styles.profileTextContainer}>
             <Text style={styles.profileName}>Name</Text>
@@ -184,35 +184,11 @@ const CustomDrawerContent = (props: any) => {
                 <TouchableOpacity
                   style={styles.menuItem}
                   onPress={() => {
-                    let routeName = '';
-
-                    switch (data.title) {
-                      case 'Home':
-                        handleHomeNavigation();
-                        return;
-                      case 'My Account':
-                        routeName = 'myAccount';
-                        break;
-                      case 'Booking History':
-                        routeName = 'bookingHistory';
-                        break;
-                      case 'Gift Card':
-                        routeName = 'giftCard';
-                        break;
-                      case 'Favourites':
-                        routeName = 'favourite';
-                        break;
-                      case 'Settings':
-                        routeName = 'settings';
-                        break;
-                      default:
-                        routeName = 'UserStack';
+                    if (data.onPress) {
+                      data.onPress();
+                    } else {
+                      handleNavigation(data.screen);
                     }
-                    // navigation.navigate(routeName);
-                    if (selectedRole === 'user') {
-                      navigation.navigate('UserStack', { screen: routeName });
-                    }
-                    props.navigation.closeDrawer();
                   }}
                   activeOpacity={0.5}
                 >
@@ -221,45 +197,18 @@ const CustomDrawerContent = (props: any) => {
                 </TouchableOpacity>
               </View>
             ))}
-          {selectedRole === 'freelancer' &&
+
+          {selectedRole === 'driver' &&
             DriverDrawerList.map((data, index) => (
               <View style={styles.menuItemMain} key={index}>
                 <TouchableOpacity
                   style={styles.menuItem}
                   onPress={() => {
-                    let routeName = '';
-
-                    switch (data.title) {
-                      case 'Home':
-                        handleHomeNavigation();
-                        return;
-                      case 'My Account':
-                        routeName = 'myAccount';
-                        break;
-                      case 'Booking History':
-                        routeName = 'bookingHistory';
-                        break;
-                      case 'Payment History':
-                        routeName = 'paymentHistory';
-                        break;
-                      case 'Settings':
-                        routeName = 'settings';
-                        break;
-                      case 'Rating & Reviews':
-                        routeName = 'rateReview';
-                        break;
-                      case 'Service Statistics':
-                        routeName = 'serviceStatistics';
-                        break;
-                      default:
-                        routeName = 'DriverStack';
+                    if (data.onPress) {
+                      data.onPress();
+                    } else {
+                      handleNavigation(data.screen);
                     }
-
-                    // navigation.navigate(routeName);
-                    if (selectedRole === 'driver') {
-                      navigation.navigate('DriverStack', { screen: routeName });
-                    }
-                    props.navigation.closeDrawer();
                   }}
                   activeOpacity={0.5}
                 >
@@ -269,14 +218,41 @@ const CustomDrawerContent = (props: any) => {
               </View>
             ))}
         </View>
-
-        <View style={styles.logoutSection}>
-          <TouchableOpacity style={styles.logoutButton} onPress={toggleModal}>
-            <Text style={styles.logoutIcon}>↗</Text>
-            <Text style={styles.logoutText}>Logout</Text>
-          </TouchableOpacity>
-        </View>
-
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalOpen}
+          onRequestClose={() => setModalOpen(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Logout</Text>
+              <Text style={styles.modalMessage}>
+                Are you sure you want to logout?
+              </Text>
+              <View style={styles.modalButtons}>
+                <CustomButton
+                  text="Cancel"
+                  textColor={colors.black}
+                  btnHeight={height * 0.05}
+                  btnWidth={width * 0.33}
+                  backgroundColor={colors.gray}
+                  borderRadius={10}
+                  onPress={toggleModal}
+                />
+                <CustomButton
+                  text="Logout"
+                  textColor={colors.white}
+                  btnHeight={height * 0.05}
+                  btnWidth={width * 0.33}
+                  backgroundColor={colors.brown}
+                  borderRadius={10}
+                  onPress={handleLogout}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
         <View style={styles.driverModeContainer}>
           <TouchableOpacity style={styles.driverModeButton}>
             <Text style={styles.driverModeText}>Driver Mode</Text>
@@ -289,7 +265,9 @@ const CustomDrawerContent = (props: any) => {
 
 const Drawer = () => {
   const Drawer = createDrawerNavigator();
-  const { selectedRole } = useSelector((state: any) => state.role);
+  const selectedRole = useSelector(
+    (state: RootState) => state.role.selectedRole,
+  );
 
   return (
     <Drawer.Navigator
@@ -307,20 +285,16 @@ const Drawer = () => {
     >
       {selectedRole === 'user' && (
         <Drawer.Screen
-          name="UserStack"
+          name="UserApp"
           component={UserStack}
-          options={{
-            swipeEnabled: false,
-          }}
+          options={{ swipeEnabled: false }}
         />
       )}
       {selectedRole === 'driver' && (
         <Drawer.Screen
-          name="DriverStack"
+          name="DriverApp"
           component={DriverStack}
-          options={{
-            swipeEnabled: false,
-          }}
+          options={{ swipeEnabled: false }}
         />
       )}
     </Drawer.Navigator>
@@ -339,26 +313,18 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: '30%',
+    height: height * 0.125,
     backgroundColor: colors.brown,
-    borderTopRightRadius: 20,
   },
   gradientMiddle: {
     position: 'absolute',
-    top: '30%',
-    left: 0,
-    right: 0,
-    height: '40%',
-    backgroundColor: colors.lightBrown,
+    top: height * 0.12,
+    height: height * 0.09,
   },
-  gradientBottom: {
-    position: 'absolute',
-    top: '70%',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: colors.white,
-    borderBottomRightRadius: 20,
+  drawerBgImg: {
+    width: width * 0.7,
+    height: height * 0.9,
+    resizeMode: 'contain',
   },
   container: {
     flex: 1,
@@ -366,18 +332,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     zIndex: 1,
   },
-  closeButtonContainer: {
-    paddingTop: 20,
-    paddingBottom: 10,
+  drawerBackIcon: {
+    width: width * 0.04,
+    height: height * 0.04,
+    resizeMode: 'contain',
   },
   closeButton: {
+    paddingTop: height * 0.03,
+    paddingBottom: height * 0.02,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    width: width * 0.19,
   },
   closeButtonText: {
     color: colors.white,
-    fontSize: 16,
-    fontFamily: fontFamily.JakartaMedium,
+    fontSize: fontSizes.md,
+    fontFamily: fontFamily.ClashDisplayMedium,
   },
   profileSection: {
     flexDirection: 'row',
@@ -385,57 +356,54 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 10,
   },
-  profileImageContainer: {
-    marginRight: 15,
-  },
   profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 8,
-    resizeMode: 'cover',
+    width: width * 0.25,
+    height: height * 0.085,
+    resizeMode: 'contain',
   },
   profileTextContainer: {
-    flex: 1,
+    right: width * 0.03,
   },
   profileName: {
-    fontSize: 18,
-    fontFamily: fontFamily.JakartaMedium,
-    color: colors.shadeBlack,
-    marginBottom: 4,
+    fontSize: fontSizes.sm2,
+    fontFamily: fontFamily.ClashDisplayMedium,
+    color: colors.black,
   },
   profileEmail: {
-    fontSize: 14,
-    fontFamily: fontFamily.JakartaRegular,
-    color: colors.darkGray,
+    fontSize: fontSizes.sm,
+    fontFamily: fontFamily.ClashDisplayRegular,
+    color: colors.black,
   },
   menuContainer: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: height * 0.03,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 15,
+    // paddingVertical: 15,
     paddingHorizontal: 10,
-    borderBottomWidth: 0.5,
-    borderBottomColor: 'rgba(0,0,0,0.1)',
+    // borderBottomWidth: 0.5,
+    // borderBottomColor: colors.lightGray,
   },
   menuItemMain: {
     height: height * 0.06,
-    width: width * 0.65,
+    width: width * 0.68,
+    right: width * 0.03,
     justifyContent: 'center',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.9,
+    borderBottomColor: '#EFEFEF',
   },
   menuIcon: {
-    fontSize: 20,
     marginRight: 15,
-    width: 25,
+    width: width * 0.09,
+    resizeMode: 'contain',
     textAlign: 'center',
   },
   menuText: {
-    fontSize: 16,
-    fontFamily: fontFamily.JakartaRegular,
-    color: colors.shadeBlack,
+    fontSize: fontSizes.sm2,
+    fontFamily: fontFamily.ClashDisplayMedium,
+    color: colors.black,
   },
   logoutSection: {
     paddingVertical: 20,
@@ -472,6 +440,65 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 16,
     fontFamily: fontFamily.JakartaMedium,
+  },
+
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.61)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    backgroundColor: colors.white,
+    padding: 20,
+    borderRadius: 15,
+    width: width * 0.8,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: fontSizes.lg2,
+    fontFamily: fontFamily.ClashDisplayMedium,
+    color: colors.black,
+    marginBottom: 10,
+  },
+  modalMessage: {
+    fontSize: fontSizes.md,
+    fontFamily: fontFamily.ClashDisplayRegular,
+    color: colors.darkGray,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    gap: height * 0.02,
+  },
+  modalButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  cancelButton: {
+    backgroundColor: colors.gray,
+  },
+  logoutConfirmButton: {
+    backgroundColor: colors.brown,
+  },
+  cancelButtonText: {
+    color: colors.black,
+    fontFamily: fontFamily.JakartaMedium,
+    fontSize: fontSizes.md,
+  },
+  logoutConfirmText: {
+    color: colors.white,
+    fontFamily: fontFamily.JakartaMedium,
+    fontSize: fontSizes.md,
   },
 });
 

@@ -64,6 +64,16 @@ const images: { [key: string]: ImageSourcePropType } = {
   approve: require('../Images/approve.png'),
   Pickup: require('../Images/Pickup.png'),
   arrived: require('../Images/arrived.png'),
+  logoutIcon: require('../Images/logoutIcon.png'),
+  helpSupportIcon: require('../Images/helpSupportIcon.png'),
+  historyIcon: require('../Images/historyIcon.png'),
+  settingsIcon: require('../Images/settingsIcon.png'),
+  drawerProf: require('../Images/drawerProf.png'),
+  drawerBack: require('../Images/drawerBack.png'),
+  homeIcon: require('../Images/homeIcon.png'),
+  scheduleIcon: require('../Images/scheduleIcon.png'),
+  walletIcon: require('../Images/walletIcon.png'),
+  drawerBg: require('../Images/drawerBg.png'),
 };
 
 export default images;
