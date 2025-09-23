@@ -136,7 +136,7 @@ const RideDetails: React.FC<Props> = ({navigation}) => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitleOne}>Bidding</Text>
             <CustomTextInput
-            placeholder='Enter Your Bid Amount'
+            // placeholder='Enter Your Bid Amount'
             placeholderTextColor={colors.black}
             borderColor={colors.gray}
             borderRadius={30}

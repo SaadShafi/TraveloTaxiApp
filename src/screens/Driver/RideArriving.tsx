@@ -23,10 +23,12 @@ import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Progress from 'react-native-progress';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<StackParamList, 'RideArriving'>;
 
 const RideArriving = () => {
+    const navigation = useNavigation<any>();
   const arrivingSheetRef = useRef<ActionSheetRef>(null);
   const completedSheetRef = useRef<ActionSheetRef>(null);
   const thirdSheetRef = useRef<ActionSheetRef>(null);
@@ -926,9 +928,7 @@ const RideArriving = () => {
                     backgroundColor={colors.brown}
                     text="End Ride"
                     textColor={colors.white}
-                    onPress={() => {
-                      setModalVisibleThird(false);  
-                    }}
+                    onPress={() => navigation.navigate("HomeDriver")}
                   />
                 </View>
             </View>
