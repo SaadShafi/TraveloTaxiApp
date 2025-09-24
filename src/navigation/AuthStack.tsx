@@ -20,6 +20,7 @@ import DeleteAccount from '../screens/Global/DeleteAccount';
 import NotificationScreen from '../screens/Global/Notification';
 import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
 import Setting from '../screens/Global/Setting';
+import RideArrivingUser from '../screens/User/RideArrivingUser';
 
 export type StackParamList = {
   WelcomeFirst: undefined;
@@ -51,6 +52,7 @@ export type StackParamList = {
   notification: undefined;
   Chat: undefined;
   CallMain: undefined;
+  RideArrivingUser: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -81,6 +83,7 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="notification" component={NotificationScreen} />
       <Stack.Screen name="Chat" component={ChatMain} />
       <Stack.Screen name="CallMain" component={CallMain} />
+      <Stack.Screen name="RideArrivingUser" component={RideArrivingUser} />
     </Stack.Navigator>
   );
 };

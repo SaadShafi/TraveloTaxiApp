@@ -21,6 +21,7 @@ import ScheduleDetail from '../screens/User/ScheduleDetail';
 import TripOptions from '../screens/User/TripOptions';
 import WalletUser from '../screens/User/WalletUser';
 import WalletUserSec from '../screens/User/WalletUserSec';
+import RideArrivingUser from '../screens/User/RideArrivingUser';
 
 export type StackParamList = {
   HomeUser: undefined;
@@ -44,6 +45,7 @@ export type StackParamList = {
   DeleteAccount: undefined;
   HelpSupport: undefined;
   notification: undefined;
+  RideArrivingUser:undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -82,6 +84,7 @@ const UserStack: React.FC = () => {
       <Stack.Screen name="ContactUs" component={ContactUs} />
       <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
       <Stack.Screen name="HelpSupport" component={HelpAndSupport} />
+      <Stack.Screen name="RideArrivingUser" component={RideArrivingUser} />
     </Stack.Navigator>
   );
 };

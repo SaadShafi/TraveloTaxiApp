@@ -112,18 +112,6 @@ const RideDetails: React.FC<Props> = ({ navigation }) => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitleOne}>Bidding</Text>
             <CustomTextInput
-<<<<<<< HEAD
-            // placeholder='Enter Your Bid Amount'
-            placeholderTextColor={colors.black}
-            borderColor={colors.gray}
-            borderRadius={30}
-            borderWidth={1}
-            backgroundColor={colors.white}
-            inputHeight={height * 0.06}
-            inputWidth={width * 0.6}
-            keyboardType='numeric'
-            textAlign="center"
-=======
               placeholder="Enter Your Bid Amount"
               placeholderTextColor={colors.black}
               borderColor={colors.gray}
@@ -134,7 +122,6 @@ const RideDetails: React.FC<Props> = ({ navigation }) => {
               inputWidth={width * 0.6}
               keyboardType="numeric"
               textAlign="center"
->>>>>>> b67840be43eb8e07d8a52e932b16f4927f21618f
             />
 
             <CustomButton
