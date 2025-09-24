@@ -1,21 +1,21 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
+  Animated,
+  Image,
+  ImageBackground,
   ScrollView,
   StyleSheet,
-  View,
-  ImageBackground,
   TouchableOpacity,
-  Image,
-  Animated,
+  View,
 } from 'react-native';
+import { Text } from 'react-native-gesture-handler';
+import { fontFamily } from '../../assets/Fonts';
+import images from '../../assets/Images';
 import BookingCard from '../../components/BookingCard';
 import TopHeader from '../../components/Topheader';
-import { colors } from '../../utilities/colors';
-import images from '../../assets/Images';
 import { height, width } from '../../utilities';
-import { fontFamily } from '../../assets/Fonts';
-import { Text } from 'react-native-gesture-handler';
+import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
 const HomeDriver = () => {
@@ -59,21 +59,34 @@ const HomeDriver = () => {
       style={{ flex: 1, height: height * 1.05 }}
       resizeMode="cover"
     >
-      <TopHeader isMenu={true} navigation={navigation} />
+      <TopHeader isMenu={true} />
+      <View style={styles.notificationContainer}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => navigation.navigate('notification')}
+          style={styles.notificationButton}
+        >
+          <Image source={images.notification} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.rideContainer}>
         <View>
           <Text style={styles.alex}>Hi Alex!</Text>
           <Text style={styles.ride}>Need A Ride?</Text>
         </View>
 
-        <View>
+        {/* <TouchableOpacity
+          activeOpacity={0.7}
+          // onPress={() => navigation.navigate('notification')}
+          onPress={() => console.log('Notification Button Pressed')}
+        >
           <Image source={images.notification} />
-        </View>
+        </TouchableOpacity> */}
       </View>
       <TouchableOpacity
         activeOpacity={1}
         onPress={toggleOnline}
-        style={{ marginTop: -height * 0.07 }}
+        style={{ marginTop: -height * 0.06 }}
       >
         <Animated.View style={[styles.toggleButton, { backgroundColor }]}>
           <Animated.View
@@ -118,22 +131,18 @@ const HomeDriver = () => {
           distance="10 miles"
           fare="$60.00"
           onCancel={() => console.log('Cancel Book Now')}
-          onAccept={() =>
-            navigation.navigate('RideArriving')
-          }
-          onBid={() => navigation.navigate("RideDetails")}
+          onAccept={() => navigation.navigate('RideArriving')}
+          onBid={() => navigation.navigate('RideDetails')}
         />
         <BookingCard
-          type="Pre-Booking"
+          type="Book Now"
           passengerName="Adam James"
           passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
           distance="10 miles"
           fare="$60.00"
           onCancel={() => console.log('Cancel Pre-Booking')}
-         onAccept={() =>
-            navigation.navigate('RideArriving')
-          }
-          onBid={() => navigation.navigate("RideDetails")}
+          onAccept={() => navigation.navigate('RideArriving')}
+          onBid={() => navigation.navigate('RideDetails')}
         />
         <BookingCard
           type="Book Now"
@@ -142,10 +151,8 @@ const HomeDriver = () => {
           distance="10 miles"
           fare="$60.00"
           onCancel={() => console.log('Cancel Book Now')}
-          onAccept={() =>
-            navigation.navigate('RideArriving')
-          }
-          onBid={() => navigation.navigate("RideDetails")}
+          onAccept={() => navigation.navigate('RideArriving')}
+          onBid={() => navigation.navigate('RideDetails')}
         />
       </ScrollView>
     </ImageBackground>
@@ -153,6 +160,18 @@ const HomeDriver = () => {
 };
 
 const styles = StyleSheet.create({
+  notificationContainer: {
+    position: 'absolute',
+    top: height * 0.03,
+    right: width * 0.05,
+    zIndex: 1000,
+  },
+  notificationButton: {
+    padding: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 20,
+  },
+
   container: {
     padding: 15,
   },
@@ -198,6 +217,18 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.black,
   },
+  // rideContainer: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   backgroundColor: colors.whiteShade,
+  //   height: height * 0.09,
+  //   width: width * 0.75,
+  //   borderRadius: 20,
+  //   alignItems: 'center',
+  //   paddingHorizontal: 20,
+  //   left: width * 0.2,
+  //   bottom: height * 0.065,
+  // },
   rideContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -207,8 +238,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     paddingHorizontal: 20,
-    left: width * 0.2,
-    bottom: height * 0.07,
+    marginLeft: width * 0.2,
+    marginTop: -height * 0.065, // Use margin instead of bottom
+    zIndex: 1,
   },
 });
 

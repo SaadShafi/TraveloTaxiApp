@@ -1,3 +1,4 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import {
   Image,
@@ -20,6 +21,7 @@ import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
 const AddPaymentMethod = () => {
+  const navigation = useNavigation<NavigationProp<any>>();
   const [name, setName] = useState<string | null>(null);
   const [number, setNumber] = useState<string | null>(null);
   const [date, setDate] = useState<string | null>(null);
@@ -52,6 +54,11 @@ const AddPaymentMethod = () => {
 
   const toggleModal = () => {
     setModalVisible(prev => !prev);
+  };
+
+  const handleHomeNavigation = () => {
+    setModalVisible(false);
+    navigation.navigate('HomeUser');
   };
 
   return (
@@ -149,6 +156,23 @@ const AddPaymentMethod = () => {
                   <Text style={styles.cardText}>Expires: 12/26</Text>
                 </View>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.methodMain,
+                  selectedMethod === 'applePay' && {
+                    borderColor: colors.brown,
+                    backgroundColor: colors.lightBrown,
+                  },
+                ]}
+                activeOpacity={0.7}
+                onPress={() => setSelectedMethod('applePay')}
+              >
+                <Image source={images.applePay} />
+                <View style={styles.methodTextMain}>
+                  <Text style={styles.cardText}>**** **** **** 8970</Text>
+                  <Text style={styles.cardText}>Expires: 12/26</Text>
+                </View>
+              </TouchableOpacity>
               <View style={styles.checkboxContainer}>
                 <BouncyCheckbox
                   size={24}
@@ -189,6 +213,7 @@ const AddPaymentMethod = () => {
               backgroundColor={colors.black}
               textColor={colors.white}
               borderRadius={30}
+              onPress={() => navigation.goBack()}
             />
           </View>
         </View>
@@ -219,7 +244,7 @@ const AddPaymentMethod = () => {
                   backgroundColor={colors.brown}
                   textColor={colors.white}
                   borderRadius={30}
-                  onPress={() => setModalVisible(false)}
+                  onPress={handleHomeNavigation}
                 />
               </View>
             </View>

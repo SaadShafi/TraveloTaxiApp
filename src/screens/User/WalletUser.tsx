@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import {
   FlatList,
   Image,
@@ -21,6 +22,7 @@ interface transProp {
 }
 
 const WalletUser = () => {
+  const navigation = useNavigation<any>();
   const transactionData = [
     {
       image: images.card,
@@ -94,7 +96,11 @@ const WalletUser = () => {
     <View style={{ flex: 1 }}>
       <TopHeader text="Wallet" isBack={true} />
       <View style={styles.container}>
-        <TouchableOpacity style={styles.addMoneyMain} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.addMoneyMain}
+          activeOpacity={0.7}
+          onPress={() => navigation.navigate('WalletUserSec')}
+        >
           <Text style={styles.addMoneyText}>+ Add Money</Text>
         </TouchableOpacity>
         <View style={styles.balanceContainer}>

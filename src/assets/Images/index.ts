@@ -74,6 +74,17 @@ const images: { [key: string]: ImageSourcePropType } = {
   scheduleIcon: require('../Images/scheduleIcon.png'),
   walletIcon: require('../Images/walletIcon.png'),
   drawerBg: require('../Images/drawerBg.png'),
+  clock: require('../Images/clock.png'),
+  pointer: require('../Images/pointer.png'),
+  ratingYellow: require('../Images/ratingYellow.png'),
+  exclamation: require('../Images/exclamation.png'),
+  chat: require('../Images/Chat.png'),
+  phoneBlack: require('../Images/phoneBlack.png'),
+  voiceBtn: require('../Images/voiceBtn.png'),
+  chatProfile: require('../Images/chatProfile.png'),
+  backWhite: require('../Images/isBackWhite.png'),
+  cancelBtn: require('../Images/cancelBtn.png'),
+  applePay: require('../Images/applePay.png'),
 };
 
 export default images;

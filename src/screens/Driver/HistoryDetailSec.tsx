@@ -6,7 +6,7 @@ import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-const HistoryDetailOne = () => {
+const HistoryDetailSec = () => {
   // const [activeTab, setActiveTab] = useState('Completed');
 
   return (
@@ -20,7 +20,7 @@ const HistoryDetailOne = () => {
             <Text>#4564</Text>
           </View>
           <View style={styles.comContainer}>
-            <Text style={styles.comText}>Completed</Text>
+            <Text style={styles.comText}>Canceled</Text>
           </View>
         </View>
 
@@ -163,13 +163,13 @@ const styles = StyleSheet.create({
   },
   comContainer: {
     borderRadius: 20,
-    backgroundColor: 'rgba(30, 140, 54, 0.2)',
+    backgroundColor: colors.lightBrown,
     height: height * 0.03,
     width: width * 0.23,
     justifyContent: 'center',
   },
   comText: {
-    color: colors.green,
+    color: colors.brown,
     fontFamily: fontFamily.SfProDisplayMedium,
     fontWeight: '500',
     fontSize: 16,
@@ -274,4 +274,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HistoryDetailOne;
+export default HistoryDetailSec;

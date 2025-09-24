@@ -1,17 +1,19 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
 import {
+  Animated,
+  Easing,
   Image,
   ImageBackground,
+  Modal,
   Pressable,
   StyleSheet,
   Text,
   View,
-  Animated,
-  Modal,
-  Easing,
 } from 'react-native';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
+import LinearGradient from 'react-native-linear-gradient';
+import * as Progress from 'react-native-progress';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
@@ -21,8 +23,6 @@ import { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
-import LinearGradient from 'react-native-linear-gradient';
-import * as Progress from 'react-native-progress';
 
 type Props = NativeStackScreenProps<StackParamList, 'RideArriving'>;
 
@@ -40,10 +40,14 @@ const RideArriving = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleSec, setModalVisibleSec] = useState(false);
   const [modalVisiblethird, setModalVisibleThird] = useState(false);
-  const [waitingStartModalVisible, setWaitingStartModalVisible] = useState(false);
-  const [waitingTimerModalVisible, setWaitingTimerModalVisible] = useState(false);
-  const waitingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null,);
-  const [waitingCountdown, setWaitingCountdown] = useState(300); 
+  const [waitingStartModalVisible, setWaitingStartModalVisible] =
+    useState(false);
+  const [waitingTimerModalVisible, setWaitingTimerModalVisible] =
+    useState(false);
+  const waitingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
+    null,
+  );
+  const [waitingCountdown, setWaitingCountdown] = useState(300);
   const totalTime = 300;
   const radius = 70;
   const strokeWidth = 5;
@@ -149,7 +153,7 @@ const RideArriving = () => {
   return (
     <ImageBackground source={images.Maptwo} style={styles.mapImg}>
       <View style={{ flex: 1 }}>
-        <TopHeader isMenu={true} />
+        <TopHeader isMenu={true} isChat={true} />
 
         <ActionSheet
           ref={arrivingSheetRef}
@@ -607,7 +611,7 @@ const RideArriving = () => {
                   </View>
                 </LinearGradient>
 
-                <View style={{gap: height * 0.01, marginTop: height * 0.08}}>
+                <View style={{ gap: height * 0.01, marginTop: height * 0.08 }}>
                   <CustomButton
                     btnHeight={height * 0.07}
                     btnWidth={width * 0.8}
@@ -619,7 +623,7 @@ const RideArriving = () => {
                     backgroundColor={colors.brown}
                     onPress={() => setWaitingStartModalVisible(true)}
                   />
-                   <CustomButton
+                  <CustomButton
                     btnHeight={height * 0.07}
                     btnWidth={width * 0.8}
                     borderColor={colors.black}
@@ -763,7 +767,7 @@ const RideArriving = () => {
                 <Progress.Circle
                   size={160}
                   thickness={10}
-                  progress={waitingCountdown / totalTime} 
+                  progress={waitingCountdown / totalTime}
                   showsText={true}
                   color={colors.brown}
                   borderWidth={0}
@@ -810,7 +814,7 @@ const RideArriving = () => {
             <View style={styles.modalContainer}>
               <Text style={styles.modalText}>You've Arrived</Text>
               <Text style={styles.modalText}>On The Destination</Text>
-              <Image source={images.arrived} style={styles.arrivedImg}/>
+              <Image source={images.arrived} style={styles.arrivedImg} />
               <CustomButton
                 btnHeight={height * 0.07}
                 btnWidth={width * 0.7}
@@ -832,108 +836,107 @@ const RideArriving = () => {
         <Modal
           transparent={true}
           visible={modalVisiblethird}
-          animationType="fade"  
+          animationType="fade"
           onRequestClose={() => setModalVisibleThird(false)}
         >
           <View style={styles.modalOverlay}>
-            <View style={[styles.modalContainer, {height: height * 0.55}]}>
+            <View style={[styles.modalContainer, { height: height * 0.55 }]}>
               <Text style={styles.modalText}>Ride Summary</Text>
               <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: width * 0.03,
-                    top: height * 0.02,
-                  }}
-                >
-                  <Image source={images.guide} />
-                  <View style={styles.locationMain}>
-                    <CustomTextInput
-                      placeholder="Groklyn Bridge Park"
-                      placeholderTextColor={colors.black}
-                      borderColor={colors.brown}
-                      borderRadius={10}
-                      inputWidth={width * 0.7}
-                      inputHeight={height * 0.05}
-                      leftIcon={
-                        <Image
-                          source={images.locationImage}
-                          style={styles.locationImg}
-                        />
-                      }
-                    />
-                    <CustomTextInput
-                      placeholder="Groklyn Bridge Park"
-                      placeholderTextColor={colors.black}
-                      borderColor={colors.gray}
-                      borderRadius={10}
-                      inputWidth={width * 0.7}
-                      inputHeight={height * 0.05}
-                      leftIcon={
-                        <Image
-                          source={images.locationImage}
-                          style={styles.locationImg}
-                        />
-                      }
-                    />
-                  </View>
-                </View>
-
-                <LinearGradient
-                  colors={['#FFFFFF', '#FFE9E9']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 0, y: 1.1 }}
-                  style={[styles.passengerContainer, { width: width * 0.7 }]}
-                >
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.name}>Passenger Name:</Text>
-                    <Text style={styles.adam}>Adam James</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.distance}>Distance:</Text>
-                    <Text style={styles.miles}>10 Miles away</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.plate}>Number Plate:</Text>
-                    <Text style={styles.number}>123 756</Text>
-                  </View>
-
-                  <View style={[styles.subContainer,{width: width * 0.65}]}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingHorizontal: width * 0.09,
-                        alignItems: 'center',
-                        height: height * 0.055,
-                      }}
-                    >
-                      <Text style={styles.fare}>Fare:</Text>
-                      <Text style={styles.fare}>$55.00</Text>
-                    </View>
-                  </View>
-                </LinearGradient>
-
-                <View style={{marginTop: height * 0.065}}>
-                  <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.7}
-                    borderColor={colors.black}  
-                    borderRadius={30}
-                    borderWidth={1}
-                    backgroundColor={colors.brown}
-                    text="End Ride"
-                    textColor={colors.white}
-                    onPress={() => {
-                      setModalVisibleThird(false);  
-                    }}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: width * 0.03,
+                  top: height * 0.02,
+                }}
+              >
+                <Image source={images.guide} />
+                <View style={styles.locationMain}>
+                  <CustomTextInput
+                    placeholder="Groklyn Bridge Park"
+                    placeholderTextColor={colors.black}
+                    borderColor={colors.brown}
+                    borderRadius={10}
+                    inputWidth={width * 0.7}
+                    inputHeight={height * 0.05}
+                    leftIcon={
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                    }
+                  />
+                  <CustomTextInput
+                    placeholder="Groklyn Bridge Park"
+                    placeholderTextColor={colors.black}
+                    borderColor={colors.gray}
+                    borderRadius={10}
+                    inputWidth={width * 0.7}
+                    inputHeight={height * 0.05}
+                    leftIcon={
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                    }
                   />
                 </View>
+              </View>
+
+              <LinearGradient
+                colors={['#FFFFFF', '#FFE9E9']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1.1 }}
+                style={[styles.passengerContainer, { width: width * 0.7 }]}
+              >
+                <View style={styles.textPassenger}>
+                  <Text style={styles.name}>Passenger Name:</Text>
+                  <Text style={styles.adam}>Adam James</Text>
+                </View>
+
+                <View style={styles.textPassenger}>
+                  <Text style={styles.distance}>Distance:</Text>
+                  <Text style={styles.miles}>10 Miles away</Text>
+                </View>
+
+                <View style={styles.textPassenger}>
+                  <Text style={styles.plate}>Number Plate:</Text>
+                  <Text style={styles.number}>123 756</Text>
+                </View>
+
+                <View style={[styles.subContainer, { width: width * 0.65 }]}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: width * 0.09,
+                      alignItems: 'center',
+                      height: height * 0.055,
+                    }}
+                  >
+                    <Text style={styles.fare}>Fare:</Text>
+                    <Text style={styles.fare}>$55.00</Text>
+                  </View>
+                </View>
+              </LinearGradient>
+
+              <View style={{ marginTop: height * 0.065 }}>
+                <CustomButton
+                  btnHeight={height * 0.07}
+                  btnWidth={width * 0.7}
+                  borderColor={colors.black}
+                  borderRadius={30}
+                  borderWidth={1}
+                  backgroundColor={colors.brown}
+                  text="End Ride"
+                  textColor={colors.white}
+                  onPress={() => {
+                    setModalVisibleThird(false);
+                  }}
+                />
+              </View>
             </View>
           </View>
-
         </Modal>
       </View>
     </ImageBackground>
@@ -1168,7 +1171,7 @@ const styles = StyleSheet.create({
     height: height * 0.1,
     resizeMode: 'contain',
     marginVertical: height * 0.02,
-  }
+  },
 });
 
 export default RideArriving;

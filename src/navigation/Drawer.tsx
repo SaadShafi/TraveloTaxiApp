@@ -83,9 +83,9 @@ const CustomDrawerContent = (props: any) => {
       screen: 'HomeUser',
     },
     {
-      title: 'History',
+      title: 'Booking History',
       icon: images.historyIcon,
-      screen: 'BookingHistory',
+      screen: 'History',
     },
     {
       title: 'Schedule',
@@ -95,7 +95,7 @@ const CustomDrawerContent = (props: any) => {
     {
       title: 'Wallet',
       icon: images.walletIcon,
-      screen: 'Wallet',
+      screen: 'WalletUser',
     },
     {
       title: 'Settings',
@@ -122,19 +122,19 @@ const CustomDrawerContent = (props: any) => {
       screen: 'HomeDriver',
     },
     {
-      title: 'History',
+      title: 'Wallet',
+      icon: images.walletIcon,
+      screen: 'Wallet',
+    },
+    {
+      title: 'Booking History',
       icon: images.historyIcon,
       screen: 'History',
     },
     {
-      title: 'Schedule',
-      icon: images.scheduleIcon,
-      screen: 'Schedule',
-    },
-    {
-      title: 'Wallet',
-      icon: images.walletIcon,
-      screen: 'Wallet',
+      title: 'Payment History',
+      icon: images.historyIcon,
+      screen: 'PaymentHistory',
     },
     {
       title: 'Settings',
@@ -253,11 +253,26 @@ const CustomDrawerContent = (props: any) => {
             </View>
           </View>
         </Modal>
-        <View style={styles.driverModeContainer}>
-          <TouchableOpacity style={styles.driverModeButton}>
-            <Text style={styles.driverModeText}>Driver Mode</Text>
-          </TouchableOpacity>
-        </View>
+        {selectedRole === 'user' && (
+          <View style={styles.driverModeContainer}>
+            <TouchableOpacity
+              style={styles.driverModeButton}
+              onPress={() => navigation.navigate('createProfile')}
+            >
+              <Text style={styles.driverModeText}>Driver Mode</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {selectedRole === 'driver' && (
+          <View style={styles.driverModeContainer}>
+            <TouchableOpacity
+              style={styles.driverModeButton}
+              onPress={() => navigation.navigate('createProfile')}
+            >
+              <Text style={styles.driverModeText}>User Mode</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </SafeAreaView>
     </View>
   );

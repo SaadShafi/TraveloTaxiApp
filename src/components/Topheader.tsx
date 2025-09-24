@@ -53,8 +53,9 @@ interface TopHeaderProps {
   msgIcon?: boolean;
   skip?: boolean;
   list?: boolean;
-  // navigation: NavigationProp;
   backIcon?: boolean;
+  isPhone?: boolean;
+  isBackWhite?: boolean;
 }
 
 const TopHeader: React.FC<TopHeaderProps> = ({
@@ -84,6 +85,8 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   msgIcon = false,
   skip = false,
   list = false,
+  isPhone = false,
+  isBackWhite = false,
   // navigation,
 }) => {
   const navigation = useNavigation<NavigationProp<any>>();
@@ -182,6 +185,21 @@ const TopHeader: React.FC<TopHeaderProps> = ({
               />
             </Pressable>
           )}
+          {isBackWhite && (
+            <TouchableOpacity
+              style={styles.headerArrow}
+              onPress={() => {
+                if (navigation) {
+                  navigation.canGoBack()
+                    ? navigation.goBack()
+                    : navigation.navigate('Home' as never);
+                }
+              }}
+              activeOpacity={0.7}
+            >
+              <Image source={images.backWhite} style={styles.backArrow} />
+            </TouchableOpacity>
+          )}
           {isClose && (
             <Pressable
               style={styles.headerArrow}
@@ -250,6 +268,16 @@ const TopHeader: React.FC<TopHeaderProps> = ({
               </TouchableOpacity>
             </View>
           )}
+          {isPhone && (
+            <View style={styles.headerBell}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('CallMain')}
+              >
+                <Image source={images.phoneBlack} style={styles.isChatImg} />
+              </TouchableOpacity>
+            </View>
+          )}
           {list && (
             <View style={styles.headerBell}>
               <TouchableOpacity
@@ -276,6 +304,24 @@ const TopHeader: React.FC<TopHeaderProps> = ({
               <Text style={styles.skipCardText}>Skip</Text>
             </TouchableOpacity>
           )}
+          {isChat && (
+            <View style={styles.headerBell}>
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => navigation.navigate('CallMain')}
+                >
+                  <Image source={images.phoneBlack} style={styles.isChatImg} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => navigation.navigate('Chat')}
+                >
+                  <Image source={images.chat} style={styles.isChatImg} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </View>
       </SafeAreaView>
     </View>
@@ -283,6 +329,11 @@ const TopHeader: React.FC<TopHeaderProps> = ({
 };
 
 const styles = StyleSheet.create({
+  isChatImg: {
+    width: width * 0.1,
+    height: width * 0.1,
+    resizeMode: 'contain',
+  },
   MainHeader: {
     display: 'flex',
     flexDirection: 'row',
