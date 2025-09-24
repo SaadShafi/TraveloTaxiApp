@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomTabs from '../../components/CustomTabs';
 import TopHeader from '../../components/Topheader';
+import { RootState } from '../../redux/store';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
@@ -29,6 +31,9 @@ interface cardProp {
 
 const History = () => {
   const navigation = useNavigation<any>();
+  const selectedRole = useSelector(
+    (state: RootState) => state.role.selectedRole,
+  );
   const CompletedData = [
     {
       image: images.User,
@@ -96,13 +101,20 @@ const History = () => {
   ];
 
   const cardComplete = ({ item }: { item: cardProp }) => {
+    const handleCompletePress = () => {
+      if (selectedRole === 'user') {
+        navigation.navigate('HistoryDetailUserOne');
+      } else if (selectedRole === 'driver') {
+        navigation.navigate('HistoryDetailOne');
+      }
+    };
+
     return (
       <TouchableOpacity
         style={styles.centeredCard}
         activeOpacity={0.7}
-        onPress={() => navigation.navigate('HistoryDetailOne')}
+        onPress={handleCompletePress}
       >
-        {/* <View style={styles.centeredCard}> */}
         <View style={styles.cardContainer}>
           <View style={styles.imgMain}>
             <Image source={item.image} style={styles.cardImg} />
@@ -127,13 +139,24 @@ const History = () => {
             </View>
           </View>
         </View>
-        {/* </View> */}
       </TouchableOpacity>
     );
   };
   const cardCanceled = ({ item }: { item: cardProp }) => {
+    const handleCancelPress = () => {
+      if (selectedRole === 'user') {
+        navigation.navigate('HistoryDetailUserSec');
+      } else if (selectedRole === 'driver') {
+        navigation.navigate('HistoryDetailSec');
+      }
+    };
     return (
-      <TouchableOpacity style={styles.centeredCard} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={styles.centeredCard}
+        activeOpacity={0.7}
+        // onPress={() => navigation.navigate('HistoryDetailSec')}
+        onPress={handleCancelPress}
+      >
         {/* <View style={styles.centeredCard}> */}
         <View style={styles.cardContainer}>
           <View style={styles.imgMain}>

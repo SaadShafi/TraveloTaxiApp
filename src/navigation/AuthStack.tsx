@@ -12,8 +12,12 @@ import WelcomeFirst from '../screens/Auth/WelcomeFirst';
 import WelcomeFourth from '../screens/Auth/WelcomeFourth';
 import WelcomeSec from '../screens/Auth/WelcomeSec';
 import AboutUs from '../screens/Global/AboutUs';
+import CallMain from '../screens/Global/CallMain';
 import ChangePassWord from '../screens/Global/changePassword';
+import ChatMain from '../screens/Global/Chat';
 import ContactUs from '../screens/Global/ContactUs';
+import DeleteAccount from '../screens/Global/DeleteAccount';
+import NotificationScreen from '../screens/Global/Notification';
 import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
 import Setting from '../screens/Global/Setting';
 
@@ -43,6 +47,10 @@ export type StackParamList = {
   FindingDriver: undefined;
   DriverOfferings: undefined;
   BankDetails: undefined;
+  DeleteAccount: undefined;
+  notification: undefined;
+  Chat: undefined;
+  CallMain: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -69,6 +77,10 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="ContactUs" component={ContactUs} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="PhoneVerification" component={PhoneVerification} />
+      <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
+      <Stack.Screen name="notification" component={NotificationScreen} />
+      <Stack.Screen name="Chat" component={ChatMain} />
+      <Stack.Screen name="CallMain" component={CallMain} />
     </Stack.Navigator>
   );
 };

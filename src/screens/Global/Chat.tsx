@@ -127,7 +127,18 @@ const ChatMain = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
-      <TopHeader isBack={true} />
+      <View style={{ top: height * 0.01 }}>
+        <TopHeader isBack={true} isPhone={true} />
+      </View>
+      <View style={styles.headerMain}>
+        <View style={styles.headTextMain}>
+          <Image source={images.chatProfile} style={styles.chatImg} />
+          <View style={{ left: width * 0.04 }}>
+            <Text style={styles.textOne}>Adam James</Text>
+            <Text style={styles.textSec}>Driver</Text>
+          </View>
+        </View>
+      </View>
       <SafeAreaView style={{ flex: 1 }}>
         <FlatList
           data={getChatData()}
@@ -139,7 +150,7 @@ const ChatMain = () => {
         <View style={styles.inputContainer}>
           <CustomTextInput
             inputHeight={height * 0.07}
-            inputWidth={width * 0.75}
+            inputWidth={width * 0.79}
             placeholder="Type Here..."
             placeholderTextColor={colors.darkGray}
             borderRadius={30}
@@ -155,7 +166,7 @@ const ChatMain = () => {
               </TouchableOpacity>
             }
           />
-          <Image source={images.voice} style={styles.voiceBtn} />
+          <Image source={images.voiceBtn} style={styles.voiceBtn} />
         </View>
       </SafeAreaView>
     </View>
@@ -163,6 +174,32 @@ const ChatMain = () => {
 };
 
 const styles = StyleSheet.create({
+  textOne: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
+  },
+  textSec: {
+    fontFamily: fontFamily.ClashDisplayRegular,
+    fontSize: fontSizes.sm,
+    color: colors.black,
+  },
+  chatImg: {
+    width: width * 0.13,
+    height: height * 0.09,
+    resizeMode: 'contain',
+  },
+  headerMain: {
+    bottom: height * 0.075,
+    width: width * 0.72,
+    left: width * 0.1,
+    padding: 10,
+  },
+  headTextMain: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: width * 0.03,
+  },
   chatList: {
     paddingHorizontal: 15,
     paddingVertical: 10,

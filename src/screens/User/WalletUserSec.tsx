@@ -1,3 +1,4 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import {
   Image,
@@ -18,6 +19,7 @@ import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
 const WalletUserSec = () => {
+  const navigation = useNavigation<NavigationProp<any>>();
   const [amount, setAmount] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
 
@@ -77,7 +79,11 @@ const WalletUserSec = () => {
                   <Text style={styles.cardText}>Expires: 12/26</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.addMoneyMain} activeOpacity={0.7}>
+              <TouchableOpacity
+                style={styles.addMoneyMain}
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('AddPaymentMethod')}
+              >
                 <Text style={styles.addMoneyText}>+ Add Payment Mothod</Text>
               </TouchableOpacity>
             </View>
@@ -91,6 +97,7 @@ const WalletUserSec = () => {
               textColor={colors.white}
               borderRadius={30}
               disabled={!selectedMethod}
+              onPress={() => navigation.goBack()}
             />
           </View>
         </View>

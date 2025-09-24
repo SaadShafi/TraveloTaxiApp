@@ -1,23 +1,45 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import BankDetails from '../screens/Driver/BankDetails';
+import HelpAndSupport from '../screens/Driver/HelpAndSupport';
 import History from '../screens/Driver/History';
 import HistoryDetailOne from '../screens/Driver/HistoryDetailOne';
+import HistoryDetailSec from '../screens/Driver/HistoryDetailSec';
 import HomeDriver from '../screens/Driver/HomeDriver';
 import PaymentHistory from '../screens/Driver/PaymentHistory';
 import RideArriving from '../screens/Driver/RideArriving';
 import RideDetails from '../screens/Driver/RideDetails';
 import Wallet from '../screens/Driver/Wallet';
+import AboutUs from '../screens/Global/AboutUs';
+import CallMain from '../screens/Global/CallMain';
+import ChangePassWord from '../screens/Global/changePassword';
+import ChatMain from '../screens/Global/Chat';
+import ContactUs from '../screens/Global/ContactUs';
+import DeleteAccount from '../screens/Global/DeleteAccount';
+import NotificationScreen from '../screens/Global/Notification';
+import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
+import Setting from '../screens/Global/Setting';
 
 export type StackParamList = {
   HomeDriver: undefined;
   BankDetails: undefined;
   History: undefined;
   HistoryDetailOne: undefined;
+  HistoryDetailSec: undefined;
   PaymentHistory: undefined;
   RideDetails: undefined;
   Wallet: undefined;
   RideArriving: undefined;
+  Settings: undefined;
+  ChangePass: undefined;
+  PrivacyPolicy: undefined;
+  AboutUs: undefined;
+  ContactUs: undefined;
+  DeleteAccount: undefined;
+  HelpSupport: undefined;
+  notification: undefined;
+  Chat: undefined;
+  CallMain: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -33,10 +55,21 @@ const DriverStack: React.FC = () => {
       <Stack.Screen name="BankDetails" component={BankDetails} />
       <Stack.Screen name="History" component={History} />
       <Stack.Screen name="HistoryDetailOne" component={HistoryDetailOne} />
+      <Stack.Screen name="HistoryDetailSec" component={HistoryDetailSec} />
       <Stack.Screen name="PaymentHistory" component={PaymentHistory} />
       <Stack.Screen name="RideDetails" component={RideDetails} />
       <Stack.Screen name="Wallet" component={Wallet} />
       <Stack.Screen name="RideArriving" component={RideArriving} />
+      <Stack.Screen name="Settings" component={Setting} />
+      <Stack.Screen name="ChangePass" component={ChangePassWord} />
+      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+      <Stack.Screen name="AboutUs" component={AboutUs} />
+      <Stack.Screen name="ContactUs" component={ContactUs} />
+      <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
+      <Stack.Screen name="HelpSupport" component={HelpAndSupport} />
+      <Stack.Screen name="notification" component={NotificationScreen} />
+      <Stack.Screen name="Chat" component={ChatMain} />
+      <Stack.Screen name="CallMain" component={CallMain} />
     </Stack.Navigator>
   );
 };

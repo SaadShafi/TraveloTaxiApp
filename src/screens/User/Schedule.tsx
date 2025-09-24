@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import {
   FlatList,
   Image,
@@ -25,6 +26,7 @@ interface tipsProp {
 }
 
 const Schedule = () => {
+  const navigation = useNavigation<any>();
   const scheduleData = [
     {
       image: images.User,
@@ -60,7 +62,12 @@ const Schedule = () => {
 
   const ScheduleBox = ({ item }: { item: tipsProp }) => {
     return (
-      <View style={styles.container}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('ScheduleDetail')}
+        style={styles.container}
+      >
+        {/* <View style={styles.container}> */}
         <View style={styles.main}>
           <View style={styles.contentMain}>
             <Image source={item.image} style={styles.img} />
@@ -105,7 +112,8 @@ const Schedule = () => {
             </View>
           </View>
         </View>
-      </View>
+        {/* </View> */}
+      </TouchableOpacity>
     );
   };
   return (

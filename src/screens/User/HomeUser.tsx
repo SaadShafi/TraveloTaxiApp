@@ -23,7 +23,7 @@ import { fontSizes } from '../../utilities/fontsizes';
 
 type Props = NativeStackScreenProps<StackParamList, 'HomeUser'>;
 
-const HomeUser: React.FC<Props>  = ({ navigation }) => {
+const HomeUser: React.FC<Props> = ({ navigation }) => {
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const [activeTab, setActiveTab] = useState<'bookNow' | 'preBooking'>(
     'bookNow',
@@ -204,61 +204,69 @@ const HomeUser: React.FC<Props>  = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <TopHeader isMenu={true} />
-      <Pressable onPress={() => actionSheetRef.current?.show()}>
-        <View style={styles.headerMain}>
-          <View style={styles.headTextMain}>
-            <View style={{ flexDirection: 'row', gap: width * 0.01 }}>
-              <Text style={styles.greetingText}>Hi</Text>
-              <Text style={styles.nameText}>Alex!</Text>
-            </View>
+      <View style={styles.notificationContainer}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => navigation.navigate('notification')}
+          style={styles.notificationButton}
+        >
+          <Image source={images.notification} style={styles.notiImg} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.headerMain}>
+        <View style={styles.headTextMain}>
+          <View style={{ flexDirection: 'row', gap: width * 0.01 }}>
+            <Text style={styles.greetingText}>Hi</Text>
+            <Text style={styles.nameText}>Alex!</Text>
+          </View>
+          {/* <TouchableOpacity
+            onPress={() => console.log('Noti img pressed')}
+            activeOpacity={0.7}
+          >
             <Image source={images.notification} style={styles.notiImg} />
+          </TouchableOpacity> */}
+        </View>
+        <View style={styles.locationMain}>
+          <CustomTextInput
+            placeholder="Groklyn Bridge Park"
+            placeholderTextColor={colors.black}
+            borderColor={colors.gray}
+            borderRadius={30}
+            inputWidth={width * 0.65}
+            inputHeight={height * 0.04}
+            leftIcon={
+              <Image source={images.locationImage} style={styles.locationImg} />
+            }
+          />
+          <CustomTextInput
+            placeholder="Groklyn Bridge Park"
+            placeholderTextColor={colors.black}
+            borderColor={colors.gray}
+            borderRadius={30}
+            inputWidth={width * 0.65}
+            inputHeight={height * 0.04}
+            leftIcon={
+              <Image source={images.locationImage} style={styles.locationImg} />
+            }
+          />
+        </View>
+        <View style={styles.headerBottomMain}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: width * 0.01,
+            }}
+          >
+            <Image source={images.add} />
+            <Text>Add Stop</Text>
           </View>
-          <View style={styles.locationMain}>
-            <CustomTextInput
-              placeholder="Groklyn Bridge Park"
-              placeholderTextColor={colors.black}
-              borderColor={colors.gray}
-              borderRadius={30}
-              inputWidth={width * 0.65}
-              inputHeight={height * 0.04}
-              leftIcon={
-                <Image
-                  source={images.locationImage}
-                  style={styles.locationImg}
-                />
-              }
-            />
-            <CustomTextInput
-              placeholder="Groklyn Bridge Park"
-              placeholderTextColor={colors.black}
-              borderColor={colors.gray}
-              borderRadius={30}
-              inputWidth={width * 0.65}
-              inputHeight={height * 0.04}
-              leftIcon={
-                <Image
-                  source={images.locationImage}
-                  style={styles.locationImg}
-                />
-              }
-            />
-          </View>
-          <View style={styles.headerBottomMain}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: width * 0.01,
-              }}
-            >
-              <Image source={images.add} />
-              <Text>Add Stop</Text>
-            </View>
-            <View style={styles.reverseMain}>
-              <Image source={images.reverse} />
-            </View>
+          <View style={styles.reverseMain}>
+            <Image source={images.reverse} />
           </View>
         </View>
+      </View>
+      <Pressable onPress={() => actionSheetRef.current?.show()}>
         <ActionSheet
           ref={actionSheetRef}
           containerStyle={styles.actionSheetMain}
@@ -322,6 +330,17 @@ const HomeUser: React.FC<Props>  = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  notificationContainer: {
+    position: 'absolute',
+    top: height * 0.01,
+    right: width * 0.1,
+    zIndex: 1000,
+  },
+  notificationButton: {
+    padding: 10,
+    // backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    // borderRadius: 20,
+  },
   headerMain: {
     bottom: height * 0.06,
     width: width * 0.72,

@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   FlatList,
   SafeAreaView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-} from "react-native";
-import TopHeader from "../../components/Topheader";
-import { height, width } from "../../utilities";
-import { fontFamily } from "../../assets/Fonts";
-import { colors } from "../../utilities/colors";
-
+  View,
+} from 'react-native';
+import { fontFamily } from '../../assets/Fonts';
+import TopHeader from '../../components/Topheader';
+import { height, width } from '../../utilities';
+import { colors } from '../../utilities/colors';
+import { fontSizes } from '../../utilities/fontsizes';
 
 type NotificationItem = {
   id: string;
@@ -27,24 +27,54 @@ type NotificationGroup = {
 
 const notifications: NotificationGroup[] = [
   {
-    title: "Today",
+    title: 'Today',
     data: [
-      { id: "1", message: "Hi Alex! Here is your One-Time Password", otp: "52610", validity: "Valid for 10 mins." },
-      { id: "2", message: "Hi Alex! Here is your One-Time Password", otp: "52610", validity: "Valid for 10 mins." },
-      { id: "3", message: "Hi Alex! Here is your One-Time Password", otp: "52610", validity: "Valid for 10 mins." },
+      {
+        id: '1',
+        message: 'Hi Alex! Here is your One-Time Password',
+        otp: '52610',
+        validity: 'Valid for 10 mins.',
+      },
+      {
+        id: '2',
+        message: 'Hi Alex! Here is your One-Time Password',
+        otp: '52610',
+        validity: 'Valid for 10 mins.',
+      },
+      {
+        id: '3',
+        message: 'Hi Alex! Here is your One-Time Password',
+        otp: '52610',
+        validity: 'Valid for 10 mins.',
+      },
     ],
   },
   {
-    title: "Yesterday",
+    title: 'Yesterday',
     data: [
-      { id: "4", message: "Hi Alex! Here is your One-Time Password", otp: "52610", validity: "Valid for 10 mins." },
-      { id: "5", message: "Hi Alex! Here is your One-Time Password", otp: "52610", validity: "Valid for 10 mins." },
+      {
+        id: '4',
+        message: 'Hi Alex! Here is your One-Time Password',
+        otp: '52610',
+        validity: 'Valid for 10 mins.',
+      },
+      {
+        id: '5',
+        message: 'Hi Alex! Here is your One-Time Password',
+        otp: '52610',
+        validity: 'Valid for 10 mins.',
+      },
     ],
   },
   {
-    title: "Wednesday",
+    title: 'Wednesday',
     data: [
-      { id: "6", message: "Hi Alex! Here is your One-Time Password", otp: "52610", validity: "Valid for 10 mins." },
+      {
+        id: '6',
+        message: 'Hi Alex! Here is your One-Time Password',
+        otp: '52610',
+        validity: 'Valid for 10 mins.',
+      },
     ],
   },
 ];
@@ -64,7 +94,7 @@ const NotificationScreen = () => {
       <Text style={styles.sectionTitle}>{item.title}</Text>
       <FlatList
         data={item.data}
-        keyExtractor={(notif) => notif.id}
+        keyExtractor={notif => notif.id}
         renderItem={renderItem}
         scrollEnabled={false}
       />
@@ -77,7 +107,7 @@ const NotificationScreen = () => {
 
       <FlatList
         data={notifications}
-        keyExtractor={(group) => group.title}
+        keyExtractor={group => group.title}
         renderItem={renderSection}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
@@ -91,19 +121,17 @@ export default NotificationScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    // paddingHorizontal: 20,
+    backgroundColor: colors.white,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: fontSizes.md,
     fontFamily: fontFamily.ClashDisplayMedium,
-    fontWeight: "600",
-    marginTop: 18,
+    paddingTop: height * 0.03,
     color: colors.black,
     left: width * 0.06,
   },
   card: {
-    backgroundColor: "#F3F3F3",
+    backgroundColor: '#F3F3F3',
     borderRadius: 20,
     height: height * 0.09,
     padding: 12,
@@ -114,15 +142,15 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 17,
-    color: "#000",
+    color: '#000',
   },
   otp: {
-    fontWeight: "700",
+    fontWeight: '700',
   },
   validity: {
     marginTop: 4,
     fontSize: 17,
-    fontWeight: "700",
-    color: "#000",
+    fontWeight: '700',
+    color: '#000',
   },
 });

@@ -26,7 +26,7 @@ const Setting: React.FC<Props> = ({ navigation }) => {
     setIsEnabledSec(previousState => !previousState);
   return (
     <View style={{ flex: 1 }}>
-      <TopHeader text="Settings" isBack={true} navigation={navigation} />
+      <TopHeader text="Settings" isBack={true} />
       <View style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.contentText}>Notification</Text>
@@ -80,7 +80,11 @@ const Setting: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.contentText}>Contact Us</Text>
           <Image source={images.greaterIcon} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.content} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.content}
+          activeOpacity={0.7}
+          onPress={() => navigation.navigate('DeleteAccount')}
+        >
           <Text style={styles.contentText}>Delete Account</Text>
           <Image source={images.greaterIcon} />
         </TouchableOpacity>

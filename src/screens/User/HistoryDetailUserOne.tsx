@@ -6,12 +6,10 @@ import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-const HistoryDetailOne = () => {
-  // const [activeTab, setActiveTab] = useState('Completed');
-
+const HistoryDetailUserOne = () => {
   return (
     <View style={{ flex: 1 }}>
-      <TopHeader text="Details" isBack={true} />
+      <TopHeader text="Booking Details" isBack={true} />
 
       <View style={styles.mainContainer}>
         <View style={styles.subConatiner}>
@@ -101,17 +99,6 @@ const HistoryDetailOne = () => {
             </View>
           </View>
         </View>
-
-        <View
-          style={{ top: height * 0.03, gap: height * 0.01, left: width * 0.04 }}
-        >
-          <Text style={styles.ride}>Ratings</Text>
-          <Image source={images.ratingYellow} />
-        </View>
-
-        <Text style={styles.feed}>Feedback</Text>
-        <View style={styles.feedContainer}></View>
-
         <Text style={styles.pay}>Payments</Text>
         <View style={{ top: height * 0.08, paddingHorizontal: width * 0.05 }}>
           <View
@@ -139,6 +126,82 @@ const HistoryDetailOne = () => {
 };
 
 const styles = StyleSheet.create({
+  reasonsContainer: {
+    width: width * 0.75,
+    height: height * 0.05,
+    borderWidth: 1,
+    borderColor: colors.gray,
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: colors.lightGray,
+  },
+  reasonText: {
+    fontFamily: fontFamily.SfProDisplayRegular,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
+  },
+  reasonsMain: {
+    alignItems: 'center',
+    gap: height * 0.01,
+    top: height * 0.01,
+  },
+  cancelText: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
+  },
+  cancelBtn: {
+    width: width * 0.09,
+    height: height * 0.05,
+    resizeMode: 'contain',
+  },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.61)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    backgroundColor: colors.white,
+    padding: 30,
+    borderRadius: 15,
+    width: width * 0.84,
+    alignItems: 'center',
+  },
+  modalHeadTextMain: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: width * 0.75,
+  },
+  btnMain: {
+    alignItems: 'center',
+    top: height * 0.06,
+  },
+  EstimatedFareMain: {
+    alignItems: 'center',
+    top: height * 0.03,
+  },
+  EstimatedContainer: {
+    backgroundColor: colors.white,
+    width: width * 0.8,
+    height: height * 0.09,
+    borderRadius: 10,
+  },
+  estimatedContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 30,
+  },
+  estimatedText: {
+    fontFamily: fontFamily.SfProDisplayMedium,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
+  },
   img: {
     width: width * 0.05,
     height: height * 0.03,
@@ -150,7 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignSelf: 'center',
     backgroundColor: colors.lightGray,
-    height: height * 0.85,
+    height: height * 0.65,
     width: width * 0.9,
     top: height * 0.012,
   },
@@ -163,7 +226,8 @@ const styles = StyleSheet.create({
   },
   comContainer: {
     borderRadius: 20,
-    backgroundColor: 'rgba(30, 140, 54, 0.2)',
+    // backgroundColor: 'rgba(30, 140, 54, 0.2)',
+    backgroundColor: colors.lightGreen,
     height: height * 0.03,
     width: width * 0.23,
     justifyContent: 'center',
@@ -272,6 +336,11 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.sm2,
     color: colors.black,
   },
+  textSec: {
+    fontFamily: fontFamily.SfProDisplayMedium,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
+  },
 });
 
-export default HistoryDetailOne;
+export default HistoryDetailUserOne;
