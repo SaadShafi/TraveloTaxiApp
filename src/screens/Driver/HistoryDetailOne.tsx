@@ -17,7 +17,7 @@ const HistoryDetailOne = () => {
         <View style={styles.subConatiner}>
           <View>
             <Text style={styles.trackID}>Ride ID</Text>
-            <Text>#4564</Text>
+            <Text style={{ color: colors.darkGray }}>#4564</Text>
           </View>
           <View style={styles.comContainer}>
             <Text style={styles.comText}>Completed</Text>
@@ -26,12 +26,16 @@ const HistoryDetailOne = () => {
 
         <View style={styles.rideContainer}>
           <Text style={styles.ride}>Ride Type:</Text>
-          <Text style={styles.preBooking}>Pre Booking</Text>
+          <Text style={[styles.preBooking, { right: width * 0.04 }]}>
+            Pre Booking
+          </Text>
         </View>
 
         <View style={styles.dateContainer}>
           <Text style={styles.ride}>Date & Time:</Text>
-          <Text style={styles.date}>Aug 20,2025 & 5:30 AM</Text>
+          <Text style={[styles.date, { right: width * 0.04 }]}>
+            Aug 20,2025 & 5:30 AM
+          </Text>
         </View>
 
         <View style={styles.container}>
@@ -40,8 +44,6 @@ const HistoryDetailOne = () => {
               flexDirection: 'row',
               alignItems: 'center',
               gap: width * 0.03,
-              paddingVertical: height * 0.025,
-              left: width * 0.09,
             }}
           >
             <Image source={images.clock} style={styles.img} />
@@ -56,8 +58,6 @@ const HistoryDetailOne = () => {
               flexDirection: 'row',
               alignItems: 'center',
               gap: width * 0.03,
-              left: width * 0.54,
-              bottom: height * 0.07,
             }}
           >
             <Image source={images.pointer} style={styles.img} />
@@ -70,7 +70,7 @@ const HistoryDetailOne = () => {
 
         <Image source={images.guide} style={styles.guide} />
 
-        <View style={{ gap: height * 0.01 }}>
+        <View style={{ gap: height * 0.01, bottom: height * 0.02 }}>
           <View style={styles.location}>
             <View
               style={{
@@ -103,10 +103,10 @@ const HistoryDetailOne = () => {
         </View>
 
         <View
-          style={{ top: height * 0.03, gap: height * 0.01, left: width * 0.04 }}
+          style={{ top: height * 0.02, gap: height * 0.01, left: width * 0.04 }}
         >
           <Text style={styles.ride}>Ratings</Text>
-          <Image source={images.ratingYellow} />
+          <Image source={images.ratingYellow} style={styles.starImg} />
         </View>
 
         <Text style={styles.feed}>Feedback</Text>
@@ -139,9 +139,14 @@ const HistoryDetailOne = () => {
 };
 
 const styles = StyleSheet.create({
+  starImg: {
+    width: width * 0.3,
+    height: height * 0.029,
+    resizeMode: 'contain',
+  },
   img: {
     width: width * 0.05,
-    height: height * 0.03,
+    height: height * 0.028,
     resizeMode: 'contain',
   },
   mainContainer: {
@@ -150,16 +155,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignSelf: 'center',
     backgroundColor: colors.lightGray,
-    height: height * 0.85,
+    height: height * 0.88,
     width: width * 0.9,
     top: height * 0.012,
+    padding: 10,
   },
   subConatiner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: width * 0.9,
-    paddingVertical: width * 0.08,
-    paddingHorizontal: height * 0.02,
+    paddingVertical: width * 0.04,
+    paddingHorizontal: height * 0.025,
   },
   comContainer: {
     borderRadius: 20,
@@ -167,6 +173,7 @@ const styles = StyleSheet.create({
     height: height * 0.03,
     width: width * 0.23,
     justifyContent: 'center',
+    right: width * 0.035,
   },
   comText: {
     color: colors.green,
@@ -179,23 +186,23 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: fontFamily.SfProDisplayMedium,
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: fontSizes.md,
   },
   ride: {
     color: colors.black,
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 17,
+    fontSize: fontSizes.sm2,
     fontWeight: '700',
   },
   preBooking: {
     color: colors.black,
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 17,
+    fontSize: fontSizes.sm,
   },
   date: {
     color: colors.black,
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 17,
+    fontSize: fontSizes.sm,
   },
   rideContainer: {
     flexDirection: 'row',
@@ -213,18 +220,22 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     height: height * 0.1,
-    width: width * 0.85,
+    width: width * 0.8,
     borderRadius: 20,
     alignSelf: 'center',
-    top: height * 0.05,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    top: height * 0.04,
+    paddingHorizontal: width * 0.09,
   },
   location: {
     borderWidth: 1,
     borderColor: colors.brown,
     borderRadius: 10,
     height: height * 0.05,
-    width: width * 0.75,
-    left: width * 0.045,
+    width: width * 0.72,
+    left: width * 0.029,
     backgroundColor: colors.white,
     alignSelf: 'center',
     top: height * 0.01,
@@ -237,32 +248,33 @@ const styles = StyleSheet.create({
   park: {
     color: colors.black,
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 20,
+    fontSize: fontSizes.sm2,
   },
   guide: {
-    top: height * 0.1,
+    top: height * 0.08,
     left: width * 0.04,
+    resizeMode: 'contain',
   },
   feedContainer: {
     backgroundColor: colors.white,
-    borderRadius: 20,
+    borderRadius: 10,
     height: height * 0.1,
-    width: width * 0.85,
+    width: width * 0.8,
     alignSelf: 'center',
-    top: height * 0.06,
+    top: height * 0.05,
   },
   feed: {
     color: colors.black,
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 17,
+    fontSize: fontSizes.sm2,
     fontWeight: '700',
-    top: height * 0.05,
-    paddingHorizontal: width * 0.05,
+    top: height * 0.04,
+    paddingHorizontal: width * 0.04,
   },
   pay: {
     color: colors.black,
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 18,
+    fontSize: fontSizes.sm2,
     fontWeight: '700',
     paddingHorizontal: width * 0.05,
     top: height * 0.07,

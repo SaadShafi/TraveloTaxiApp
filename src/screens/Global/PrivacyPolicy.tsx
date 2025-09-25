@@ -12,7 +12,7 @@ type Props = NativeStackScreenProps<StackParamList, 'PrivacyPolicy'>;
 const PrivacyPolicy: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
-      <TopHeader text="Privacy Policy" isBack={true} navigation={navigation} />
+      <TopHeader text="Privacy Policy" isBack={true} />
       <View style={styles.container}>
         <Text style={styles.aboutText}>Privacy Policy</Text>
         <View style={{ top: height * 0.02, gap: height * 0.03 }}>
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   aboutText: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.md,
+    color: colors.black,
   },
   paraText: {
     fontFamily: fontFamily.ClashDisplayMedium,

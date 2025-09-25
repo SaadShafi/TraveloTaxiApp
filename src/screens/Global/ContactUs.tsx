@@ -13,7 +13,7 @@ type Props = NativeStackScreenProps<StackParamList, 'ContactUs'>;
 const ContactUs: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: colors.lightGray }}>
-      <TopHeader text="Contact Us" isBack={true} navigation={navigation} />
+      <TopHeader text="Contact Us" isBack={true} />
 
       <View style={styles.container}>
         <View style={styles.textMain}>
@@ -29,14 +29,6 @@ const ContactUs: React.FC<Props> = ({ navigation }) => {
 
           <View style={styles.infoMain}>
             <View style={styles.row}>
-              <Image source={images.phone} style={styles.icon} />
-              <View>
-                <Text style={styles.label}>Contact Number</Text>
-                <Text style={styles.value}>+1 (355) 123-6789</Text>
-              </View>
-            </View>
-
-            <View style={styles.row}>
               <Image source={images.email} style={styles.icon} />
               <View>
                 <Text style={styles.label}>Email Address</Text>
@@ -46,25 +38,27 @@ const ContactUs: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Follow us on Social Media</Text>
+          <Text style={[styles.cardTitle, { marginBottom: height * 0.01 }]}>
+            Follow us on Social Media
+          </Text>
 
-          <View style={styles.row}>
+          <View style={[styles.row, { left: width * 0.03 }]}>
             <Image source={images.facebook} style={styles.icon} />
             <View>
-              <Text style={styles.label}>Instagram</Text>
+              <Text style={styles.label}>Facebook</Text>
               <Text style={styles.value}>+1 (355) 123-6789</Text>
             </View>
           </View>
 
-          <View style={styles.row}>
+          <View style={[styles.row, { left: width * 0.03 }]}>
             <Image source={images.instagram} style={styles.icon} />
             <View>
-              <Text style={styles.label}>Facebook</Text>
+              <Text style={styles.label}>Instagram</Text>
               <Text style={styles.value}>info@travelo.com</Text>
             </View>
           </View>
 
-          <View style={styles.row}>
+          <View style={[styles.row, { left: width * 0.03 }]}>
             <Image source={images.twitter} style={styles.icon} />
             <View>
               <Text style={styles.label}>Twitter</Text>
@@ -72,12 +66,23 @@ const ContactUs: React.FC<Props> = ({ navigation }) => {
             </View>
           </View>
         </View>
+        <View style={styles.imgMain}>
+          <Image source={images.logo} style={styles.logoImg} />
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  imgMain: {
+    alignItems: 'center',
+  },
+  logoImg: {
+    width: width * 0.45,
+    height: height * 0.45,
+    resizeMode: 'contain',
+  },
   container: {
     alignItems: 'center',
     gap: height * 0.025,
@@ -99,7 +104,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontFamily: fontFamily.ClashDisplayMedium,
-    fontSize: fontSizes.sm2,
+    fontSize: fontSizes.md,
     color: colors.black,
     left: width * 0.04,
   },

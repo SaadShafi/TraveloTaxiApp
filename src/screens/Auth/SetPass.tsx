@@ -38,14 +38,14 @@ const setPassword: React.FC<Props> = ({ navigation, route }) => {
     setModalVisible(false);
   };
 
-    const handleRegister = () => {
+  const handleRegister = () => {
     // Get the navigation state
     const state = navigation.getState();
     const routes = state.routes;
-    const prevRoute = routes[routes.length - 2]; 
-    console.log("Navigation Routes:", routes);
-    console.log("Previous Route Object:", prevRoute);
-    console.log("Navigation State:", state);
+    const prevRoute = routes[routes.length - 2];
+    console.log('Navigation Routes:', routes);
+    console.log('Previous Route Object:', prevRoute);
+    console.log('Navigation State:', state);
     console.log('Previous Route:', prevRoute?.name);
 
     if (prevRoute?.name === 'PhoneVerification') {
@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
   },
   setPass: {
     fontFamily: fontFamily.SfProDisplayRegular,
-    fontSize: fontSizes.sm,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
   },
   btnMain: {
     marginTop: height * 0.08,
@@ -160,18 +161,22 @@ const styles = StyleSheet.create({
   infoTextOne: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.xsm,
+    color: colors.black,
   },
   infoTextTwo: {
     fontFamily: fontFamily.SfProDisplayMedium,
     fontSize: fontSizes.xsm,
+    color: colors.black,
   },
   infoTextThree: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.xsm,
+    color: colors.black,
   },
   infoTextFour: {
     fontFamily: fontFamily.SfProDisplayMedium,
     fontSize: fontSizes.xsm,
+    color: colors.black,
   },
   modalOverlay: {
     flex: 1,
@@ -192,6 +197,7 @@ const styles = StyleSheet.create({
   modalText: {
     fontFamily: fontFamily.SfProDisplayBold,
     fontSize: fontSizes.md,
+    color: colors.black,
   },
 });
 

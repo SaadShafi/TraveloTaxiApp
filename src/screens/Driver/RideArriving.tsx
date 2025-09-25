@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -23,18 +24,17 @@ import { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
-import { useNavigation } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<StackParamList, 'RideArriving'>;
 
 const RideArriving = () => {
-    const navigation = useNavigation<any>();
+  const navigation = useNavigation<any>();
   const arrivingSheetRef = useRef<ActionSheetRef>(null);
   const completedSheetRef = useRef<ActionSheetRef>(null);
   const thirdSheetRef = useRef<ActionSheetRef>(null);
   const fourthSheetRef = useRef<ActionSheetRef>(null);
   const [timeLeft, setTimeLeft] = useState(10);
-  const [waitingTime, setWaitingTime] = useState(295);
+  const [waitingTime, setWaitingTime] = useState(10);
   const waitingTimerRef = useRef<number | null>(null);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [otpModalVisible, setOtpModalVisible] = useState(false);
@@ -54,7 +54,7 @@ const RideArriving = () => {
   const radius = 70;
   const strokeWidth = 5;
   const circumference = 2 * Math.PI * radius;
-  const progressAnim = useRef(new Animated.Value(1)).current; // start full
+  const progressAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     if (waitingTimerModalVisible) {
@@ -70,7 +70,7 @@ const RideArriving = () => {
 
   const strokeDashoffset = progressAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [circumference, 0], // shrink from full to empty
+    outputRange: [circumference, 0],
   });
 
   const formatCountdown = (seconds: number) => {
@@ -339,11 +339,6 @@ const RideArriving = () => {
                   <View style={styles.textPassenger}>
                     <Text style={styles.distance}>Distance:</Text>
                     <Text style={styles.miles}>10 Miles away</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.plate}>Number Plate:</Text>
-                    <Text style={styles.number}>123 756</Text>
                   </View>
 
                   <View style={styles.subContainer}>
@@ -678,7 +673,6 @@ const RideArriving = () => {
               <Text style={styles.otpTitle}>to start the ride</Text>
 
               <CustomTextInput
-                // placeholder="Enter OTP"
                 value={otp}
                 onChangeText={setOtp}
                 inputWidth={width * 0.7}
@@ -691,17 +685,14 @@ const RideArriving = () => {
                 maxLength={5}
                 textAlign="center"
               />
-
-              {/* Confirm button */}
               <Pressable
                 style={styles.otpmodalButton}
                 onPress={() => {
-                  console.log('OTP Entered:', otp);
                   setOtpModalVisible(false);
 
                   setTimeout(() => {
                     fourthSheetRef.current?.show();
-                  }, 300); // small delay for smoother transition
+                  }, 300);
                 }}
               >
                 <Text style={styles.modalButtonText}>Confirm</Text>
@@ -946,6 +937,20 @@ const RideArriving = () => {
 };
 
 const styles = StyleSheet.create({
+  distressMain: {
+    bottom: height * 0.03,
+    left: width * 0.6,
+    backgroundColor: colors.lightBrown,
+    padding: 5,
+    borderRadius: 30,
+    width: width * 0.15,
+    alignItems: 'center',
+  },
+  distressText: {
+    fontFamily: fontFamily.ClashDisplayRegular,
+    fontSize: fontSizes.sm2,
+    color: colors.brown,
+  },
   mapImg: { flex: 1, resizeMode: 'cover' },
   passengerContainer: {
     borderColor: colors.border,

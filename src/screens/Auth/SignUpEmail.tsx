@@ -149,13 +149,19 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
                 <Text style={styles.signIn}>
                   By signing up, you agree to the
                 </Text>
-                <TouchableOpacity activeOpacity={0.7}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => navigation.navigate('TermsCondition')}
+                >
                   <Text style={styles.text}>Terms & Conditions</Text>
                 </TouchableOpacity>
               </View>
               <View style={{ flexDirection: 'row', gap: height * 0.01 }}>
                 <Text style={styles.signIn}>and</Text>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("PrivacyPolicy")}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => navigation.navigate('PrivacyPolicy')}
+                >
                   <Text style={styles.text}>Privacy Policy</Text>
                 </TouchableOpacity>
               </View>
@@ -246,7 +252,8 @@ const styles = StyleSheet.create({
   },
   checkBoxMain: {
     flexDirection: 'row',
-    width: width * 0.8,
+    width: width * 0.85,
+    right: width * 0.02,
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -287,6 +294,7 @@ const styles = StyleSheet.create({
   belowSignInText: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.sm2,
+    color: colors.brown,
   },
   bottomMain: {
     flexDirection: 'row',
@@ -296,6 +304,7 @@ const styles = StyleSheet.create({
   bottomTextOne: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.sm,
+    color: colors.black,
   },
   bottomTextTwo: {
     fontFamily: fontFamily.SfProDisplayBold,
@@ -316,6 +325,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.ClshDisplayMedium,
     color: colors.black,
     textDecorationLine: 'underline',
+    fontSize: fontSizes.xsm,
   },
   signIn: {
     fontFamily: fontFamily.ClshDisplayRegular,

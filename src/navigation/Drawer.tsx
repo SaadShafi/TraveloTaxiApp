@@ -257,7 +257,7 @@ const CustomDrawerContent = (props: any) => {
           <View style={styles.driverModeContainer}>
             <TouchableOpacity
               style={styles.driverModeButton}
-              onPress={() => navigation.navigate('createProfile')}
+              onPress={() => navigation.navigate('CreateProfile')}
             >
               <Text style={styles.driverModeText}>Driver Mode</Text>
             </TouchableOpacity>
@@ -267,7 +267,7 @@ const CustomDrawerContent = (props: any) => {
           <View style={styles.driverModeContainer}>
             <TouchableOpacity
               style={styles.driverModeButton}
-              onPress={() => navigation.navigate('createProfile')}
+              onPress={() => navigation.navigate('CreateProfile')}
             >
               <Text style={styles.driverModeText}>User Mode</Text>
             </TouchableOpacity>
@@ -322,6 +322,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     position: 'relative',
+    backgroundColor: colors.white,
   },
   gradientTop: {
     position: 'absolute',
@@ -335,11 +336,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: height * 0.12,
     height: height * 0.09,
+    right: -width * 0.001,
   },
   drawerBgImg: {
-    width: width * 0.7,
+    width: width * 0.9,
     height: height * 0.9,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
   container: {
     flex: 1,
@@ -396,10 +398,7 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    // paddingVertical: 15,
     paddingHorizontal: 10,
-    // borderBottomWidth: 0.5,
-    // borderBottomColor: colors.lightGray,
   },
   menuItemMain: {
     height: height * 0.06,

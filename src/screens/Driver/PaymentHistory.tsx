@@ -4,6 +4,7 @@ import images from '../../assets/Images';
 import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
+import { fontSizes } from '../../utilities/fontsizes';
 
 type PaymentHistoryItem = {
   id: string;
@@ -19,7 +20,7 @@ const PaymentHistory = () => {
   const DATA: PaymentHistoryItem[] = [
     {
       id: '1',
-      passengerName: 'Adam James',
+      passengerName: '#456',
       distance: '10 Miles Away',
       pickup: 'Brooklyn Bridge Park',
       dropoff: 'Empire State Building',
@@ -28,12 +29,12 @@ const PaymentHistory = () => {
     },
     {
       id: '2',
-      passengerName: 'John Doe',
+      passengerName: '#456',
       distance: '15 Miles Away',
       pickup: 'Times Square',
       dropoff: 'Central Park',
       fare: '$75.00',
-      rideType: 'Book Later',
+      rideType: 'Pre Booking',
     },
   ];
 
@@ -41,27 +42,27 @@ const PaymentHistory = () => {
     item,
   }) => (
     <View style={styles.mainContainer}>
-      <Image source={images.User} style={styles.userImg} />
-
-      {/* Ride Type */}
+      {/* <Image source={images.User} style={styles.userImg} /> */}
       <View style={styles.rideContainer}>
         <Text style={styles.bookText}>Ride Type: {item.rideType}</Text>
       </View>
-
-      {/* Passenger Name */}
-      <View style={styles.row}>
-        <Text style={styles.name}>Passenger Name:</Text>
-        <Text style={styles.adam}>{item.passengerName}</Text>
+      <View style={styles.rowMain}>
+        <View style={styles.row}>
+          <Text style={styles.name}>Ride ID:</Text>
+          <Text style={styles.adam}>{item.passengerName}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.name}>Distance:</Text>
+          <Text style={styles.adam}>{item.distance}</Text>
+        </View>
       </View>
-
-      {/* Distance */}
-      <View style={styles.row}>
-        <Text style={styles.name}>Distance:</Text>
-        <Text style={styles.adam}>{item.distance}</Text>
-      </View>
-
-      {/* Pickup & Drop */}
-      <View style={{ flexDirection: 'row' }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          top: height * 0.03,
+          right: width * 0.035,
+        }}
+      >
         <Image source={images.guide} style={styles.guide} />
         <View style={{ gap: height * 0.01 }}>
           <View style={styles.location}>
@@ -79,8 +80,6 @@ const PaymentHistory = () => {
           </View>
         </View>
       </View>
-
-      {/* Fare */}
       <View style={styles.fareContainer}>
         <Text style={styles.fare}>Fare:</Text>
         <Text style={styles.dollar}>{item.fare}</Text>
@@ -106,51 +105,48 @@ const PaymentHistory = () => {
 };
 
 const styles = StyleSheet.create({
+  rowMain: {
+    left: width * 0.12,
+    top: height * 0.015,
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: width * 0.67,
-    left: height * 0.096,
-    bottom: height * 0.04,
   },
   mainContainer: {
     borderWidth: 1,
     borderColor: '#D4D4D4',
     backgroundColor: '#F4F4F4',
-    height: height * 0.4,
-    width: width * 0.92,
+    height: height * 0.35,
+    width: width * 0.9,
     borderRadius: 20,
     alignSelf: 'center',
-    top: height * 0.01,
-  },
-  userImg: {
-    left: width * 0.03,
-    top: height * 0.02,
+    padding: 10,
+    gap: height * 0.01,
   },
   rideContainer: {
-    backgroundColor: '#BD070633',
+    backgroundColor: colors.lightBrown,
     height: height * 0.03,
     borderRadius: 20,
     width: width * 0.4,
+    alignItems: 'center',
     justifyContent: 'center',
-    left: width * 0.2,
-    bottom: height * 0.05,
+    left: width * 0.02,
+    top: height * 0.01,
   },
   bookText: {
-    fontSize: 17,
+    fontSize: fontSizes.sm,
     fontFamily: fontFamily.SfProDisplayMedium,
-    width: width * 0.6,
-    fontWeight: '500',
-    alignItems: 'center',
-    left: width * 0.02,
+    color: colors.brown,
   },
   name: {
-    fontSize: 18,
+    fontSize: fontSizes.sm,
     fontFamily: fontFamily.SfProDisplaySemiBold,
     color: colors.black,
   },
   adam: {
-    fontSize: 18,
+    fontSize: fontSizes.sm,
     fontFamily: fontFamily.SfProDisplaySemiBold,
     color: colors.black,
   },
@@ -159,58 +155,54 @@ const styles = StyleSheet.create({
     borderColor: colors.brown,
     borderRadius: 10,
     height: height * 0.05,
-    width: width * 0.75,
+    width: width * 0.7,
     left: width * 0.11,
     backgroundColor: colors.white,
-    alignSelf: 'center',
   },
   locationRow: {
     flexDirection: 'row',
     gap: width * 0.02,
     alignItems: 'center',
-    left: width * 0.03,
-    top: height * 0.01,
+    padding: 10,
   },
   locImg: {
-    height: height * 0.027,
-    width: width * 0.05,
+    height: height * 0.016,
+    width: width * 0.04,
+    resizeMode: 'contain',
   },
   park: {
     color: colors.black,
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 20,
+    fontSize: fontSizes.sm2,
   },
   fareContainer: {
     backgroundColor: colors.white,
     borderRadius: 10,
-    height: height * 0.08,
-    width: width * 0.85,
+    height: height * 0.07,
+    width: width * 0.8,
     alignSelf: 'center',
-    top: height * 0.04,
+    top: height * 0.03,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: width * 0.08,
   },
   fare: {
     fontFamily: fontFamily.SfProDisplaySemiBold,
-    fontSize: 25,
-    fontWeight: '500',
+    fontSize: fontSizes.md,
     color: colors.black,
-    width: width * 0.15,
-    alignSelf: 'center',
-    left: width * 0.08,
   },
   dollar: {
     fontFamily: fontFamily.SfProDisplaySemiBold,
-    fontSize: 25,
-    fontWeight: '800',
+    fontSize: fontSizes.md,
     color: colors.black,
-    width: width * 0.18,
-    alignSelf: 'center',
-    right: width * 0.06,
   },
   guide: {
     left: width * 0.06,
     top: height * 0.02,
+    width: width * 0.027,
+    height: height * 0.079,
+    resizeMode: 'contain',
   },
 });
 
