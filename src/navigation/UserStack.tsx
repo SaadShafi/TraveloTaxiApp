@@ -25,6 +25,12 @@ import ScheduleDetail from '../screens/User/ScheduleDetail';
 import TripOptions from '../screens/User/TripOptions';
 import WalletUser from '../screens/User/WalletUser';
 import WalletUserSec from '../screens/User/WalletUserSec';
+<<<<<<< HEAD
+import RideArrivingUser from '../screens/User/RideArrivingUser';
+import ChatMain from '../screens/Global/Chat';
+import CallMain from '../screens/Global/CallMain';
+=======
+>>>>>>> f2d97150ec5c95b75670ed802ba4db1963844a25
 
 export type StackParamList = {
   HomeUser: undefined;
@@ -48,10 +54,16 @@ export type StackParamList = {
   DeleteAccount: undefined;
   HelpSupport: undefined;
   notification: undefined;
+<<<<<<< HEAD
+  RideArrivingUser:undefined;
+  Chat: undefined;
+  CallMain: undefined;
+=======
   RideArrivingUser: undefined;
   TermsCondition: undefined;
   WelcomeFirst: undefined;
   CreateProfile: undefined;
+>>>>>>> f2d97150ec5c95b75670ed802ba4db1963844a25
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -78,6 +90,8 @@ const UserStack: React.FC = () => {
       <Stack.Screen name="History" component={History} />
       <Stack.Screen name="notification" component={NotificationScreen} />
       <Stack.Screen name="Settings" component={Setting} />
+      <Stack.Screen name="Chat" component={ChatMain} />
+      <Stack.Screen name="CallMain" component={CallMain} />
       <Stack.Screen
         name="HistoryDetailUserOne"
         component={HistoryDetailUserOne}
