@@ -1,31 +1,33 @@
+import { isCancel, pick, types } from '@react-native-documents/picker';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Image,
   Keyboard,
+  Modal,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  ScrollView,
-  Modal,
 } from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import ImagePicker from 'react-native-image-crop-picker';
+import { useSelector } from 'react-redux';
+import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
+import CustomProfileImgModal from '../../components/CustomProfileImage';
 import CustomSelect from '../../components/CustomSelect';
 import CustomTextInput from '../../components/CustomTextInput';
 import TopHeader from '../../components/Topheader';
 import type { StackParamList } from '../../navigation/AuthStack';
+import { RootState } from '../../redux/store';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import DatePicker from 'react-native-date-picker';
-import { fontFamily } from '../../assets/Fonts';
-import { pick, types, isCancel } from '@react-native-documents/picker';
 
 type Props = NativeStackScreenProps<StackParamList, 'CreateProfile'>;
 
@@ -43,6 +45,15 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
   const [city, setCity] = useState('');
   const [rideType, setRideType] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [document, setDocument] = useState<{
+    name: string;
+    uri: string;
+    type?: string;
+    size?: number;
+  } | null>(null);
 
   useEffect(() => {
     console.log('Selected Role in CreateProfile:', selectedRole);
@@ -94,15 +105,93 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
     phone.length > 7 &&
     street.length > 5;
 
-  const UserScreens = () => {
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  const uploadFromGallery = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      setProfileImage(image.path);
+      toggleModal();
+    });
+  };
+
+  const uploadFromCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      setProfileImage(image.path);
+      toggleModal();
+    });
+  };
+
+  const handlePickDocument = async () => {
+    try {
+      // pick returns an array of files (even if one)
+      const results = await pick({
+        // types of files allowed
+        type: [types.allFiles],
+        // optionally: allowMultiple selection
+        allowMultiSelection: false,
+        // optionally: keep a local copy if needed
+        keepLocalCopy: true,
+      });
+
+      if (results && results.length > 0) {
+        const file = results[0];
+        setDocument({
+          name: file.name,
+          uri: file.uri,
+          type: file.type, // may or may not be defined
+          size: file.size, // size in bytes, if available
+        });
+      }
+    } catch (err: any) {
+      if (isCancel(err)) {
+        console.log('User cancelled document picker');
+      } else {
+        console.error('Document pick error:', err);
+      }
+    }
+  };
+
+  const toggleModalSec = () => {
+    setModalVisible(false);
+    navigation.navigate('BankDetails');
+  };
+
+  const UserScreens = useMemo(() => {
     return (
       <View style={{ flex: 1, alignItems: 'center' }}>
         <View style={styles.imgMain}>
           <Image source={images.profGradient} style={styles.gradient} />
-          <TouchableOpacity style={styles.profMain} activeOpacity={0.7}>
+          {/* <TouchableOpacity style={styles.profMain} activeOpacity={0.7}>
             <Image source={images.profile} style={styles.profile} />
             <View style={styles.cameraMain}>
               <Image source={images.camera} style={styles.camera} />
+            </View>
+          </TouchableOpacity> */}
+          <TouchableOpacity onPress={toggleModal} activeOpacity={0.7}>
+            <View style={styles.profileImageWrapper}>
+              {profileImage ? (
+                <Image
+                  source={{ uri: profileImage }}
+                  style={styles.profileImage}
+                />
+              ) : (
+                <View style={styles.profMain}>
+                  <Image source={images.profile} style={styles.profile} />
+                  <View style={styles.cameraMain}>
+                    <Image source={images.camera} style={styles.camera} />
+                  </View>
+                </View>
+              )}
             </View>
           </TouchableOpacity>
         </View>
@@ -210,53 +299,28 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             onPress={() => navigation.navigate('Congratulation')}
           />
         </View>
+        <CustomProfileImgModal
+          modalOpen={modalOpen}
+          toggleModal={toggleModal}
+          camera={uploadFromCamera}
+          gallery={uploadFromGallery}
+        />
       </View>
     );
-  };
+  }, [
+    name,
+    email,
+    phone,
+    street,
+    gender,
+    city,
+    isPhoneFocused,
+    isFormValid,
+    profileImage,
+    modalOpen,
+  ]);
 
-  const DriverScreens = () => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [document, setDocument] = useState<{
-      name: string;
-      uri: string;
-      type?: string;
-      size?: number;
-    } | null>(null);
-
-    const handlePickDocument = async () => {
-      try {
-        // pick returns an array of files (even if one)
-        const results = await pick({
-          // types of files allowed
-          type: [types.allFiles],
-          // optionally: allowMultiple selection
-          allowMultiSelection: false,
-          // optionally: keep a local copy if needed
-          keepLocalCopy: true,
-        });
-
-        if (results && results.length > 0) {
-          const file = results[0];
-          setDocument({
-            name: file.name,
-            uri: file.uri,
-            type: file.type, // may or may not be defined
-            size: file.size, // size in bytes, if available
-          });
-        }
-      } catch (err: any) {
-        if (isCancel(err)) {
-          console.log('User cancelled document picker');
-        } else {
-          console.error('Document pick error:', err);
-        }
-      }
-    };
-
-    const toggleModal = () => {
-       setModalVisible(false);
-      navigation.navigate('BankDetails');
-    }
+  const DriverScreens = useMemo(() => {
     return (
       <View style={{ flex: 1, alignItems: 'center' }}>
         <ScrollView
@@ -682,6 +746,12 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             />
           </View>
         </ScrollView>
+        <CustomProfileImgModal
+          modalOpen={modalOpen}
+          toggleModal={toggleModal}
+          camera={uploadFromCamera}
+          gallery={uploadFromGallery}
+        />
         <Modal
           animationType="fade"
           transparent={true}
@@ -703,140 +773,58 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
                 btnHeight={height * 0.06}
                 btnWidth={width * 0.75}
                 borderRadius={30}
-                onPress={toggleModal}
+                onPress={toggleModalSec}
               />
             </View>
           </View>
         </Modal>
       </View>
     );
-  };
+  }, [
+    name,
+    email,
+    phone,
+    street,
+    gender,
+    city,
+    rideType,
+    startDate,
+    openStartPicker,
+    isPhoneFocused,
+    isFormValid,
+    profileImage,
+    modalOpen,
+  ]);
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1, backgroundColor: colors.white }}>
-        <TopHeader text="Profile" isBack={true} navigation={navigation} />
-        {/* <View style={styles.imgMain}>
-          <Image source={images.profGradient} style={styles.gradient} />
-          <TouchableOpacity style={styles.profMain} activeOpacity={0.7}>
-            <Image source={images.profile} style={styles.profile} />
-            <View style={styles.cameraMain}>
-              <Image source={images.camera} style={styles.camera} />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.inputMain}>
-          <CustomTextInput
-            placeholder="*Enter Your Name..."
-            placeholderTextColor={colors.black}
-            borderColor={colors.brown}
-            borderRadius={30}
-            inputWidth={width * 0.85}
-            inputHeight={height * 0.06}
-            value={name}
-            onChangeText={setName}
-            backgroundColor={colors.gray}
-          />
-
-          <View
-            style={[
-              styles.phoneRow,
-              {
-                borderColor:
-                  isPhoneFocused || phone ? colors.brown : colors.gray,
-                backgroundColor:
-                  isPhoneFocused || phone ? colors.lightBrown : colors.gray,
-              },
-            ]}
-          >
-            <Image source={images.UK} style={styles.flag} />
-            <Image source={images.line} style={styles.lineImg} />
-            <TextInput
-              style={styles.phoneInput}
-              placeholder="+1"
-              placeholderTextColor={colors.black}
-              keyboardType="phone-pad"
-              value={phone}
-              onChangeText={setPhone}
-              onFocus={() => setIsPhoneFocused(true)}
-              onBlur={() => setIsPhoneFocused(false)}
-            />
-          </View>
-          <CustomTextInput
-            placeholder="*Enter Your Email..."
-            placeholderTextColor={colors.black}
-            borderColor={colors.brown}
-            borderRadius={30}
-            inputWidth={width * 0.85}
-            inputHeight={height * 0.06}
-            value={email}
-            onChangeText={setEmail}
-            backgroundColor={colors.gray}
-          />
-          <CustomTextInput
-            placeholder="*Street"
-            placeholderTextColor={colors.black}
-            borderColor={colors.brown}
-            borderRadius={30}
-            inputWidth={width * 0.85}
-            inputHeight={height * 0.06}
-            value={street}
-            onChangeText={setStreet}
-            backgroundColor={colors.gray}
-          />
-          <CustomSelect
-            inputWidth={width * 0.85}
-            inputHeight={height * 0.06}
-            selectElements={cityOptions}
-            borderColor={city ? colors.brown : colors.gray}
-            borderWidth={1}
-            inputColor={city ? colors.lightBrown : colors.gray}
-            borderRadius={30}
-            onChangeText={value => setCity(value)}
-            setSelectedElement={setCity}
-            defaultValue=""
-          />
-          <CustomSelect
-            inputWidth={width * 0.85}
-            inputHeight={height * 0.06}
-            selectElements={genderOptions}
-            borderColor={gender ? colors.brown : colors.gray}
-            borderWidth={1}
-            inputColor={gender ? colors.lightBrown : colors.gray}
-            borderRadius={30}
-            onChangeText={value => setGender(value)}
-            setSelectedElement={setGender}
-            defaultValue=""
-          />
-        </View>
-        <View style={styles.btnMain}>
-          <CustomButton
-            btnHeight={height * 0.075}
-            btnWidth={width * 0.4}
-            text="Cancel"
-            backgroundColor={colors.black}
-            textColor={colors.white}
-            borderRadius={30}
-          />
-          <CustomButton
-            btnHeight={height * 0.075}
-            btnWidth={width * 0.4}
-            text="Save"
-            backgroundColor={isFormValid ? colors.brown : colors.gray}
-            textColor={colors.white}
-            borderRadius={30}
-            disabled={!isFormValid}
-            onPress={() => navigation.navigate('Congratulation')}
-          />
-        </View> */}
-        {selectedRole === 'user' && <UserScreens />}
-        {selectedRole === 'driver' && <DriverScreens />}
+        <TopHeader text="Profile" isBack={true} />
+        {selectedRole === 'user' && UserScreens}
+        {selectedRole === 'driver' && DriverScreens}
       </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  profileImageWrapper: {
+    width: width * 0.4,
+    // height: width * 0.4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: height * 0.6,
+  },
+  profileImage: {
+    width: width * 0.32,
+    height: width * 0.32,
+    resizeMode: 'cover',
+  },
+  defaultProfileImage: {
+    // height: width * 0.4,
+    bottom: height * 0.09,
+    resizeMode: 'contain',
+  },
   imgMain: {
     bottom: height * 0.09,
     alignItems: 'center',
@@ -979,13 +967,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 252, 252, 0.9)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 30,
   },
   modalContent: {
     backgroundColor: colors.white,
     borderRadius: 16,
     width: width * 0.83,
-    height: height * 0.32,
+    height: height * 0.34,
     alignItems: 'center',
     borderWidth: 0.9,
     borderColor: colors.black,

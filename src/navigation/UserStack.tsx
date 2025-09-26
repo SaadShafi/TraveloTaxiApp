@@ -1,5 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import CreateProfile from '../screens/Auth/CreateProfile';
+import WelcomeFirst from '../screens/Auth/WelcomeFirst';
 import HelpAndSupport from '../screens/Driver/HelpAndSupport';
 import History from '../screens/Driver/History';
 import AboutUs from '../screens/Global/AboutUs';
@@ -9,6 +11,7 @@ import DeleteAccount from '../screens/Global/DeleteAccount';
 import NotificationScreen from '../screens/Global/Notification';
 import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
 import Setting from '../screens/Global/Setting';
+import TermsCondition from '../screens/Global/TermsConditions';
 import AddPaymentMethod from '../screens/User/AddPaymentUser';
 import DriverOfferings from '../screens/User/DriverOfferings';
 import FindingDriver from '../screens/User/FindingDriver';
@@ -16,14 +19,18 @@ import HistoryDetailUserOne from '../screens/User/HistoryDetailUserOne';
 import HistoryDetailUserSec from '../screens/User/HistoryDetailUserSec';
 import HomeUser from '../screens/User/HomeUser';
 import PaymentUser from '../screens/User/payment';
+import RideArrivingUser from '../screens/User/RideArrivingUser';
 import Schedule from '../screens/User/Schedule';
 import ScheduleDetail from '../screens/User/ScheduleDetail';
 import TripOptions from '../screens/User/TripOptions';
 import WalletUser from '../screens/User/WalletUser';
 import WalletUserSec from '../screens/User/WalletUserSec';
+<<<<<<< HEAD
 import RideArrivingUser from '../screens/User/RideArrivingUser';
 import ChatMain from '../screens/Global/Chat';
 import CallMain from '../screens/Global/CallMain';
+=======
+>>>>>>> f2d97150ec5c95b75670ed802ba4db1963844a25
 
 export type StackParamList = {
   HomeUser: undefined;
@@ -47,9 +54,16 @@ export type StackParamList = {
   DeleteAccount: undefined;
   HelpSupport: undefined;
   notification: undefined;
+<<<<<<< HEAD
   RideArrivingUser:undefined;
   Chat: undefined;
   CallMain: undefined;
+=======
+  RideArrivingUser: undefined;
+  TermsCondition: undefined;
+  WelcomeFirst: undefined;
+  CreateProfile: undefined;
+>>>>>>> f2d97150ec5c95b75670ed802ba4db1963844a25
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -62,6 +76,8 @@ const UserStack: React.FC = () => {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="HomeUser" component={HomeUser} />
+      <Stack.Screen name="WelcomeFirst" component={WelcomeFirst} />
+      <Stack.Screen name="CreateProfile" component={CreateProfile} />
       <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
       <Stack.Screen name="PaymentUser" component={PaymentUser} />
       <Stack.Screen name="Schedule" component={Schedule} />
@@ -91,6 +107,7 @@ const UserStack: React.FC = () => {
       <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
       <Stack.Screen name="HelpSupport" component={HelpAndSupport} />
       <Stack.Screen name="RideArrivingUser" component={RideArrivingUser} />
+      <Stack.Screen name="TermsCondition" component={TermsCondition} />
     </Stack.Navigator>
   );
 };

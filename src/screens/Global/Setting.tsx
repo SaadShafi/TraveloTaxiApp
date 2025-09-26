@@ -67,6 +67,14 @@ const Setting: React.FC<Props> = ({ navigation }) => {
         <TouchableOpacity
           style={styles.content}
           activeOpacity={0.7}
+          onPress={() => navigation.navigate('TermsCondition')}
+        >
+          <Text style={styles.contentText}>Terms And Condition</Text>
+          <Image source={images.greaterIcon} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.content}
+          activeOpacity={0.7}
           onPress={() => navigation.navigate('AboutUs')}
         >
           <Text style={styles.contentText}>About Us</Text>
@@ -97,6 +105,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     gap: height * 0.02,
+    top: height * 0.01,
   },
   content: {
     flexDirection: 'row',
@@ -104,13 +113,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray,
     borderRadius: 30,
     width: width * 0.85,
-    height: height * 0.06,
-    paddingHorizontal: width * 0.04,
+    height: height * 0.065,
+    paddingHorizontal: width * 0.07,
     alignItems: 'center',
   },
   contentText: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.sm2,
+    color: colors.black,
   },
 });
 

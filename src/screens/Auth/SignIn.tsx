@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
   signInText: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.lg,
+    color: colors.black,
   },
   inputMain: {
     gap: height * 0.01,
@@ -189,15 +190,17 @@ const styles = StyleSheet.create({
   belowSignInText: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.sm2,
+    color: colors.brown,
   },
   bottomMain: {
     flexDirection: 'row',
-    top: height * 0.16,
+    top: height * 0.14,
     gap: width * 0.01,
   },
   bottomTextOne: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.sm,
+    color: colors.black,
   },
   bottomTextTwo: {
     fontFamily: fontFamily.SfProDisplayBold,
@@ -213,6 +216,7 @@ const styles = StyleSheet.create({
   forgotPass: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.xsm,
+    color: colors.black,
   },
 });
 

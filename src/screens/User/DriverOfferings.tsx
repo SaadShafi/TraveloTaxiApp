@@ -1,205 +1,163 @@
-// import { FlatList, StyleSheet, View } from 'react-native';
-// import images from '../../assets/Images';
-// import TopHeader from '../../components/Topheader';
-// import { height } from '../../utilities';
-
-// interface DriverProps {
-//   name: string;
-//   price: string;
-//   carType: string;
-//   carModel: string;
-//   ratingImage: any;
-// }
-
-// const DriverOfferings = () => {
-//   const DriverOfferingData = [
-//     {
-//       name: 'Aqeel',
-//       price: '$16.00',
-//       carType: 'Tesla Model 3',
-//       carModel: 'MWY10X9',
-//       rating: images.rating,
-//     },
-//     {
-//       name: 'Aqeel',
-//       price: '$16.00',
-//       carType: 'Tesla Model 3',
-//       carModel: 'MWY10X9',
-//       rating: images.rating,
-//     },
-//     {
-//       name: 'Aqeel',
-//       price: '$16.00',
-//       carType: 'Tesla Model 3',
-//       carModel: 'MWY10X9',
-//       rating: images.rating,
-//     },
-//     {
-//       name: 'Aqeel',
-//       price: '$16.00',
-//       carType: 'Tesla Model 3',
-//       carModel: 'MWY10X9',
-//       rating: images.rating,
-//     },
-//     {
-//       name: 'Aqeel',
-//       price: '$16.00',
-//       carType: 'Tesla Model 3',
-//       carModel: 'MWY10X9',
-//       rating: images.rating,
-//     },
-//     {
-//       name: 'Aqeel',
-//       price: '$16.00',
-//       carType: 'Tesla Model 3',
-//       carModel: 'MWY10X9',
-//       rating: images.rating,
-//     },
-//   ];
-
-//   const DrriverOffering = ({ item }: { item: DriverProps }) => {
-//     return (
-//       <View style={{ flex: 1 }}>
-//         <View></View>
-//       </View>
-//     );
-//   };
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <TopHeader text="Driver Offerings" isBack={true} />
-//       <FlatList
-//         data={DriverOfferingData}
-//         renderItem={DrriverOffering}
-//         keyExtractor={(item, index) => index.toString()}
-//         contentContainerStyle={{
-//           gap: height * 0.02,
-//         }}
-//       />
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({});
-
-// export default DriverOfferings;
-
-
-
-
-
-
-
-
-
-
-
-
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 import {
   FlatList,
   Image,
+  ImageSourcePropType,
+  Modal,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  Modal,
-  TextInput,
 } from 'react-native';
+import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
+import CustomButton from '../../components/CustomButton';
 import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
-import { useState } from 'react';
-import { fontFamily } from '../../assets/Fonts';
 import { fontSizes } from '../../utilities/fontsizes';
-import CustomButton from '../../components/CustomButton';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { StackParamList } from '../../navigation/AuthStack';
 
 interface DriverProps {
   name: string;
   price: string;
   carType: string;
   carModel: string;
-  rating: any;
+  ratingImage: ImageSourcePropType;
 }
-type Props = NativeStackScreenProps<StackParamList, 'FindingDriver'>;
 
-const DriverOfferings: React.FC<Props> = ({ navigation }) => {
+const DriverOfferings = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  // 👉 Modal states
   const [showBidModal, setShowBidModal] = useState(false);
   const [bidAmount, setBidAmount] = useState('$55.00');
+  const navigation = useNavigation<NavigationProp<any>>();
 
-  const DriverOfferingData = [
+  const DriverOfferingData: DriverProps[] = [
     {
       name: 'Aqeel',
       price: '$16.00',
       carType: 'Tesla Model 3',
-      carModel: 'MWY1 0X9',
-      rating: images.rating,
+      carModel: 'MWY10X9',
+      ratingImage: images.rating,
     },
     {
       name: 'Aqeel',
       price: '$16.00',
       carType: 'Tesla Model 3',
-      carModel: 'MWY1 0X9',
-      rating: images.rating,
+      carModel: 'MWY10X9',
+      ratingImage: images.rating,
     },
     {
       name: 'Aqeel',
       price: '$16.00',
       carType: 'Tesla Model 3',
-      carModel: 'MWY1 0X9',
-      rating: images.rating,
+      carModel: 'MWY10X9',
+      ratingImage: images.rating,
     },
     {
       name: 'Aqeel',
       price: '$16.00',
       carType: 'Tesla Model 3',
-      carModel: 'MWY1 0X9',
-      rating: images.rating,
+      carModel: 'MWY10X9',
+      ratingImage: images.rating,
+    },
+    {
+      name: 'Aqeel',
+      price: '$16.00',
+      carType: 'Tesla Model 3',
+      carModel: 'MWY10X9',
+      ratingImage: images.rating,
+    },
+    {
+      name: 'Aqeel',
+      price: '$16.00',
+      carType: 'Tesla Model 3',
+      carModel: 'MWY10X9',
+      ratingImage: images.rating,
     },
   ];
 
-  const DrriverOffering = ({ item, index }: { item: DriverProps; index: number }) => {
+  const DrriverOffering = ({
+    item,
+    index,
+  }: {
+    item: DriverProps;
+    index: number;
+  }) => {
     const isSelected = selectedIndex === index;
+
     return (
       <TouchableOpacity
-        style={[styles.card, isSelected && styles.selectedCard]}
+        activeOpacity={0.8}
         onPress={() => setSelectedIndex(index)}
+        style={styles.container}
       >
-        <View>
-          <View style={{ flexDirection: 'row', gap: 6 }}>
-            <Text style={[styles.name, isSelected && styles.selectedText]}>{item.name}</Text>
-            <Text style={[styles.price, isSelected && styles.selectedText]}>{item.price}</Text>
+        <View
+          style={[
+            styles.contentMain,
+            { backgroundColor: isSelected ? colors.brown : colors.white },
+          ]}
+        >
+          <View style={styles.nameRateContainer}>
+            <View style={styles.nameMain}>
+              <Text
+                style={[
+                  styles.name,
+                  { color: isSelected ? colors.white : colors.black },
+                ]}
+              >
+                {item.name}
+              </Text>
+              <Text
+                style={[
+                  styles.price,
+                  { color: isSelected ? colors.white : colors.black },
+                ]}
+              >
+                {item.price}
+              </Text>
+            </View>
+            <Image
+              source={isSelected ? images.ratingWhite : item.ratingImage}
+              style={styles.ratingImg}
+            />
           </View>
-          <Text style={[styles.carType, isSelected && styles.selectedText]}>{item.carType}</Text>
-        </View>
-
-        <View style={styles.rightSection}>
-          <Image
-            source={item.rating}
-            style={[styles.rating, isSelected && { tintColor: colors.white }]} 
-          />
-          <Text style={[styles.carModel, isSelected && styles.selectedText]}>{item.carModel}</Text>
+          <View style={styles.carDetailsMain}>
+            <Text
+              style={[
+                styles.carType,
+                { color: isSelected ? colors.white : colors.black },
+              ]}
+            >
+              {item.carType}
+            </Text>
+            <Text
+              style={[
+                styles.carModel,
+                { color: isSelected ? colors.white : colors.black },
+              ]}
+            >
+              {item.carModel}
+            </Text>
+          </View>
         </View>
       </TouchableOpacity>
     );
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.white }}>
+    <View style={{ flex: 1 }}>
       <TopHeader text="Driver Offerings" isBack={true} />
-
       <FlatList
         data={DriverOfferingData}
-        renderItem={({ item, index }) => <DrriverOffering item={item} index={index} />}
-        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => (
+          <DrriverOffering item={item} index={index} />
+        )}
+        keyExtractor={(_, index) => index.toString()}
         contentContainerStyle={{
-          padding: width * 0.04,
-          gap: height * 0.015,
+          gap: height * 0.02,
+          paddingVertical: height * 0.02,
         }}
       />
 
@@ -269,96 +227,58 @@ const DriverOfferings: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: width * 0.85,
-    alignSelf: 'center',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#fff',
-    padding: width * 0.04,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
-  },
-  selectedCard: {
-    backgroundColor: '#9B0A0A',
-    borderWidth: 1,
-    borderColor: '#9B0A0A',
-  },
   logo: {
     width: width * 0.45,
     height: height * 0.25,
     resizeMode: 'contain',
     alignSelf: 'center',
   },
+  container: {
+    alignItems: 'center',
+  },
+  contentMain: {
+    borderWidth: 1,
+    borderColor: colors.darkGray,
+    width: width * 0.85,
+    height: height * 0.08,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nameRateContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: width * 0.75,
+  },
+  nameMain: {
+    flexDirection: 'row',
+    gap: width * 0.03,
+  },
+  carDetailsMain: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: width * 0.75,
+  },
   name: {
+    fontFamily: fontFamily.SFProDisplaySemiBold,
     fontSize: fontSizes.sm2,
-    fontWeight: '700',
-    fontFamily: fontFamily.SfProDisplayMedium,
-    color: colors.black,
   },
   price: {
-    fontSize: fontSizes.md,
-    fontWeight: '700',
-    fontFamily: fontFamily.SfProDisplayMedium,
-    color: colors.black,
-    marginLeft: 6,
+    fontFamily: fontFamily.SFProDisplayMedium,
+    fontSize: fontSizes.sm2,
   },
   carType: {
-    fontSize: fontSizes.sm,
-    color: colors.black,
-    marginTop: 2,
+    fontFamily: fontFamily.SFProDisplayMedium,
+    fontSize: fontSizes.xsm,
   },
   carModel: {
-    fontSize: fontSizes.sm,
-    color: colors.black,
-    marginTop: 4,
-    textAlign: 'right',
+    fontFamily: fontFamily.SFProDisplayMedium,
+    fontSize: fontSizes.xsm,
   },
-  rating: {
-    width: width * 0.21,
-    height: height * 0.015,
+  ratingImg: {
+    width: width * 0.19,
     resizeMode: 'contain',
   },
-  rightSection: {
-    alignItems: 'flex-end',
-  },
-  selectedText: {
-    color: colors.white,
-  },
-  bottomButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: width * 0.05,
-  },
-  bidButton: {
-    flex: 1,
-    backgroundColor: '#000',
-    borderRadius: 30,
-    paddingVertical: 12,
-    marginRight: 8,
-    alignItems: 'center',
-  },
-  bookButton: {
-    flex: 1,
-    backgroundColor: colors.brown,
-    borderRadius: 30,
-    paddingVertical: 12,
-    marginLeft: 8,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  // 👉 Added modal styles only
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.3)',

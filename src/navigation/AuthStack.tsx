@@ -11,6 +11,7 @@ import SignUpEmail from '../screens/Auth/SignUpEmail';
 import WelcomeFirst from '../screens/Auth/WelcomeFirst';
 import WelcomeFourth from '../screens/Auth/WelcomeFourth';
 import WelcomeSec from '../screens/Auth/WelcomeSec';
+import BankDetails from '../screens/Driver/BankDetails';
 import AboutUs from '../screens/Global/AboutUs';
 import CallMain from '../screens/Global/CallMain';
 import ChangePassWord from '../screens/Global/changePassword';
@@ -20,6 +21,7 @@ import DeleteAccount from '../screens/Global/DeleteAccount';
 import NotificationScreen from '../screens/Global/Notification';
 import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
 import Setting from '../screens/Global/Setting';
+import TermsCondition from '../screens/Global/TermsConditions';
 import RideArrivingUser from '../screens/User/RideArrivingUser';
 
 export type StackParamList = {
@@ -53,6 +55,7 @@ export type StackParamList = {
   Chat: undefined;
   CallMain: undefined;
   RideArrivingUser: undefined;
+  TermsCondition: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -65,6 +68,7 @@ const AuthStack: React.FC = () => {
     >
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUpEmail" component={SignUpEmail} />
+      <Stack.Screen name="BankDetails" component={BankDetails} />
       <Stack.Screen name="OtpVerification" component={OtpVerification} />
       <Stack.Screen name="SetPassword" component={SetPassword} />
       <Stack.Screen name="WelcomeFirst" component={WelcomeFirst} />
@@ -84,6 +88,7 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="Chat" component={ChatMain} />
       <Stack.Screen name="CallMain" component={CallMain} />
       <Stack.Screen name="RideArrivingUser" component={RideArrivingUser} />
+      <Stack.Screen name="TermsCondition" component={TermsCondition} />
     </Stack.Navigator>
   );
 };

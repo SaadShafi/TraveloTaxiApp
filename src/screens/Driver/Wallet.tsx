@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { fontFamily } from '../../assets/Fonts';
+import images from '../../assets/Images';
 import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
-import { fontFamily } from '../../assets/Fonts';
-import images from '../../assets/Images';
 
 const Wallet = () => {
   // Transaction data from your screenshot
@@ -21,18 +21,16 @@ const Wallet = () => {
   // Render each transaction item with background
   const renderTransactionItem = ({ item }) => (
     <View style={styles.transactionItemContainer}>
-    <View style={{padding: 5,flexDirection: "row", width: width * 0.8}}>
-        <Image
-        source={images.card}
-        />
-      <View style={styles.transactionItem}>
-        <View>
-          <Text style={styles.transactionName}>{item.name}</Text>
-          <Text style={styles.transactionTime}>{item.time}</Text>
+      <View style={{ padding: 5, flexDirection: 'row', width: width * 0.8 }}>
+        <Image source={images.card} />
+        <View style={styles.transactionItem}>
+          <View>
+            <Text style={styles.transactionName}>{item.name}</Text>
+            <Text style={styles.transactionTime}>{item.time}</Text>
+          </View>
+          <Text style={styles.transactionAmount}>{item.amount}</Text>
         </View>
-        <Text style={styles.transactionAmount}>{item.amount}</Text>
       </View>
-        </View>
     </View>
   );
 
@@ -43,20 +41,21 @@ const Wallet = () => {
       <View style={styles.mainContainer}>
         <View style={styles.subContainer}>
           <Text style={styles.dollar}>$300</Text>
-          <Text style={styles.balance}>Available Balance</Text>
+          <Text style={styles.balance}>Total Earnings</Text>
         </View>
       </View>
-      
+
       <View style={styles.transactionHeader}>
         <Text style={styles.transaction}>Transactions</Text>
-        <Text style={styles.see}>See All</Text>
+        {/* <Text style={styles.see}>See All</Text> */}
       </View>
-      
+
       <FlatList
         data={transactionData}
         renderItem={renderTransactionItem}
         keyExtractor={item => item.id}
         style={styles.transactionList}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
       />
     </View>
@@ -85,25 +84,27 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: height * 0.13,
     width: width * 0.8,
-    justifyContent: "center", 
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   dollar: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: 36,
-    fontWeight: "500",
+    fontWeight: '500',
     alignSelf: 'center',
+    color: colors.black,
   },
   balance: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: 18,
-    fontWeight: "500",
+    fontWeight: '500',
     alignSelf: 'center',
     marginTop: 5,
+    color: colors.black,
   },
   transactionHeader: {
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     width: width * 0.9,
     alignSelf: 'center',
     marginBottom: 15,
@@ -111,26 +112,28 @@ const styles = StyleSheet.create({
   transaction: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: 18,
-    fontWeight: "500",
+    fontWeight: '500',
+    color: colors.black,
   },
   see: {
     fontFamily: fontFamily.SfProDisplayMedium,
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
     textDecorationLine: 'underline',
-    color: '#888888',
+    color: colors.black,
   },
   transactionList: {
     width: width * 0.9,
     alignSelf: 'center',
   },
   listContent: {
-    gap: height * 0.01
+    gap: height * 0.01,
+    paddingBottom: height * 0.02,
   },
   transactionItemContainer: {
-    backgroundColor: '#E6E6E6', 
-    borderColor:'#D7D6D6',
-    borderWidth:1,
+    backgroundColor: '#E6E6E6',
+    borderColor: '#D7D6D6',
+    borderWidth: 1,
     borderRadius: 12,
     padding: 10,
   },

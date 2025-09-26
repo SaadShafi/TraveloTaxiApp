@@ -12,7 +12,7 @@ type Props = NativeStackScreenProps<StackParamList, 'AboutUs'>;
 const AboutUs: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
-      <TopHeader text="About Us" isBack={true} navigation={navigation} />
+      <TopHeader text="About Us" isBack={true} />
       <View style={styles.container}>
         <Text style={styles.aboutText}>About Travelo</Text>
         <View style={{ top: height * 0.02 }}>
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
   aboutText: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.md,
+    color: colors.black,
   },
   paraText: {
     fontFamily: fontFamily.ClashDisplayMedium,

@@ -28,30 +28,31 @@ const RideDetails: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.booking}>Book Now</Text>
         </View>
         <Image source={images.User} style={styles.img} />
+        <View style={{ bottom: height * 0.02, gap: height * 0.01 }}>
+          <View style={styles.user}>
+            <Text style={styles.userName}>Passenger Name:</Text>
+            <Text style={styles.adam}>Adam James</Text>
+          </View>
 
-        <View style={styles.user}>
-          <Text style={styles.userName}>Passenger Name:</Text>
-          <Text style={styles.adam}>Adam James</Text>
-        </View>
+          <View style={styles.milesDistance}>
+            <Text style={styles.distance}>Distance:</Text>
+            <Text style={styles.miles}>10 Miles away</Text>
+          </View>
 
-        <View style={styles.milesDistance}>
-          <Text style={styles.distance}>Distance:</Text>
-          <Text style={styles.miles}>10 Miles away</Text>
-        </View>
+          <View style={styles.Date}>
+            <Text style={styles.date}>Date:</Text>
+            <Text style={styles.year}>10 Dec 2025</Text>
+          </View>
 
-        <View style={styles.Date}>
-          <Text style={styles.date}>Date:</Text>
-          <Text style={styles.year}>10 Dec 2025</Text>
-        </View>
+          <View style={styles.Timing}>
+            <Text style={styles.time}>Time:</Text>
+            <Text style={styles.clock}>10:00 PM</Text>
+          </View>
 
-        <View style={styles.Timing}>
-          <Text style={styles.time}>Time:</Text>
-          <Text style={styles.clock}>10:00 PM</Text>
-        </View>
-
-        <View style={styles.fare}>
-          <Text style={styles.Fare}>Fare:</Text>
-          <Text style={styles.dollar}>$50.00</Text>
+          <View style={styles.fare}>
+            <Text style={styles.Fare}>Fare:</Text>
+            <Text style={styles.dollar}>$50.00</Text>
+          </View>
         </View>
 
         <Image source={images.Pickup} style={styles.pickup} />
@@ -59,7 +60,9 @@ const RideDetails: React.FC<Props> = ({ navigation }) => {
         <View style={styles.whitecontainer}>
           <Text style={styles.pick}>Pickup Location</Text>
           <View style={styles.locContainer}>
-            <View style={{ flexDirection: 'row', gap: 10 }}>
+            <View
+              style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}
+            >
               <Image source={images.Location} style={styles.location} />
               <Text style={styles.park}>Brooklyn Bridge Park</Text>
             </View>
@@ -67,13 +70,21 @@ const RideDetails: React.FC<Props> = ({ navigation }) => {
 
           <Text style={styles.drop}>Drop Off Location</Text>
           <View style={styles.dropContainer}>
-            <View style={{ flexDirection: 'row', gap: 10 }}>
+            <View
+              style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}
+            >
               <Image source={images.Location} style={styles.location} />
               <Text style={styles.park}>Empire State Building</Text>
             </View>
           </View>
 
-          <View style={{ flexDirection: 'row', gap: width * 0.02 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: width * 0.02,
+              bottom: height * 0.02,
+            }}
+          >
             <View style={styles.btn}>
               <CustomButton
                 btnHeight={height * 0.06}
@@ -149,7 +160,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   subContainer: {
-    height: height * 0.68,
+    height: height * 0.63,
     width: width * 0.93,
     alignSelf: 'center',
     borderRadius: 20,
@@ -158,8 +169,9 @@ const styles = StyleSheet.create({
   },
   pickup: {
     left: width * 0.05,
-    height: height * 0.12,
-    top: height * 0.1,
+    height: height * 0.125,
+    top: height * 0.025,
+    resizeMode: 'contain',
   },
   locContainer: {
     backgroundColor: colors.mediumGray,
@@ -167,7 +179,7 @@ const styles = StyleSheet.create({
     width: width * 0.73,
     borderRadius: 10,
     left: width * 0.04,
-    top: height * 0.02,
+    top: height * 0.017,
   },
   dropContainer: {
     backgroundColor: colors.mediumGray,
@@ -175,23 +187,23 @@ const styles = StyleSheet.create({
     width: width * 0.73,
     borderRadius: 10,
     left: width * 0.04,
-    top: height * 0.06,
+    top: height * 0.048,
   },
   Precontainer: {
     backgroundColor: colors.lightBrown,
-    height: height * 0.03,
-    width: width * 0.3,
+    height: height * 0.032,
+    width: width * 0.26,
     borderRadius: 20,
     left: width * 0.04,
     top: height * 0.02,
   },
   whitecontainer: {
     backgroundColor: colors.white,
-    height: height * 0.25,
+    height: height * 0.23,
     width: width * 0.79,
     borderRadius: 20,
     left: width * 0.11,
-    bottom: height * 0.04,
+    bottom: height * 0.12,
   },
   booking: {
     color: colors.black,
@@ -201,7 +213,7 @@ const styles = StyleSheet.create({
   },
   img: {
     left: width * 0.04,
-    top: height * 0.06,
+    top: height * 0.05,
   },
   btn: {
     marginTop: height * 0.1,
@@ -214,25 +226,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: width * 0.65,
     left: width * 0.24,
+    // bottom: height * 0.03,
+    top: -height * 0.01,
   },
   userName: {
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 18,
+    fontSize: fontSizes.sm2,
     color: colors.jetBlack,
   },
   adam: {
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 18,
+    fontSize: fontSizes.sm2,
     color: colors.black,
   },
   distance: {
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 18,
+    fontSize: fontSizes.sm2,
     color: colors.jetBlack,
   },
   miles: {
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 18,
+    fontSize: fontSizes.sm2,
     color: colors.black,
   },
   milesDistance: {
@@ -240,23 +254,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: width * 0.65,
     left: width * 0.24,
-    top: height * 0.015,
+    // bottom: height * 0.025,
+    top: -height * 0.01,
   },
   Date: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: width * 0.65,
     left: width * 0.24,
-    top: height * 0.033,
+    // bottom: height * 0.02,
+    top: -height * 0.01,
   },
   date: {
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 18,
+    fontSize: fontSizes.sm2,
     color: colors.jetBlack,
   },
   year: {
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 18,
+    fontSize: fontSizes.sm2,
     color: colors.black,
   },
   Timing: {
@@ -264,16 +280,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: width * 0.65,
     left: width * 0.24,
-    top: height * 0.05,
+    // bottom: height * 0.015,
+    top: -height * 0.01,
   },
   time: {
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 18,
+    fontSize: fontSizes.sm2,
     color: colors.jetBlack,
   },
   clock: {
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 18,
+    fontSize: fontSizes.sm2,
     color: colors.black,
   },
   fare: {
@@ -281,11 +298,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: width * 0.65,
     left: width * 0.24,
-    top: height * 0.065,
+    top: -height * 0.01,
   },
   Fare: {
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 18,
+    fontSize: fontSizes.sm2,
     color: colors.jetBlack,
   },
   dollar: {
@@ -295,25 +312,29 @@ const styles = StyleSheet.create({
   },
   pick: {
     fontFamily: fontFamily.SfProDisplayRegular,
-    fontSize: 20,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
     left: width * 0.04,
     top: height * 0.01,
   },
   drop: {
     fontFamily: fontFamily.SfProDisplayRegular,
-    fontSize: 20,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
     left: width * 0.04,
-    top: height * 0.05,
+    top: height * 0.04,
   },
   location: {
     left: width * 0.03,
-    height: 24,
-    width: 20,
-    top: height * 0.015,
+    height: height * 0.04,
+    width: width * 0.04,
+    resizeMode: 'contain',
+    top: height * 0.013,
   },
   park: {
     fontFamily: fontFamily.SfProDisplayRegular,
-    fontSize: 21,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
     left: width * 0.05,
     top: height * 0.013,
   },

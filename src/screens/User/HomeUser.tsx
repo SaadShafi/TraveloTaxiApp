@@ -219,12 +219,6 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.greetingText}>Hi</Text>
             <Text style={styles.nameText}>Alex!</Text>
           </View>
-          {/* <TouchableOpacity
-            onPress={() => console.log('Noti img pressed')}
-            activeOpacity={0.7}
-          >
-            <Image source={images.notification} style={styles.notiImg} />
-          </TouchableOpacity> */}
         </View>
         <View style={styles.locationMain}>
           <CustomTextInput
@@ -345,7 +339,7 @@ const styles = StyleSheet.create({
     bottom: height * 0.06,
     width: width * 0.72,
     left: width * 0.2,
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 20,
     borderColor: colors.black,
     padding: 10,

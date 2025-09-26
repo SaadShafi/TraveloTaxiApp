@@ -59,34 +59,30 @@ const HomeDriver = () => {
       style={{ flex: 1, height: height * 1.05 }}
       resizeMode="cover"
     >
-      <TopHeader isMenu={true} />
-      <View style={styles.notificationContainer}>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => navigation.navigate('notification')}
-          style={styles.notificationButton}
-        >
-          <Image source={images.notification} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.rideContainer}>
-        <View>
-          <Text style={styles.alex}>Hi Alex!</Text>
-          <Text style={styles.ride}>Need A Ride?</Text>
+      <View style={{ top: height * 0.01 }}>
+        <View style={{ top: height * 0.01 }}>
+          <TopHeader isMenu={true} />
         </View>
-
-        {/* <TouchableOpacity
-          activeOpacity={0.7}
-          // onPress={() => navigation.navigate('notification')}
-          onPress={() => console.log('Notification Button Pressed')}
-        >
-          <Image source={images.notification} />
-        </TouchableOpacity> */}
+        <View style={styles.notificationContainer}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate('notification')}
+            style={styles.notificationButton}
+          >
+            <Image source={images.notification} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.rideContainer}>
+          <View>
+            <Text style={styles.alex}>Hi Alex!</Text>
+            <Text style={styles.ride}>Need A Ride?</Text>
+          </View>
+        </View>
       </View>
       <TouchableOpacity
         activeOpacity={1}
         onPress={toggleOnline}
-        style={{ marginTop: -height * 0.06 }}
+        style={{ top: height * 0.025 }}
       >
         <Animated.View style={[styles.toggleButton, { backgroundColor }]}>
           <Animated.View
@@ -150,6 +146,16 @@ const HomeDriver = () => {
           passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
           distance="10 miles"
           fare="$60.00"
+          onCancel={() => console.log('Cancel Pre-Booking')}
+          onAccept={() => navigation.navigate('RideArriving')}
+          onBid={() => navigation.navigate('RideDetails')}
+        />
+        <BookingCard
+          type="Book Now"
+          passengerName="Adam James"
+          passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
+          distance="10 miles"
+          fare="$60.00"
           onCancel={() => console.log('Cancel Book Now')}
           onAccept={() => navigation.navigate('RideArriving')}
           onBid={() => navigation.navigate('RideDetails')}
@@ -162,8 +168,8 @@ const HomeDriver = () => {
 const styles = StyleSheet.create({
   notificationContainer: {
     position: 'absolute',
-    top: height * 0.03,
-    right: width * 0.05,
+    top: height * 0.027,
+    right: width * 0.09,
     zIndex: 1000,
   },
   notificationButton: {
@@ -174,6 +180,7 @@ const styles = StyleSheet.create({
 
   container: {
     padding: 15,
+    top: height * 0.017,
   },
   toggleButton: {
     height: height * 0.07,
@@ -217,29 +224,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.black,
   },
-  // rideContainer: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   backgroundColor: colors.whiteShade,
-  //   height: height * 0.09,
-  //   width: width * 0.75,
-  //   borderRadius: 20,
-  //   alignItems: 'center',
-  //   paddingHorizontal: 20,
-  //   left: width * 0.2,
-  //   bottom: height * 0.065,
-  // },
   rideContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: colors.whiteShade,
-    height: height * 0.09,
-    width: width * 0.75,
+    // backgroundColor: colors.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    borderWidth: 1,
+    borderColor: colors.darkGray,
+    height: height * 0.08,
+    width: width * 0.73,
     borderRadius: 20,
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginLeft: width * 0.2,
-    marginTop: -height * 0.065, // Use margin instead of bottom
+    marginLeft: width * 0.22,
+    marginTop: -height * 0.065,
     zIndex: 1,
   },
 });
