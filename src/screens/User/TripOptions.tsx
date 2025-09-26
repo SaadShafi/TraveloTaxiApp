@@ -1,3 +1,4 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import {
   Image,
@@ -14,15 +15,14 @@ import CustomButton from '../../components/CustomButton';
 import CustomMultiInput from '../../components/CustomMultiInput';
 import CustomSelect from '../../components/CustomSelect';
 import TopHeader from '../../components/Topheader';
+import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { StackParamList } from '../../navigation/AuthStack';
 
 type Props = NativeStackScreenProps<StackParamList, 'TripOptions'>;
 
-const TripOptions: React.FC<Props>  = ({ navigation }) => {
+const TripOptions: React.FC<Props> = ({ navigation }) => {
   const [passengers, setPassengers] = useState(1);
   const [isEnabled, setIsEnabled] = useState(false);
   const [showCaution, setShowCaution] = useState(false);
@@ -41,11 +41,9 @@ const TripOptions: React.FC<Props>  = ({ navigation }) => {
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const paymentMethod = [
-    { name: 'Select City', id: '' },
-    { name: 'Texas', id: 'texas' },
-    { name: 'Misissippi', id: 'misissippi' },
-    { name: 'New York', id: 'new york' },
-    { name: 'Other', id: 'other' },
+    { name: 'Select Payment Method', id: '' },
+    { name: 'Card', id: 'Card' },
+    { name: 'Cash', id: 'Cash' },
   ];
 
   return (
@@ -105,8 +103,8 @@ const TripOptions: React.FC<Props>  = ({ navigation }) => {
           </View>
           <View style={styles.cautionMain}>
             <View style={styles.bidMain}>
-              <Text>GBP $15.0-</Text>
-              <Text>Tap here to Bid</Text>
+              <Text style={{ color: colors.black }}>GBP $15.0-</Text>
+              <Text style={{ color: colors.black }}>Tap here to Bid</Text>
             </View>
             <TouchableOpacity onPress={() => setShowCaution(!showCaution)}>
               <Image source={images.caution} style={styles.caution} />
@@ -120,7 +118,9 @@ const TripOptions: React.FC<Props>  = ({ navigation }) => {
             </View>
           )}
           <View style={styles.cautionBlackMain}>
-            <Text>This includes an other additional charges</Text>
+            <Text style={{ color: colors.black }}>
+              This includes an other additional charges
+            </Text>
             <Image source={images.cautionBlack} />
           </View>
           <CustomMultiInput
@@ -160,8 +160,8 @@ const TripOptions: React.FC<Props>  = ({ navigation }) => {
           />
         </View>
         <View style={styles.questionContainer}>
-          <Text>What is This?</Text>
-          <Text>What is This?</Text>
+          <Text style={{ color: colors.black }}>What is This?</Text>
+          <Text style={{ color: colors.black }}>What is This?</Text>
         </View>
         <View style={{ alignItems: 'center', top: height * 0.05 }}>
           <CustomSelect
@@ -214,17 +214,20 @@ const styles = StyleSheet.create({
     borderColor: colors.darkGray,
   },
   btn: {
-    fontSize: 22,
+    fontSize: fontSizes.lg,
     fontWeight: 'bold',
     paddingHorizontal: 10,
+    color: colors.black,
   },
   count: {
-    fontSize: 20,
+    fontSize: fontSizes.md,
     fontWeight: '600',
   },
   label: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: fontSizes.sm2,
+    color: colors.black,
+    fontFamily: fontFamily.ClashDisplayMedium,
+    // fontWeight: '500',
   },
   inputMain: {
     alignItems: 'center',
@@ -343,7 +346,7 @@ const styles = StyleSheet.create({
   },
   btnMain: {
     alignItems: 'center',
-    top: height * 0.06,
+    top: height * 0.07,
   },
 });
 

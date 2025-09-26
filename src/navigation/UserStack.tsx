@@ -2,10 +2,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import CreateProfile from '../screens/Auth/CreateProfile';
 import WelcomeFirst from '../screens/Auth/WelcomeFirst';
+import WelcomeFourth from '../screens/Auth/WelcomeFourth';
+import WelcomeSec from '../screens/Auth/WelcomeSec';
 import HelpAndSupport from '../screens/Driver/HelpAndSupport';
 import History from '../screens/Driver/History';
 import AboutUs from '../screens/Global/AboutUs';
+import CallMain from '../screens/Global/CallMain';
 import ChangePassWord from '../screens/Global/changePassword';
+import ChatMain from '../screens/Global/Chat';
 import ContactUs from '../screens/Global/ContactUs';
 import DeleteAccount from '../screens/Global/DeleteAccount';
 import NotificationScreen from '../screens/Global/Notification';
@@ -25,12 +29,6 @@ import ScheduleDetail from '../screens/User/ScheduleDetail';
 import TripOptions from '../screens/User/TripOptions';
 import WalletUser from '../screens/User/WalletUser';
 import WalletUserSec from '../screens/User/WalletUserSec';
-<<<<<<< HEAD
-import RideArrivingUser from '../screens/User/RideArrivingUser';
-import ChatMain from '../screens/Global/Chat';
-import CallMain from '../screens/Global/CallMain';
-=======
->>>>>>> f2d97150ec5c95b75670ed802ba4db1963844a25
 
 export type StackParamList = {
   HomeUser: undefined;
@@ -54,16 +52,14 @@ export type StackParamList = {
   DeleteAccount: undefined;
   HelpSupport: undefined;
   notification: undefined;
-<<<<<<< HEAD
-  RideArrivingUser:undefined;
-  Chat: undefined;
-  CallMain: undefined;
-=======
   RideArrivingUser: undefined;
   TermsCondition: undefined;
   WelcomeFirst: undefined;
+  WelcomeSec: undefined;
+  WelcomeFourth: undefined;
   CreateProfile: undefined;
->>>>>>> f2d97150ec5c95b75670ed802ba4db1963844a25
+  Chat: undefined;
+  CallMain: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -77,6 +73,8 @@ const UserStack: React.FC = () => {
     >
       <Stack.Screen name="HomeUser" component={HomeUser} />
       <Stack.Screen name="WelcomeFirst" component={WelcomeFirst} />
+      <Stack.Screen name="WelcomeSec" component={WelcomeSec} />
+      <Stack.Screen name="WelcomeFourth" component={WelcomeFourth} />
       <Stack.Screen name="CreateProfile" component={CreateProfile} />
       <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
       <Stack.Screen name="PaymentUser" component={PaymentUser} />

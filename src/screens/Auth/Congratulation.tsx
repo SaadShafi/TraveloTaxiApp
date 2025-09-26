@@ -7,6 +7,7 @@ import TopHeader from '../../components/Topheader';
 import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
+import { fontSizes } from '../../utilities/fontsizes';
 
 type Props = NativeStackScreenProps<StackParamList, 'Congratulation'>;
 
@@ -42,13 +43,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     top: height * 0.3,
     fontFamily: fontFamily.ClashDisplayMedium,
-    fontSize: 25,
+    fontSize: fontSizes.md,
+    color: colors.black,
   },
   successfully: {
     alignSelf: 'center',
     top: height * 0.3,
     fontFamily: fontFamily.ClashDisplayMedium,
-    fontSize: 25,
+    fontSize: fontSizes.md,
+    color: colors.black,
   },
 });
 

@@ -162,6 +162,30 @@ const RideArriving = () => {
     }
   };
 
+  const SNAP_POINTS = [0.4, 0.8];
+
+  // Example: Moving from Completed → Waiting
+  const handleStartWaiting = () => {
+    completedSheetRef.current?.hide();
+    setTimeout(() => {
+      thirdSheetRef.current?.show();
+    }, 300);
+  };
+
+  // Example: Moving from Waiting → Ride Ongoing
+  const handleStartRide = () => {
+    thirdSheetRef.current?.hide();
+    setTimeout(() => {
+      fourthSheetRef.current?.show();
+    }, 300);
+  };
+
+  const toggleRideEnd = () => {
+    setModalVisibleThird(false);
+    navigation.navigate('HomeDriver');
+    console.log('Ed ride btn pressed');
+  };
+
   return (
     <ImageBackground source={images.Maptwo} style={styles.mapImg}>
       <View style={{ flex: 1 }}>
@@ -169,20 +193,24 @@ const RideArriving = () => {
 
         <ActionSheet
           ref={arrivingSheetRef}
-          // containerStyle={styles.actionSheetMain}
-          // closeOnTouchBackdrop={false}
-          // defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
-          // gestureEnabled={true}
-          //  onClose={handleBackdropPressOnCompletedSheet}
           containerStyle={styles.actionSheetMain}
-          snapPoints={[20, 50, 90]} // Your defined snap points
+          snapPoints={SNAP_POINTS}
           initialSnapIndex={1} // Assuming it opens to '50%'
           closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
           onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
+          defaultOverlayOpacity={0.1}
+          onClose={() => {
+            requestAnimationFrame(() => {
+              arrivingSheetRef.current?.show();
+            });
+          }}
           gestureEnabled={true}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -288,18 +316,24 @@ const RideArriving = () => {
 
         <ActionSheet
           ref={completedSheetRef}
-          // containerStyle={styles.actionSheetMain}
-          // closeOnTouchBackdrop={true}
-          // defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
           containerStyle={styles.actionSheetMain}
-          snapPoints={[20, 50, 90]} // Your defined snap points
+          snapPoints={SNAP_POINTS}
           initialSnapIndex={1} // Assuming it opens to '50%'
           closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
           onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
+          defaultOverlayOpacity={0.1}
+          onClose={() => {
+            requestAnimationFrame(() => {
+              completedSheetRef.current?.show();
+            });
+          }}
           gestureEnabled={true}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -404,7 +438,7 @@ const RideArriving = () => {
                     backgroundColor={colors.brown}
                     text="Arrived"
                     textColor={colors.white}
-                    onPress={handleArrivedPress} // ✅ open 3rd sheet
+                    onPress={handleStartWaiting} // ✅ open 3rd sheet
                   />
                 </View>
               </View>
@@ -414,18 +448,24 @@ const RideArriving = () => {
 
         <ActionSheet
           ref={thirdSheetRef}
-          // containerStyle={styles.actionSheetThird}
-          // closeOnTouchBackdrop={true}
-          // defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
-          containerStyle={styles.actionSheetMain}
-          snapPoints={[20, 50, 90]} // Your defined snap points
+          containerStyle={styles.actionSheetThird}
+          snapPoints={SNAP_POINTS} // Your defined snap points
           initialSnapIndex={1} // Assuming it opens to '50%'
           closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
+          // onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
+          defaultOverlayOpacity={0.1}
+          onClose={() => {
+            requestAnimationFrame(() => {
+              thirdSheetRef.current?.show();
+            });
+          }}
           gestureEnabled={true}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -550,18 +590,24 @@ const RideArriving = () => {
 
         <ActionSheet
           ref={fourthSheetRef}
-          // containerStyle={styles.actionSheetThird}
-          // closeOnTouchBackdrop={true}
-          // defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
-          containerStyle={styles.actionSheetMain}
-          snapPoints={[20, 50, 90]} // Your defined snap points
+          containerStyle={styles.actionSheetFourth}
+          snapPoints={SNAP_POINTS} // Your defined snap points
           initialSnapIndex={1} // Assuming it opens to '50%'
           closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
+          // onTouchBackdrop={handleBackdropPressOnCompletedSheet}
+          defaultOverlayOpacity={0.1}
+          onClose={() => {
+            requestAnimationFrame(() => {
+              fourthSheetRef.current?.show();
+            });
+          }}
           gestureEnabled={true}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -727,6 +773,10 @@ const RideArriving = () => {
                 onPress={() => {
                   setOtpModalVisible(false);
 
+                  // setTimeout(() => {
+                  //   fourthSheetRef.current?.show();
+                  // }, 300);
+                  thirdSheetRef.current?.hide();
                   setTimeout(() => {
                     fourthSheetRef.current?.show();
                   }, 300);
@@ -919,7 +969,10 @@ const RideArriving = () => {
                 colors={['#FFFFFF', '#FFE9E9']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1.1 }}
-                style={[styles.passengerContainer, { width: width * 0.7 }]}
+                style={[
+                  styles.passengerContainer,
+                  { width: width * 0.7, height: height * 0.18 },
+                ]}
               >
                 <View style={styles.textPassenger}>
                   <Text style={styles.name}>Passenger Name:</Text>
@@ -929,11 +982,6 @@ const RideArriving = () => {
                 <View style={styles.textPassenger}>
                   <Text style={styles.distance}>Distance:</Text>
                   <Text style={styles.miles}>10 Miles away</Text>
-                </View>
-
-                <View style={styles.textPassenger}>
-                  <Text style={styles.plate}>Number Plate:</Text>
-                  <Text style={styles.number}>123 756</Text>
                 </View>
 
                 <View style={[styles.subContainer, { width: width * 0.65 }]}>
@@ -962,9 +1010,7 @@ const RideArriving = () => {
                   backgroundColor={colors.brown}
                   text="End Ride"
                   textColor={colors.white}
-                  onPress={() => {
-                    setModalVisibleThird(false);
-                  }}
+                  onPress={toggleRideEnd}
                 />
               </View>
             </View>
@@ -1057,9 +1103,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 45,
     borderTopRightRadius: 45,
     overflow: 'hidden',
-    height: height * 0.65,
+    height: height * 0.55,
     width: width,
-    bottom: height * 0.1,
+    bottom: height * 0.04,
   },
   actionSheetThird: {
     borderTopLeftRadius: 45,
@@ -1067,6 +1113,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: height * 0.65,
     width: width,
+    bottom: height * 0.04,
+  },
+  actionSheetFourth: {
+    borderTopLeftRadius: 45,
+    borderTopRightRadius: 45,
+    overflow: 'hidden',
+    height: height * 0.65,
+    width: width,
+    bottom: height * 0.04,
   },
   gradientBackground: {
     flex: 1,
@@ -1079,6 +1134,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     resizeMode: 'contain',
     width: width * 1,
+    top: -height * 0.02,
   },
   ActionSheetContentMain: {
     alignItems: 'center',

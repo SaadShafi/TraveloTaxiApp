@@ -264,8 +264,8 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
         <ActionSheet
           ref={actionSheetRef}
           containerStyle={styles.actionSheetMain}
-          closeOnTouchBackdrop={true}
-          defaultOverlayOpacity={0.9}
+          closeOnTouchBackdrop={false}
+          defaultOverlayOpacity={0.1}
           bounceOnOpen={true}
         >
           <ImageBackground

@@ -30,19 +30,20 @@ const OtpVerification: React.FC<Props> = ({ navigation }) => {
   };
 
   useEffect(() => {
-    Toast.show({
-      type: 'custom_otp',
-      position: 'top',
-    });
+    const timer = setTimeout(() => {
+      Toast.show({
+        type: 'custom_otp',
+        position: 'top',
+      });
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, []);
+
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1 }}>
-        <TopHeader
-          text="Otp Verification"
-          isBack={true}
-          navigation={navigation}
-        />
+        <TopHeader text="Otp Verification" isBack={true} />
         <View style={styles.otpContainer}>
           <Text style={styles.otpText}>Enter Your OTP</Text>
           <OtpInput

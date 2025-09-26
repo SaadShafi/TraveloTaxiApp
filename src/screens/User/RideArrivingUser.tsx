@@ -207,7 +207,7 @@ const RideArrivingUser = () => {
           // closeOnTouchBackdrop={false}
           // defaultOverlayOpacity={0.9}
           // bounceOnOpen={true}
-          containerStyle={styles.actionSheetOne}
+          containerStyle={styles.actionSheetTwo}
           snapPoints={[20, 50, 90]} // Your defined snap points
           initialSnapIndex={1} // Assuming it opens to '50%'
           closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
@@ -304,7 +304,7 @@ const RideArrivingUser = () => {
           // closeOnTouchBackdrop={false}
           // defaultOverlayOpacity={0.9}
           // bounceOnOpen={true}
-          containerStyle={styles.actionSheetOne}
+          containerStyle={styles.actionSheetThree}
           snapPoints={[20, 50, 90]} // Your defined snap points
           initialSnapIndex={1} // Assuming it opens to '50%'
           closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
@@ -440,7 +440,7 @@ const RideArrivingUser = () => {
           // closeOnTouchBackdrop={false}
           // defaultOverlayOpacity={0.9}
           // bounceOnOpen={true}
-          containerStyle={styles.actionSheetOne}
+          containerStyle={styles.actionSheetFourth}
           snapPoints={[20, 50, 90]} // Your defined snap points
           initialSnapIndex={1} // Assuming it opens to '50%'
           closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
@@ -474,6 +474,7 @@ const RideArrivingUser = () => {
                           style={styles.locationImg}
                         />
                       }
+                      editable={false}
                     />
                     <CustomTextInput
                       placeholder="Groklyn Bridge Park"
@@ -488,6 +489,7 @@ const RideArrivingUser = () => {
                           style={styles.locationImg}
                         />
                       }
+                      editable={false}
                     />
                   </View>
                 </View>

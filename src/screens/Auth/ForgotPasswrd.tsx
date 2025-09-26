@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   textMain: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.sm,
+    color: colors.black,
   },
   btnMain: {
     top: height * 0.7,

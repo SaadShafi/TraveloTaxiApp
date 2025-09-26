@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: fontSizes.sm,
     fontFamily: fontFamily.JakartaRegular,
-    color: colors.black,
+    color: colors.darkGray,
   },
   messageContainer: {
     marginVertical: 8,
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 0,
   },
   receiverChatBox: {
-    backgroundColor: colors.ligthGray,
+    backgroundColor: colors.lightGray,
     padding: 12,
     borderRadius: 20,
     borderBottomLeftRadius: 0,

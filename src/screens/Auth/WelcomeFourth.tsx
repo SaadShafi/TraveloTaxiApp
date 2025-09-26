@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.sm2,
   },
   btnMain: {
-    marginTop: height * 0.04,
+    marginTop: height * 0.02,
     gap: height * 0.02,
   },
 });
