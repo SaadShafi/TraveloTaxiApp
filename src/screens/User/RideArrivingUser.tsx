@@ -1,22 +1,17 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
+import LinearGradient from 'react-native-linear-gradient';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
+import CustomTextInput from '../../components/CustomTextInput';
 import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
-import CustomTextInput from '../../components/CustomTextInput';
 // import { Image } from 'react-native-reanimated/lib/typescript/Animated';
 import { Image } from 'react-native';
 
@@ -29,19 +24,15 @@ type Props = NativeStackScreenProps<RootStackParamList, 'RideArrivingUser'>;
 
 const RideArrivingUser = () => {
   const navigation = useNavigation<NavigationProp<any>>();
-
-  // ActionSheet refs
   const arrivingSheetRef = useRef<ActionSheetRef>(null);
   const secondSheetRef = useRef<ActionSheetRef>(null);
   const thirdSheetRef = useRef<ActionSheetRef>(null);
   const fourthSheetRef = useRef<ActionSheetRef>(null);
-
-  // Timers
   const [timeLeft, setTimeLeft] = useState(10); // first sheet countdown
   const [countdown, setCountdown] = useState(295); // 4:55 in seconds
 
-  const waitingTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const waitingTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const countdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     arrivingSheetRef.current?.show();
@@ -62,7 +53,6 @@ const RideArrivingUser = () => {
                 thirdSheetRef.current?.show();
               }, 500);
             }, 5000);
-
           }, 500);
           return 0;
         }
@@ -98,6 +88,16 @@ const RideArrivingUser = () => {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
+  const handleBackdropPressOnCompletedSheet = () => {
+    // Check if the ref exists and the sheet is open before calling the method
+    if (secondSheetRef.current) {
+      // Call snapToIndex(0) to move the sheet to the '20%' snap point (index 0)
+      secondSheetRef.current.snapToIndex(0);
+
+      // NOTE: If you want it to snap to the second point (50%), use snapToIndex(1).
+    }
+  };
+
   return (
     <ImageBackground source={images.Maptwo} style={styles.mapImg}>
       <View style={{ flex: 1 }}>
@@ -106,10 +106,18 @@ const RideArrivingUser = () => {
         {/* First ActionSheet with timer */}
         <ActionSheet
           ref={arrivingSheetRef}
+          // containerStyle={styles.actionSheetOne}
+          // closeOnTouchBackdrop={false}
+          // defaultOverlayOpacity={0.9}
+          // bounceOnOpen={true}
           containerStyle={styles.actionSheetOne}
-          closeOnTouchBackdrop={false}
+          snapPoints={[20, 50, 90]} // Your defined snap points
+          initialSnapIndex={1} // Assuming it opens to '50%'
+          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
           defaultOverlayOpacity={0.9}
-          bounceOnOpen={true}
+          // bounceOnOpen={true}
+          gestureEnabled={true}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -195,10 +203,18 @@ const RideArrivingUser = () => {
         {/* Second ActionSheet after timer ends */}
         <ActionSheet
           ref={secondSheetRef}
-          containerStyle={styles.actionSheetTwo}
-          closeOnTouchBackdrop={false}
+          // containerStyle={styles.actionSheetTwo}
+          // closeOnTouchBackdrop={false}
+          // defaultOverlayOpacity={0.9}
+          // bounceOnOpen={true}
+          containerStyle={styles.actionSheetOne}
+          snapPoints={[20, 50, 90]} // Your defined snap points
+          initialSnapIndex={1} // Assuming it opens to '50%'
+          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
           defaultOverlayOpacity={0.9}
-          bounceOnOpen={true}
+          // bounceOnOpen={true}
+          gestureEnabled={true}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -284,10 +300,18 @@ const RideArrivingUser = () => {
         {/* Third ActionSheet */}
         <ActionSheet
           ref={thirdSheetRef}
-          containerStyle={styles.actionSheetThree}
-          closeOnTouchBackdrop={false}
+          // containerStyle={styles.actionSheetThree}
+          // closeOnTouchBackdrop={false}
+          // defaultOverlayOpacity={0.9}
+          // bounceOnOpen={true}
+          containerStyle={styles.actionSheetOne}
+          snapPoints={[20, 50, 90]} // Your defined snap points
+          initialSnapIndex={1} // Assuming it opens to '50%'
+          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
           defaultOverlayOpacity={0.9}
-          bounceOnOpen={true}
+          // bounceOnOpen={true}
+          gestureEnabled={true}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -345,30 +369,38 @@ const RideArrivingUser = () => {
                 </LinearGradient>
 
                 <View style={styles.comContainer}>
-                  <View style={{flexDirection:'row', justifyContent:'space-between', width:  width * 0.78, alignSelf:'center', top: height * 0.01}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: width * 0.78,
+                      alignSelf: 'center',
+                      top: height * 0.01,
+                    }}
+                  >
                     <Text style={styles.late}>Please Don't be LATE!</Text>
                     <Text style={styles.late}>4:55</Text>
                   </View>
-                  
-                 <View style={{top: height * 0.034, alignItems:'center',}}>
-                <CustomButton
-                        btnHeight={height * 0.05}
-                        btnWidth={width * 0.78}
-                        borderColor={colors.black}
-                        borderRadius={35}
-                        borderWidth={1}
-                        backgroundColor={colors.brown}
-                        text="Ok! I'm Coming"
-                        textColor={colors.white}
-                        onPress={() => {
-                          thirdSheetRef.current?.hide();
-                          setTimeout(() => {
-                            fourthSheetRef.current?.show();
-                            startCountdown(); // start countdown when 4th sheet opens
-                          }, 500);
-                        }}
-                      />
-                 </View>
+
+                  <View style={{ top: height * 0.034, alignItems: 'center' }}>
+                    <CustomButton
+                      btnHeight={height * 0.05}
+                      btnWidth={width * 0.78}
+                      borderColor={colors.black}
+                      borderRadius={35}
+                      borderWidth={1}
+                      backgroundColor={colors.brown}
+                      text="Ok! I'm Coming"
+                      textColor={colors.white}
+                      onPress={() => {
+                        thirdSheetRef.current?.hide();
+                        setTimeout(() => {
+                          fourthSheetRef.current?.show();
+                          startCountdown(); // start countdown when 4th sheet opens
+                        }, 500);
+                      }}
+                    />
+                  </View>
                 </View>
 
                 <View style={styles.btn}>
@@ -404,10 +436,18 @@ const RideArrivingUser = () => {
         {/* Fourth ActionSheet */}
         <ActionSheet
           ref={fourthSheetRef}
-          containerStyle={styles.actionSheetFourth}
-          closeOnTouchBackdrop={false}
+          // containerStyle={styles.actionSheetFourth}
+          // closeOnTouchBackdrop={false}
+          // defaultOverlayOpacity={0.9}
+          // bounceOnOpen={true}
+          containerStyle={styles.actionSheetOne}
+          snapPoints={[20, 50, 90]} // Your defined snap points
+          initialSnapIndex={1} // Assuming it opens to '50%'
+          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
           defaultOverlayOpacity={0.9}
-          bounceOnOpen={true}
+          // bounceOnOpen={true}
+          gestureEnabled={true}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -417,11 +457,10 @@ const RideArrivingUser = () => {
               <View style={styles.ActionSheetContentMain}>
                 <Text style={styles.selectText}>Your Ride Started!</Text>
 
-                <View style={{flexDirection:'row'}}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Image source={images.guide} style={styles.guide} />
 
-                  <Image source={images.guide} style={styles.guide}/>
-
-                   <View style={styles.locationMain}>
+                  <View style={styles.locationMain}>
                     <CustomTextInput
                       placeholder="Groklyn Bridge Park"
                       placeholderTextColor={colors.black}
@@ -516,8 +555,8 @@ const RideArrivingUser = () => {
                   />
                 </View>
 
-                <View style={{top: height * 0.12}}>
-                    <CustomButton
+                <View style={{ top: height * 0.12 }}>
+                  <CustomButton
                     btnHeight={height * 0.07}
                     btnWidth={width * 0.9}
                     borderColor={colors.black}
@@ -529,32 +568,29 @@ const RideArrivingUser = () => {
                     // onPress={() => navigation.navigate('CallMain')}
                   />
                 </View>
-
               </View>
             </View>
           </ImageBackground>
         </ActionSheet>
-
       </View>
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-    mapImg: { 
-    flex: 1, 
-    resizeMode: 'cover' 
+  mapImg: {
+    flex: 1,
+    resizeMode: 'cover',
   },
-  comContainer:{
+  comContainer: {
     borderColor: colors.brown,
-    borderWidth:1,
-    alignSelf:'center',
+    borderWidth: 1,
+    alignSelf: 'center',
     height: height * 0.12,
     width: width * 0.85,
-    borderRadius:20,
+    borderRadius: 20,
     top: height * 0.06,
-    backgroundColor: 'rgba(149, 7, 6, 0.1)'
-
+    backgroundColor: 'rgba(149, 7, 6, 0.1)',
   },
   passengerContainer: {
     borderColor: colors.border,
@@ -580,9 +616,9 @@ const styles = StyleSheet.create({
     gap: height * 0.01,
     paddingTop: height * 0.01,
   },
-  guide:{
+  guide: {
     right: width * 0.03,
-    top: height * 0.03
+    top: height * 0.03,
   },
   locationImg: {
     width: width * 0.03,
@@ -645,26 +681,26 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.lg2,
     color: colors.black,
   },
-  selectDriver:{
+  selectDriver: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.lg,
     color: colors.black,
     top: height * 0.01,
   },
-  otpContainer:{
+  otpContainer: {
     backgroundColor: colors.white,
     height: height * 0.06,
     width: width * 0.35,
     borderRadius: 10,
     top: height * 0.01,
     marginBottom: height * 0.01,
-    justifyContent:'center',
+    justifyContent: 'center',
   },
-  otpCount:{
+  otpCount: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.xl,
     color: colors.black,
-    alignSelf:'center',
+    alignSelf: 'center',
   },
   textPassenger: {
     flexDirection: 'row',
@@ -720,15 +756,15 @@ const styles = StyleSheet.create({
   },
   btn: {
     top: height * 0.08,
-    flexDirection:'row',
+    flexDirection: 'row',
     gap: width * 0.02,
   },
-  late:{
+  late: {
     color: colors.black,
     fontSize: fontSizes.sm2,
-    fontFamily: fontFamily.SfProDisplayMedium
+    fontFamily: fontFamily.SfProDisplayMedium,
   },
-    title: {
+  title: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.lg,
     color: colors.black,
