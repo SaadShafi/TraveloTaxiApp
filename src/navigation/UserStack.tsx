@@ -25,12 +25,8 @@ import ScheduleDetail from '../screens/User/ScheduleDetail';
 import TripOptions from '../screens/User/TripOptions';
 import WalletUser from '../screens/User/WalletUser';
 import WalletUserSec from '../screens/User/WalletUserSec';
-<<<<<<< HEAD
-import RideArrivingUser from '../screens/User/RideArrivingUser';
-import ChatMain from '../screens/Global/Chat';
 import CallMain from '../screens/Global/CallMain';
-=======
->>>>>>> f2d97150ec5c95b75670ed802ba4db1963844a25
+import ChatMain from '../screens/Global/Chat';
 
 export type StackParamList = {
   HomeUser: undefined;
@@ -46,7 +42,7 @@ export type StackParamList = {
   History: undefined;
   HistoryDetailUserOne: undefined;
   HistoryDetailUserSec: undefined;
-  Settings: undefined;
+  Setting: undefined;
   ChangePass: undefined;
   PrivacyPolicy: undefined;
   AboutUs: undefined;
@@ -54,16 +50,12 @@ export type StackParamList = {
   DeleteAccount: undefined;
   HelpSupport: undefined;
   notification: undefined;
-<<<<<<< HEAD
-  RideArrivingUser:undefined;
-  Chat: undefined;
-  CallMain: undefined;
-=======
   RideArrivingUser: undefined;
   TermsCondition: undefined;
   WelcomeFirst: undefined;
   CreateProfile: undefined;
->>>>>>> f2d97150ec5c95b75670ed802ba4db1963844a25
+  CallMain: undefined;
+  Chat: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
