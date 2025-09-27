@@ -225,16 +225,18 @@ const AddPaymentMethod = () => {
         >
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <Image source={images.cash} style={styles.cashImg} />
+              {/* <Image source={images.cash} style={styles.cashImg} /> */}
               <Text style={styles.successText}>Add Success</Text>
               <View
                 style={{
                   alignItems: 'center',
-                  paddingVertical: height * 0.015,
+                  paddingVertical: height * 0.016,
                 }}
               >
-                <Text style={styles.paraText}>Your Money has been Added</Text>
-                <Text style={styles.paraText}>Successfully</Text>
+                <Text style={styles.paraText}>
+                  Your Payment Method has been
+                </Text>
+                <Text style={styles.paraText}> Added Successfully</Text>
               </View>
               <View style={{ paddingVertical: height * 0.013 }}>
                 <CustomButton
@@ -271,6 +273,7 @@ const styles = StyleSheet.create({
   tipsText: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.md,
+    color: colors.black,
   },
   tipsMain: {
     alignItems: 'center',

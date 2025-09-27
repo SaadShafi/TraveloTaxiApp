@@ -27,6 +27,18 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [showCaution, setShowCaution] = useState(false);
   const [payment, setPayment] = useState('');
+  const [showBidField, setShowBidField] = useState(false);
+  const [selectedBookingType, setSelectedBookingType] = useState('');
+
+  const handleBidPress = () => {
+    setShowBidField(true);
+    setSelectedBookingType('bid');
+  };
+
+  const handleAutoAcceptPress = () => {
+    setShowBidField(false);
+    setSelectedBookingType('auto');
+  };
 
   const decreasePassengers = () => {
     if (passengers > 1) {
@@ -101,7 +113,8 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.vehiclePrice}>$10.87</Text>
             </View>
           </View>
-          <View style={styles.cautionMain}>
+          {/* { showBidField && (
+          <View style={[styles.cautionMain]}>
             <View style={styles.bidMain}>
               <Text style={{ color: colors.black }}>GBP $15.0-</Text>
               <Text style={{ color: colors.black }}>Tap here to Bid</Text>
@@ -110,6 +123,45 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
               <Image source={images.caution} style={styles.caution} />
             </TouchableOpacity>
           </View>
+          )} */}
+
+          {showBidField && (
+            <View
+              style={[
+                styles.cautionMain,
+                selectedBookingType === 'bid' && styles.selectedBidField,
+              ]}
+            >
+              <View style={styles.bidMain}>
+                <Text
+                  style={[
+                    styles.bidText,
+                    selectedBookingType === 'bid' && styles.selectedBidText,
+                  ]}
+                >
+                  GBP $15.0-
+                </Text>
+                <Text
+                  style={[
+                    styles.bidText,
+                    selectedBookingType === 'bid' && styles.selectedBidText,
+                  ]}
+                >
+                  Tap here to Bid
+                </Text>
+              </View>
+              <TouchableOpacity onPress={() => setShowCaution(!showCaution)}>
+                <Image
+                  source={images.caution}
+                  style={[
+                    styles.caution,
+                    selectedBookingType === 'bid' && styles.selectedCaution,
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+
           {showCaution && (
             <View style={styles.warningBox}>
               <Text style={styles.warningText}>
@@ -138,7 +190,7 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
           Please choose type of Booking
         </Text>
         <View style={styles.bidBtnMain}>
-          <CustomButton
+          {/* <CustomButton
             btnHeight={height * 0.05}
             btnWidth={width * 0.37}
             borderColor={colors.darkGray}
@@ -157,6 +209,38 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
             backgroundColor={colors.black}
             text="Auto Accept"
             textColor={colors.white}
+          /> */}
+          <CustomButton
+            btnHeight={height * 0.05}
+            btnWidth={width * 0.37}
+            borderColor={
+              selectedBookingType === 'bid' ? colors.brown : colors.darkGray
+            }
+            borderRadius={30}
+            borderWidth={1}
+            backgroundColor={
+              selectedBookingType === 'bid' ? colors.brown : colors.gray
+            }
+            text="Bid For Ride"
+            textColor={
+              selectedBookingType === 'bid' ? colors.white : colors.black
+            }
+            onPress={handleBidPress}
+          />
+          <CustomButton
+            btnHeight={height * 0.05}
+            btnWidth={width * 0.37}
+            borderColor={
+              selectedBookingType === 'auto' ? colors.brown : colors.black
+            }
+            borderRadius={30}
+            borderWidth={1}
+            backgroundColor={
+              selectedBookingType === 'auto' ? colors.brown : colors.black
+            }
+            text="Auto Accept"
+            textColor={colors.white}
+            onPress={handleAutoAcceptPress}
           />
         </View>
         <View style={styles.questionContainer}>
@@ -196,6 +280,15 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  bidText: {
+    color: colors.black,
+  },
+  selectedBidText: {
+    color: colors.black,
+  },
+  selectedCaution: {
+    tintColor: '#ffbf00ff',
+  },
   passengerCountMain: {
     flexDirection: 'row',
     justifyContent: 'space-between',

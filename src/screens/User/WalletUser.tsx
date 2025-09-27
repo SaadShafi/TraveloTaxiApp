@@ -137,7 +137,7 @@ const WalletUser = () => {
         </View>
         <View style={styles.transactionsMain}>
           <Text style={styles.transaction}>Transactins</Text>
-          <Text style={styles.seeAll}>See All</Text>
+          {/* <Text style={styles.seeAll}>See All</Text> */}
         </View>
         <FlatList
           data={transactionData}
@@ -212,10 +212,12 @@ const styles = StyleSheet.create({
   amount: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.lg,
+    color: colors.brown,
   },
   text: {
     fontFamily: fontFamily.SfProDisplayMedium,
     fontSize: fontSizes.sm2,
+    color: colors.brown,
   },
   transactionsMain: {
     alignItems: 'center',
@@ -226,6 +228,7 @@ const styles = StyleSheet.create({
   transaction: {
     fontFamily: fontFamily.SfProDisplayMedium,
     fontSize: fontSizes.sm2,
+    color: colors.black,
   },
   seeAll: {
     fontFamily: fontFamily.SfProDisplayMedium,

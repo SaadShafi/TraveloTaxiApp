@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   Image,
   Keyboard,
+  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -22,10 +23,17 @@ const WalletUserSec = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const [amount, setAmount] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleHomeNavigation = () => {
+    setModalVisible(false);
+    navigation.navigate('HomeUser');
+  };
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
+
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1 }}>
@@ -97,10 +105,43 @@ const WalletUserSec = () => {
               textColor={colors.white}
               borderRadius={30}
               disabled={!selectedMethod}
-              onPress={() => navigation.goBack()}
+              onPress={() => setModalVisible(true)}
             />
           </View>
         </View>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Image source={images.cash} style={styles.cashImg} />
+              <Text style={styles.successText}>Add Success</Text>
+              <View
+                style={{
+                  alignItems: 'center',
+                  paddingVertical: height * 0.015,
+                }}
+              >
+                <Text style={styles.paraText}>Your Money has been Added</Text>
+                <Text style={styles.paraText}>Successfully</Text>
+              </View>
+              <View style={{ paddingVertical: height * 0.013 }}>
+                <CustomButton
+                  btnHeight={height * 0.055}
+                  btnWidth={width * 0.7}
+                  text="Back Home"
+                  backgroundColor={colors.brown}
+                  textColor={colors.white}
+                  borderRadius={30}
+                  onPress={handleHomeNavigation}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -121,6 +162,7 @@ const styles = StyleSheet.create({
   tipsText: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.md,
+    color: colors.black,
   },
   tipsMain: {
     alignItems: 'center',
@@ -165,6 +207,37 @@ const styles = StyleSheet.create({
   },
   btnMain: {
     top: height * 0.48,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    width: width * 0.83,
+    alignItems: 'center',
+    borderWidth: 0.3,
+    borderColor: colors.gray,
+    padding: 20,
+  },
+  cashImg: {
+    width: width * 0.3,
+    height: height * 0.1,
+    resizeMode: 'contain',
+  },
+  successText: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    color: colors.black,
+    fontSize: fontSizes.md,
+  },
+  paraText: {
+    fontFamily: fontFamily.ClashDisplayRegular,
+    color: colors.black,
+    fontSize: fontSizes.sm,
   },
 });
 
