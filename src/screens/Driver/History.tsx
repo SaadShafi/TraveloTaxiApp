@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { fontFamily } from '../../assets/Fonts';
-import images from '../../assets/Images';
 import CustomTabs from '../../components/CustomTabs';
 import TopHeader from '../../components/Topheader';
 import { RootState } from '../../redux/store';
@@ -36,9 +35,9 @@ const History = () => {
   );
   const CompletedData = [
     {
-      image: images.User,
-      name: 'Name',
-      desc: 'Description',
+      // image: images.User,
+      name: 'Ride ID',
+      desc: '#4564',
       status: 'Completed',
       text1: 'Ride Type:',
       text2: 'Pre Booking',
@@ -46,9 +45,9 @@ const History = () => {
       text4: 'Aug 20,2025 & 5:30 AM',
     },
     {
-      image: images.User,
-      name: 'Name',
-      desc: 'Description',
+      // image: images.User,
+      name: 'Ride ID',
+      desc: '#4564',
       status: 'Completed',
       text1: 'Ride Type:',
       text2: 'Pre Booking',
@@ -56,9 +55,9 @@ const History = () => {
       text4: 'Aug 20,2025 & 5:30 AM',
     },
     {
-      image: images.User,
-      name: 'Name',
-      desc: 'Description',
+      // image: images.User,
+      name: 'Ride ID',
+      desc: '#4564',
       status: 'Completed',
       text1: 'Ride Type:',
       text2: 'Pre Booking',
@@ -69,9 +68,9 @@ const History = () => {
 
   const CanceledData = [
     {
-      image: images.User,
-      name: 'Name',
-      desc: 'Description',
+      // image: images.User,
+      name: 'Ride ID',
+      desc: '#4564',
       status: 'Canceled',
       text1: 'Ride Type:',
       text2: 'Pre Booking',
@@ -79,9 +78,9 @@ const History = () => {
       text4: 'Aug 20,2025 & 5:30 AM',
     },
     {
-      image: images.User,
-      name: 'Name',
-      desc: 'Description',
+      // image: images.User,
+      name: 'Ride ID',
+      desc: '#4564',
       status: 'Canceled',
       text1: 'Ride Type:',
       text2: 'Pre Booking',
@@ -89,9 +88,9 @@ const History = () => {
       text4: 'Aug 20,2025 & 5:30 AM',
     },
     {
-      image: images.User,
-      name: 'Name',
-      desc: 'Description',
+      // image: images.User,
+      name: 'Ride ID',
+      desc: '#4564',
       status: 'Canceled',
       text1: 'Ride Type:',
       text2: 'Pre Booking',
@@ -261,16 +260,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: width * 0.02,
     top: height * 0.02,
   },
-  nameDescMain: {},
+  nameDescMain: {
+    right: width * 0.13,
+  },
   nameText: {
     fontFamily: fontFamily.SfProDisplayBold,
-    fontSize: fontSizes.xsm,
+    fontSize: fontSizes.sm,
     color: colors.black,
   },
   descText: {
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.xsm,
-    color: colors.black,
+    color: colors.darkGray,
   },
   statusMain: {
     backgroundColor: colors.lightGreen,

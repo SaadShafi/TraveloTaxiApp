@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.ClashDisplayMedium,
   },
   backArrow: {
-    width: width * 0.04,
+    width: width * 0.045,
     resizeMode: 'contain',
   },
   closeTop: {

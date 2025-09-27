@@ -516,6 +516,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
         placeholder="*Add Expiry Date"
         placeholderTextColor={colors.darkGray}
         style={styles.AddExpiryDate}
+        keyboardType="phone-pad"
         // value={
         //   expiryDates[fieldKey]
         //     ? formatDateForDisplay(new Date(expiryDates[fieldKey]))
@@ -618,7 +619,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
               backgroundColor={colors.gray}
             />
             <CustomTextInput
-              placeholder="*Street"
+              placeholder="*Address"
               placeholderTextColor={colors.black}
               borderColor={colors.brown}
               borderRadius={30}
@@ -701,8 +702,8 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
               borderRadius={30}
               inputWidth={width * 0.85}
               inputHeight={height * 0.06}
-              // value={card}
-              // onChangeText={setCard}
+              value={card}
+              onChangeText={setCard}
               backgroundColor={colors.gray}
             />
             <View style={styles.DocumentUpload}>
@@ -801,6 +802,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
     street,
     gender,
     city,
+    card,
     rideType,
     startDate,
     openStartPicker,

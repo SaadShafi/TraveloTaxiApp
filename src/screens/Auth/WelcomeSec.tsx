@@ -41,6 +41,7 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
 
   const handleRoleSelect = (role: string) => {
     dispatch(setRole(role));
+    setModalVisibleSec(false);
     navigation.navigate('WelcomeFourth');
     console.log('Role Selection:', role);
   };
@@ -129,7 +130,7 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
                   activeOpacity={0.7}
                   onPress={() => handleRoleSelect('user')}
                 >
-                  <Image source={images.logoCustomer} style={styles.btnImage}/>
+                  <Image source={images.logoCustomer} style={styles.btnImage} />
                   <Text style={styles.btnText}>Travelo Customer</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -137,7 +138,7 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
                   activeOpacity={0.7}
                   onPress={() => handleRoleSelect('driver')}
                 >
-                  <Image source={images.logoDriver} style={styles.btnImage}/>
+                  <Image source={images.logoDriver} style={styles.btnImage} />
                   <Text style={styles.btnText}>Travelo Driver</Text>
                 </TouchableOpacity>
               </View>
@@ -259,8 +260,8 @@ const styles = StyleSheet.create({
   btnImage: {
     width: width * 0.15,
     height: height * 0.1,
-    resizeMode: "contain"
-  }
+    resizeMode: 'contain',
+  },
 });
 
 export default WelcomeSec;

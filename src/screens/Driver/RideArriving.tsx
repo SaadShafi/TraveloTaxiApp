@@ -1105,7 +1105,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: height * 0.55,
     width: width,
-    bottom: height * 0.04,
+    bottom: height * 0.07,
   },
   actionSheetThird: {
     borderTopLeftRadius: 45,
