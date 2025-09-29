@@ -15,7 +15,16 @@ const HistoryDetailUserOne = () => {
         <View style={styles.subConatiner}>
           <View>
             <Text style={styles.trackID}>Ride ID</Text>
-            <Text>#4564</Text>
+            <Text
+              style={{
+                color: colors.darkGray,
+                fontFamily: fontFamily.SfProDisplayRegular,
+                fontWeight: '500',
+                fontSize: fontSizes.xsm,
+              }}
+            >
+              #4564
+            </Text>
           </View>
           <View style={styles.comContainer}>
             <Text style={styles.comText}>Completed</Text>
@@ -100,7 +109,7 @@ const HistoryDetailUserOne = () => {
           </View>
         </View>
         <Text style={styles.pay}>Payments</Text>
-        <View style={{ top: height * 0.08, paddingHorizontal: width * 0.05 }}>
+        <View style={{ top: height * 0.043, paddingHorizontal: width * 0.05 }}>
           <View
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}
           >
@@ -329,7 +338,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     paddingHorizontal: width * 0.05,
-    top: height * 0.07,
+    top: height * 0.04,
   },
   textOne: {
     fontFamily: fontFamily.SfProDisplayMedium,

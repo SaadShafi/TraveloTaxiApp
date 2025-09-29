@@ -2,10 +2,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import CreateProfile from '../screens/Auth/CreateProfile';
 import WelcomeFirst from '../screens/Auth/WelcomeFirst';
+import WelcomeFourth from '../screens/Auth/WelcomeFourth';
+import WelcomeSec from '../screens/Auth/WelcomeSec';
 import HelpAndSupport from '../screens/Driver/HelpAndSupport';
 import History from '../screens/Driver/History';
 import AboutUs from '../screens/Global/AboutUs';
+import CallMain from '../screens/Global/CallMain';
 import ChangePassWord from '../screens/Global/changePassword';
+import ChatMain from '../screens/Global/Chat';
 import ContactUs from '../screens/Global/ContactUs';
 import DeleteAccount from '../screens/Global/DeleteAccount';
 import NotificationScreen from '../screens/Global/Notification';
@@ -15,6 +19,7 @@ import TermsCondition from '../screens/Global/TermsConditions';
 import AddPaymentMethod from '../screens/User/AddPaymentUser';
 import DriverOfferings from '../screens/User/DriverOfferings';
 import FindingDriver from '../screens/User/FindingDriver';
+import FindingDriverSec from '../screens/User/FindingDriverSec';
 import HistoryDetailUserOne from '../screens/User/HistoryDetailUserOne';
 import HistoryDetailUserSec from '../screens/User/HistoryDetailUserSec';
 import HomeUser from '../screens/User/HomeUser';
@@ -23,10 +28,14 @@ import RideArrivingUser from '../screens/User/RideArrivingUser';
 import Schedule from '../screens/User/Schedule';
 import ScheduleDetail from '../screens/User/ScheduleDetail';
 import TripOptions from '../screens/User/TripOptions';
+import TripOptionsSec from '../screens/User/TripOptionSec';
 import WalletUser from '../screens/User/WalletUser';
 import WalletUserSec from '../screens/User/WalletUserSec';
+<<<<<<< HEAD
 import CallMain from '../screens/Global/CallMain';
 import ChatMain from '../screens/Global/Chat';
+=======
+>>>>>>> 5d955c85ffa22f5539f78f917e5ed3a7f35c60c3
 
 export type StackParamList = {
   HomeUser: undefined;
@@ -36,7 +45,9 @@ export type StackParamList = {
   WalletUser: undefined;
   WalletUserSec: undefined;
   TripOptions: undefined;
+  TripOptionsSec: undefined;
   FindingDriver: undefined;
+  FindingDriverSec: undefined;
   DriverOfferings: undefined;
   ScheduleDetail: undefined;
   History: undefined;
@@ -53,9 +64,16 @@ export type StackParamList = {
   RideArrivingUser: undefined;
   TermsCondition: undefined;
   WelcomeFirst: undefined;
+  WelcomeSec: undefined;
+  WelcomeFourth: undefined;
   CreateProfile: undefined;
+<<<<<<< HEAD
   CallMain: undefined;
   Chat: undefined;
+=======
+  Chat: undefined;
+  CallMain: undefined;
+>>>>>>> 5d955c85ffa22f5539f78f917e5ed3a7f35c60c3
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -69,6 +87,8 @@ const UserStack: React.FC = () => {
     >
       <Stack.Screen name="HomeUser" component={HomeUser} />
       <Stack.Screen name="WelcomeFirst" component={WelcomeFirst} />
+      <Stack.Screen name="WelcomeSec" component={WelcomeSec} />
+      <Stack.Screen name="WelcomeFourth" component={WelcomeFourth} />
       <Stack.Screen name="CreateProfile" component={CreateProfile} />
       <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
       <Stack.Screen name="PaymentUser" component={PaymentUser} />
@@ -76,7 +96,9 @@ const UserStack: React.FC = () => {
       <Stack.Screen name="WalletUser" component={WalletUser} />
       <Stack.Screen name="WalletUserSec" component={WalletUserSec} />
       <Stack.Screen name="TripOptions" component={TripOptions} />
+      <Stack.Screen name="TripOptionsSec" component={TripOptionsSec} />
       <Stack.Screen name="FindingDriver" component={FindingDriver} />
+      <Stack.Screen name="FindingDriverSec" component={FindingDriverSec} />
       <Stack.Screen name="DriverOfferings" component={DriverOfferings} />
       <Stack.Screen name="ScheduleDetail" component={ScheduleDetail} />
       <Stack.Screen name="History" component={History} />

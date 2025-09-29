@@ -29,16 +29,13 @@ const ScheduleDetail = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <TopHeader text="Booking Details" isBack={true} />
+      <TopHeader text="Booking Details" isMenu={true} />
 
       <View style={styles.mainContainer}>
         <View style={styles.subConatiner}>
           <View>
             <Text style={styles.trackID}>Ride ID</Text>
             <Text>#4564</Text>
-          </View>
-          <View style={styles.comContainer}>
-            <Text style={styles.comText}>Completed</Text>
           </View>
         </View>
 
@@ -205,7 +202,7 @@ const ScheduleDetail = () => {
 const styles = StyleSheet.create({
   reasonsContainer: {
     width: width * 0.75,
-    height: height * 0.05,
+    height: height * 0.04,
     borderWidth: 1,
     borderColor: colors.gray,
     borderRadius: 10,
@@ -257,27 +254,29 @@ const styles = StyleSheet.create({
   },
   btnMain: {
     alignItems: 'center',
-    top: height * 0.06,
+    top: height * 0.04,
   },
   EstimatedFareMain: {
     alignItems: 'center',
-    top: height * 0.03,
+    top: height * 0.004,
   },
   EstimatedContainer: {
     backgroundColor: colors.white,
     width: width * 0.8,
-    height: height * 0.09,
+    height: height * 0.075,
     borderRadius: 10,
   },
   estimatedContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 30,
+    paddingHorizontal: width * 0.06,
+    paddingTop: height * 0.02,
   },
   estimatedText: {
     fontFamily: fontFamily.SfProDisplayMedium,
     fontSize: fontSizes.sm2,
     color: colors.black,
+    fontWeight: '800',
   },
   img: {
     width: width * 0.05,
@@ -290,7 +289,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignSelf: 'center',
     backgroundColor: colors.lightGray,
-    height: height * 0.6,
+    height: height * 0.58,
     width: width * 0.9,
     top: height * 0.012,
   },
@@ -357,7 +356,7 @@ const styles = StyleSheet.create({
     width: width * 0.85,
     borderRadius: 20,
     alignSelf: 'center',
-    top: height * 0.05,
+    top: height * 0.03,
   },
   location: {
     borderWidth: 1,
@@ -368,21 +367,22 @@ const styles = StyleSheet.create({
     left: width * 0.045,
     backgroundColor: colors.white,
     alignSelf: 'center',
-    top: height * 0.01,
+    bottom: height * 0.03,
   },
   locImg: {
     height: height * 0.02,
-    width: width * 0.03,
+    width: width * 0.025,
     resizeMode: 'contain',
   },
   park: {
     color: colors.black,
     fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: 20,
+    fontSize: fontSizes.sm,
   },
   guide: {
-    top: height * 0.1,
+    top: height * 0.06,
     left: width * 0.04,
+    resizeMode: 'contain',
   },
   feedContainer: {
     backgroundColor: colors.white,
@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
     height: height * 0.1,
     width: width * 0.85,
     alignSelf: 'center',
-    top: height * 0.06,
+    top: height * 0.05,
   },
   feed: {
     color: colors.black,

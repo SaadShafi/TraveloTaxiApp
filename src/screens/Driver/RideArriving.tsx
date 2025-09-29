@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -28,7 +28,7 @@ import { fontSizes } from '../../utilities/fontsizes';
 type Props = NativeStackScreenProps<StackParamList, 'RideArriving'>;
 
 const RideArriving = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NavigationProp<any>>();
   const arrivingSheetRef = useRef<ActionSheetRef>(null);
   const completedSheetRef = useRef<ActionSheetRef>(null);
   const thirdSheetRef = useRef<ActionSheetRef>(null);
@@ -49,8 +49,8 @@ const RideArriving = () => {
   const waitingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
     null,
   );
-  const [waitingCountdown, setWaitingCountdown] = useState(300);
-  const totalTime = 300;
+  const [waitingCountdown, setWaitingCountdown] = useState(0);
+  const totalTime = 300; // 5 minutes
   const radius = 70;
   const strokeWidth = 5;
   const circumference = 2 * Math.PI * radius;
@@ -152,6 +152,40 @@ const RideArriving = () => {
     }, 400);
   };
 
+  const handleBackdropPressOnCompletedSheet = () => {
+    // Check if the ref exists and the sheet is open before calling the method
+    if (completedSheetRef.current) {
+      // Call snapToIndex(0) to move the sheet to the '20%' snap point (index 0)
+      completedSheetRef.current.snapToIndex(0);
+
+      // NOTE: If you want it to snap to the second point (50%), use snapToIndex(1).
+    }
+  };
+
+  const SNAP_POINTS = [0.4, 0.8];
+
+  // Example: Moving from Completed → Waiting
+  const handleStartWaiting = () => {
+    completedSheetRef.current?.hide();
+    setTimeout(() => {
+      thirdSheetRef.current?.show();
+    }, 300);
+  };
+
+  // Example: Moving from Waiting → Ride Ongoing
+  const handleStartRide = () => {
+    thirdSheetRef.current?.hide();
+    setTimeout(() => {
+      fourthSheetRef.current?.show();
+    }, 300);
+  };
+
+  const toggleRideEnd = () => {
+    setModalVisibleThird(false);
+    navigation.navigate('HomeDriver');
+    console.log('Ed ride btn pressed');
+  };
+
   return (
     <ImageBackground source={images.Maptwo} style={styles.mapImg}>
       <View style={{ flex: 1 }}>
@@ -160,9 +194,23 @@ const RideArriving = () => {
         <ActionSheet
           ref={arrivingSheetRef}
           containerStyle={styles.actionSheetMain}
-          closeOnTouchBackdrop={false}
-          defaultOverlayOpacity={0.9}
-          bounceOnOpen={true}
+          snapPoints={SNAP_POINTS}
+          initialSnapIndex={1} // Assuming it opens to '50%'
+          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
+          defaultOverlayOpacity={0.1}
+          onClose={() => {
+            requestAnimationFrame(() => {
+              arrivingSheetRef.current?.show();
+            });
+          }}
+          gestureEnabled={true}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -197,6 +245,7 @@ const RideArriving = () => {
                           style={styles.locationImg}
                         />
                       }
+                      editable={false}
                     />
                     <CustomTextInput
                       placeholder="Groklyn Bridge Park"
@@ -211,6 +260,7 @@ const RideArriving = () => {
                           style={styles.locationImg}
                         />
                       }
+                      editable={false}
                     />
                   </View>
                 </View>
@@ -229,11 +279,6 @@ const RideArriving = () => {
                   <View style={styles.textPassenger}>
                     <Text style={styles.distance}>Distance:</Text>
                     <Text style={styles.miles}>10 Miles away</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.plate}>Number Plate:</Text>
-                    <Text style={styles.number}>123 756</Text>
                   </View>
 
                   <View style={styles.subContainer}>
@@ -272,9 +317,23 @@ const RideArriving = () => {
         <ActionSheet
           ref={completedSheetRef}
           containerStyle={styles.actionSheetMain}
-          closeOnTouchBackdrop={true}
-          defaultOverlayOpacity={0.9}
-          bounceOnOpen={true}
+          snapPoints={SNAP_POINTS}
+          initialSnapIndex={1} // Assuming it opens to '50%'
+          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
+          defaultOverlayOpacity={0.1}
+          onClose={() => {
+            requestAnimationFrame(() => {
+              completedSheetRef.current?.show();
+            });
+          }}
+          gestureEnabled={true}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -307,6 +366,7 @@ const RideArriving = () => {
                           style={styles.locationImg}
                         />
                       }
+                      editable={false}
                     />
                     <CustomTextInput
                       placeholder="Groklyn Bridge Park"
@@ -321,6 +381,7 @@ const RideArriving = () => {
                           style={styles.locationImg}
                         />
                       }
+                      editable={false}
                     />
                   </View>
                 </View>
@@ -377,7 +438,7 @@ const RideArriving = () => {
                     backgroundColor={colors.brown}
                     text="Arrived"
                     textColor={colors.white}
-                    onPress={handleArrivedPress} // ✅ open 3rd sheet
+                    onPress={handleStartWaiting} // ✅ open 3rd sheet
                   />
                 </View>
               </View>
@@ -388,9 +449,23 @@ const RideArriving = () => {
         <ActionSheet
           ref={thirdSheetRef}
           containerStyle={styles.actionSheetThird}
-          closeOnTouchBackdrop={true}
-          defaultOverlayOpacity={0.9}
-          bounceOnOpen={true}
+          snapPoints={SNAP_POINTS} // Your defined snap points
+          initialSnapIndex={1} // Assuming it opens to '50%'
+          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          // onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
+          defaultOverlayOpacity={0.1}
+          onClose={() => {
+            requestAnimationFrame(() => {
+              thirdSheetRef.current?.show();
+            });
+          }}
+          gestureEnabled={true}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -429,6 +504,7 @@ const RideArriving = () => {
                           style={styles.locationImg}
                         />
                       }
+                      editable={false}
                     />
                     <CustomTextInput
                       placeholder="Groklyn Bridge Park"
@@ -443,6 +519,7 @@ const RideArriving = () => {
                           style={styles.locationImg}
                         />
                       }
+                      editable={false}
                     />
                   </View>
                 </View>
@@ -461,11 +538,6 @@ const RideArriving = () => {
                   <View style={styles.textPassenger}>
                     <Text style={styles.distance}>Distance:</Text>
                     <Text style={styles.miles}>10 Miles away</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.plate}>Number Plate:</Text>
-                    <Text style={styles.number}>123 756</Text>
                   </View>
 
                   <View style={styles.subContainer}>
@@ -518,10 +590,24 @@ const RideArriving = () => {
 
         <ActionSheet
           ref={fourthSheetRef}
-          containerStyle={styles.actionSheetThird}
-          closeOnTouchBackdrop={true}
-          defaultOverlayOpacity={0.9}
-          bounceOnOpen={true}
+          containerStyle={styles.actionSheetFourth}
+          snapPoints={SNAP_POINTS} // Your defined snap points
+          initialSnapIndex={1} // Assuming it opens to '50%'
+          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          // onTouchBackdrop={handleBackdropPressOnCompletedSheet}
+          defaultOverlayOpacity={0.1}
+          onClose={() => {
+            requestAnimationFrame(() => {
+              fourthSheetRef.current?.show();
+            });
+          }}
+          gestureEnabled={true}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -553,6 +639,7 @@ const RideArriving = () => {
                           style={styles.locationImg}
                         />
                       }
+                      editable={false}
                     />
                     <CustomTextInput
                       placeholder="Groklyn Bridge Park"
@@ -567,6 +654,7 @@ const RideArriving = () => {
                           style={styles.locationImg}
                         />
                       }
+                      editable={false}
                     />
                   </View>
                 </View>
@@ -585,11 +673,6 @@ const RideArriving = () => {
                   <View style={styles.textPassenger}>
                     <Text style={styles.distance}>Distance:</Text>
                     <Text style={styles.miles}>10 Miles away</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.plate}>Number Plate:</Text>
-                    <Text style={styles.number}>123 756</Text>
                   </View>
 
                   <View style={styles.subContainer}>
@@ -690,6 +773,10 @@ const RideArriving = () => {
                 onPress={() => {
                   setOtpModalVisible(false);
 
+                  // setTimeout(() => {
+                  //   fourthSheetRef.current?.show();
+                  // }, 300);
+                  thirdSheetRef.current?.hide();
                   setTimeout(() => {
                     fourthSheetRef.current?.show();
                   }, 300);
@@ -775,10 +862,10 @@ const RideArriving = () => {
                       .padStart(2, '0')}`
                   }
                 />
-                <Text style={styles.timerText}>
+                {/* <Text style={styles.timerText}>
                   {Math.floor(waitingCountdown / 60)}:
                   {(waitingCountdown % 60).toString().padStart(2, '0')}
-                </Text>
+                </Text> */}
               </View>
 
               <Pressable
@@ -858,6 +945,7 @@ const RideArriving = () => {
                         style={styles.locationImg}
                       />
                     }
+                    editable={false}
                   />
                   <CustomTextInput
                     placeholder="Groklyn Bridge Park"
@@ -872,6 +960,7 @@ const RideArriving = () => {
                         style={styles.locationImg}
                       />
                     }
+                    editable={false}
                   />
                 </View>
               </View>
@@ -880,7 +969,10 @@ const RideArriving = () => {
                 colors={['#FFFFFF', '#FFE9E9']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1.1 }}
-                style={[styles.passengerContainer, { width: width * 0.7 }]}
+                style={[
+                  styles.passengerContainer,
+                  { width: width * 0.7, height: height * 0.18 },
+                ]}
               >
                 <View style={styles.textPassenger}>
                   <Text style={styles.name}>Passenger Name:</Text>
@@ -890,11 +982,6 @@ const RideArriving = () => {
                 <View style={styles.textPassenger}>
                   <Text style={styles.distance}>Distance:</Text>
                   <Text style={styles.miles}>10 Miles away</Text>
-                </View>
-
-                <View style={styles.textPassenger}>
-                  <Text style={styles.plate}>Number Plate:</Text>
-                  <Text style={styles.number}>123 756</Text>
                 </View>
 
                 <View style={[styles.subContainer, { width: width * 0.65 }]}>
@@ -923,9 +1010,7 @@ const RideArriving = () => {
                   backgroundColor={colors.brown}
                   text="End Ride"
                   textColor={colors.white}
-                  onPress={() => {
-                    setModalVisibleThird(false);
-                  }}
+                  onPress={toggleRideEnd}
                 />
               </View>
             </View>
@@ -1020,6 +1105,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: height * 0.55,
     width: width,
+    bottom: height * 0.07,
   },
   actionSheetThird: {
     borderTopLeftRadius: 45,
@@ -1027,6 +1113,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: height * 0.65,
     width: width,
+    bottom: height * 0.04,
+  },
+  actionSheetFourth: {
+    borderTopLeftRadius: 45,
+    borderTopRightRadius: 45,
+    overflow: 'hidden',
+    height: height * 0.65,
+    width: width,
+    bottom: height * 0.04,
   },
   gradientBackground: {
     flex: 1,
@@ -1039,6 +1134,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     resizeMode: 'contain',
     width: width * 1,
+    top: -height * 0.02,
   },
   ActionSheetContentMain: {
     alignItems: 'center',

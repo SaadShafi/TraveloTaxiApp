@@ -82,7 +82,7 @@ const ChangePassWord: React.FC<Props> = ({ navigation }) => {
                 textColor={colors.white}
                 borderRadius={30}
                 disabled={!isFormValid}
-                // onPress={() => navigation.navigate('')}
+                onPress={() => navigation.goBack()}
               />
             </View>
           </View>

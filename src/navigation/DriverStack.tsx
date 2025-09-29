@@ -2,6 +2,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import CreateProfile from '../screens/Auth/CreateProfile';
 import WelcomeFirst from '../screens/Auth/WelcomeFirst';
+import WelcomeFourth from '../screens/Auth/WelcomeFourth';
+import WelcomeSec from '../screens/Auth/WelcomeSec';
 import BankDetails from '../screens/Driver/BankDetails';
 import HelpAndSupport from '../screens/Driver/HelpAndSupport';
 import History from '../screens/Driver/History';
@@ -45,7 +47,13 @@ export type StackParamList = {
   CallMain: undefined;
   TermsCondition: undefined;
   WelcomeFirst: undefined;
+  WelcomeSec: undefined;
+  WelcomeFourth: undefined;
   CreateProfile: undefined;
+  SignIn: undefined;
+  SignUpEmail: undefined;
+  OtpVerification: undefined;
+  SetPassword: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -60,6 +68,8 @@ const DriverStack: React.FC = () => {
       <Stack.Screen name="HomeDriver" component={HomeDriver} />
       <Stack.Screen name="BankDetails" component={BankDetails} />
       <Stack.Screen name="WelcomeFirst" component={WelcomeFirst} />
+      <Stack.Screen name="WelcomeSec" component={WelcomeSec} />
+      <Stack.Screen name="WelcomeFourth" component={WelcomeFourth} />
       <Stack.Screen name="CreateProfile" component={CreateProfile} />
       <Stack.Screen name="History" component={History} />
       <Stack.Screen name="HistoryDetailOne" component={HistoryDetailOne} />

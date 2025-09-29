@@ -76,6 +76,27 @@ const DriverOfferings = () => {
       carModel: 'MWY10X9',
       ratingImage: images.rating,
     },
+    {
+      name: 'Aqeel',
+      price: '$16.00',
+      carType: 'Tesla Model 3',
+      carModel: 'MWY10X9',
+      ratingImage: images.rating,
+    },
+    {
+      name: 'Aqeel',
+      price: '$16.00',
+      carType: 'Tesla Model 3',
+      carModel: 'MWY10X9',
+      ratingImage: images.rating,
+    },
+    {
+      name: 'Aqeel',
+      price: '$16.00',
+      carType: 'Tesla Model 3',
+      carModel: 'MWY10X9',
+      ratingImage: images.rating,
+    },
   ];
 
   const DrriverOffering = ({
@@ -157,43 +178,41 @@ const DriverOfferings = () => {
         keyExtractor={(_, index) => index.toString()}
         contentContainerStyle={{
           gap: height * 0.02,
-          paddingVertical: height * 0.02,
+          // paddingVertical: height * 0.02,
         }}
       />
 
-      <Image source={images.travelologo} style={styles.logo} />
-      <View>
-        <View
-          style={{
-            flexDirection: 'row',
-            gap: width * 0.01,
-            alignSelf: 'center',
-            bottom: height * 0.04,
-          }}
-        >
-          <CustomButton
-            btnHeight={height * 0.07}
-            btnWidth={width * 0.46}
-            borderRadius={35}
-            backgroundColor={colors.black}
-            text="Bid Now"
-            textColor={colors.white}
-            onPress={() => setShowBidModal(true)} // 👉 open modal
-          />
+      <Image source={images.logo} style={styles.logo} />
+      {/* <View> */}
+      <View
+        style={{
+          flexDirection: 'row',
+          gap: width * 0.01,
+          alignSelf: 'center',
+          bottom: height * 0.04,
+        }}
+      >
+        <CustomButton
+          btnHeight={height * 0.07}
+          btnWidth={width * 0.46}
+          borderRadius={35}
+          backgroundColor={colors.black}
+          text="Bid Now"
+          textColor={colors.white}
+          onPress={() => setShowBidModal(true)} // 👉 open modal
+        />
 
-          <CustomButton
-            btnHeight={height * 0.07}
-            btnWidth={width * 0.46}
-            borderRadius={35}
-            backgroundColor={colors.brown}
-            text="Book Ride"
-            textColor={colors.white}
-            onPress={() => navigation.navigate('RideArrivingUser')}
-          />
-        </View>
+        <CustomButton
+          btnHeight={height * 0.07}
+          btnWidth={width * 0.46}
+          borderRadius={35}
+          backgroundColor={colors.brown}
+          text="Book Ride"
+          textColor={colors.white}
+          onPress={() => navigation.navigate('RideArrivingUser')}
+        />
       </View>
-
-      {/* 👉 Bid Modal */}
+      {/* </View> */}
       <Modal
         transparent
         visible={showBidModal}
@@ -207,7 +226,7 @@ const DriverOfferings = () => {
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.inputText}
-                value={bidAmount}
+                // value={bidAmount}
                 onChangeText={setBidAmount}
                 keyboardType="numeric"
               />
@@ -229,7 +248,7 @@ const DriverOfferings = () => {
 const styles = StyleSheet.create({
   logo: {
     width: width * 0.45,
-    height: height * 0.25,
+    height: height * 0.2,
     resizeMode: 'contain',
     alignSelf: 'center',
   },

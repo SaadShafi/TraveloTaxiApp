@@ -154,6 +154,10 @@ const CustomDrawerContent = (props: any) => {
     },
   ];
 
+  const handleRoleModeNavigation = () => {
+    dispatch(removeUser());
+    dispatch(logout());
+  };
   return (
     <View style={styles.gradientContainer}>
       <View style={styles.gradientTop} />
@@ -257,7 +261,7 @@ const CustomDrawerContent = (props: any) => {
           <View style={styles.driverModeContainer}>
             <TouchableOpacity
               style={styles.driverModeButton}
-              onPress={() => navigation.navigate('CreateProfile')}
+              onPress={handleRoleModeNavigation}
             >
               <Text style={styles.driverModeText}>Driver Mode</Text>
             </TouchableOpacity>
@@ -267,7 +271,7 @@ const CustomDrawerContent = (props: any) => {
           <View style={styles.driverModeContainer}>
             <TouchableOpacity
               style={styles.driverModeButton}
-              onPress={() => navigation.navigate('CreateProfile')}
+              onPress={handleRoleModeNavigation}
             >
               <Text style={styles.driverModeText}>User Mode</Text>
             </TouchableOpacity>

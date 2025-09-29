@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   adam: {
     fontSize: fontSizes.sm,
-    fontFamily: fontFamily.SfProDisplaySemiBold,
+    fontFamily: fontFamily.SfProDisplayMedium,
     color: colors.black,
   },
   location: {

@@ -41,8 +41,8 @@ const CustomMultiInput: React.FC<CustomMultiInputProps> = ({
     }
   }, [values]);
 
-  const textColor =
-    backgroundColor === colors.white ? colors.gray : colors.white;
+  // const textColor =
+  //   backgroundColor === colors.white ? colors.gray : colors.white;
 
   return (
     <View style={styles.inputContainer}>
@@ -61,8 +61,11 @@ const CustomMultiInput: React.FC<CustomMultiInputProps> = ({
       >
         <TextInput
           placeholder={placeholder}
-          placeholderTextColor={textColor}
-          style={[styles.textInput, { color: textColor }]}
+          placeholderTextColor={placeholderTextColor}
+          style={[
+            styles.textInput,
+            // { color: textColor }
+          ]}
           keyboardType={keyboardType}
           value={value}
           onChangeText={onChangeText}
@@ -94,6 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: 'transparent',
     textAlignVertical: 'top',
+    color: colors.black,
   },
 });
 

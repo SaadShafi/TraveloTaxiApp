@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.md,
     bottom: height * 0.01,
+    color: colors.black,
   },
   container: {
     alignItems: 'center',
@@ -131,11 +132,13 @@ const styles = StyleSheet.create({
   recieveTextOne: {
     fontFamily: fontFamily.SfProDisplayBold,
     fontSize: fontSizes.sm2,
+    color: colors.black,
   },
   recieveTextTwo: {
     fontFamily: fontFamily.SfProDisplayBold,
     fontSize: fontSizes.sm2,
     textDecorationLine: 'underline',
+    color: colors.black,
   },
   btnMain: {
     marginTop: height * 0.02,

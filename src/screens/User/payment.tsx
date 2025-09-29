@@ -25,85 +25,215 @@ interface tipsProp {
 }
 
 const PaymentUser: React.FC<Props> = ({ navigation }) => {
-  const [tips, setTips] = useState<tipsProp>();
+  // const [tips, setTips] = useState<tipsProp>();
+  // const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const [tip, setTip] = useState<number>(5); // default $5 tip
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
 
+  // const tipsData = [
+  //   {
+  //     price: '$5',
+  //   },
+  //   {
+  //     price: '$10',
+  //   },
+  //   {
+  //     price: '$15',
+  //   },
+  //   {
+  //     price: '$20',
+  //   },
+  // ];
+  // const tipsFields = ({ item }: { item: tipsProp }) => {
+  //   return (
+  //     <View style={styles.tipsMain}>
+  //       <View style={styles.tipsContainer}>
+  //         <Text style={styles.priceText}>{item.price}</Text>
+  //       </View>
+  //     </View>
+  //   );
+  // };
+
   const tipsData = [
-    {
-      price: '$5',
-    },
-    {
-      price: '$10',
-    },
-    {
-      price: '$15',
-    },
-    {
-      price: '$20',
-    },
+    { id: '5', price: 5 },
+    { id: '10', price: 10 },
+    { id: '15', price: 15 },
+    { id: '20', price: 20 },
   ];
-  const tipsFields = ({ item }: { item: tipsProp }) => {
+
+  const tipsFields = ({ item }: { item: { id: string; price: number } }) => {
     return (
-      <View style={styles.tipsMain}>
-        <View style={styles.tipsContainer}>
-          <Text style={styles.priceText}>{item.price}</Text>
-        </View>
-      </View>
+      <TouchableOpacity
+        onPress={() => setTip(item.price)}
+        style={[
+          styles.tipsContainer,
+          tip === item.price && {
+            borderColor: colors.brown,
+            backgroundColor: colors.lightBrown,
+          },
+        ]}
+      >
+        <Text style={styles.priceText}>${item.price}</Text>
+      </TouchableOpacity>
     );
   };
+
   return (
+    // <View style={{ flex: 1 }}>
+    //   <TopHeader text="Payment" isMenu={true} />
+    //   <View style={styles.containerMain}>
+    //     <View style={styles.containerOne}>
+    //       <Text style={styles.tipsText}>Give Some Tips to Adam James</Text>
+    //       <FlatList
+    //         data={tipsData}
+    //         renderItem={tipsFields}
+    //         keyExtractor={item => item.id}
+    //         horizontal
+    //       />
+    //       <View style={styles.billContainer}>
+    //         <Text style={styles.billText}>Your Bill</Text>
+    //         <View style={styles.billList}>
+    //           <View
+    //             style={{
+    //               flexDirection: 'row',
+    //               justifyContent: 'space-between',
+    //             }}
+    //           >
+    //             <Text style={styles.billListText}>Fare:</Text>
+    //             <Text style={styles.billListText}>$55.00</Text>
+    //           </View>
+    //           <View style={styles.border} />
+    //           <View
+    //             style={{
+    //               flexDirection: 'row',
+    //               justifyContent: 'space-between',
+    //             }}
+    //           >
+    //             <Text style={styles.billListText}>Add Shop:</Text>
+    //             <Text style={styles.billListText}>$25.00</Text>
+    //           </View>
+    //           <View style={styles.border} />
+    //           <View
+    //             style={{
+    //               flexDirection: 'row',
+    //               justifyContent: 'space-between',
+    //             }}
+    //           >
+    //             <Text style={styles.billListText}>Tip:</Text>
+    //             <Text style={styles.billListText}>$5.00</Text>
+    //           </View>
+    //           <View style={styles.totalContainer}>
+    //             <Text style={styles.total}>Total:</Text>
+    //             <Text style={styles.total}>$85.00</Text>
+    //           </View>
+    //         </View>
+    //       </View>
+    //     </View>
+    //     <View style={styles.containerSec}>
+    //       <Text style={styles.tipsText}>Selected Payment Method</Text>
+    //       <TouchableOpacity
+    //         style={[
+    //           styles.methodMain,
+    //           selectedMethod === 'visa' && {
+    //             borderColor: colors.brown,
+    //             backgroundColor: colors.lightBrown,
+    //           },
+    //         ]}
+    //         activeOpacity={0.6}
+    //         onPress={() => setSelectedMethod('visa')}
+    //       >
+    //         <Image source={images.visa} />
+    //         <View style={styles.methodTextMain}>
+    //           <Text style={styles.cardText}>**** **** **** 8970</Text>
+    //           <Text style={styles.cardText}>Expires: 12/26</Text>
+    //         </View>
+    //       </TouchableOpacity>
+    //       <TouchableOpacity
+    //         style={[
+    //           styles.methodMain,
+    //           selectedMethod === 'mastercard' && {
+    //             borderColor: colors.brown,
+    //             backgroundColor: colors.lightBrown,
+    //           },
+    //         ]}
+    //         activeOpacity={0.7}
+    //         onPress={() => setSelectedMethod('mastercard')}
+    //       >
+    //         <Image source={images.masterCard} />
+    //         <View style={styles.methodTextMain}>
+    //           <Text style={styles.cardText}>**** **** **** 8970</Text>
+    //           <Text style={styles.cardText}>Expires: 12/26</Text>
+    //         </View>
+    //       </TouchableOpacity>
+    //     </View>
+    //     <CustomButton
+    //       btnWidth={width * 0.9}
+    //       btnHeight={height * 0.07}
+    //       backgroundColor={selectedMethod ? colors.brown : colors.black}
+    //       text="Continue"
+    //       textColor={colors.white}
+    //       borderRadius={30}
+    //       disabled={!selectedMethod}
+    //       onPress={() => navigation.navigate('Setting')}
+    //     />
+    //   </View>
+    // </View>
+
     <View style={{ flex: 1 }}>
-      <TopHeader text="Payment" isMenu={true} navigation={navigation} />
+      <TopHeader text="Payment" isMenu={true} />
       <View style={styles.containerMain}>
         <View style={styles.containerOne}>
           <Text style={styles.tipsText}>Give Some Tips to Adam James</Text>
+
+          {/* FlatList for tips + custom "+" button */}
           <FlatList
             data={tipsData}
             renderItem={tipsFields}
             keyExtractor={item => item.id}
             horizontal
+            showsHorizontalScrollIndicator={false}
+            ListFooterComponent={
+              <TouchableOpacity
+                style={styles.plusButton}
+                onPress={() => setTip(prev => prev + 5)}
+              >
+                <Text style={styles.plusText}>+</Text>
+              </TouchableOpacity>
+            }
           />
+
+          {/* Bill Section */}
           <View style={styles.billContainer}>
             <Text style={styles.billText}>Your Bill</Text>
             <View style={styles.billList}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
-              >
+              <View style={styles.billRow}>
                 <Text style={styles.billListText}>Fare:</Text>
                 <Text style={styles.billListText}>$55.00</Text>
               </View>
               <View style={styles.border} />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <Text style={styles.billListText}>Add Shop:</Text>
+              <View style={styles.billRow}>
+                <Text style={styles.billListText}>Add Stop:</Text>
                 <Text style={styles.billListText}>$25.00</Text>
               </View>
               <View style={styles.border} />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
-              >
+              <View style={styles.billRow}>
                 <Text style={styles.billListText}>Tip:</Text>
-                <Text style={styles.billListText}>$5.00</Text>
+                <Text style={styles.billListText}>
+                  {/* ${tip.toFixed(2)} */}${(55 + 25 + (tip ?? 0)).toFixed(2)}
+                </Text>
               </View>
               <View style={styles.totalContainer}>
                 <Text style={styles.total}>Total:</Text>
-                <Text style={styles.total}>$85.00</Text>
+                <Text style={styles.total}>${(55 + 25 + tip).toFixed(2)}</Text>
               </View>
             </View>
           </View>
         </View>
+
+        {/* Payment Methods */}
         <View style={styles.containerSec}>
-          <Text style={styles.tipsText}>Select Payment Method</Text>
+          <Text style={styles.tipsText}>Selected Payment Method</Text>
+          {/* Visa */}
           <TouchableOpacity
             style={[
               styles.methodMain,
@@ -121,24 +251,24 @@ const PaymentUser: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.cardText}>Expires: 12/26</Text>
             </View>
           </TouchableOpacity>
+
+          {/* Cash */}
           <TouchableOpacity
             style={[
               styles.methodMain,
-              selectedMethod === 'mastercard' && {
+              selectedMethod === 'cash' && {
                 borderColor: colors.brown,
                 backgroundColor: colors.lightBrown,
               },
             ]}
             activeOpacity={0.7}
-            onPress={() => setSelectedMethod('mastercard')}
+            onPress={() => setSelectedMethod('cash')}
           >
-            <Image source={images.masterCard} />
-            <View style={styles.methodTextMain}>
-              <Text style={styles.cardText}>**** **** **** 8970</Text>
-              <Text style={styles.cardText}>Expires: 12/26</Text>
-            </View>
+            <Image source={images.cashIcon} />
+            <Text style={styles.cardText}>Cash</Text>
           </TouchableOpacity>
         </View>
+
         <CustomButton
           btnWidth={width * 0.9}
           btnHeight={height * 0.07}
@@ -155,6 +285,26 @@ const PaymentUser: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  plusButton: {
+    width: width * 0.14,
+    height: height * 0.061,
+    borderWidth: 1,
+    borderColor: colors.gray,
+    borderRadius: 30,
+    backgroundColor: colors.whiteShade,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: width * 0.03,
+  },
+  plusText: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.md,
+    color: colors.black,
+  },
+  billRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   containerMain: {
     alignItems: 'center',
     gap: height * 0.02,
@@ -178,6 +328,7 @@ const styles = StyleSheet.create({
   tipsText: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.md,
+    color: colors.black,
   },
   tipsMain: {
     alignItems: 'center',
@@ -210,6 +361,7 @@ const styles = StyleSheet.create({
   billText: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.md,
+    color: colors.black,
   },
   billList: {
     width: width * 0.7,
@@ -220,6 +372,7 @@ const styles = StyleSheet.create({
   billListText: {
     fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.sm2,
+    color: colors.black,
   },
   border: {
     borderWidth: 0.5,

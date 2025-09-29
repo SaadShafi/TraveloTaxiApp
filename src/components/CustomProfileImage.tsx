@@ -5,7 +5,6 @@ import {
   Modal,
   Platform,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -30,6 +29,23 @@ const CustomProfileImgModal: React.FC<CustomProfImgModalProps> = ({
   camera,
 }) => {
   const [animatedHeight] = useState(new Animated.Value(0));
+  const [uploadScale] = useState(new Animated.Value(1));
+  const [cameraScale] = useState(new Animated.Value(1));
+
+  const animatePress = (anim: Animated.Value, callback: () => void) => {
+    Animated.sequence([
+      Animated.timing(anim, {
+        toValue: 1.1, // expand
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(anim, {
+        toValue: 1, // shrink back
+        duration: 100,
+        useNativeDriver: true,
+      }),
+    ]).start(callback); // run action after animation
+  };
 
   const animateModal = () => {
     Animated.timing(animatedHeight, {
@@ -73,24 +89,41 @@ const CustomProfileImgModal: React.FC<CustomProfImgModalProps> = ({
             <View style={styles.uploadMain}>
               <AntDesign
                 name="upload"
-                color={colors.black}
+                color={colors.gray}
                 size={width * 0.07}
                 style={styles.icon}
               />
-              <Text onPress={gallery} style={styles.modalTextSec}>
+              <Animated.Text
+                // onPress={gallery}
+                onPress={() => animatePress(uploadScale, gallery)}
+                // style={styles.modalTextSec}>
+                style={[
+                  styles.modalTextSec,
+                  { transform: [{ scale: uploadScale }] },
+                ]}
+              >
                 Upload Photo
-              </Text>
+              </Animated.Text>
             </View>
             <View style={styles.cameraMain}>
               <AntDesign
                 name="camera"
-                color={colors.black}
+                color={colors.gray}
                 size={width * 0.07}
                 style={styles.icon}
               />
-              <Text onPress={camera} style={styles.modalTextSec}>
+              {/* <Text onPress={camera} style={styles.modalTextSec}>
                 Use Camera
-              </Text>
+              </Text> */}
+              <Animated.Text
+                onPress={() => animatePress(cameraScale, camera)}
+                style={[
+                  styles.modalTextSec,
+                  { transform: [{ scale: cameraScale }] },
+                ]}
+              >
+                Use Camera
+              </Animated.Text>
             </View>
           </View>
         </Animated.View>
@@ -115,7 +148,7 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 50,
     borderColor: colors.white,
     borderWidth: 1,
-    backgroundColor: colors.lightGray,
+    backgroundColor: colors.lightBrown,
     alignItems: 'center',
     justifyContent: 'center',
     bottom: 0,
@@ -129,7 +162,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderColor: colors.darkGray,
+    borderColor: colors.lightGray,
     paddingVertical: height * 0.01,
   },
   cameraMain: {
@@ -142,14 +175,14 @@ const styles = StyleSheet.create({
     width: width * 0.3,
   },
   modalText: {
-    fontFamily: fontFamily.JostBold,
+    fontFamily: fontFamily.ClashDisplayMedium,
     fontSize: fontSizes.md,
-    color: colors.black,
+    color: colors.browm,
   },
   modalTextSec: {
-    fontFamily: fontFamily.JostBold,
-    fontSize: fontSizes.md,
-    color: colors.black,
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.lg,
+    color: colors.brown,
     left: width * 0.1,
   },
   icon: {

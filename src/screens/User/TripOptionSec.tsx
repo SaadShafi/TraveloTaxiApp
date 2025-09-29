@@ -1,4 +1,4 @@
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import {
   Image,
@@ -16,14 +16,12 @@ import CustomMultiInput from '../../components/CustomMultiInput';
 import CustomSelect from '../../components/CustomSelect';
 import CustomTextInput from '../../components/CustomTextInput';
 import TopHeader from '../../components/Topheader';
-import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 
-type Props = NativeStackScreenProps<StackParamList, 'TripOptions'>;
-
-const TripOptions: React.FC<Props> = ({ navigation }) => {
+const TripOptionsSec: React.FC = () => {
+  const navigation = useNavigation<NavigationProp<any>>();
   const [passengers, setPassengers] = useState(1);
   const [isEnabled, setIsEnabled] = useState(false);
   const [showCaution, setShowCaution] = useState(false);
@@ -354,7 +352,7 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
             backgroundColor={colors.black}
             text="Continue"
             textColor={colors.white}
-            onPress={() => navigation.navigate('FindingDriver')}
+            onPress={() => navigation.navigate('FindingDriverSec')}
           />
         </View>
       </ScrollView>
@@ -534,4 +532,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TripOptions;
+export default TripOptionsSec;

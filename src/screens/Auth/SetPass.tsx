@@ -59,7 +59,7 @@ const setPassword: React.FC<Props> = ({ navigation, route }) => {
   return (
     <TouchableWithoutFeedback onPress={bgPress}>
       <View style={{ flex: 1 }}>
-        <TopHeader text="SetPassword" isBack={true} navigation={navigation} />
+        <TopHeader text="Set Password" isBack={true} />
         <View style={styles.inputMain}>
           <Text style={styles.setPass}>Set Your Password</Text>
           <CustomTextInput

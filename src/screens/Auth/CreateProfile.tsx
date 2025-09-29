@@ -44,16 +44,31 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
   const [gender, setGender] = useState('');
   const [city, setCity] = useState('');
   const [rideType, setRideType] = useState('');
+  const [card, setCard] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [document, setDocument] = useState<{
-    name: string;
-    uri: string;
-    type?: string;
-    size?: number;
-  } | null>(null);
+  // const [document, setDocument] = useState<{
+  //   name: string;
+  //   uri: string;
+  //   type?: string;
+  //   size?: number;
+  // } | null>(null);
+  const [drivingLicense, setDrivingLicense] = useState(null);
+  const [privateHireLicense, setPrivateHireLicense] = useState(null);
+  const [logBook, setLogBook] = useState(null);
+  const [vehicleLicense, setVehicleLicense] = useState(null);
+  const [insurance, setInsurance] = useState(null);
+  const [mot, setMot] = useState(null);
+  const [hireAgreement, setHireAgreement] = useState(null);
+  // const [expiryDates, setExpiryDates] = useState<{ [key: string]: string }>({});
+  // const [openPicker, setOpenPicker] = useState<null | string>(null);
+  // Instead of boolean
+  const [openPicker, setOpenPicker] = useState<string | null>(null);
+
+  // Store expiry dates as ISO strings
+  const [expiryDates, setExpiryDates] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     console.log('Selected Role in CreateProfile:', selectedRole);
@@ -131,34 +146,60 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
     });
   };
 
-  const handlePickDocument = async () => {
+  // const handlePickDocument = async () => {
+  //   try {
+  //     // pick returns an array of files (even if one)
+  //     const results = await pick({
+  //       // types of files allowed
+  //       type: [types.allFiles],
+  //       // optionally: allowMultiple selection
+  //       allowMultiSelection: false,
+  //       // optionally: keep a local copy if needed
+  //       keepLocalCopy: true,
+  //     });
+
+  //     if (results && results.length > 0) {
+  //       const file = results[0];
+  //       setDocument({
+  //         name: file.name,
+  //         uri: file.uri,
+  //         type: file.type, // may or may not be defined
+  //         size: file.size, // size in bytes, if available
+  //       });
+  //     }
+  //   } catch (err: any) {
+  //     if (isCancel(err)) {
+  //       console.log('User cancelled document picker');
+  //     } else {
+  //       console.error('Document pick error:', err);
+  //     }
+  //   }
+  // };
+
+  const handlePickDocument = async (setter: (file: any) => void) => {
     try {
-      // pick returns an array of files (even if one)
       const results = await pick({
-        // types of files allowed
         type: [types.allFiles],
-        // optionally: allowMultiple selection
         allowMultiSelection: false,
-        // optionally: keep a local copy if needed
         keepLocalCopy: true,
       });
 
       if (results && results.length > 0) {
         const file = results[0];
-        setDocument({
+        setter({
           name: file.name,
           uri: file.uri,
-          type: file.type, // may or may not be defined
-          size: file.size, // size in bytes, if available
+          type: file.type,
+          size: file.size,
         });
       }
     } catch (err: any) {
-      if (isCancel(err)) {
-        console.log('User cancelled document picker');
-      } else {
-        console.error('Document pick error:', err);
-      }
+      if (!isCancel(err)) console.error('Document pick error:', err);
     }
+  };
+
+  const formatDate = (date: Date) => {
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   };
 
   const toggleModalSec = () => {
@@ -244,7 +285,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             backgroundColor={colors.gray}
           />
           <CustomTextInput
-            placeholder="*Street"
+            placeholder="*Address"
             placeholderTextColor={colors.black}
             borderColor={colors.brown}
             borderRadius={30}
@@ -320,6 +361,197 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
     modalOpen,
   ]);
 
+  // const renderUploadField = (
+  //   label: string,
+  //   file: any,
+  //   setter: (file: any) => void,
+  //   fieldKey: string,
+  // ) => (
+  //   <>
+  //     <Text style={styles.label}>{label}</Text>
+  //     <View style={styles.container}>
+  //       <TouchableOpacity
+  //         style={styles.button}
+  //         onPress={() => handlePickDocument(setter)}
+  //       >
+  //         <Text style={styles.buttonText}>Choose File</Text>
+  //       </TouchableOpacity>
+
+  //       {!file && <Text style={styles.title}>No File Selected</Text>}
+
+  //       {file && (
+  //         <View style={styles.preview}>
+  //           <Text style={styles.fileLabel}>Selected File:</Text>
+  //           <Text style={styles.fileName}>{file.name}</Text>
+  //           <Text style={styles.fileUri}>{file.uri}</Text>
+  //           {file.type && <Text style={styles.fileUri}>Type: {file.type}</Text>}
+  //           {file.size && (
+  //             <Text style={styles.fileUri}>Size: {file.size} bytes</Text>
+  //           )}
+  //         </View>
+  //       )}
+  //     </View>
+  //     <TouchableOpacity onPress={() => setOpenPicker(fieldKey)}>
+  //       <TextInput
+  //         placeholder="*Add Expiry Date"
+  //         placeholderTextColor={colors.darkGray}
+  //         style={styles.AddExpiryDate}
+  //         value={expiryDates[fieldKey] || ''}
+  //         editable={false}
+  //       />
+  //     </TouchableOpacity>
+  //     <DatePicker
+  //       modal
+  //       mode="date"
+  //       open={openPicker === fieldKey}
+  //       date={new Date()}
+  //       onConfirm={date => {
+  //         setOpenPicker(null);
+  //         setExpiryDates(prev => ({ ...prev, [fieldKey]: formatDate(date) }));
+  //       }}
+  //       onCancel={() => setOpenPicker(null)}
+  //     />
+  //   </>
+  // );
+
+  // const renderUploadField = (
+  //   label: string,
+  //   file: any,
+  //   setter: (file: any) => void,
+  //   fieldKey: string,
+  // ) => (
+  //   <>
+  //     <Text style={styles.label}>{label}</Text>
+  //     <View style={styles.container}>
+  //       <TouchableOpacity
+  //         style={styles.button}
+  //         onPress={() => handlePickDocument(setter)}
+  //       >
+  //         <Text style={styles.buttonText}>Choose File</Text>
+  //       </TouchableOpacity>
+
+  //       {!file && <Text style={styles.title}>No File Selected</Text>}
+
+  //       {file && (
+  //         <View style={styles.preview}>
+  //           <Text style={styles.fileLabel}>Selected File:</Text>
+  //           <Text style={styles.fileName}>{file.name}</Text>
+  //           <Text style={styles.fileUri}>{file.uri}</Text>
+  //           {file.type && <Text style={styles.fileUri}>Type: {file.type}</Text>}
+  //           {file.size && (
+  //             <Text style={styles.fileUri}>Size: {file.size} bytes</Text>
+  //           )}
+  //         </View>
+  //       )}
+  //     </View>
+
+  //     {/* Expiry date field */}
+  //     <TouchableOpacity onPress={() => setOpenPicker(fieldKey)}>
+  //       <TextInput
+  //         placeholder="*Add Expiry Date"
+  //         placeholderTextColor={colors.darkGray}
+  //         style={styles.AddExpiryDate}
+  //         value={
+  //           expiryDates[fieldKey]
+  //             ? formatDate(new Date(expiryDates[fieldKey]))
+  //             : ''
+  //         }
+  //         editable={false}
+  //       />
+  //     </TouchableOpacity>
+
+  //     <DatePicker
+  //       modal
+  //       open={openPicker === fieldKey}
+  //       date={
+  //         expiryDates[fieldKey] ? new Date(expiryDates[fieldKey]) : new Date()
+  //       }
+  //       mode="date"
+  //       onConfirm={date => {
+  //         setOpenPicker(null);
+  //         setExpiryDates(prev => ({
+  //           ...prev,
+  //           [fieldKey]: date.toISOString(),
+  //         }));
+  //       }}
+  //       onCancel={() => setOpenPicker(null)}
+  //     />
+  //   </>
+  // );
+
+  const renderUploadField = (
+    label: string,
+    file: any,
+    setter: (file: any) => void,
+    fieldKey: string,
+  ) => (
+    <>
+      <Text style={styles.label}>{label}</Text>
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handlePickDocument(setter)}
+        >
+          <Text style={styles.buttonText}>Choose File</Text>
+        </TouchableOpacity>
+
+        {!file && <Text style={styles.title}>No File Selected</Text>}
+
+        {file && (
+          <View style={styles.preview}>
+            <Text style={styles.fileLabel}>Selected File:</Text>
+            <Text style={styles.fileName}>{file.name}</Text>
+            <Text style={styles.fileUri}>{file.uri}</Text>
+            {file.type && <Text style={styles.fileUri}>Type: {file.type}</Text>}
+            {file.size && (
+              <Text style={styles.fileUri}>Size: {file.size} bytes</Text>
+            )}
+          </View>
+        )}
+      </View>
+
+      {/* Expiry date field - FIXED: Properly set the field key when opening */}
+      {/* <View style={styles.expiryDateContainer}> */}
+      <TextInput
+        placeholder="*Add Expiry Date"
+        placeholderTextColor={colors.darkGray}
+        style={styles.AddExpiryDate}
+        keyboardType="phone-pad"
+        // value={
+        //   expiryDates[fieldKey]
+        //     ? formatDateForDisplay(new Date(expiryDates[fieldKey]))
+        //     : ''
+        // }
+        // editable={false}
+      />
+      {/* <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => setOpenPicker(fieldKey)}
+          style={styles.calendarIcon}
+        >
+          <Image source={images.calendar} />
+        </TouchableOpacity> */}
+      {/* </View> */}
+
+      {/* <DatePicker
+        modal
+        open={openPicker === fieldKey}
+        date={
+          expiryDates[fieldKey] ? new Date(expiryDates[fieldKey]) : new Date()
+        }
+        mode="date"
+        onConfirm={date => {
+          setOpenPicker(null);
+          setExpiryDates(prev => ({
+            ...prev,
+            [fieldKey]: date.toISOString(),
+          }));
+        }}
+        onCancel={() => setOpenPicker(null)}
+      /> */}
+    </>
+  );
+
   const DriverScreens = useMemo(() => {
     return (
       <View style={{ flex: 1, alignItems: 'center' }}>
@@ -387,7 +619,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
               backgroundColor={colors.gray}
             />
             <CustomTextInput
-              placeholder="*Street"
+              placeholder="*Address"
               placeholderTextColor={colors.black}
               borderColor={colors.brown}
               borderRadius={30}
@@ -429,7 +661,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
               inputWidth={width * 0.85}
               inputHeight={height * 0.06}
               // value={street}
-              onChangeText={setStreet}
+              // onChangeText={setStreet}
               backgroundColor={colors.gray}
               editable={false}
               value={formatDateForDisplay(startDate)}
@@ -442,7 +674,6 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
               }
             />
-
             <DatePicker
               modal
               open={openStartPicker}
@@ -452,7 +683,6 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
               onCancel={() => setOpenStartPicker(false)}
               // minimumDate={new Date()}
             />
-
             <CustomSelect
               inputWidth={width * 0.85}
               inputHeight={height * 0.06}
@@ -465,7 +695,6 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
               setSelectedElement={setRideType}
               defaultValue=""
             />
-
             <CustomTextInput
               placeholder="*ID Card Number"
               placeholderTextColor={colors.black}
@@ -473,263 +702,49 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
               borderRadius={30}
               inputWidth={width * 0.85}
               inputHeight={height * 0.06}
-              // value={street}
-              // onChangeText={setStreet}
+              value={card}
+              onChangeText={setCard}
               backgroundColor={colors.gray}
             />
             <View style={styles.DocumentUpload}>
               <Text style={styles.documentUploadText}>Document Uploads:</Text>
-              <Text style={styles.label}>Driving License:*</Text>
-              <View style={styles.container}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={handlePickDocument}
-                >
-                  <Text style={styles.buttonText}>Choose File</Text>
-                </TouchableOpacity>
-
-                {!document && (
-                  <Text style={styles.title}>No File Selected</Text>
-                )}
-
-                {document && (
-                  <View style={styles.preview}>
-                    <Text style={styles.fileLabel}>Selected File:</Text>
-                    <Text style={styles.fileName}>{document.name}</Text>
-                    <Text style={styles.fileUri}>{document.uri}</Text>
-                    {document.type && (
-                      <Text style={styles.fileUri}>Type: {document.type}</Text>
-                    )}
-                    {document.size && (
-                      <Text style={styles.fileUri}>
-                        Size: {document.size} bytes
-                      </Text>
-                    )}
-                  </View>
-                )}
-              </View>
-              <TextInput
-                placeholder="*Add Expiry Date"
-                placeholderTextColor={colors.darkGray}
-                style={styles.AddExpiryDate}
-                keyboardType="number-pad"
-              />
-
-              <Text style={styles.label}>Private Hire Driver License:*</Text>
-              <View style={styles.container}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={handlePickDocument}
-                >
-                  <Text style={styles.buttonText}>Choose File</Text>
-                </TouchableOpacity>
-
-                {!document && (
-                  <Text style={styles.title}>No File Selected</Text>
-                )}
-
-                {document && (
-                  <View style={styles.preview}>
-                    <Text style={styles.fileLabel}>Selected File:</Text>
-                    <Text style={styles.fileName}>{document.name}</Text>
-                    <Text style={styles.fileUri}>{document.uri}</Text>
-                    {document.type && (
-                      <Text style={styles.fileUri}>Type: {document.type}</Text>
-                    )}
-                    {document.size && (
-                      <Text style={styles.fileUri}>
-                        Size: {document.size} bytes
-                      </Text>
-                    )}
-                  </View>
-                )}
-              </View>
-              <TextInput
-                placeholder="*Add Expiry Date"
-                placeholderTextColor={colors.darkGray}
-                style={styles.AddExpiryDate}
-                keyboardType="number-pad"
-              />
-
-              <Text style={styles.label}>LogBook V5:*</Text>
-              <View style={styles.container}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={handlePickDocument}
-                >
-                  <Text style={styles.buttonText}>Choose File</Text>
-                </TouchableOpacity>
-
-                {!document && (
-                  <Text style={styles.title}>No File Selected</Text>
-                )}
-
-                {document && (
-                  <View style={styles.preview}>
-                    <Text style={styles.fileLabel}>Selected File:</Text>
-                    <Text style={styles.fileName}>{document.name}</Text>
-                    <Text style={styles.fileUri}>{document.uri}</Text>
-                    {document.type && (
-                      <Text style={styles.fileUri}>Type: {document.type}</Text>
-                    )}
-                    {document.size && (
-                      <Text style={styles.fileUri}>
-                        Size: {document.size} bytes
-                      </Text>
-                    )}
-                  </View>
-                )}
-              </View>
-              <TextInput
-                placeholder="*Add Expiry Date"
-                placeholderTextColor={colors.darkGray}
-                style={styles.AddExpiryDate}
-                keyboardType="number-pad"
-              />
-
-              <Text style={styles.label}>Private Hire Vehicle License:*</Text>
-              <View style={styles.container}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={handlePickDocument}
-                >
-                  <Text style={styles.buttonText}>Choose File</Text>
-                </TouchableOpacity>
-
-                {!document && (
-                  <Text style={styles.title}>No File Selected</Text>
-                )}
-
-                {document && (
-                  <View style={styles.preview}>
-                    <Text style={styles.fileLabel}>Selected File:</Text>
-                    <Text style={styles.fileName}>{document.name}</Text>
-                    <Text style={styles.fileUri}>{document.uri}</Text>
-                    {document.type && (
-                      <Text style={styles.fileUri}>Type: {document.type}</Text>
-                    )}
-                    {document.size && (
-                      <Text style={styles.fileUri}>
-                        Size: {document.size} bytes
-                      </Text>
-                    )}
-                  </View>
-                )}
-              </View>
-              <TextInput
-                placeholder="*Add Expiry Date"
-                placeholderTextColor={colors.darkGray}
-                style={styles.AddExpiryDate}
-                keyboardType="number-pad"
-              />
-
-              <Text style={styles.label}>Insurance:*</Text>
-              <View style={styles.container}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={handlePickDocument}
-                >
-                  <Text style={styles.buttonText}>Choose File</Text>
-                </TouchableOpacity>
-
-                {!document && (
-                  <Text style={styles.title}>No File Selected</Text>
-                )}
-
-                {document && (
-                  <View style={styles.preview}>
-                    <Text style={styles.fileLabel}>Selected File:</Text>
-                    <Text style={styles.fileName}>{document.name}</Text>
-                    <Text style={styles.fileUri}>{document.uri}</Text>
-                    {document.type && (
-                      <Text style={styles.fileUri}>Type: {document.type}</Text>
-                    )}
-                    {document.size && (
-                      <Text style={styles.fileUri}>
-                        Size: {document.size} bytes
-                      </Text>
-                    )}
-                  </View>
-                )}
-              </View>
-              <TextInput
-                placeholder="*Add Expiry Date"
-                placeholderTextColor={colors.darkGray}
-                style={styles.AddExpiryDate}
-                keyboardType="number-pad"
-              />
-
-              <Text style={styles.label}>MOT:*</Text>
-              <View style={styles.container}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={handlePickDocument}
-                >
-                  <Text style={styles.buttonText}>Choose File</Text>
-                </TouchableOpacity>
-
-                {!document && (
-                  <Text style={styles.title}>No File Selected</Text>
-                )}
-
-                {document && (
-                  <View style={styles.preview}>
-                    <Text style={styles.fileLabel}>Selected File:</Text>
-                    <Text style={styles.fileName}>{document.name}</Text>
-                    <Text style={styles.fileUri}>{document.uri}</Text>
-                    {document.type && (
-                      <Text style={styles.fileUri}>Type: {document.type}</Text>
-                    )}
-                    {document.size && (
-                      <Text style={styles.fileUri}>
-                        Size: {document.size} bytes
-                      </Text>
-                    )}
-                  </View>
-                )}
-              </View>
-              <TextInput
-                placeholder="*Add Expiry Date"
-                placeholderTextColor={colors.darkGray}
-                style={styles.AddExpiryDate}
-                keyboardType="number-pad"
-              />
-
-              <Text style={styles.label}>Hire Agreement (if Applicable):</Text>
-              <View style={styles.container}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={handlePickDocument}
-                >
-                  <Text style={styles.buttonText}>Choose File</Text>
-                </TouchableOpacity>
-
-                {!document && (
-                  <Text style={styles.title}>No File Selected</Text>
-                )}
-
-                {document && (
-                  <View style={styles.preview}>
-                    <Text style={styles.fileLabel}>Selected File:</Text>
-                    <Text style={styles.fileName}>{document.name}</Text>
-                    <Text style={styles.fileUri}>{document.uri}</Text>
-                    {document.type && (
-                      <Text style={styles.fileUri}>Type: {document.type}</Text>
-                    )}
-                    {document.size && (
-                      <Text style={styles.fileUri}>
-                        Size: {document.size} bytes
-                      </Text>
-                    )}
-                  </View>
-                )}
-              </View>
-              <TextInput
-                placeholder="*Add Expiry Date"
-                placeholderTextColor={colors.darkGray}
-                style={styles.AddExpiryDate}
-                keyboardType="number-pad"
-              />
+              {renderUploadField(
+                'Driving License:*',
+                drivingLicense,
+                setDrivingLicense,
+                'drivingLicense',
+              )}
+              {renderUploadField(
+                'Private Hire Driver License:*',
+                privateHireLicense,
+                setPrivateHireLicense,
+                'privateHireLicense',
+              )}
+              {renderUploadField(
+                'LogBook V5:*',
+                logBook,
+                setLogBook,
+                'logBook',
+              )}
+              {renderUploadField(
+                'Private Hire Vehicle License:*',
+                vehicleLicense,
+                setVehicleLicense,
+                'vehicleLicense',
+              )}
+              {renderUploadField(
+                'Insurance:*',
+                insurance,
+                setInsurance,
+                'insurance',
+              )}
+              {renderUploadField('MOT:*', mot, setMot, 'mot')}
+              {renderUploadField(
+                'Hire Agreement (if Applicable):',
+                hireAgreement,
+                setHireAgreement,
+                'hireAgreement',
+              )}
             </View>
           </View>
           <View style={styles.btnMain}>
@@ -787,6 +802,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
     street,
     gender,
     city,
+    card,
     rideType,
     startDate,
     openStartPicker,
@@ -794,6 +810,9 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
     isFormValid,
     profileImage,
     modalOpen,
+    setModalOpen,
+    modalVisible,
+    setModalVisible,
   ]);
 
   return (
@@ -808,6 +827,33 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  expiryDateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: height * 0.01,
+  },
+  AddExpiryDate: {
+    borderColor: colors.brown,
+    borderWidth: 1,
+    borderRadius: 30,
+    fontSize: fontSizes.sm,
+    color: colors.black,
+    paddingHorizontal: 15,
+    paddingVertical: height * 0.015,
+    width: width * 0.85,
+    backgroundColor: colors.gray,
+  },
+  calendarIcon: {
+    position: 'absolute',
+    right: 15,
+    top: '50%',
+    marginTop: -height * 0.015, // Center vertically
+  },
+  calendarImage: {
+    width: width * 0.06,
+    height: height * 0.03,
+    resizeMode: 'contain',
+  },
   profileImageWrapper: {
     width: width * 0.4,
     // height: width * 0.4,
@@ -955,6 +1001,7 @@ const styles = StyleSheet.create({
     borderColor: colors.darkGray,
     marginTop: height * 0.01,
     fontSize: fontSizes.sm,
+    color: colors.black,
   },
   label: {
     fontFamily: fontFamily.ClashDisplayMedium,

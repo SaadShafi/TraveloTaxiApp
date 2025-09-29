@@ -82,7 +82,7 @@ const HomeDriver = () => {
       <TouchableOpacity
         activeOpacity={1}
         onPress={toggleOnline}
-        style={{ top: height * 0.025 }}
+        style={{ top: height * 0.025, marginBottom: height * 0.03 }}
       >
         <Animated.View style={[styles.toggleButton, { backgroundColor }]}>
           <Animated.View
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
 
   container: {
     padding: 15,
-    top: height * 0.017,
+    top: -height * 0.01,
   },
   toggleButton: {
     height: height * 0.07,

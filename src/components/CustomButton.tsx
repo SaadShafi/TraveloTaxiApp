@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 import { fontFamily } from '../assets/Fonts';
 import { height, width } from '../utilities';
-import { fontSizes } from '../utilities/fontsizes';
 import { colors } from '../utilities/colors';
+import { fontSizes } from '../utilities/fontsizes';
 
 interface CustomButtonProps {
   onPress?: (event: GestureResponderEvent) => void;
@@ -23,7 +23,7 @@ interface CustomButtonProps {
   fontFamily?: string;
   backgroundColor?: string;
   borderRadius?: number;
-  disabled?: string;
+  disabled?: any;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.SfProDisplayRegular,
     fontSize: fontSizes.lg,
     textTransform: 'capitalize',
-    color: colors.black
+    color: colors.black,
   },
   customBtnGradient: {
     width: '100%',
