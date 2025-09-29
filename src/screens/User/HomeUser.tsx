@@ -165,11 +165,12 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0} // tweak if needed
     >
-      <View style={{ flex: 1 }}>
-        <View style={styles.topHeaderContainer}>
-          <TopHeader isMenu={true} />
-        </View>
-        {/* <View style={styles.notificationContainer}>
+      <ImageBackground source={images.MAP} style={styles.mapImg}>
+        <View style={{ flex: 1 }}>
+          <View style={styles.topHeaderContainer}>
+            <TopHeader isMenu={true} />
+          </View>
+          {/* <View style={styles.notificationContainer}>
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={notiImagePressed}
@@ -178,270 +179,280 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
           <Image source={images.notification} style={styles.notiImg} />
         </TouchableOpacity>
       </View> */}
-        <View style={styles.headerContainer}>
-          <View style={styles.headerMain}>
-            <View style={styles.headTextMain}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  gap: width * 0.01,
-                  top: height * 0.01,
-                }}
-              >
-                <Text style={styles.greetingText}>Hi</Text>
-                <Text style={styles.nameText}>Alex!</Text>
-              </View>
-              <View style={styles.notificationContainer}>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={notiImagePressed}
-                  style={styles.notificationButton}
-                >
-                  <Image source={images.notification} style={styles.notiImg} />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.locationMain}>
-              <CustomTextInput
-                placeholder="Groklyn Bridge Park"
-                placeholderTextColor={colors.black}
-                borderColor={colors.gray}
-                borderRadius={10}
-                inputWidth={width * 0.65}
-                inputHeight={height * 0.04}
-                leftIcon={
-                  <Image
-                    source={images.locationImage}
-                    style={styles.locationImg}
-                  />
-                }
-              />
-              <CustomTextInput
-                placeholder="Groklyn Bridge Park"
-                placeholderTextColor={colors.black}
-                borderColor={colors.gray}
-                borderRadius={10}
-                inputWidth={width * 0.65}
-                inputHeight={height * 0.04}
-                leftIcon={
-                  <Image
-                    source={images.locationImage}
-                    style={styles.locationImg}
-                  />
-                }
-              />
-            </View>
-            <View style={styles.headerBottomMain}>
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: width * 0.01,
-                }}
-                activeOpacity={0.7}
-              >
-                <Image source={images.add} />
-                <Text
+          <View style={styles.headerContainer}>
+            <View style={styles.headerMain}>
+              <View style={styles.headTextMain}>
+                <View
                   style={{
-                    color: colors.black,
-                    fontFamily: fontFamily.ClashDisplayMedium,
-                    fontSize: fontSizes.sm,
+                    flexDirection: 'row',
+                    gap: width * 0.01,
+                    top: height * 0.01,
                   }}
                 >
-                  Add Stop
-                </Text>
-              </TouchableOpacity>
-              <View style={styles.reverseMain}>
-                <Image source={images.reverse} />
+                  <Text style={styles.greetingText}>Hi</Text>
+                  <Text style={styles.nameText}>Alex!</Text>
+                </View>
+                <View style={styles.notificationContainer}>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={notiImagePressed}
+                    style={styles.notificationButton}
+                  >
+                    <Image
+                      source={images.notification}
+                      style={styles.notiImg}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.locationMain}>
+                <CustomTextInput
+                  placeholder="Groklyn Bridge Park"
+                  placeholderTextColor={colors.black}
+                  borderColor={colors.gray}
+                  borderRadius={10}
+                  inputWidth={width * 0.65}
+                  inputHeight={height * 0.04}
+                  leftIcon={
+                    <Image
+                      source={images.locationImage}
+                      style={styles.locationImg}
+                    />
+                  }
+                />
+                <CustomTextInput
+                  placeholder="Groklyn Bridge Park"
+                  placeholderTextColor={colors.black}
+                  borderColor={colors.gray}
+                  borderRadius={10}
+                  inputWidth={width * 0.65}
+                  inputHeight={height * 0.04}
+                  leftIcon={
+                    <Image
+                      source={images.locationImage}
+                      style={styles.locationImg}
+                    />
+                  }
+                />
+              </View>
+              <View style={styles.headerBottomMain}>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: width * 0.01,
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Image source={images.add} />
+                  <Text
+                    style={{
+                      color: colors.black,
+                      fontFamily: fontFamily.ClashDisplayMedium,
+                      fontSize: fontSizes.sm,
+                    }}
+                  >
+                    Add Stop
+                  </Text>
+                </TouchableOpacity>
+                <View style={styles.reverseMain}>
+                  <Image source={images.reverse} />
+                </View>
               </View>
             </View>
           </View>
-        </View>
-        <ActionSheet
-          // ref={actionSheetRef}
-          // containerStyle={styles.actionSheetMain}
-          // closeOnTouchBackdrop={false}
-          // // defaultOverlayOpacity={0.1}
-          // gestureEnabled={false} // prevents accidental drag-close
-          // defaultOverlayOpacity={0} // 🔑 remove overlay blocking touches
-          // bounceOnOpen={true}
-          ref={actionSheetRef}
-          containerStyle={styles.actionSheetMain}
-          closeOnTouchBackdrop={false}
-          gestureEnabled={false} // optional: prevent swipe-to-close
-          backgroundInteractionEnabled={true} // <-- KEY: allow background touches
-          defaultOverlayOpacity={0} // remove dim overlay
-          bounceOnOpen={true}
-          overlayColor="transparent"
-        >
-          <ImageBackground
-            source={images.ActionSheetBg}
-            style={styles.ActinSheetBg}
+          <ActionSheet
+            // ref={actionSheetRef}
+            // containerStyle={styles.actionSheetMain}
+            // closeOnTouchBackdrop={false}
+            // // defaultOverlayOpacity={0.1}
+            // gestureEnabled={false} // prevents accidental drag-close
+            // defaultOverlayOpacity={0} // 🔑 remove overlay blocking touches
+            // bounceOnOpen={true}
+            ref={actionSheetRef}
+            containerStyle={styles.actionSheetMain}
+            closeOnTouchBackdrop={false}
+            gestureEnabled={false} // optional: prevent swipe-to-close
+            backgroundInteractionEnabled={true} // <-- KEY: allow background touches
+            defaultOverlayOpacity={0} // remove dim overlay
+            bounceOnOpen={true}
+            overlayColor="transparent"
           >
-            <View style={styles.gradientBackground}>
-              <View style={styles.ActionSheetContentMain}>
-                <Text style={styles.selectText}>Select One</Text>
+            <ImageBackground
+              source={images.ActionSheetBg}
+              style={styles.ActinSheetBg}
+            >
+              <View style={styles.gradientBackground}>
+                <View style={styles.ActionSheetContentMain}>
+                  <Text style={styles.selectText}>Select One</Text>
 
-                <View style={styles.tabContainer}>
-                  <TouchableOpacity
-                    style={[
-                      styles.tab,
-                      activeTab === 'bookNow' && styles.activeTab,
-                    ]}
-                    onPress={() => setActiveTab('bookNow')}
-                  >
-                    <Text
+                  <View style={styles.tabContainer}>
+                    <TouchableOpacity
                       style={[
-                        styles.tabText,
-                        activeTab === 'bookNow' && styles.activeTabText,
+                        styles.tab,
+                        activeTab === 'bookNow' && styles.activeTab,
                       ]}
+                      onPress={() => setActiveTab('bookNow')}
                     >
-                      Book Now
-                    </Text>
-                  </TouchableOpacity>
+                      <Text
+                        style={[
+                          styles.tabText,
+                          activeTab === 'bookNow' && styles.activeTabText,
+                        ]}
+                      >
+                        Book Now
+                      </Text>
+                    </TouchableOpacity>
 
-                  <TouchableOpacity
-                    style={[
-                      styles.tab,
-                      activeTab === 'preBooking' && styles.activeTab,
-                    ]}
-                    onPress={() => setActiveTab('preBooking')}
-                  >
-                    <Text
+                    <TouchableOpacity
                       style={[
-                        styles.tabText,
-                        activeTab === 'preBooking' && styles.activeTabText,
+                        styles.tab,
+                        activeTab === 'preBooking' && styles.activeTab,
                       ]}
+                      onPress={() => setActiveTab('preBooking')}
                     >
-                      Pre-Booking
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.tabContent}>
-                  {activeTab === 'bookNow' ? <BookNow /> : <PreBooking />}
+                      <Text
+                        style={[
+                          styles.tabText,
+                          activeTab === 'preBooking' && styles.activeTabText,
+                        ]}
+                      >
+                        Pre-Booking
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.tabContent}>
+                    {activeTab === 'bookNow' ? <BookNow /> : <PreBooking />}
+                  </View>
                 </View>
               </View>
-            </View>
-          </ImageBackground>
-        </ActionSheet>
+            </ImageBackground>
+          </ActionSheet>
 
-        <ActionSheet
-          ref={secondSheetRef}
-          containerStyle={styles.actionSheetSec}
-          closeOnTouchBackdrop={false}
-          backgroundInteractionEnabled={true}
-          // defaultOverlayOpacity={0.1}
-          gestureEnabled={false} // prevents accidental drag-close
-          defaultOverlayOpacity={0} // 🔑 remove overlay blocking touches
-          overlayColor="transparent" // 🔑 make sure overlay is fully transparent
-          bounceOnOpen={true}
-        >
-          <ImageBackground
-            source={images.ActionSheetBg}
-            style={styles.ActinSheetBg}
+          <ActionSheet
+            ref={secondSheetRef}
+            containerStyle={styles.actionSheetSec}
+            closeOnTouchBackdrop={false}
+            backgroundInteractionEnabled={true}
+            // defaultOverlayOpacity={0.1}
+            gestureEnabled={false} // prevents accidental drag-close
+            defaultOverlayOpacity={0} // 🔑 remove overlay blocking touches
+            overlayColor="transparent" // 🔑 make sure overlay is fully transparent
+            bounceOnOpen={true}
           >
-            <View style={styles.gradientBackground}>
-              <View style={styles.ActionSheetContentMain}>
-                <View style={{ flex: 1 }}>
-                  <View style={styles.PreBookContentMain}>
-                    <View style={styles.rideTypeMain}>
-                      <Text style={styles.rideText}>
-                        Ride Type: Pre-Booking
+            <ImageBackground
+              source={images.ActionSheetBg}
+              style={styles.ActinSheetBg}
+            >
+              <View style={styles.gradientBackground}>
+                <View style={styles.ActionSheetContentMain}>
+                  <View style={{ flex: 1 }}>
+                    <View style={styles.PreBookContentMain}>
+                      <View style={styles.rideTypeMain}>
+                        <Text style={styles.rideText}>
+                          Ride Type: Pre-Booking
+                        </Text>
+                      </View>
+                      <Text style={styles.dateTimeText}>
+                        Select Date & Time
                       </Text>
-                    </View>
-                    <Text style={styles.dateTimeText}>Select Date & Time</Text>
-                    <View style={styles.inputMain}>
-                      <CustomTextInput
-                        inputWidth={width * 0.8}
-                        inputHeight={height * 0.07}
-                        backgroundColor={colors.white}
-                        borderColor={colors.black}
-                        borderRadius={30}
-                        borderWidth={1}
-                        placeholder="Select Date"
-                        placeholderTextColor={colors.black}
-                        editable={false}
-                        value={formatDateForDisplay(startDate)}
-                        rightIcon={
-                          <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={() => setOpenStartPicker(true)}
-                          >
-                            <Image source={images.calendar} />
-                          </TouchableOpacity>
-                        }
-                      />
-                      <DatePicker
-                        modal
-                        open={openStartPicker}
-                        date={startDate || new Date()}
-                        mode="date"
-                        onConfirm={handleDateConfirm}
-                        onCancel={() => setOpenStartPicker(false)}
-                        minimumDate={new Date()}
-                      />
-                      <CustomTextInput
-                        inputWidth={width * 0.8}
-                        inputHeight={height * 0.07}
-                        backgroundColor={colors.white}
-                        borderColor={colors.black}
-                        borderRadius={30}
-                        borderWidth={1}
-                        placeholder="Select Date"
-                        placeholderTextColor={colors.black}
-                        editable={false}
-                        value={formatTimeForDisplay(selectedTime)}
-                        rightIcon={
-                          <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={() => setOpenTimePicker(true)}
-                          >
-                            <Image source={images.clockBlack} />
-                          </TouchableOpacity>
-                        }
-                      />
-                      <DatePicker
-                        modal
-                        mode="time"
-                        open={openTimePicker}
-                        date={selectedTime || new Date()}
-                        onConfirm={time => {
-                          const now = new Date();
-                          if (time < now) {
-                            setSelectedTime(now); // prevent past time
-                          } else {
-                            setSelectedTime(time);
+                      <View style={styles.inputMain}>
+                        <CustomTextInput
+                          inputWidth={width * 0.8}
+                          inputHeight={height * 0.07}
+                          backgroundColor={colors.white}
+                          borderColor={colors.black}
+                          borderRadius={30}
+                          borderWidth={1}
+                          placeholder="Select Date"
+                          placeholderTextColor={colors.black}
+                          editable={false}
+                          value={formatDateForDisplay(startDate)}
+                          rightIcon={
+                            <TouchableOpacity
+                              activeOpacity={0.7}
+                              onPress={() => setOpenStartPicker(true)}
+                            >
+                              <Image source={images.calendar} />
+                            </TouchableOpacity>
                           }
-                          setOpenTimePicker(false);
-                        }}
-                        onCancel={() => setOpenTimePicker(false)}
-                      />
-                    </View>
-                    <View style={styles.btnMain}>
-                      <CustomButton
-                        btnHeight={height * 0.07}
-                        btnWidth={width * 0.8}
-                        borderColor={colors.black}
-                        borderRadius={30}
-                        borderWidth={1}
-                        backgroundColor={colors.black}
-                        text="Continue"
-                        textColor={colors.white}
-                        onPress={() => navigation.navigate('TripOptionsSec')}
-                      />
+                        />
+                        <DatePicker
+                          modal
+                          open={openStartPicker}
+                          date={startDate || new Date()}
+                          mode="date"
+                          onConfirm={handleDateConfirm}
+                          onCancel={() => setOpenStartPicker(false)}
+                          minimumDate={new Date()}
+                        />
+                        <CustomTextInput
+                          inputWidth={width * 0.8}
+                          inputHeight={height * 0.07}
+                          backgroundColor={colors.white}
+                          borderColor={colors.black}
+                          borderRadius={30}
+                          borderWidth={1}
+                          placeholder="Select Date"
+                          placeholderTextColor={colors.black}
+                          editable={false}
+                          value={formatTimeForDisplay(selectedTime)}
+                          rightIcon={
+                            <TouchableOpacity
+                              activeOpacity={0.7}
+                              onPress={() => setOpenTimePicker(true)}
+                            >
+                              <Image source={images.clockBlack} />
+                            </TouchableOpacity>
+                          }
+                        />
+                        <DatePicker
+                          modal
+                          mode="time"
+                          open={openTimePicker}
+                          date={selectedTime || new Date()}
+                          onConfirm={time => {
+                            const now = new Date();
+                            if (time < now) {
+                              setSelectedTime(now); // prevent past time
+                            } else {
+                              setSelectedTime(time);
+                            }
+                            setOpenTimePicker(false);
+                          }}
+                          onCancel={() => setOpenTimePicker(false)}
+                        />
+                      </View>
+                      <View style={styles.btnMain}>
+                        <CustomButton
+                          btnHeight={height * 0.07}
+                          btnWidth={width * 0.8}
+                          borderColor={colors.black}
+                          borderRadius={30}
+                          borderWidth={1}
+                          backgroundColor={colors.black}
+                          text="Continue"
+                          textColor={colors.white}
+                          onPress={() => navigation.navigate('TripOptionsSec')}
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>
               </View>
-            </View>
-          </ImageBackground>
-        </ActionSheet>
-      </View>
+            </ImageBackground>
+          </ActionSheet>
+        </View>
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  mapImg: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
   topHeaderContainer: {
     position: 'absolute',
     top: height * 0.04,

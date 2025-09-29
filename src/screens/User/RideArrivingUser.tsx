@@ -28,8 +28,8 @@ const RideArrivingUser = () => {
   const secondSheetRef = useRef<ActionSheetRef>(null);
   const thirdSheetRef = useRef<ActionSheetRef>(null);
   const fourthSheetRef = useRef<ActionSheetRef>(null);
-  const [timeLeft, setTimeLeft] = useState(100); // first sheet countdown
-  const [countdown, setCountdown] = useState(100); // 4:55 in seconds
+  const [timeLeft, setTimeLeft] = useState(10); // first sheet countdown
+  const [countdown, setCountdown] = useState(10); // 4:55 in seconds
 
   const waitingTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const countdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
