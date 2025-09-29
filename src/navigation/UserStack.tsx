@@ -19,6 +19,7 @@ import TermsCondition from '../screens/Global/TermsConditions';
 import AddPaymentMethod from '../screens/User/AddPaymentUser';
 import DriverOfferings from '../screens/User/DriverOfferings';
 import FindingDriver from '../screens/User/FindingDriver';
+import FindingDriverSec from '../screens/User/FindingDriverSec';
 import HistoryDetailUserOne from '../screens/User/HistoryDetailUserOne';
 import HistoryDetailUserSec from '../screens/User/HistoryDetailUserSec';
 import HomeUser from '../screens/User/HomeUser';
@@ -27,6 +28,7 @@ import RideArrivingUser from '../screens/User/RideArrivingUser';
 import Schedule from '../screens/User/Schedule';
 import ScheduleDetail from '../screens/User/ScheduleDetail';
 import TripOptions from '../screens/User/TripOptions';
+import TripOptionsSec from '../screens/User/TripOptionSec';
 import WalletUser from '../screens/User/WalletUser';
 import WalletUserSec from '../screens/User/WalletUserSec';
 
@@ -38,7 +40,9 @@ export type StackParamList = {
   WalletUser: undefined;
   WalletUserSec: undefined;
   TripOptions: undefined;
+  TripOptionsSec: undefined;
   FindingDriver: undefined;
+  FindingDriverSec: undefined;
   DriverOfferings: undefined;
   ScheduleDetail: undefined;
   History: undefined;
@@ -82,7 +86,9 @@ const UserStack: React.FC = () => {
       <Stack.Screen name="WalletUser" component={WalletUser} />
       <Stack.Screen name="WalletUserSec" component={WalletUserSec} />
       <Stack.Screen name="TripOptions" component={TripOptions} />
+      <Stack.Screen name="TripOptionsSec" component={TripOptionsSec} />
       <Stack.Screen name="FindingDriver" component={FindingDriver} />
+      <Stack.Screen name="FindingDriverSec" component={FindingDriverSec} />
       <Stack.Screen name="DriverOfferings" component={DriverOfferings} />
       <Stack.Screen name="ScheduleDetail" component={ScheduleDetail} />
       <Stack.Screen name="History" component={History} />

@@ -1,6 +1,6 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useEffect } from 'react'; // ⬅️ import useEffect
-import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
@@ -12,17 +12,11 @@ import { fontSizes } from '../../utilities/fontsizes';
 
 type Props = NativeStackScreenProps<StackParamList, 'FindingDriver'>;
 
-const FindingDriver: React.FC<Props> = ({ navigation }) => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigation.navigate('DriverOfferings');
-    }, 10000);
-
-    return () => clearTimeout(timer);
-  }, [navigation]);
+const FindingDriverSec: React.FC = () => {
+  const navigation = useNavigation<NavigationProp<any>>();
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
       <TopHeader text="Finding Driver" />
       <View
         style={{
@@ -30,15 +24,15 @@ const FindingDriver: React.FC<Props> = ({ navigation }) => {
           top: height * 0.3,
         }}
       >
-        <ActivityIndicator
-          size={width * 0.2}
-          color={colors.brown}
-          style={{ marginBottom: height * 0.05 }}
-        />
-        <Text style={styles.text}>Have you tried</Text>
-        <Text style={styles.text}>Bidding</Text>
+        <View style={{ alignItems: 'center', gap: height * 0.02 }}>
+          <Image source={images.success} style={styles.successImg} />
+          <View style={{ alignItems: 'center' }}>
+            <Text style={styles.text}>Booking Done</Text>
+            <Text style={styles.text}>Successfully</Text>
+          </View>
+        </View>
         <View style={styles.btnMain}>
-          <Image source={images.logo} style={styles.logo} />
+          <Image source={images.logoSec} style={styles.logo} />
           <View>
             <CustomButton
               btnHeight={height * 0.07}
@@ -47,7 +41,7 @@ const FindingDriver: React.FC<Props> = ({ navigation }) => {
               borderRadius={30}
               borderWidth={1}
               backgroundColor={colors.black}
-              text="Cancel Booking"
+              text="Return Home"
               textColor={colors.white}
               onPress={() => navigation.navigate('HomeUser')}
             />
@@ -60,10 +54,15 @@ const FindingDriver: React.FC<Props> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   logo: {
-    width: width * 0.4,
+    width: width * 0.5,
     height: height * 0.2,
     resizeMode: 'contain',
     top: height * 0.02,
+  },
+  successImg: {
+    width: width * 0.3,
+    height: height * 0.1,
+    resizeMode: 'contain',
   },
   btnMain: {
     top: height * 0.13,
@@ -76,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FindingDriver;
+export default FindingDriverSec;

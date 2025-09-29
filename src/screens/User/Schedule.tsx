@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import { fontFamily } from '../../assets/Fonts';
-import images from '../../assets/Images';
 import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
@@ -29,9 +28,8 @@ const Schedule = () => {
   const navigation = useNavigation<any>();
   const scheduleData = [
     {
-      image: images.User,
-      name: 'Name',
-      desc: 'Description',
+      name: 'Ride ID',
+      desc: '#4564',
       details: 'View Details',
       text1: 'Ride Type:',
       text2: 'Pre Booking',
@@ -39,9 +37,8 @@ const Schedule = () => {
       text4: 'Aug 20,2025 & 5:30 AM',
     },
     {
-      image: images.User,
-      name: 'Name',
-      desc: 'Description',
+      name: 'Ride ID',
+      desc: '#4564',
       details: 'View Details',
       text1: 'Ride Type:',
       text2: 'Pre Booking',
@@ -49,9 +46,8 @@ const Schedule = () => {
       text4: 'Aug 20,2025 & 5:30 AM',
     },
     {
-      image: images.User,
-      name: 'Name',
-      desc: 'Description',
+      name: 'Ride ID',
+      desc: '#4564',
       details: 'View Details',
       text1: 'Ride Type:',
       text2: 'Pre Booking',
@@ -79,9 +75,25 @@ const Schedule = () => {
                 left: width * 0.03,
               }}
             >
-              <View style={{ flexDirection: 'column' }}>
-                <Text>{item.name}</Text>
-                <Text>{item.desc}</Text>
+              <View style={{ flexDirection: 'column', right: width * 0.14 }}>
+                <Text
+                  style={{
+                    color: colors.black,
+                    fontFamily: fontFamily.SfProDisplayMedium,
+                    fontWeight: '800',
+                  }}
+                >
+                  {item.name}
+                </Text>
+                <Text
+                  style={{
+                    color: colors.darkGray,
+                    fontFamily: fontFamily.SfProDisplayRegular,
+                    fontWeight: '100',
+                  }}
+                >
+                  {item.desc}
+                </Text>
               </View>
               <TouchableOpacity style={styles.detailsMain} activeOpacity={0.7}>
                 <Text style={styles.detailText}>{item.details}</Text>
@@ -163,10 +175,13 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: width * 0.22,
     height: height * 0.03,
+    left: width * 0.04,
   },
   detailText: {
     textAlign: 'center',
     fontFamily: fontFamily.SfProDisplayRegular,
+    color: colors.black,
+    fontWeight: '600',
     top: 2,
   },
   textOne: {

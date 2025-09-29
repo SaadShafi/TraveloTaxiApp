@@ -81,11 +81,11 @@ const WalletUser = () => {
           <Image source={images.card} style={styles.cardImg} />
           <View style={styles.nameMain}>
             <View>
-              <Text>{item.name}</Text>
-              <Text>{item.date}</Text>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.date}>{item.date}</Text>
             </View>
             <View>
-              <Text>{item.price}</Text>
+              <Text style={styles.price}>{item.price}</Text>
             </View>
           </View>
         </View>
@@ -156,6 +156,24 @@ const WalletUser = () => {
 };
 
 const styles = StyleSheet.create({
+  name: {
+    fontFamily: fontFamily.SfProDisplayMedium,
+    fontSize: fontSizes.sm2,
+    fontWeight: 'bold',
+    color: colors.black,
+  },
+  date: {
+    fontFamily: fontFamily.SfProDisplayMedium,
+    fontSize: fontSizes.sm,
+    fontWeight: 'regular',
+    color: colors.darkGray,
+  },
+  price: {
+    fontFamily: fontFamily.SfProDisplayMedium,
+    fontSize: fontSizes.sm2,
+    fontWeight: 'bold',
+    color: colors.brown,
+  },
   container: {
     alignItems: 'center',
     gap: height * 0.02,
@@ -226,8 +244,8 @@ const styles = StyleSheet.create({
     width: width * 0.8,
   },
   transaction: {
-    fontFamily: fontFamily.SfProDisplayMedium,
-    fontSize: fontSizes.sm2,
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.md,
     color: colors.black,
   },
   seeAll: {

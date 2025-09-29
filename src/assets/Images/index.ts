@@ -3,6 +3,7 @@ import { ImageSourcePropType } from 'react-native';
 const images: { [key: string]: ImageSourcePropType } = {
   background: require('../Images/background.png'),
   logo: require('../Images/logo.png'),
+  logoSec: require('../Images/logoSec.png'),
   logoCustomer: require('../Images/logoCustomer.png'),
   logoDriver: require('../Images/logoDriver.png'),
   simpleBg: require('../Images/simpleBackground.png'),

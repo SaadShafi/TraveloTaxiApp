@@ -28,8 +28,8 @@ const RideArrivingUser = () => {
   const secondSheetRef = useRef<ActionSheetRef>(null);
   const thirdSheetRef = useRef<ActionSheetRef>(null);
   const fourthSheetRef = useRef<ActionSheetRef>(null);
-  const [timeLeft, setTimeLeft] = useState(10); // first sheet countdown
-  const [countdown, setCountdown] = useState(295); // 4:55 in seconds
+  const [timeLeft, setTimeLeft] = useState(100); // first sheet countdown
+  const [countdown, setCountdown] = useState(100); // 4:55 in seconds
 
   const waitingTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const countdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -67,19 +67,19 @@ const RideArrivingUser = () => {
   }, []);
 
   // Start countdown in fourth sheet
-  const startCountdown = () => {
-    if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
-    setCountdown(295); // reset 4:55
-    countdownTimerRef.current = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(countdownTimerRef.current!);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
+  // const startCountdown = () => {
+  //   if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+  //   setCountdown(295); // reset 4:55
+  //   countdownTimerRef.current = setInterval(() => {
+  //     setCountdown(prev => {
+  //       if (prev <= 1) {
+  //         clearInterval(countdownTimerRef.current!);
+  //         return 0;
+  //       }
+  //       return prev - 1;
+  //     });
+  //   }, 1000);
+  // };
 
   // Format seconds → mm:ss
   const formatTime = (seconds: number) => {
@@ -98,26 +98,84 @@ const RideArrivingUser = () => {
     }
   };
 
+  const handleBackdropPressOnFirstSheet = () => {
+    if (arrivingSheetRef.current) {
+      arrivingSheetRef.current.snapToIndex(0);
+    }
+  };
+
+  const handleBackdropPressOnSecondSheet = () => {
+    if (secondSheetRef.current) {
+      secondSheetRef.current.snapToIndex(0);
+    }
+  };
+
+  const handleBackdropPressOnThirdSheet = () => {
+    if (thirdSheetRef.current) {
+      thirdSheetRef.current.snapToIndex(0);
+    }
+  };
+
+  const handleBackdropPressOnFourthSheet = () => {
+    if (fourthSheetRef.current) {
+      fourthSheetRef.current.snapToIndex(0);
+    }
+  };
+
+  // Function to handle the "Ok! I'm Coming" button press with proper sheet management
+  const handleOkImComingPress = () => {
+    thirdSheetRef.current?.hide();
+    setTimeout(() => {
+      fourthSheetRef.current?.show();
+      startCountdown(); // start countdown when 4th sheet opens
+    }, 300); // Reduced timeout for smoother transition
+  };
+
+  const startCountdown = () => {
+    if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+    setCountdown(20); // reset 4:55
+    countdownTimerRef.current = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(countdownTimerRef.current!);
+          // Navigate to payment screen when countdown ends
+          setTimeout(() => {
+            fourthSheetRef.current?.hide();
+            setTimeout(() => {
+              navigation.navigate('PaymentUser');
+            }, 300);
+          }, 500);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
   return (
     <ImageBackground source={images.Maptwo} style={styles.mapImg}>
       <View style={{ flex: 1 }}>
-        <TopHeader isMenu={true} />
+        <View style={styles.topHeaderContainer}>
+          <TopHeader isMenu={true} />
+        </View>
 
-        {/* First ActionSheet with timer */}
         <ActionSheet
           ref={arrivingSheetRef}
-          // containerStyle={styles.actionSheetOne}
-          // closeOnTouchBackdrop={false}
-          // defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
           containerStyle={styles.actionSheetOne}
-          snapPoints={[20, 50, 90]} // Your defined snap points
-          initialSnapIndex={1} // Assuming it opens to '50%'
-          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
+          snapPoints={[20, 50, 90]}
+          initialSnapIndex={1}
+          closeOnTouchBackdrop={false}
+          onTouchBackdrop={handleBackdropPressOnFirstSheet}
+          defaultOverlayOpacity={0.1}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown,
+            width: width * 0.3,
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
           gestureEnabled={true}
+          backgroundInteractionEnabled={true}
+          overlayColor="transparent"
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -200,21 +258,23 @@ const RideArrivingUser = () => {
           </ImageBackground>
         </ActionSheet>
 
-        {/* Second ActionSheet after timer ends */}
         <ActionSheet
           ref={secondSheetRef}
-          // containerStyle={styles.actionSheetTwo}
-          // closeOnTouchBackdrop={false}
-          // defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
           containerStyle={styles.actionSheetTwo}
           snapPoints={[20, 50, 90]} // Your defined snap points
           initialSnapIndex={1} // Assuming it opens to '50%'
           closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
+          onTouchBackdrop={handleBackdropPressOnSecondSheet} // ✅ STEP 2: Use custom handler
+          defaultOverlayOpacity={0.1}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
           gestureEnabled={true}
+          backgroundInteractionEnabled={true}
+          overlayColor="transparent"
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -297,21 +357,23 @@ const RideArrivingUser = () => {
           </ImageBackground>
         </ActionSheet>
 
-        {/* Third ActionSheet */}
         <ActionSheet
           ref={thirdSheetRef}
-          // containerStyle={styles.actionSheetThree}
-          // closeOnTouchBackdrop={false}
-          // defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
           containerStyle={styles.actionSheetThree}
           snapPoints={[20, 50, 90]} // Your defined snap points
           initialSnapIndex={1} // Assuming it opens to '50%'
           closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
+          onTouchBackdrop={handleBackdropPressOnThirdSheet} // ✅ STEP 2: Use custom handler
+          defaultOverlayOpacity={0.1}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
           gestureEnabled={true}
+          backgroundInteractionEnabled={true}
+          overlayColor="transparent"
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -392,13 +454,14 @@ const RideArrivingUser = () => {
                       backgroundColor={colors.brown}
                       text="Ok! I'm Coming"
                       textColor={colors.white}
-                      onPress={() => {
-                        thirdSheetRef.current?.hide();
-                        setTimeout(() => {
-                          fourthSheetRef.current?.show();
-                          startCountdown(); // start countdown when 4th sheet opens
-                        }, 500);
-                      }}
+                      // onPress={() => {
+                      //   thirdSheetRef.current?.hide();
+                      //   setTimeout(() => {
+                      //     fourthSheetRef.current?.show();
+                      //     startCountdown(); // start countdown when 4th sheet opens
+                      //   }, 500);
+                      // }}
+                      onPress={handleOkImComingPress}
                     />
                   </View>
                 </View>
@@ -433,21 +496,23 @@ const RideArrivingUser = () => {
           </ImageBackground>
         </ActionSheet>
 
-        {/* Fourth ActionSheet */}
         <ActionSheet
           ref={fourthSheetRef}
-          // containerStyle={styles.actionSheetFourth}
-          // closeOnTouchBackdrop={false}
-          // defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
           containerStyle={styles.actionSheetFourth}
           snapPoints={[20, 50, 90]} // Your defined snap points
           initialSnapIndex={1} // Assuming it opens to '50%'
           closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.9}
-          // bounceOnOpen={true}
+          onTouchBackdrop={handleBackdropPressOnFourthSheet} // ✅ STEP 2: Use custom handler
+          defaultOverlayOpacity={0.1}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+            width: width * 0.3, // optional (default is smaller)
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
           gestureEnabled={true}
+          backgroundInteractionEnabled={true}
+          overlayColor="transparent"
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -531,6 +596,13 @@ const RideArrivingUser = () => {
                   </View>
                 </LinearGradient>
 
+                {/* Add countdown display */}
+                <View style={styles.countdownContainer}>
+                  <Text style={styles.countdownText}>
+                    Ride ending in: {formatTime(countdown)}
+                  </Text>
+                </View>
+
                 <View style={styles.btn}>
                   <CustomButton
                     btnHeight={height * 0.07}
@@ -557,7 +629,7 @@ const RideArrivingUser = () => {
                   />
                 </View>
 
-                <View style={{ top: height * 0.12 }}>
+                <View style={{ top: height * 0.1 }}>
                   <CustomButton
                     btnHeight={height * 0.07}
                     btnWidth={width * 0.9}
@@ -580,6 +652,23 @@ const RideArrivingUser = () => {
 };
 
 const styles = StyleSheet.create({
+  topHeaderContainer: {
+    position: 'absolute',
+    // top: height * 0.02,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+  },
+  countdownContainer: {
+    alignItems: 'center',
+    // marginVertical: height * 0.01,
+    top: height * 0.06,
+  },
+  countdownText: {
+    fontSize: fontSizes.md,
+    fontWeight: 'bold',
+    color: colors.brown,
+  },
   mapImg: {
     flex: 1,
     resizeMode: 'cover',
@@ -633,6 +722,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: height * 0.5,
     width: width,
+    bottom: height * 0.04,
   },
   actionSheetTwo: {
     borderTopLeftRadius: 45,
@@ -640,6 +730,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: height * 0.5,
     width: width,
+    bottom: height * 0.04,
   },
   actionSheetThree: {
     borderTopLeftRadius: 45,
@@ -647,6 +738,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: height * 0.7,
     width: width,
+    bottom: height * 0.04,
   },
   actionSheetFourth: {
     borderTopLeftRadius: 45,
@@ -654,6 +746,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: height * 0.7,
     width: width,
+    bottom: height * 0.04,
   },
   actionSheetFour: {
     borderTopLeftRadius: 45,
@@ -661,6 +754,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: height * 0.7,
     width: width,
+    bottom: height * 0.04,
   },
   gradientBackground: {
     flex: 1,

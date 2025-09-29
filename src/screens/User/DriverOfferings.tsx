@@ -213,8 +213,6 @@ const DriverOfferings = () => {
         />
       </View>
       {/* </View> */}
-
-      {/* 👉 Bid Modal */}
       <Modal
         transparent
         visible={showBidModal}
@@ -228,7 +226,7 @@ const DriverOfferings = () => {
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.inputText}
-                value={bidAmount}
+                // value={bidAmount}
                 onChangeText={setBidAmount}
                 keyboardType="numeric"
               />

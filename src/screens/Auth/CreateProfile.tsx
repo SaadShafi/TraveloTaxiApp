@@ -285,7 +285,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             backgroundColor={colors.gray}
           />
           <CustomTextInput
-            placeholder="*Street"
+            placeholder="*Address"
             placeholderTextColor={colors.black}
             borderColor={colors.brown}
             borderRadius={30}
