@@ -31,11 +31,6 @@ import TripOptions from '../screens/User/TripOptions';
 import TripOptionsSec from '../screens/User/TripOptionSec';
 import WalletUser from '../screens/User/WalletUser';
 import WalletUserSec from '../screens/User/WalletUserSec';
-<<<<<<< HEAD
-import CallMain from '../screens/Global/CallMain';
-import ChatMain from '../screens/Global/Chat';
-=======
->>>>>>> 5d955c85ffa22f5539f78f917e5ed3a7f35c60c3
 
 export type StackParamList = {
   HomeUser: undefined;
@@ -67,13 +62,8 @@ export type StackParamList = {
   WelcomeSec: undefined;
   WelcomeFourth: undefined;
   CreateProfile: undefined;
-<<<<<<< HEAD
-  CallMain: undefined;
-  Chat: undefined;
-=======
   Chat: undefined;
   CallMain: undefined;
->>>>>>> 5d955c85ffa22f5539f78f917e5ed3a7f35c60c3
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
