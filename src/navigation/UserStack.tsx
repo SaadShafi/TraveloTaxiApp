@@ -48,7 +48,7 @@ export type StackParamList = {
   History: undefined;
   HistoryDetailUserOne: undefined;
   HistoryDetailUserSec: undefined;
-  Settings: undefined;
+  Setting: undefined;
   ChangePass: undefined;
   PrivacyPolicy: undefined;
   AboutUs: undefined;
@@ -62,8 +62,8 @@ export type StackParamList = {
   WelcomeSec: undefined;
   WelcomeFourth: undefined;
   CreateProfile: undefined;
-  Chat: undefined;
   CallMain: undefined;
+  Chat: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();

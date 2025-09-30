@@ -113,6 +113,8 @@ dependencies {
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
+        implementation project(':react-native-maps')
+
     } else {
         implementation jscFlavor
     }

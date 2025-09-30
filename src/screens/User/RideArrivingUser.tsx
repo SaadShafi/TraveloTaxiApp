@@ -176,6 +176,9 @@ const RideArrivingUser = () => {
           gestureEnabled={true}
           backgroundInteractionEnabled={true}
           overlayColor="transparent"
+          enableOverDrag={false} // ✅ prevents dragging to close
+          closable={false}
+          onTouchBackdrop={() => {}} // safeguard
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -275,6 +278,9 @@ const RideArrivingUser = () => {
           gestureEnabled={true}
           backgroundInteractionEnabled={true}
           overlayColor="transparent"
+          enableOverDrag={false} // ✅ prevents dragging to close
+          closable={false}
+          onTouchBackdrop={() => {}} // safeguard
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -374,6 +380,9 @@ const RideArrivingUser = () => {
           gestureEnabled={true}
           backgroundInteractionEnabled={true}
           overlayColor="transparent"
+          enableOverDrag={false} // ✅ prevents dragging to close
+          closable={false}
+          onTouchBackdrop={() => {}} // safeguard
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -513,6 +522,9 @@ const RideArrivingUser = () => {
           gestureEnabled={true}
           backgroundInteractionEnabled={true}
           overlayColor="transparent"
+          enableOverDrag={false} // ✅ prevents dragging to close
+          closable={false}
+          onTouchBackdrop={() => {}} // safeguard
         >
           <ImageBackground
             source={images.ActionSheetBg}

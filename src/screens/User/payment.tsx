@@ -249,15 +249,9 @@ const PaymentUser: React.FC<Props> = ({ navigation }) => {
         <View style={styles.containerSec}>
           <Text style={styles.tipsText}>Selected Payment Method</Text>
           <TouchableOpacity
-            style={[
-              styles.methodMain,
-              selectedMethod === 'visa' && {
-                borderColor: colors.brown,
-                backgroundColor: colors.lightBrown,
-              },
-            ]}
+            style={[styles.methodMain]}
             activeOpacity={0.6}
-            onPress={() => setSelectedMethod('visa')}
+            // onPress={() => setSelectedMethod('visa')}
           >
             <Image source={images.visa} />
             <View style={styles.methodTextMain}>
@@ -269,13 +263,14 @@ const PaymentUser: React.FC<Props> = ({ navigation }) => {
           <TouchableOpacity
             style={[
               styles.methodMain,
-              selectedMethod === 'cash' && {
-                borderColor: colors.brown,
-                backgroundColor: colors.lightBrown,
-              },
+              { backgroundColor: colors.lightBrown, borderColor: colors.brown },
+              // selectedMethod === 'cash' && {
+              //   borderColor: colors.brown,
+              //   backgroundColor: colors.lightBrown,
+              // },
             ]}
             activeOpacity={0.7}
-            onPress={() => setSelectedMethod('cash')}
+            // onPress={() => setSelectedMethod('cash')}
           >
             <Image source={images.cash} style={styles.cashIcon} />
             <View style={styles.methodTextMain}>
@@ -287,11 +282,11 @@ const PaymentUser: React.FC<Props> = ({ navigation }) => {
         <CustomButton
           btnWidth={width * 0.9}
           btnHeight={height * 0.07}
-          backgroundColor={selectedMethod ? colors.brown : colors.black}
+          backgroundColor={colors.brown}
           text="Continue"
           textColor={colors.white}
           borderRadius={30}
-          disabled={!selectedMethod}
+          // disabled={!selectedMethod}
           // onPress={() => navigation.navigate('Setting')}
           onPress={() => setModalOpen(true)}
         />

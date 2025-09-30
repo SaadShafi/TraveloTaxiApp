@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import TopHeader from '../../components/Topheader';
 import { StackParamList } from '../../navigation/AuthStack';
+import { RootState } from '../../redux/store';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
@@ -19,6 +21,9 @@ import { fontSizes } from '../../utilities/fontsizes';
 type Props = NativeStackScreenProps<StackParamList, 'Setting'>;
 
 const Setting: React.FC<Props> = ({ navigation }) => {
+  const selectedRole = useSelector(
+    (state: RootState) => state.role.selectedRole,
+  );
   const [isEnabled, setIsEnabled] = useState(false);
   const [isEnabledSec, setIsEnabledSec] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -38,7 +43,7 @@ const Setting: React.FC<Props> = ({ navigation }) => {
             value={isEnabled}
           />
         </View>
-        <View style={styles.content}>
+        {/* <View style={styles.content}>
           <Text style={styles.contentText}>Pet ON/OFF Toggle</Text>
           <Switch
             trackColor={{ false: '#6f6c6cff', true: '#1E8C36' }}
@@ -47,7 +52,19 @@ const Setting: React.FC<Props> = ({ navigation }) => {
             onValueChange={toggleSwitchSec}
             value={isEnabledSec}
           />
-        </View>
+        </View> */}
+        {selectedRole === 'driver' && (
+          <View style={styles.content}>
+            <Text style={styles.contentText}>Pet ON/OFF Toggle</Text>
+            <Switch
+              trackColor={{ false: '#6f6c6cff', true: '#1E8C36' }}
+              thumbColor={isEnabledSec ? colors.white : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitchSec}
+              value={isEnabledSec}
+            />
+          </View>
+        )}
         <TouchableOpacity
           style={styles.content}
           activeOpacity={0.7}

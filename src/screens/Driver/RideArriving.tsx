@@ -162,9 +162,8 @@ const RideArriving = () => {
     }
   };
 
-  const SNAP_POINTS = [0.4, 0.8];
+  const SNAP_POINTS = [20, 50, 90];
 
-  // Example: Moving from Completed → Waiting
   const handleStartWaiting = () => {
     completedSheetRef.current?.hide();
     setTimeout(() => {
@@ -172,7 +171,6 @@ const RideArriving = () => {
     }, 300);
   };
 
-  // Example: Moving from Waiting → Ride Ongoing
   const handleStartRide = () => {
     thirdSheetRef.current?.hide();
     setTimeout(() => {
@@ -189,27 +187,53 @@ const RideArriving = () => {
   return (
     <ImageBackground source={images.Maptwo} style={styles.mapImg}>
       <View style={{ flex: 1 }}>
-        <TopHeader isMenu={true} isChat={true} />
+        <View style={styles.topHeaderContainer}>
+          <TopHeader isMenu={true} isChat={true} />
+        </View>
 
         <ActionSheet
+          // ref={arrivingSheetRef}
+          // containerStyle={styles.actionSheetMain}
+          // snapPoints={SNAP_POINTS}
+          // initialSnapIndex={1} // Assuming it opens to '50%'
+          // closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          // onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
+          // defaultOverlayOpacity={0.1}
+          // onClose={() => {
+          //   requestAnimationFrame(() => {
+          //     arrivingSheetRef.current?.show();
+          //   });
+          // }}
+          // gestureEnabled={true}
+          // indicatorStyle={{
+          //   backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+          //   width: width * 0.3, // optional (default is smaller)
+          //   height: height * 0.006,
+          //   borderRadius: 3,
+          // }}
+          // enableOverDrag={false} // ✅ prevents dragging to close
+          // closable={false}
+          // onTouchBackdrop={() => {}} // safeguard
           ref={arrivingSheetRef}
           containerStyle={styles.actionSheetMain}
-          snapPoints={SNAP_POINTS}
-          initialSnapIndex={1} // Assuming it opens to '50%'
-          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
+          snapPoints={[20, 50, 90]}
+          initialSnapIndex={1}
+          closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
-          onClose={() => {
-            requestAnimationFrame(() => {
-              arrivingSheetRef.current?.show();
-            });
-          }}
-          gestureEnabled={true}
           indicatorStyle={{
-            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-            width: width * 0.3, // optional (default is smaller)
+            backgroundColor: colors.lightBrown,
+            width: width * 0.3,
             height: height * 0.006,
             borderRadius: 3,
+          }}
+          gestureEnabled={true}
+          backgroundInteractionEnabled={true}
+          overlayColor="transparent"
+          enableOverDrag={true} // ✅ allow closing by drag
+          closable={true} // ✅ allow full close
+          onClose={() => {
+            // when first sheet closes, open second
+            completedSheetRef.current?.show();
           }}
         >
           <ImageBackground
@@ -315,24 +339,47 @@ const RideArriving = () => {
         </ActionSheet>
 
         <ActionSheet
+          // ref={completedSheetRef}
+          // containerStyle={styles.actionSheetMain}
+          // snapPoints={SNAP_POINTS}
+          // initialSnapIndex={1} // Assuming it opens to '50%'
+          // closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          // onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
+          // defaultOverlayOpacity={0.1}
+          // onClose={() => {
+          //   requestAnimationFrame(() => {
+          //     completedSheetRef.current?.show();
+          //   });
+          // }}
+          // gestureEnabled={true}
+          // indicatorStyle={{
+          //   backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+          //   width: width * 0.3, // optional (default is smaller)
+          //   height: height * 0.006,
+          //   borderRadius: 3,
+          // }}
+          // enableOverDrag={false} // ✅ prevents dragging to close
+          // closable={false}
+          // onTouchBackdrop={() => {}} // safeguard
           ref={completedSheetRef}
           containerStyle={styles.actionSheetMain}
-          snapPoints={SNAP_POINTS}
-          initialSnapIndex={1} // Assuming it opens to '50%'
-          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
+          snapPoints={[20, 50, 90]}
+          initialSnapIndex={1}
+          closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
-          onClose={() => {
-            requestAnimationFrame(() => {
-              completedSheetRef.current?.show();
-            });
-          }}
-          gestureEnabled={true}
           indicatorStyle={{
-            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-            width: width * 0.3, // optional (default is smaller)
+            backgroundColor: colors.lightBrown,
+            width: width * 0.3,
             height: height * 0.006,
             borderRadius: 3,
+          }}
+          gestureEnabled={true}
+          backgroundInteractionEnabled={true}
+          overlayColor="transparent"
+          enableOverDrag={true}
+          closable={true}
+          onClose={() => {
+            thirdSheetRef.current?.show();
           }}
         >
           <ImageBackground
@@ -447,24 +494,47 @@ const RideArriving = () => {
         </ActionSheet>
 
         <ActionSheet
+          // ref={thirdSheetRef}
+          // containerStyle={styles.actionSheetThird}
+          // snapPoints={SNAP_POINTS} // Your defined snap points
+          // initialSnapIndex={1} // Assuming it opens to '50%'
+          // closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          // // onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
+          // defaultOverlayOpacity={0.1}
+          // onClose={() => {
+          //   requestAnimationFrame(() => {
+          //     thirdSheetRef.current?.show();
+          //   });
+          // }}
+          // gestureEnabled={true}
+          // indicatorStyle={{
+          //   backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+          //   width: width * 0.3, // optional (default is smaller)
+          //   height: height * 0.006,
+          //   borderRadius: 3,
+          // }}
+          // enableOverDrag={false} // ✅ prevents dragging to close
+          // closable={false}
+          // onTouchBackdrop={() => {}} // safeguard
           ref={thirdSheetRef}
           containerStyle={styles.actionSheetThird}
-          snapPoints={SNAP_POINTS} // Your defined snap points
-          initialSnapIndex={1} // Assuming it opens to '50%'
-          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          // onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
+          snapPoints={[20, 50, 90]}
+          initialSnapIndex={1}
+          closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
-          onClose={() => {
-            requestAnimationFrame(() => {
-              thirdSheetRef.current?.show();
-            });
-          }}
-          gestureEnabled={true}
           indicatorStyle={{
-            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-            width: width * 0.3, // optional (default is smaller)
+            backgroundColor: colors.lightBrown,
+            width: width * 0.3,
             height: height * 0.006,
             borderRadius: 3,
+          }}
+          gestureEnabled={true}
+          backgroundInteractionEnabled={true}
+          overlayColor="transparent"
+          enableOverDrag={true}
+          closable={true}
+          onClose={() => {
+            fourthSheetRef.current?.show();
           }}
         >
           <ImageBackground
@@ -589,25 +659,45 @@ const RideArriving = () => {
         </ActionSheet>
 
         <ActionSheet
+          // ref={fourthSheetRef}
+          // containerStyle={styles.actionSheetFourth}
+          // snapPoints={SNAP_POINTS} // Your defined snap points
+          // initialSnapIndex={1} // Assuming it opens to '50%'
+          // closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
+          // // onTouchBackdrop={handleBackdropPressOnCompletedSheet}
+          // defaultOverlayOpacity={0.1}
+          // onClose={() => {
+          //   requestAnimationFrame(() => {
+          //     fourthSheetRef.current?.show();
+          //   });
+          // }}
+          // gestureEnabled={true}
+          // indicatorStyle={{
+          //   backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
+          //   width: width * 0.3, // optional (default is smaller)
+          //   height: height * 0.006,
+          //   borderRadius: 3,
+          // }}
+          // enableOverDrag={false} // ✅ prevents dragging to close
+          // closable={false}
+          // onTouchBackdrop={() => {}} // safeguard
           ref={fourthSheetRef}
           containerStyle={styles.actionSheetFourth}
-          snapPoints={SNAP_POINTS} // Your defined snap points
-          initialSnapIndex={1} // Assuming it opens to '50%'
-          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          // onTouchBackdrop={handleBackdropPressOnCompletedSheet}
+          snapPoints={[20, 50, 90]}
+          initialSnapIndex={1}
+          closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
-          onClose={() => {
-            requestAnimationFrame(() => {
-              fourthSheetRef.current?.show();
-            });
-          }}
-          gestureEnabled={true}
           indicatorStyle={{
-            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-            width: width * 0.3, // optional (default is smaller)
+            backgroundColor: colors.lightBrown,
+            width: width * 0.3,
             height: height * 0.006,
             borderRadius: 3,
           }}
+          gestureEnabled={true}
+          backgroundInteractionEnabled={true}
+          overlayColor="transparent"
+          enableOverDrag={true}
+          closable={true}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -1022,6 +1112,13 @@ const RideArriving = () => {
 };
 
 const styles = StyleSheet.create({
+  topHeaderContainer: {
+    position: 'absolute',
+    // top: height * 0.02,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+  },
   distressMain: {
     bottom: height * 0.03,
     left: width * 0.6,
