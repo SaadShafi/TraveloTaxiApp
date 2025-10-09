@@ -29,13 +29,13 @@ const ScheduleDetail = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <TopHeader text="Booking Details" isMenu={true} />
+      <TopHeader text="Booking Details" isBack={true} />
 
       <View style={styles.mainContainer}>
         <View style={styles.subConatiner}>
           <View>
             <Text style={styles.trackID}>Ride ID</Text>
-            <Text>#4564</Text>
+            <Text style={{ color: colors.black }}>#4564</Text>
           </View>
         </View>
 
@@ -202,7 +202,7 @@ const ScheduleDetail = () => {
 const styles = StyleSheet.create({
   reasonsContainer: {
     width: width * 0.75,
-    height: height * 0.04,
+    height: height * 0.052,
     borderWidth: 1,
     borderColor: colors.gray,
     borderRadius: 10,

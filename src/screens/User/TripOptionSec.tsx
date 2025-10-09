@@ -287,7 +287,7 @@ const TripOptionsSec: React.FC = () => {
             borderWidth={1}
           />
         </View>
-        <Text style={styles.bookingTypeText}>
+        {/* <Text style={styles.bookingTypeText}>
           Please choose type of Booking
         </Text>
         <View style={styles.bidBtnMain}>
@@ -327,7 +327,7 @@ const TripOptionsSec: React.FC = () => {
         <View style={styles.questionContainer}>
           <Text style={{ color: colors.black }}>What is This?</Text>
           <Text style={{ color: colors.black }}>What is This?</Text>
-        </View>
+        </View> */}
         <View style={{ alignItems: 'center', top: height * 0.05 }}>
           <CustomSelect
             inputWidth={width * 0.85}

@@ -86,6 +86,8 @@ const images: { [key: string]: ImageSourcePropType } = {
   backWhite: require('../Images/isBackWhite.png'),
   cancelBtn: require('../Images/cancelBtn.png'),
   applePay: require('../Images/applePay.png'),
+  checked: require('../Images/checked.png'),
+  smile: require('../Images/smile.png'),
 };
 
 export default images;

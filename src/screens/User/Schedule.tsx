@@ -130,7 +130,7 @@ const Schedule = () => {
   };
   return (
     <View style={{ flex: 1 }}>
-      <TopHeader text="Schedule" isMenu={true} />
+      <TopHeader text="Schedule" isBack={true} />
       <FlatList
         data={scheduleData}
         renderItem={ScheduleBox}
