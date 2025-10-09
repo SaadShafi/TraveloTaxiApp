@@ -27,7 +27,7 @@ xmlns:tools="http://schemas.android.com/tools"
       android:supportsRtl="true">
       <meta-data
      android:name="com.google.android.geo.API_KEY"
-      android:value="AIzaSyDmcXscHjRo6Iqm9QHmuN6Cb05_qvVoFcE"
+      android:value="AIzaSyBc471b-xNix1Zk1gpjpsqqd3HSsz6yCAo"
       />
       <activity
         android:name=".MainActivity"

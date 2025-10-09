@@ -32,6 +32,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is used to show your position on the map.</string>
 	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -56,6 +57,9 @@
 		<string>ClashDisplay-Regular.ttf</string>
 		<string>ClashDisplay-Semibold.ttf</string>
 	</array>
+
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>We need your location to improve your map experience.</string>
 	<key>NSCameraUsageDescription</key>
 <string>This app requires access to your camera to take photos.</string>
 <key>NSPhotoLibraryUsageDescription</key>

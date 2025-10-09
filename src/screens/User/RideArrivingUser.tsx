@@ -1,9 +1,10 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
 import LinearGradient from 'react-native-linear-gradient';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
@@ -12,8 +13,6 @@ import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
-// import { Image } from 'react-native-reanimated/lib/typescript/Animated';
-import { Image } from 'react-native';
 
 type RootStackParamList = {
   RideArrivingUser: undefined;
@@ -28,6 +27,7 @@ const RideArrivingUser = () => {
   const secondSheetRef = useRef<ActionSheetRef>(null);
   const thirdSheetRef = useRef<ActionSheetRef>(null);
   const fourthSheetRef = useRef<ActionSheetRef>(null);
+  const mapRef = useRef<MapView>(null);
   const [timeLeft, setTimeLeft] = useState(10); // first sheet countdown
   const [countdown, setCountdown] = useState(10); // 4:55 in seconds
 
@@ -65,21 +65,6 @@ const RideArrivingUser = () => {
       if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
     };
   }, []);
-
-  // Start countdown in fourth sheet
-  // const startCountdown = () => {
-  //   if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
-  //   setCountdown(295); // reset 4:55
-  //   countdownTimerRef.current = setInterval(() => {
-  //     setCountdown(prev => {
-  //       if (prev <= 1) {
-  //         clearInterval(countdownTimerRef.current!);
-  //         return 0;
-  //       }
-  //       return prev - 1;
-  //     });
-  //   }, 1000);
-  // };
 
   // Format seconds → mm:ss
   const formatTime = (seconds: number) => {
@@ -153,513 +138,564 @@ const RideArrivingUser = () => {
   };
 
   return (
-    <ImageBackground source={images.Maptwo} style={styles.mapImg}>
+    // <ImageBackground source={images.Maptwo} style={styles.mapImg}>
+    <View style={{ flex: 1 }}>
+      <View style={[styles.topHeaderContainer, { pointerEvents: 'box-none' }]}>
+        <TopHeader isMenu={true} />
+      </View>
+
       <View style={{ flex: 1 }}>
-        <View style={styles.topHeaderContainer}>
-          <TopHeader isMenu={true} />
-        </View>
-
-        <ActionSheet
-          ref={arrivingSheetRef}
-          containerStyle={styles.actionSheetOne}
-          snapPoints={[20, 50, 90]}
-          initialSnapIndex={1}
-          closeOnTouchBackdrop={false}
-          onTouchBackdrop={handleBackdropPressOnFirstSheet}
-          defaultOverlayOpacity={0.1}
-          indicatorStyle={{
-            backgroundColor: colors.lightBrown,
-            width: width * 0.3,
-            height: height * 0.006,
-            borderRadius: 3,
+        <MapView
+          ref={mapRef}
+          provider={PROVIDER_GOOGLE}
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: 40.7003,
+            longitude: -73.9967,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
           }}
-          gestureEnabled={true}
-          backgroundInteractionEnabled={true}
-          overlayColor="transparent"
-          enableOverDrag={false} // ✅ prevents dragging to close
-          closable={false}
-          onTouchBackdrop={() => {}} // safeguard
+          // scrollEnabled
+          // zoomEnabled
+          // rotateEnabled
+          // pitchEnabled
+          // showsUserLocation={true}
+          scrollEnabled={false}
+          zoomEnabled={false}
+          rotateEnabled={false}
+          pitchEnabled={false}
+          showsUserLocation={false}
         >
-          <ImageBackground
-            source={images.ActionSheetBg}
-            style={styles.ActinSheetBg}
-          >
-            <View style={styles.gradientBackground}>
-              <View style={styles.ActionSheetContentMain}>
-                <Text style={styles.selectText}>Waiting for the OTP</Text>
+          <Marker
+            coordinate={{ latitude: 40.7003, longitude: -73.9967 }}
+            title="Brooklyn Bridge Park"
+            description="New York"
+          />
+        </MapView>
+      </View>
+      <ActionSheet
+        ref={arrivingSheetRef}
+        containerStyle={{
+          ...styles.actionSheetOne,
+          pointerEvents: 'box-none',
+        }}
+        snapPoints={[20, 50, 90]}
+        initialSnapIndex={1}
+        closeOnTouchBackdrop={false}
+        onTouchBackdrop={handleBackdropPressOnFirstSheet}
+        defaultOverlayOpacity={0.1}
+        indicatorStyle={{
+          backgroundColor: colors.lightBrown,
+          width: width * 0.3,
+          height: height * 0.006,
+          borderRadius: 3,
+        }}
+        gestureEnabled={true}
+        backgroundInteractionEnabled={true}
+        overlayColor="transparent"
+        enableOverDrag={false}
+        closable={false}
+        drawUnderStatusBar={true}
+        keyboardShouldPersistTaps="handled"
+        isModal={false}
+        safeAreaInsets={{ top: 0, left: 0, right: 0, bottom: 0 }}
+      >
+        <ImageBackground
+          source={images.ActionSheetBg}
+          style={styles.ActinSheetBg}
+        >
+          <View style={styles.gradientBackground}>
+            <View style={styles.ActionSheetContentMain}>
+              <Text style={styles.selectText}>Waiting for the OTP</Text>
 
-                <View>
-                  <Text style={styles.selectDriver}>
-                    Your driver is coming in {formatTime(timeLeft)}
-                  </Text>
-                </View>
-
-                <LinearGradient
-                  colors={['#FFFFFF', '#FFE9E9']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 0, y: 1.1 }}
-                  style={styles.passengerContainer}
-                >
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.name}>Passenger Name:</Text>
-                    <Text style={styles.adam}>Adam James</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.distance}>Distance:</Text>
-                    <Text style={styles.miles}>10 Miles away</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.plate}>Number Plate:</Text>
-                    <Text style={styles.number}>123 756</Text>
-                  </View>
-
-                  <View style={styles.subContainer}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingHorizontal: width * 0.09,
-                        alignItems: 'center',
-                        height: height * 0.055,
-                      }}
-                    >
-                      <Text style={styles.fare}>Fare:</Text>
-                      <Text style={styles.fare}>$55.00</Text>
-                    </View>
-                  </View>
-                </LinearGradient>
-
-                <View style={styles.btn}>
-                  <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.45}
-                    borderColor={colors.black}
-                    borderRadius={35}
-                    borderWidth={1}
-                    backgroundColor={colors.black}
-                    text="Message"
-                    textColor={colors.white}
-                    onPress={() => navigation.navigate('Chat')}
-                  />
-
-                  <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.45}
-                    borderColor={colors.black}
-                    borderRadius={35}
-                    borderWidth={1}
-                    backgroundColor={colors.brown}
-                    text="Call"
-                    textColor={colors.white}
-                    onPress={() => navigation.navigate('CallMain')}
-                  />
-                </View>
+              <View>
+                <Text style={styles.selectDriver}>
+                  Your driver is coming in {formatTime(timeLeft)}
+                </Text>
               </View>
-            </View>
-          </ImageBackground>
-        </ActionSheet>
 
-        <ActionSheet
-          ref={secondSheetRef}
-          containerStyle={styles.actionSheetTwo}
-          snapPoints={[20, 50, 90]} // Your defined snap points
-          initialSnapIndex={1} // Assuming it opens to '50%'
-          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnSecondSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.1}
-          indicatorStyle={{
-            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-            width: width * 0.3, // optional (default is smaller)
-            height: height * 0.006,
-            borderRadius: 3,
-          }}
-          gestureEnabled={true}
-          backgroundInteractionEnabled={true}
-          overlayColor="transparent"
-          enableOverDrag={false} // ✅ prevents dragging to close
-          closable={false}
-          onTouchBackdrop={() => {}} // safeguard
-        >
-          <ImageBackground
-            source={images.ActionSheetBg}
-            style={styles.ActinSheetBg}
-          >
-            <View style={styles.gradientBackground}>
-              <View style={styles.ActionSheetContentMain}>
-                <Text style={styles.selectText}>Waiting for the OTP</Text>
-
-                <View>
-                  <Text style={styles.selectDriver}>
-                    Your driver has Arrived
-                  </Text>
+              <LinearGradient
+                colors={['#FFFFFF', '#FFE9E9']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1.1 }}
+                style={styles.passengerContainer}
+              >
+                <View style={styles.textPassenger}>
+                  <Text style={styles.name}>Passenger Name:</Text>
+                  <Text style={styles.adam}>Adam James</Text>
                 </View>
 
-                <LinearGradient
-                  colors={['#FFFFFF', '#FFE9E9']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 0, y: 1.1 }}
-                  style={styles.passengerContainer}
-                >
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.name}>Passenger Name:</Text>
-                    <Text style={styles.adam}>Adam James</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.distance}>Distance:</Text>
-                    <Text style={styles.miles}>10 Miles away</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.plate}>Number Plate:</Text>
-                    <Text style={styles.number}>123 756</Text>
-                  </View>
-
-                  <View style={styles.subContainer}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingHorizontal: width * 0.09,
-                        alignItems: 'center',
-                        height: height * 0.055,
-                      }}
-                    >
-                      <Text style={styles.fare}>Fare:</Text>
-                      <Text style={styles.fare}>$55.00</Text>
-                    </View>
-                  </View>
-                </LinearGradient>
-
-                <View style={styles.btn}>
-                  <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.45}
-                    borderColor={colors.black}
-                    borderRadius={35}
-                    borderWidth={1}
-                    backgroundColor={colors.black}
-                    text="Message"
-                    textColor={colors.white}
-                    onPress={() => navigation.navigate('Chat')}
-                  />
-
-                  <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.45}
-                    borderColor={colors.black}
-                    borderRadius={35}
-                    borderWidth={1}
-                    backgroundColor={colors.brown}
-                    text="Call"
-                    textColor={colors.white}
-                    onPress={() => navigation.navigate('CallMain')}
-                  />
-                </View>
-              </View>
-            </View>
-          </ImageBackground>
-        </ActionSheet>
-
-        <ActionSheet
-          ref={thirdSheetRef}
-          containerStyle={styles.actionSheetThree}
-          snapPoints={[20, 50, 90]} // Your defined snap points
-          initialSnapIndex={1} // Assuming it opens to '50%'
-          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnThirdSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.1}
-          indicatorStyle={{
-            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-            width: width * 0.3, // optional (default is smaller)
-            height: height * 0.006,
-            borderRadius: 3,
-          }}
-          gestureEnabled={true}
-          backgroundInteractionEnabled={true}
-          overlayColor="transparent"
-          enableOverDrag={false} // ✅ prevents dragging to close
-          closable={false}
-          onTouchBackdrop={() => {}} // safeguard
-        >
-          <ImageBackground
-            source={images.ActionSheetBg}
-            style={styles.ActinSheetBg}
-          >
-            <View style={styles.gradientBackground}>
-              <View style={styles.ActionSheetContentMain}>
-                <Text style={styles.selectText}>Waiting for the OTP</Text>
-
-                <View style={styles.otpContainer}>
-                  <Text style={styles.otpCount}>09356</Text>
+                <View style={styles.textPassenger}>
+                  <Text style={styles.distance}>Distance:</Text>
+                  <Text style={styles.miles}>10 Miles away</Text>
                 </View>
 
-                <View>
-                  <Text style={styles.selectDriver}>
-                    Driver is waiting for you!
-                  </Text>
+                <View style={styles.textPassenger}>
+                  <Text style={styles.plate}>Number Plate:</Text>
+                  <Text style={styles.number}>123 756</Text>
                 </View>
 
-                <LinearGradient
-                  colors={['#FFFFFF', '#FFE9E9']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 0, y: 1.1 }}
-                  style={styles.passengerContainer}
-                >
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.name}>Passenger Name:</Text>
-                    <Text style={styles.adam}>Adam James</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.distance}>Distance:</Text>
-                    <Text style={styles.miles}>10 Miles away</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.plate}>Number Plate:</Text>
-                    <Text style={styles.number}>123 756</Text>
-                  </View>
-
-                  <View style={styles.subContainer}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingHorizontal: width * 0.09,
-                        alignItems: 'center',
-                        height: height * 0.055,
-                      }}
-                    >
-                      <Text style={styles.fare}>Fare:</Text>
-                      <Text style={styles.fare}>$55.00</Text>
-                    </View>
-                  </View>
-                </LinearGradient>
-
-                <View style={styles.comContainer}>
+                <View style={styles.subContainer}>
                   <View
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
-                      width: width * 0.78,
-                      alignSelf: 'center',
-                      top: height * 0.01,
+                      paddingHorizontal: width * 0.09,
+                      alignItems: 'center',
+                      height: height * 0.055,
                     }}
                   >
-                    <Text style={styles.late}>Please Don't be LATE!</Text>
-                    <Text style={styles.late}>4:55</Text>
-                  </View>
-
-                  <View style={{ top: height * 0.034, alignItems: 'center' }}>
-                    <CustomButton
-                      btnHeight={height * 0.05}
-                      btnWidth={width * 0.78}
-                      borderColor={colors.black}
-                      borderRadius={35}
-                      borderWidth={1}
-                      backgroundColor={colors.brown}
-                      text="Ok! I'm Coming"
-                      textColor={colors.white}
-                      // onPress={() => {
-                      //   thirdSheetRef.current?.hide();
-                      //   setTimeout(() => {
-                      //     fourthSheetRef.current?.show();
-                      //     startCountdown(); // start countdown when 4th sheet opens
-                      //   }, 500);
-                      // }}
-                      onPress={handleOkImComingPress}
-                    />
+                    <Text style={styles.fare}>Fare:</Text>
+                    <Text style={styles.fare}>$55.00</Text>
                   </View>
                 </View>
+              </LinearGradient>
 
-                <View style={styles.btn}>
-                  <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.45}
-                    borderColor={colors.black}
-                    borderRadius={35}
-                    borderWidth={1}
-                    backgroundColor={colors.black}
-                    text="Message"
-                    textColor={colors.white}
-                    onPress={() => navigation.navigate('Chat')}
-                  />
+              <View style={styles.btn}>
+                <CustomButton
+                  btnHeight={height * 0.07}
+                  btnWidth={width * 0.45}
+                  borderColor={colors.black}
+                  borderRadius={35}
+                  borderWidth={1}
+                  backgroundColor={colors.black}
+                  text="Message"
+                  textColor={colors.white}
+                  onPress={() => navigation.navigate('Chat')}
+                />
 
-                  <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.45}
-                    borderColor={colors.black}
-                    borderRadius={35}
-                    borderWidth={1}
-                    backgroundColor={colors.brown}
-                    text="Call"
-                    textColor={colors.white}
-                    onPress={() => navigation.navigate('CallMain')}
-                  />
-                </View>
+                <CustomButton
+                  btnHeight={height * 0.07}
+                  btnWidth={width * 0.45}
+                  borderColor={colors.black}
+                  borderRadius={35}
+                  borderWidth={1}
+                  backgroundColor={colors.brown}
+                  text="Call"
+                  textColor={colors.white}
+                  onPress={() => navigation.navigate('CallMain')}
+                />
               </View>
             </View>
-          </ImageBackground>
-        </ActionSheet>
+          </View>
+        </ImageBackground>
+      </ActionSheet>
 
-        <ActionSheet
-          ref={fourthSheetRef}
-          containerStyle={styles.actionSheetFourth}
-          snapPoints={[20, 50, 90]} // Your defined snap points
-          initialSnapIndex={1} // Assuming it opens to '50%'
-          closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          onTouchBackdrop={handleBackdropPressOnFourthSheet} // ✅ STEP 2: Use custom handler
-          defaultOverlayOpacity={0.1}
-          indicatorStyle={{
-            backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-            width: width * 0.3, // optional (default is smaller)
-            height: height * 0.006,
-            borderRadius: 3,
-          }}
-          gestureEnabled={true}
-          backgroundInteractionEnabled={true}
-          overlayColor="transparent"
-          enableOverDrag={false} // ✅ prevents dragging to close
-          closable={false}
-          onTouchBackdrop={() => {}} // safeguard
+      <ActionSheet
+        ref={secondSheetRef}
+        containerStyle={{
+          ...styles.actionSheetTwo,
+          pointerEvents: 'box-none',
+        }}
+        snapPoints={[20, 50, 90]}
+        initialSnapIndex={1}
+        closeOnTouchBackdrop={false}
+        onTouchBackdrop={handleBackdropPressOnSecondSheet}
+        defaultOverlayOpacity={0.1}
+        indicatorStyle={{
+          backgroundColor: colors.lightBrown,
+          width: width * 0.3,
+          height: height * 0.006,
+          borderRadius: 3,
+        }}
+        gestureEnabled={true}
+        backgroundInteractionEnabled={true}
+        overlayColor="transparent"
+        enableOverDrag={false}
+        closable={false}
+        drawUnderStatusBar={true}
+        keyboardShouldPersistTaps="handled"
+        isModal={false}
+        safeAreaInsets={{ top: 0, left: 0, right: 0, bottom: 0 }}
+      >
+        <ImageBackground
+          source={images.ActionSheetBg}
+          style={styles.ActinSheetBg}
         >
-          <ImageBackground
-            source={images.ActionSheetBg}
-            style={styles.ActinSheetBg}
-          >
-            <View style={styles.gradientBackground}>
-              <View style={styles.ActionSheetContentMain}>
-                <Text style={styles.selectText}>Your Ride Started!</Text>
+          <View style={styles.gradientBackground}>
+            <View style={styles.ActionSheetContentMain}>
+              <Text style={styles.selectText}>Waiting for the OTP</Text>
 
-                <View style={{ flexDirection: 'row' }}>
-                  <Image source={images.guide} style={styles.guide} />
+              <View>
+                <Text style={styles.selectDriver}>Your driver has Arrived</Text>
+              </View>
 
-                  <View style={styles.locationMain}>
-                    <CustomTextInput
-                      placeholder="Groklyn Bridge Park"
-                      placeholderTextColor={colors.black}
-                      borderColor={colors.brown}
-                      borderRadius={10}
-                      inputWidth={width * 0.8}
-                      inputHeight={height * 0.05}
-                      leftIcon={
-                        <Image
-                          source={images.locationImage}
-                          style={styles.locationImg}
-                        />
-                      }
-                      editable={false}
-                    />
-                    <CustomTextInput
-                      placeholder="Groklyn Bridge Park"
-                      placeholderTextColor={colors.black}
-                      borderColor={colors.gray}
-                      borderRadius={10}
-                      inputWidth={width * 0.8}
-                      inputHeight={height * 0.05}
-                      leftIcon={
-                        <Image
-                          source={images.locationImage}
-                          style={styles.locationImg}
-                        />
-                      }
-                      editable={false}
-                    />
-                  </View>
+              <LinearGradient
+                colors={['#FFFFFF', '#FFE9E9']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1.1 }}
+                style={styles.passengerContainer}
+              >
+                <View style={styles.textPassenger}>
+                  <Text style={styles.name}>Passenger Name:</Text>
+                  <Text style={styles.adam}>Adam James</Text>
                 </View>
 
-                <LinearGradient
-                  colors={['#FFFFFF', '#FFE9E9']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 0, y: 1.1 }}
-                  style={styles.passengerContainer}
+                <View style={styles.textPassenger}>
+                  <Text style={styles.distance}>Distance:</Text>
+                  <Text style={styles.miles}>10 Miles away</Text>
+                </View>
+
+                <View style={styles.textPassenger}>
+                  <Text style={styles.plate}>Number Plate:</Text>
+                  <Text style={styles.number}>123 756</Text>
+                </View>
+
+                <View style={styles.subContainer}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: width * 0.09,
+                      alignItems: 'center',
+                      height: height * 0.055,
+                    }}
+                  >
+                    <Text style={styles.fare}>Fare:</Text>
+                    <Text style={styles.fare}>$55.00</Text>
+                  </View>
+                </View>
+              </LinearGradient>
+
+              <View style={styles.btn}>
+                <CustomButton
+                  btnHeight={height * 0.07}
+                  btnWidth={width * 0.45}
+                  borderColor={colors.black}
+                  borderRadius={35}
+                  borderWidth={1}
+                  backgroundColor={colors.black}
+                  text="Message"
+                  textColor={colors.white}
+                  onPress={() => navigation.navigate('Chat')}
+                />
+
+                <CustomButton
+                  btnHeight={height * 0.07}
+                  btnWidth={width * 0.45}
+                  borderColor={colors.black}
+                  borderRadius={35}
+                  borderWidth={1}
+                  backgroundColor={colors.brown}
+                  text="Call"
+                  textColor={colors.white}
+                  onPress={() => navigation.navigate('CallMain')}
+                />
+              </View>
+            </View>
+          </View>
+        </ImageBackground>
+      </ActionSheet>
+
+      <ActionSheet
+        ref={thirdSheetRef}
+        containerStyle={{
+          ...styles.actionSheetThree,
+          pointerEvents: 'box-none',
+        }}
+        snapPoints={[20, 50, 90]}
+        initialSnapIndex={1}
+        closeOnTouchBackdrop={false}
+        onTouchBackdrop={handleBackdropPressOnThirdSheet}
+        defaultOverlayOpacity={0.1}
+        indicatorStyle={{
+          backgroundColor: colors.lightBrown,
+          width: width * 0.3,
+          height: height * 0.006,
+          borderRadius: 3,
+        }}
+        gestureEnabled={true}
+        backgroundInteractionEnabled={true}
+        overlayColor="transparent"
+        enableOverDrag={false}
+        closable={false}
+        drawUnderStatusBar={true}
+        keyboardShouldPersistTaps="handled"
+        isModal={false}
+        safeAreaInsets={{ top: 0, left: 0, right: 0, bottom: 0 }}
+      >
+        <ImageBackground
+          source={images.ActionSheetBg}
+          style={styles.ActinSheetBg}
+        >
+          <View style={styles.gradientBackground}>
+            <View style={styles.ActionSheetContentMain}>
+              <Text style={styles.selectText}>Waiting for the OTP</Text>
+
+              <View style={styles.otpContainer}>
+                <Text style={styles.otpCount}>09356</Text>
+              </View>
+
+              <View>
+                <Text style={styles.selectDriver}>
+                  Driver is waiting for you!
+                </Text>
+              </View>
+
+              <LinearGradient
+                colors={['#FFFFFF', '#FFE9E9']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1.1 }}
+                style={styles.passengerContainer}
+              >
+                <View style={styles.textPassenger}>
+                  <Text style={styles.name}>Passenger Name:</Text>
+                  <Text style={styles.adam}>Adam James</Text>
+                </View>
+
+                <View style={styles.textPassenger}>
+                  <Text style={styles.distance}>Distance:</Text>
+                  <Text style={styles.miles}>10 Miles away</Text>
+                </View>
+
+                <View style={styles.textPassenger}>
+                  <Text style={styles.plate}>Number Plate:</Text>
+                  <Text style={styles.number}>123 756</Text>
+                </View>
+
+                <View style={styles.subContainer}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: width * 0.09,
+                      alignItems: 'center',
+                      height: height * 0.055,
+                    }}
+                  >
+                    <Text style={styles.fare}>Fare:</Text>
+                    <Text style={styles.fare}>$55.00</Text>
+                  </View>
+                </View>
+              </LinearGradient>
+
+              <View style={styles.comContainer}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: width * 0.78,
+                    alignSelf: 'center',
+                    top: height * 0.01,
+                  }}
                 >
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.name}>Passenger Name:</Text>
-                    <Text style={styles.adam}>Adam James</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.distance}>Distance:</Text>
-                    <Text style={styles.miles}>10 Miles away</Text>
-                  </View>
-
-                  <View style={styles.textPassenger}>
-                    <Text style={styles.plate}>Number Plate:</Text>
-                    <Text style={styles.number}>123 756</Text>
-                  </View>
-
-                  <View style={styles.subContainer}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingHorizontal: width * 0.09,
-                        alignItems: 'center',
-                        height: height * 0.055,
-                      }}
-                    >
-                      <Text style={styles.fare}>Fare:</Text>
-                      <Text style={styles.fare}>$55.00</Text>
-                    </View>
-                  </View>
-                </LinearGradient>
-
-                {/* Add countdown display */}
-                <View style={styles.countdownContainer}>
-                  <Text style={styles.countdownText}>
-                    Ride ending in: {formatTime(countdown)}
-                  </Text>
+                  <Text style={styles.late}>Please Don't be LATE!</Text>
+                  <Text style={styles.late}>4:55</Text>
                 </View>
 
-                <View style={styles.btn}>
+                <View style={{ top: height * 0.034, alignItems: 'center' }}>
                   <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.45}
-                    borderColor={colors.black}
-                    borderRadius={35}
-                    borderWidth={1}
-                    backgroundColor={colors.black}
-                    text="Message"
-                    textColor={colors.white}
-                    onPress={() => navigation.navigate('Chat')}
-                  />
-
-                  <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.45}
+                    btnHeight={height * 0.05}
+                    btnWidth={width * 0.78}
                     borderColor={colors.black}
                     borderRadius={35}
                     borderWidth={1}
                     backgroundColor={colors.brown}
-                    text="Call"
+                    text="Ok! I'm Coming"
                     textColor={colors.white}
-                    onPress={() => navigation.navigate('CallMain')}
-                  />
-                </View>
-
-                <View style={{ top: height * 0.1 }}>
-                  <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.9}
-                    borderColor={colors.black}
-                    borderRadius={35}
-                    borderWidth={1}
-                    backgroundColor={colors.brown}
-                    text="Share Ride "
-                    textColor={colors.white}
-                    // onPress={() => navigation.navigate('CallMain')}
+                    // onPress={() => {
+                    //   thirdSheetRef.current?.hide();
+                    //   setTimeout(() => {
+                    //     fourthSheetRef.current?.show();
+                    //     startCountdown(); // start countdown when 4th sheet opens
+                    //   }, 500);
+                    // }}
+                    onPress={handleOkImComingPress}
                   />
                 </View>
               </View>
+
+              <View style={styles.btn}>
+                <CustomButton
+                  btnHeight={height * 0.07}
+                  btnWidth={width * 0.45}
+                  borderColor={colors.black}
+                  borderRadius={35}
+                  borderWidth={1}
+                  backgroundColor={colors.black}
+                  text="Message"
+                  textColor={colors.white}
+                  onPress={() => navigation.navigate('Chat')}
+                />
+
+                <CustomButton
+                  btnHeight={height * 0.07}
+                  btnWidth={width * 0.45}
+                  borderColor={colors.black}
+                  borderRadius={35}
+                  borderWidth={1}
+                  backgroundColor={colors.brown}
+                  text="Call"
+                  textColor={colors.white}
+                  onPress={() => navigation.navigate('CallMain')}
+                />
+              </View>
             </View>
-          </ImageBackground>
-        </ActionSheet>
-      </View>
-    </ImageBackground>
+          </View>
+        </ImageBackground>
+      </ActionSheet>
+
+      <ActionSheet
+        ref={fourthSheetRef}
+        containerStyle={{
+          ...styles.actionSheetFourth,
+          pointerEvents: 'box-none',
+        }}
+        snapPoints={[20, 50, 90]}
+        initialSnapIndex={1}
+        closeOnTouchBackdrop={false}
+        onTouchBackdrop={handleBackdropPressOnFourthSheet}
+        defaultOverlayOpacity={0.1}
+        indicatorStyle={{
+          backgroundColor: colors.lightBrown,
+          width: width * 0.3,
+          height: height * 0.006,
+          borderRadius: 3,
+        }}
+        gestureEnabled={true}
+        backgroundInteractionEnabled={true}
+        overlayColor="transparent"
+        enableOverDrag={false}
+        closable={false}
+        drawUnderStatusBar={true}
+        keyboardShouldPersistTaps="handled"
+        isModal={false}
+        safeAreaInsets={{ top: 0, left: 0, right: 0, bottom: 0 }}
+      >
+        <ImageBackground
+          source={images.ActionSheetBg}
+          style={styles.ActinSheetBg}
+        >
+          <View style={styles.gradientBackground}>
+            <View style={styles.ActionSheetContentMain}>
+              <Text style={styles.selectText}>Your Ride Started!</Text>
+
+              <View style={{ flexDirection: 'row' }}>
+                <Image source={images.guide} style={styles.guide} />
+
+                <View style={styles.locationMain}>
+                  <CustomTextInput
+                    placeholder="Groklyn Bridge Park"
+                    placeholderTextColor={colors.black}
+                    borderColor={colors.brown}
+                    borderRadius={10}
+                    inputWidth={width * 0.8}
+                    inputHeight={height * 0.05}
+                    leftIcon={
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                    }
+                    editable={false}
+                  />
+                  <CustomTextInput
+                    placeholder="Groklyn Bridge Park"
+                    placeholderTextColor={colors.black}
+                    borderColor={colors.gray}
+                    borderRadius={10}
+                    inputWidth={width * 0.8}
+                    inputHeight={height * 0.05}
+                    leftIcon={
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                    }
+                    editable={false}
+                  />
+                </View>
+              </View>
+
+              <LinearGradient
+                colors={['#FFFFFF', '#FFE9E9']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1.1 }}
+                style={styles.passengerContainer}
+              >
+                <View style={styles.textPassenger}>
+                  <Text style={styles.name}>Passenger Name:</Text>
+                  <Text style={styles.adam}>Adam James</Text>
+                </View>
+
+                <View style={styles.textPassenger}>
+                  <Text style={styles.distance}>Distance:</Text>
+                  <Text style={styles.miles}>10 Miles away</Text>
+                </View>
+
+                <View style={styles.textPassenger}>
+                  <Text style={styles.plate}>Number Plate:</Text>
+                  <Text style={styles.number}>123 756</Text>
+                </View>
+
+                <View style={styles.subContainer}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: width * 0.09,
+                      alignItems: 'center',
+                      height: height * 0.055,
+                    }}
+                  >
+                    <Text style={styles.fare}>Fare:</Text>
+                    <Text style={styles.fare}>$55.00</Text>
+                  </View>
+                </View>
+              </LinearGradient>
+
+              {/* Add countdown display */}
+              <View style={styles.countdownContainer}>
+                <Text style={styles.countdownText}>
+                  Ride ending in: {formatTime(countdown)}
+                </Text>
+              </View>
+
+              <View style={styles.btn}>
+                <CustomButton
+                  btnHeight={height * 0.07}
+                  btnWidth={width * 0.45}
+                  borderColor={colors.black}
+                  borderRadius={35}
+                  borderWidth={1}
+                  backgroundColor={colors.black}
+                  text="Message"
+                  textColor={colors.white}
+                  onPress={() => navigation.navigate('Chat')}
+                />
+
+                <CustomButton
+                  btnHeight={height * 0.07}
+                  btnWidth={width * 0.45}
+                  borderColor={colors.black}
+                  borderRadius={35}
+                  borderWidth={1}
+                  backgroundColor={colors.brown}
+                  text="Call"
+                  textColor={colors.white}
+                  onPress={() => navigation.navigate('CallMain')}
+                />
+              </View>
+
+              <View style={{ top: height * 0.1 }}>
+                <CustomButton
+                  btnHeight={height * 0.07}
+                  btnWidth={width * 0.9}
+                  borderColor={colors.black}
+                  borderRadius={35}
+                  borderWidth={1}
+                  backgroundColor={colors.brown}
+                  text="Share Ride "
+                  textColor={colors.white}
+                  // onPress={() => navigation.navigate('CallMain')}
+                />
+              </View>
+            </View>
+          </View>
+        </ImageBackground>
+      </ActionSheet>
+    </View>
+    // </ImageBackground>
   );
 };
 
@@ -779,6 +815,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     resizeMode: 'contain',
     width: width * 1,
+    top: -height * 0.02,
   },
   ActionSheetContentMain: {
     alignItems: 'center',

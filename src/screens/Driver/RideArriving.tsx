@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
 import LinearGradient from 'react-native-linear-gradient';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Progress from 'react-native-progress';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
@@ -55,6 +56,7 @@ const RideArriving = () => {
   const strokeWidth = 5;
   const circumference = 2 * Math.PI * radius;
   const progressAnim = useRef(new Animated.Value(1)).current;
+  const mapRef = useRef<MapView>(null);
 
   useEffect(() => {
     if (waitingTimerModalVisible) {
@@ -187,37 +189,49 @@ const RideArriving = () => {
   return (
     <ImageBackground source={images.Maptwo} style={styles.mapImg}>
       <View style={{ flex: 1 }}>
-        <View style={styles.topHeaderContainer}>
+        <View
+          style={[styles.topHeaderContainer, { pointerEvents: 'box-none' }]}
+        >
           <TopHeader isMenu={true} isChat={true} />
         </View>
 
+        <View style={{ flex: 1 }}>
+          <MapView
+            ref={mapRef}
+            provider={PROVIDER_GOOGLE}
+            style={{ flex: 1 }}
+            initialRegion={{
+              latitude: 40.7003,
+              longitude: -73.9967,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            }}
+            // scrollEnabled
+            // zoomEnabled
+            // rotateEnabled
+            // pitchEnabled
+            // showsUserLocation={true}
+            scrollEnabled={false}
+            zoomEnabled={false}
+            rotateEnabled={false}
+            pitchEnabled={false}
+            showsUserLocation={false}
+          >
+            <Marker
+              coordinate={{ latitude: 40.7003, longitude: -73.9967 }}
+              title="Brooklyn Bridge Park"
+              description="New York"
+            />
+          </MapView>
+        </View>
         <ActionSheet
-          // ref={arrivingSheetRef}
-          // containerStyle={styles.actionSheetMain}
-          // snapPoints={SNAP_POINTS}
-          // initialSnapIndex={1} // Assuming it opens to '50%'
-          // closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          // onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          // defaultOverlayOpacity={0.1}
-          // onClose={() => {
-          //   requestAnimationFrame(() => {
-          //     arrivingSheetRef.current?.show();
-          //   });
-          // }}
-          // gestureEnabled={true}
-          // indicatorStyle={{
-          //   backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-          //   width: width * 0.3, // optional (default is smaller)
-          //   height: height * 0.006,
-          //   borderRadius: 3,
-          // }}
-          // enableOverDrag={false} // ✅ prevents dragging to close
-          // closable={false}
-          // onTouchBackdrop={() => {}} // safeguard
           ref={arrivingSheetRef}
-          containerStyle={styles.actionSheetMain}
+          containerStyle={{
+            ...styles.actionSheetMain,
+            pointerEvents: 'box-none',
+          }}
           snapPoints={[20, 50, 90]}
-          initialSnapIndex={1}
+          initialSnapIndex={0}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{
@@ -229,12 +243,15 @@ const RideArriving = () => {
           gestureEnabled={true}
           backgroundInteractionEnabled={true}
           overlayColor="transparent"
-          enableOverDrag={true} // ✅ allow closing by drag
-          closable={true} // ✅ allow full close
+          enableOverDrag={true}
+          closable={true}
           onClose={() => {
-            // when first sheet closes, open second
             completedSheetRef.current?.show();
           }}
+          drawUnderStatusBar={true}
+          keyboardShouldPersistTaps="handled"
+          isModal={false}
+          safeAreaInsets={{ top: 0, left: 0, right: 0, bottom: 0 }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -339,32 +356,13 @@ const RideArriving = () => {
         </ActionSheet>
 
         <ActionSheet
-          // ref={completedSheetRef}
-          // containerStyle={styles.actionSheetMain}
-          // snapPoints={SNAP_POINTS}
-          // initialSnapIndex={1} // Assuming it opens to '50%'
-          // closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          // onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          // defaultOverlayOpacity={0.1}
-          // onClose={() => {
-          //   requestAnimationFrame(() => {
-          //     completedSheetRef.current?.show();
-          //   });
-          // }}
-          // gestureEnabled={true}
-          // indicatorStyle={{
-          //   backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-          //   width: width * 0.3, // optional (default is smaller)
-          //   height: height * 0.006,
-          //   borderRadius: 3,
-          // }}
-          // enableOverDrag={false} // ✅ prevents dragging to close
-          // closable={false}
-          // onTouchBackdrop={() => {}} // safeguard
           ref={completedSheetRef}
-          containerStyle={styles.actionSheetMain}
+          containerStyle={{
+            ...styles.actionSheetMain,
+            pointerEvents: 'box-none',
+          }}
           snapPoints={[20, 50, 90]}
-          initialSnapIndex={1}
+          initialSnapIndex={0}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{
@@ -381,6 +379,10 @@ const RideArriving = () => {
           onClose={() => {
             thirdSheetRef.current?.show();
           }}
+          drawUnderStatusBar={true}
+          keyboardShouldPersistTaps="handled"
+          isModal={false}
+          safeAreaInsets={{ top: 0, left: 0, right: 0, bottom: 0 }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -494,32 +496,13 @@ const RideArriving = () => {
         </ActionSheet>
 
         <ActionSheet
-          // ref={thirdSheetRef}
-          // containerStyle={styles.actionSheetThird}
-          // snapPoints={SNAP_POINTS} // Your defined snap points
-          // initialSnapIndex={1} // Assuming it opens to '50%'
-          // closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          // // onTouchBackdrop={handleBackdropPressOnCompletedSheet} // ✅ STEP 2: Use custom handler
-          // defaultOverlayOpacity={0.1}
-          // onClose={() => {
-          //   requestAnimationFrame(() => {
-          //     thirdSheetRef.current?.show();
-          //   });
-          // }}
-          // gestureEnabled={true}
-          // indicatorStyle={{
-          //   backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-          //   width: width * 0.3, // optional (default is smaller)
-          //   height: height * 0.006,
-          //   borderRadius: 3,
-          // }}
-          // enableOverDrag={false} // ✅ prevents dragging to close
-          // closable={false}
-          // onTouchBackdrop={() => {}} // safeguard
           ref={thirdSheetRef}
-          containerStyle={styles.actionSheetThird}
+          containerStyle={{
+            ...styles.actionSheetThird,
+            pointerEvents: 'box-none',
+          }}
           snapPoints={[20, 50, 90]}
-          initialSnapIndex={1}
+          initialSnapIndex={0}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{
@@ -536,6 +519,10 @@ const RideArriving = () => {
           onClose={() => {
             fourthSheetRef.current?.show();
           }}
+          drawUnderStatusBar={true}
+          keyboardShouldPersistTaps="handled"
+          isModal={false}
+          safeAreaInsets={{ top: 0, left: 0, right: 0, bottom: 0 }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
@@ -659,32 +646,13 @@ const RideArriving = () => {
         </ActionSheet>
 
         <ActionSheet
-          // ref={fourthSheetRef}
-          // containerStyle={styles.actionSheetFourth}
-          // snapPoints={SNAP_POINTS} // Your defined snap points
-          // initialSnapIndex={1} // Assuming it opens to '50%'
-          // closeOnTouchBackdrop={false} // 🚫 STEP 1: Disable full auto-close
-          // // onTouchBackdrop={handleBackdropPressOnCompletedSheet}
-          // defaultOverlayOpacity={0.1}
-          // onClose={() => {
-          //   requestAnimationFrame(() => {
-          //     fourthSheetRef.current?.show();
-          //   });
-          // }}
-          // gestureEnabled={true}
-          // indicatorStyle={{
-          //   backgroundColor: colors.lightBrown, // 👈 handle/gesture bar color
-          //   width: width * 0.3, // optional (default is smaller)
-          //   height: height * 0.006,
-          //   borderRadius: 3,
-          // }}
-          // enableOverDrag={false} // ✅ prevents dragging to close
-          // closable={false}
-          // onTouchBackdrop={() => {}} // safeguard
           ref={fourthSheetRef}
-          containerStyle={styles.actionSheetFourth}
+          containerStyle={{
+            ...styles.actionSheetFourth,
+            pointerEvents: 'box-none',
+          }}
           snapPoints={[20, 50, 90]}
-          initialSnapIndex={1}
+          initialSnapIndex={0}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{
@@ -698,6 +666,10 @@ const RideArriving = () => {
           overlayColor="transparent"
           enableOverDrag={true}
           closable={true}
+          drawUnderStatusBar={true}
+          keyboardShouldPersistTaps="handled"
+          isModal={false}
+          safeAreaInsets={{ top: 0, left: 0, right: 0, bottom: 0 }}
         >
           <ImageBackground
             source={images.ActionSheetBg}
