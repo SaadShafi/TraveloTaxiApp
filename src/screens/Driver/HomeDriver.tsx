@@ -1,15 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Animated,
   Image,
-  ImageBackground,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { Text } from 'react-native-gesture-handler';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import BookingCard from '../../components/BookingCard';
@@ -22,6 +22,7 @@ const HomeDriver = () => {
   const navigation = useNavigation<any>();
   const [isOnline, setIsOnline] = useState(false);
   const animatedValue = useState(new Animated.Value(0))[0];
+  const mapRef = useRef<MapView>(null);
 
   const toggleOnline = () => {
     const toValue = isOnline ? 0 : 1;
@@ -54,118 +55,187 @@ const HomeDriver = () => {
   });
 
   return (
-    <ImageBackground
-      source={images.MAP}
-      style={{ flex: 1, height: height * 1.05 }}
-      resizeMode="cover"
-    >
-      <View style={{ top: height * 0.01 }}>
-        <View style={{ top: height * 0.01 }}>
+    <View style={styles.containerSec}>
+      <MapView
+        ref={mapRef}
+        provider={PROVIDER_GOOGLE}
+        style={StyleSheet.absoluteFillObject}
+        initialRegion={{
+          latitude: 40.7003,
+          longitude: -73.9967,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }}
+        scrollEnabled
+        zoomEnabled
+        rotateEnabled
+        pitchEnabled
+        showsUserLocation={true}
+      >
+        <Marker
+          coordinate={{ latitude: 40.7003, longitude: -73.9967 }}
+          title="Brooklyn Bridge Park"
+          description="New York"
+        />
+      </MapView>
+      <View style={styles.overlay}>
+        <View style={styles.headerContainer}>
           <TopHeader isMenu={true} />
-        </View>
-        <View style={styles.notificationContainer}>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => navigation.navigate('notification')}
-            style={styles.notificationButton}
-          >
-            <Image source={images.notification} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.rideContainer}>
-          <View>
-            <Text style={styles.alex}>Hi Alex!</Text>
-            <Text style={styles.ride}>Need A Ride?</Text>
+
+          <View style={styles.notificationContainer}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate('notification')}
+              style={styles.notificationButton}
+            >
+              <Image source={images.notification} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.rideContainer}>
+            <View>
+              <Text style={styles.alex}>Hi Alex!</Text>
+              <Text style={styles.ride}>Need A Ride?</Text>
+            </View>
           </View>
         </View>
-      </View>
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={toggleOnline}
-        style={{ top: height * 0.025, marginBottom: height * 0.03 }}
-      >
-        <Animated.View style={[styles.toggleButton, { backgroundColor }]}>
-          <Animated.View
-            style={[
-              styles.carBackground,
-              {
-                transform: [
-                  { translateX: iconTranslateX },
-                  { translateY: -height * 0.025 },
-                ],
-              },
-            ]}
-          >
-            <Image
-              source={images.CarIcon}
-              style={[
-                styles.toggleIcon,
-                { tintColor: isOnline ? '#B00020' : '#B00020' },
-              ]}
-              resizeMode="contain"
-            />
-          </Animated.View>
-          <Animated.Text
-            style={[
-              styles.toggleText,
-              {
-                color: textColor,
-                transform: [{ translateX: textTranslateX }],
-              },
-            ]}
-          >
-            {isOnline ? 'Turn Online' : 'Turn Offline'}
-          </Animated.Text>
-        </Animated.View>
-      </TouchableOpacity>
 
-      <ScrollView contentContainerStyle={styles.container}>
-        <BookingCard
-          type="Book Now"
-          passengerName="Adam James"
-          passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
-          distance="10 miles"
-          fare="$60.00"
-          onCancel={() => console.log('Cancel Book Now')}
-          onAccept={() => navigation.navigate('RideArriving')}
-          onBid={() => navigation.navigate('RideDetails')}
-        />
-        <BookingCard
-          type="Book Now"
-          passengerName="Adam James"
-          passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
-          distance="10 miles"
-          fare="$60.00"
-          onCancel={() => console.log('Cancel Pre-Booking')}
-          onAccept={() => navigation.navigate('RideArriving')}
-          onBid={() => navigation.navigate('RideDetails')}
-        />
-        <BookingCard
-          type="Book Now"
-          passengerName="Adam James"
-          passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
-          distance="10 miles"
-          fare="$60.00"
-          onCancel={() => console.log('Cancel Pre-Booking')}
-          onAccept={() => navigation.navigate('RideArriving')}
-          onBid={() => navigation.navigate('RideDetails')}
-        />
-        <BookingCard
-          type="Book Now"
-          passengerName="Adam James"
-          passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
-          distance="10 miles"
-          fare="$60.00"
-          onCancel={() => console.log('Cancel Book Now')}
-          onAccept={() => navigation.navigate('RideArriving')}
-          onBid={() => navigation.navigate('RideDetails')}
-        />
-      </ScrollView>
-    </ImageBackground>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={toggleOnline}
+          style={styles.toggleContainer}
+        >
+          <Animated.View style={[styles.toggleButton, { backgroundColor }]}>
+            <Animated.View
+              style={[
+                styles.carBackground,
+                {
+                  transform: [
+                    { translateX: iconTranslateX },
+                    { translateY: -height * 0.025 },
+                  ],
+                },
+              ]}
+            >
+              <Image
+                source={images.CarIcon}
+                style={[
+                  styles.toggleIcon,
+                  { tintColor: isOnline ? '#B00020' : '#B00020' },
+                ]}
+                resizeMode="contain"
+              />
+            </Animated.View>
+            <Animated.Text
+              style={[
+                styles.toggleText,
+                {
+                  color: textColor,
+                  transform: [{ translateX: textTranslateX }],
+                },
+              ]}
+            >
+              {isOnline ? 'Turn Online' : 'Turn Offline'}
+            </Animated.Text>
+          </Animated.View>
+        </TouchableOpacity>
+
+        <View style={styles.bookingScrollContainer}>
+          <ScrollView
+            contentContainerStyle={styles.bookingContainer}
+            showsVerticalScrollIndicator={false}
+          >
+            <BookingCard
+              type="Book Now"
+              passengerName="Adam James"
+              passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
+              distance="10 miles"
+              fare="$60.00"
+              onCancel={() => console.log('Cancel Book Now')}
+              onAccept={() => navigation.navigate('RideArriving')}
+              onBid={() => navigation.navigate('RideDetails')}
+            />
+            <BookingCard
+              type="Book Now"
+              passengerName="Adam James"
+              passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
+              distance="10 miles"
+              fare="$60.00"
+              onCancel={() => console.log('Cancel Book Now')}
+              onAccept={() => navigation.navigate('RideArriving')}
+              onBid={() => navigation.navigate('RideDetails')}
+            />
+            <BookingCard
+              type="Book Now"
+              passengerName="Adam James"
+              passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
+              distance="10 miles"
+              fare="$60.00"
+              onCancel={() => console.log('Cancel Pre-Booking')}
+              onAccept={() => navigation.navigate('RideArriving')}
+              onBid={() => navigation.navigate('RideDetails')}
+            />
+            <BookingCard
+              type="Book Now"
+              passengerName="Adam James"
+              passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
+              distance="10 miles"
+              fare="$60.00"
+              onCancel={() => console.log('Cancel Pre-Booking')}
+              onAccept={() => navigation.navigate('RideArriving')}
+              onBid={() => navigation.navigate('RideDetails')}
+            />
+            <BookingCard
+              type="Book Now"
+              passengerName="Adam James"
+              passengerImage="https://randomuser.me/api/portraits/men/1.jpg"
+              distance="10 miles"
+              fare="$60.00"
+              onCancel={() => console.log('Cancel Book Now')}
+              onAccept={() => navigation.navigate('RideArriving')}
+              onBid={() => navigation.navigate('RideDetails')}
+            />
+          </ScrollView>
+        </View>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  containerSec: {
+    flex: 1,
+  },
+  overlay: {
+    flex: 1,
+  },
+  headerContainer: {
+    position: 'absolute',
+    top: height * 0.01,
+    width: '100%',
+    zIndex: 1000,
+  },
+  toggleContainer: {
+    position: 'absolute',
+    top: height * 0.12,
+    width: '100%',
+    zIndex: 1000,
+  },
+  bookingScrollContainer: {
+    position: 'absolute',
+    top: height * 0.199, // Start below the toggle button
+    bottom: 0, // Take remaining space
+    width: '100%',
+    paddingHorizontal: 15,
+    zIndex: 1000,
+  },
+  bookingContainer: {
+    // position: 'absolute',
+    // top: height * 0.19,
+    // width: '100%',
+    // paddingHorizontal: 15,
+    paddingBottom: 20, // Add some bottom padding
+  },
   notificationContainer: {
     position: 'absolute',
     top: height * 0.027,

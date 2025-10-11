@@ -173,9 +173,13 @@ const CustomDrawerContent = (props: any) => {
           <Text style={styles.closeButtonText}> Close</Text>
         </TouchableOpacity>
         <View style={styles.profileSection}>
-          <View style={{ right: width * 0.04 }}>
+          <TouchableOpacity
+            style={{ right: width * 0.04 }}
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate('Profile')}
+          >
             <Image source={images.drawerProf} style={styles.profileImage} />
-          </View>
+          </TouchableOpacity>
           <View style={styles.profileTextContainer}>
             <Text style={styles.profileName}>Name</Text>
             <Text style={styles.profileEmail}>info@yourmail.com</Text>

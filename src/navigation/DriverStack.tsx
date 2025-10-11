@@ -1,6 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import CreateProfile from '../screens/Auth/CreateProfile';
+import EditProfile from '../screens/Auth/EditProfile';
+import Profile from '../screens/Auth/Profile';
 import WelcomeFirst from '../screens/Auth/WelcomeFirst';
 import WelcomeFourth from '../screens/Auth/WelcomeFourth';
 import WelcomeSec from '../screens/Auth/WelcomeSec';
@@ -54,6 +56,8 @@ export type StackParamList = {
   SignUpEmail: undefined;
   OtpVerification: undefined;
   SetPassword: undefined;
+  EditProfile: undefined;
+  Profile: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -89,6 +93,8 @@ const DriverStack: React.FC = () => {
       <Stack.Screen name="Chat" component={ChatMain} />
       <Stack.Screen name="CallMain" component={CallMain} />
       <Stack.Screen name="TermsCondition" component={TermsCondition} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 };

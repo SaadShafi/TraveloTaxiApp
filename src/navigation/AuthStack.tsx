@@ -2,9 +2,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import Congratulation from '../screens/Auth/Congratulation';
 import CreateProfile from '../screens/Auth/CreateProfile';
+import EditProfile from '../screens/Auth/EditProfile';
 import ForgotPassword from '../screens/Auth/ForgotPasswrd';
 import OtpVerification from '../screens/Auth/OtpVerification';
 import PhoneVerification from '../screens/Auth/PhoneVerification';
+import Profile from '../screens/Auth/Profile';
 import SetPassword from '../screens/Auth/SetPass';
 import SignIn from '../screens/Auth/SignIn';
 import SignUpEmail from '../screens/Auth/SignUpEmail';
@@ -56,6 +58,8 @@ export type StackParamList = {
   CallMain: undefined;
   RideArrivingUser: undefined;
   TermsCondition: undefined;
+  EditProfile: undefined;
+  Profile: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -89,6 +93,8 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="CallMain" component={CallMain} />
       <Stack.Screen name="RideArrivingUser" component={RideArrivingUser} />
       <Stack.Screen name="TermsCondition" component={TermsCondition} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 };

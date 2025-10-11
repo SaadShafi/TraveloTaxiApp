@@ -191,7 +191,7 @@ const RideArrivingUser = () => {
           borderRadius: 3,
         }}
         gestureEnabled={true}
-        backgroundInteractionEnabled={true}
+        backgroundInteractionEnabled={false}
         overlayColor="transparent"
         enableOverDrag={false}
         closable={false}
@@ -299,7 +299,7 @@ const RideArrivingUser = () => {
           borderRadius: 3,
         }}
         gestureEnabled={true}
-        backgroundInteractionEnabled={true}
+        backgroundInteractionEnabled={false}
         overlayColor="transparent"
         enableOverDrag={false}
         closable={false}
@@ -405,7 +405,7 @@ const RideArrivingUser = () => {
           borderRadius: 3,
         }}
         gestureEnabled={true}
-        backgroundInteractionEnabled={true}
+        backgroundInteractionEnabled={false}
         overlayColor="transparent"
         enableOverDrag={false}
         closable={false}
@@ -553,7 +553,7 @@ const RideArrivingUser = () => {
           borderRadius: 3,
         }}
         gestureEnabled={true}
-        backgroundInteractionEnabled={true}
+        backgroundInteractionEnabled={false}
         overlayColor="transparent"
         enableOverDrag={false}
         closable={false}
@@ -779,6 +779,7 @@ const styles = StyleSheet.create({
     height: height * 0.5,
     width: width,
     bottom: height * 0.04,
+    position: 'absolute',
   },
   actionSheetThree: {
     borderTopLeftRadius: 45,

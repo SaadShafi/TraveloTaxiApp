@@ -241,7 +241,7 @@ const RideArriving = () => {
             borderRadius: 3,
           }}
           gestureEnabled={true}
-          backgroundInteractionEnabled={true}
+          backgroundInteractionEnabled={false}
           overlayColor="transparent"
           enableOverDrag={true}
           closable={true}
@@ -372,7 +372,7 @@ const RideArriving = () => {
             borderRadius: 3,
           }}
           gestureEnabled={true}
-          backgroundInteractionEnabled={true}
+          backgroundInteractionEnabled={false}
           overlayColor="transparent"
           enableOverDrag={true}
           closable={true}
@@ -512,7 +512,7 @@ const RideArriving = () => {
             borderRadius: 3,
           }}
           gestureEnabled={true}
-          backgroundInteractionEnabled={true}
+          backgroundInteractionEnabled={false}
           overlayColor="transparent"
           enableOverDrag={true}
           closable={true}
@@ -662,7 +662,7 @@ const RideArriving = () => {
             borderRadius: 3,
           }}
           gestureEnabled={true}
-          backgroundInteractionEnabled={true}
+          backgroundInteractionEnabled={false}
           overlayColor="transparent"
           enableOverDrag={true}
           closable={true}
