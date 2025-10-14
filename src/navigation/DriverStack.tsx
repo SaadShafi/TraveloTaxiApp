@@ -3,6 +3,7 @@ import React from 'react';
 import CreateProfile from '../screens/Auth/CreateProfile';
 import EditProfile from '../screens/Auth/EditProfile';
 import Profile from '../screens/Auth/Profile';
+import SignIn from '../screens/Auth/SignIn';
 import WelcomeFirst from '../screens/Auth/WelcomeFirst';
 import WelcomeFourth from '../screens/Auth/WelcomeFourth';
 import WelcomeSec from '../screens/Auth/WelcomeSec';
@@ -95,6 +96,7 @@ const DriverStack: React.FC = () => {
       <Stack.Screen name="TermsCondition" component={TermsCondition} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="SignIn" component={SignIn} />
     </Stack.Navigator>
   );
 };

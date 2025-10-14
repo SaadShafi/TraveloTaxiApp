@@ -677,7 +677,7 @@ const RideArriving = () => {
           >
             <View style={styles.gradientBackground}>
               <View style={styles.ActionSheetContentMain}>
-                <Text style={styles.selectText}>Ride Ongoing!</Text>
+                <Text style={styles.selectText}>Ride Started!</Text>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -765,17 +765,26 @@ const RideArriving = () => {
                     backgroundColor={colors.brown}
                     onPress={() => setWaitingStartModalVisible(true)}
                   />
-                  <CustomButton
-                    btnHeight={height * 0.07}
-                    btnWidth={width * 0.8}
-                    borderColor={colors.black}
-                    borderRadius={30}
-                    borderWidth={1}
-                    text="End Ride"
-                    textColor={colors.white}
-                    backgroundColor={colors.brown}
-                    onPress={() => setModalVisibleSec(true)}
-                  />
+                  <View style={styles.row}>
+                    <CustomButton
+                      btnHeight={height * 0.07}
+                      btnWidth={width * 0.39}
+                      borderRadius={30}
+                      text="SOS"
+                      textColor={colors.white}
+                      backgroundColor={colors.black}
+                      // onPress={() => setModalVisibleSec(true)}
+                    />
+                    <CustomButton
+                      btnHeight={height * 0.07}
+                      btnWidth={width * 0.39}
+                      borderRadius={30}
+                      text="End Ride"
+                      textColor={colors.white}
+                      backgroundColor={colors.black}
+                      onPress={() => setModalVisibleSec(true)}
+                    />
+                  </View>
                 </View>
               </View>
             </View>
@@ -1343,6 +1352,11 @@ const styles = StyleSheet.create({
     height: height * 0.1,
     resizeMode: 'contain',
     marginVertical: height * 0.02,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 

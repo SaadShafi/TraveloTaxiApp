@@ -92,6 +92,9 @@ const images: { [key: string]: ImageSourcePropType } = {
   smile: require('../Images/smile.png'),
   pinPoint: require('../Images/pinPoint.png'),
   list: require('../Images/list.png'),
+  payment: require('../Images/payment.png'),
+  paymentCheck: require('../Images/paymentCheck.png'),
+  paymentSuccess: require('../Images/paymentSuccess.png'),
 };
 
 export default images;
