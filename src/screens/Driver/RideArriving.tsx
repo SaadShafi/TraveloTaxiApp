@@ -9,6 +9,7 @@ import {
   Modal,
   Pressable,
   StyleSheet,
+  Switch,
   Text,
   View,
 } from 'react-native';
@@ -57,6 +58,8 @@ const RideArriving = () => {
   const circumference = 2 * Math.PI * radius;
   const progressAnim = useRef(new Animated.Value(1)).current;
   const mapRef = useRef<MapView>(null);
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [cleaningModalVisible, setCleaningModalVisible] = useState(false);
 
   useEffect(() => {
     if (waitingTimerModalVisible) {
@@ -185,6 +188,21 @@ const RideArriving = () => {
     navigation.navigate('HomeDriver');
     console.log('Ed ride btn pressed');
   };
+
+  const toggleSwitch = () => {
+    setIsEnabled(previousState => {
+      const newState = !previousState;
+      if (newState) {
+        setCleaningModalVisible(true);
+      }
+      return newState;
+    });
+  };
+
+  const handleCleaningNo = () => {
+  setCleaningModalVisible(false);
+  setIsEnabled(false); // Explicitly set switch to false
+};
 
   return (
     <ImageBackground source={images.Maptwo} style={styles.mapImg}>
@@ -342,9 +360,7 @@ const RideArriving = () => {
                   <CustomButton
                     btnHeight={height * 0.07}
                     btnWidth={width * 0.8}
-                    borderColor={colors.black}
                     borderRadius={30}
-                    borderWidth={1}
                     backgroundColor={colors.black}
                     text="Cancel Ride"
                     textColor={colors.white}
@@ -471,9 +487,7 @@ const RideArriving = () => {
                   <CustomButton
                     btnHeight={height * 0.07}
                     btnWidth={width * 0.45}
-                    borderColor={colors.black}
                     borderRadius={50}
-                    borderWidth={1}
                     backgroundColor={colors.black}
                     text="Cancel Ride"
                     textColor={colors.white}
@@ -481,9 +495,7 @@ const RideArriving = () => {
                   <CustomButton
                     btnHeight={height * 0.07}
                     btnWidth={width * 0.45}
-                    borderColor={colors.black}
                     borderRadius={50}
-                    borderWidth={1}
                     backgroundColor={colors.brown}
                     text="Arrived"
                     textColor={colors.white}
@@ -617,9 +629,7 @@ const RideArriving = () => {
                   <CustomButton
                     btnHeight={height * 0.07}
                     btnWidth={width * 0.45}
-                    borderColor={colors.black}
                     borderRadius={50}
-                    borderWidth={1}
                     backgroundColor={colors.black}
                     text="Cancel Ride"
                     textColor={colors.white}
@@ -627,9 +637,7 @@ const RideArriving = () => {
                   <CustomButton
                     btnHeight={height * 0.07}
                     btnWidth={width * 0.45}
-                    borderColor={colors.black}
                     borderRadius={50}
-                    borderWidth={1}
                     backgroundColor={colors.brown}
                     text="Start Ride"
                     textColor={colors.white}
@@ -752,11 +760,22 @@ const RideArriving = () => {
                     </View>
                   </View>
                 </LinearGradient>
-
-                <View style={{ gap: height * 0.01, marginTop: height * 0.08 }}>
+                <View style={styles.cleaningServices}>
+                  <View style={styles.cleaningMain}>
+                    <Text style={styles.cleaningText}>Cleaning Service</Text>
+                    <Switch
+                      trackColor={{ false: '#6f6c6cff', true: '#1E8C36' }}
+                      thumbColor={isEnabled ? colors.white : '#f4f3f4'}
+                      ios_backgroundColor="#3e3e3e"
+                      onValueChange={toggleSwitch}
+                      value={isEnabled}
+                    />
+                  </View>
+                </View>
+                <View style={{ gap: height * 0.01 }}>
                   <CustomButton
                     btnHeight={height * 0.07}
-                    btnWidth={width * 0.8}
+                    btnWidth={width * 0.85}
                     borderColor={colors.black}
                     borderRadius={30}
                     borderWidth={1}
@@ -1087,6 +1106,49 @@ const RideArriving = () => {
             </View>
           </View>
         </Modal>
+
+        <Modal
+          transparent={true}
+          visible={cleaningModalVisible}
+          animationType="fade"
+          onRequestClose={() => setCleaningModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={[styles.modalContainer, { height: height * 0.3 }]}>
+              <Text style={styles.modalText}>Cleaning Service</Text>
+              <Image source={images.exclamation} style={styles.modalImg} />
+              <View style={styles.modalParaMain}>
+                <Text style={styles.modalParaText}>
+                  Are you sure you want to include
+                </Text>
+                <Text style={styles.modalParaText}>
+                  the cleaning service charges?
+                </Text>
+              </View>
+              <View style={styles.modalBtnMain}>
+                <CustomButton
+                  btnHeight={height * 0.06}
+                  btnWidth={width * 0.38}
+                  text="No"
+                  textColor={colors.white}
+                  backgroundColor={colors.black}
+                  borderRadius={30}
+                  // onPress={() => setCleaningModalVisible(false)}
+                  onPress={handleCleaningNo}
+                />
+                <CustomButton
+                  btnHeight={height * 0.06}
+                  btnWidth={width * 0.38}
+                  text="Yes"
+                  textColor={colors.white}
+                  backgroundColor={colors.brown}
+                  borderRadius={30}
+                  onPress={() => setCleaningModalVisible(false)}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </ImageBackground>
   );
@@ -1197,7 +1259,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 45,
     borderTopRightRadius: 45,
     overflow: 'hidden',
-    height: height * 0.65,
+    height: height * 0.7,
     width: width,
     bottom: height * 0.04,
   },
@@ -1318,7 +1380,6 @@ const styles = StyleSheet.create({
     width: width * 0.75,
     borderRadius: 30,
   },
-
   timerModalContainer: {
     backgroundColor: colors.white,
     borderRadius: 20,
@@ -1357,6 +1418,45 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  cleaningServices: {
+    marginTop: height * 0.055,
+    marginBottom: height * 0.012,
+  },
+  cleaningMain: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.gray,
+    borderRadius: 30,
+    width: width * 0.85,
+    height: height * 0.06,
+    paddingHorizontal: width * 0.04,
+  },
+  cleaningText: {
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
+  },
+  modalImg: {
+    width: width * 0.14,
+    resizeMode: 'contain',
+  },
+  modalParaMain: {
+    alignItems: 'center',
+    top: height * 0.01,
+  },
+  modalParaText: {
+    fontFamily: fontFamily.ClashDisplayRegular,
+    fontSize: fontSizes.sm,
+    color: colors.black,
+  },
+  modalBtnMain: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    top: height * 0.029,
+    width: width * 0.8,
   },
 });
 
