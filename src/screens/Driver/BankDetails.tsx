@@ -65,7 +65,7 @@ const BankDetails = () => {
 
   const toggleModalThird = () => {
     setModalVisibleThird(false);
-    // navigation.navigate('SignIn');
+    navigation.navigate('HomeDriver');
   };
 
   return (

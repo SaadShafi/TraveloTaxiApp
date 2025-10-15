@@ -30,11 +30,15 @@ export default function PlacesAutocompleteNew({
   style,
   inputStyle,
   listStyle,
+  containerStyle,
+  placeholder,
 }: {
   onSelect: (details: PlaceDetails) => void;
   style?: any;
   inputStyle?: any;
   listStyle?: any;
+  containerStyle?: any;
+  placeholder?: any;
 }) {
   const [input, setInput] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -83,7 +87,6 @@ export default function PlacesAutocompleteNew({
     }
   };
 
-  // 🔹 Fetch details of selected place
   const fetchPlaceDetails = async (
     placeId: string,
   ): Promise<PlaceDetails | null> => {
@@ -138,11 +141,11 @@ export default function PlacesAutocompleteNew({
 
   return (
     <View style={[styles.container, style]}>
-      <View style={styles.searchContainer}>
+      <View style={[styles.searchContainer, containerStyle]}>
         <Image source={images.Location} style={styles.location} />
         <TextInput
           style={[styles.textInput, inputStyle]}
-          placeholder="Search Here ...."
+          placeholder={placeholder || 'Search Here ....'}
           placeholderTextColor={colors.black}
           value={input}
           onChangeText={setInput}
@@ -158,7 +161,7 @@ export default function PlacesAutocompleteNew({
             onPress={() => onSelectSuggestion(item)}
             style={styles.item}
           >
-            <Text>{item.text}</Text>
+            <Text style={{ color: colors.black }}>{item.text}</Text>
           </TouchableOpacity>
         )}
       />
@@ -179,13 +182,12 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    // backgroundColor: colors.white,
   },
   textInput: {
     height: height * 0.08,
     paddingHorizontal: 8,
-    // borderWidth: 1,
     borderColor: colors.darkGray,
+    color: colors.black,
   },
   list: {
     backgroundColor: colors.white,

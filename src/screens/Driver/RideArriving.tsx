@@ -11,6 +11,7 @@ import {
   StyleSheet,
   Switch,
   Text,
+  TextInput,
   View,
 } from 'react-native';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
@@ -36,7 +37,7 @@ const RideArriving = () => {
   const thirdSheetRef = useRef<ActionSheetRef>(null);
   const fourthSheetRef = useRef<ActionSheetRef>(null);
   const [timeLeft, setTimeLeft] = useState(10);
-  const [waitingTime, setWaitingTime] = useState(10);
+  const [waitingTime, setWaitingTime] = useState(900);
   const waitingTimerRef = useRef<number | null>(null);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [otpModalVisible, setOtpModalVisible] = useState(false);
@@ -200,9 +201,9 @@ const RideArriving = () => {
   };
 
   const handleCleaningNo = () => {
-  setCleaningModalVisible(false);
-  setIsEnabled(false); // Explicitly set switch to false
-};
+    setCleaningModalVisible(false);
+    setIsEnabled(false); // Explicitly set switch to false
+  };
 
   return (
     <ImageBackground source={images.Maptwo} style={styles.mapImg}>
@@ -291,7 +292,7 @@ const RideArriving = () => {
                 >
                   <Image source={images.guide} />
                   <View style={styles.locationMain}>
-                    <CustomTextInput
+                    {/* <CustomTextInput
                       placeholder="Groklyn Bridge Park"
                       placeholderTextColor={colors.black}
                       borderColor={colors.brown}
@@ -306,6 +307,7 @@ const RideArriving = () => {
                       }
                       editable={false}
                     />
+                    
                     <CustomTextInput
                       placeholder="Groklyn Bridge Park"
                       placeholderTextColor={colors.black}
@@ -320,7 +322,31 @@ const RideArriving = () => {
                         />
                       }
                       editable={false}
-                    />
+                    /> */}
+                    <View style={styles.inputContainer}>
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                      <TextInput
+                        placeholder="Brooklyn Bridge Park"
+                        placeholderTextColor={colors.black}
+                        style={styles.input}
+                        editable={false}
+                      />
+                    </View>
+                    <View style={styles.inputContainer}>
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                      <TextInput
+                        placeholder="Brooklyn Bridge Park"
+                        placeholderTextColor={colors.black}
+                        style={styles.input}
+                        editable={false}
+                      />
+                    </View>
                   </View>
                 </View>
 
@@ -364,6 +390,7 @@ const RideArriving = () => {
                     backgroundColor={colors.black}
                     text="Cancel Ride"
                     textColor={colors.white}
+                    onPress={() => navigation.goBack()}
                   />
                 </View>
               </View>
@@ -418,7 +445,7 @@ const RideArriving = () => {
                 >
                   <Image source={images.guide} />
                   <View style={styles.locationMain}>
-                    <CustomTextInput
+                    {/* <CustomTextInput
                       placeholder="Groklyn Bridge Park"
                       placeholderTextColor={colors.black}
                       borderColor={colors.brown}
@@ -447,7 +474,31 @@ const RideArriving = () => {
                         />
                       }
                       editable={false}
-                    />
+                    /> */}
+                    <View style={styles.inputContainer}>
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                      <TextInput
+                        placeholder="Brooklyn Bridge Park"
+                        placeholderTextColor={colors.black}
+                        style={styles.input}
+                        editable={false}
+                      />
+                    </View>
+                    <View style={styles.inputContainer}>
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                      <TextInput
+                        placeholder="Brooklyn Bridge Park"
+                        placeholderTextColor={colors.black}
+                        style={styles.input}
+                        editable={false}
+                      />
+                    </View>
                   </View>
                 </View>
 
@@ -560,7 +611,7 @@ const RideArriving = () => {
                 >
                   <Image source={images.guide} />
                   <View style={styles.locationMain}>
-                    <CustomTextInput
+                    {/* <CustomTextInput
                       placeholder="Groklyn Bridge Park"
                       placeholderTextColor={colors.black}
                       borderColor={colors.brown}
@@ -589,7 +640,31 @@ const RideArriving = () => {
                         />
                       }
                       editable={false}
-                    />
+                    /> */}
+                    <View style={styles.inputContainer}>
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                      <TextInput
+                        placeholder="Brooklyn Bridge Park"
+                        placeholderTextColor={colors.black}
+                        style={styles.input}
+                        editable={false}
+                      />
+                    </View>
+                    <View style={styles.inputContainer}>
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                      <TextInput
+                        placeholder="Brooklyn Bridge Park"
+                        placeholderTextColor={colors.black}
+                        style={styles.input}
+                        editable={false}
+                      />
+                    </View>
                   </View>
                 </View>
 
@@ -696,7 +771,7 @@ const RideArriving = () => {
                 >
                   <Image source={images.guide} />
                   <View style={styles.locationMain}>
-                    <CustomTextInput
+                    {/* <CustomTextInput
                       placeholder="Groklyn Bridge Park"
                       placeholderTextColor={colors.black}
                       borderColor={colors.brown}
@@ -725,7 +800,31 @@ const RideArriving = () => {
                         />
                       }
                       editable={false}
-                    />
+                    /> */}
+                    <View style={styles.inputContainer}>
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                      <TextInput
+                        placeholder="Brooklyn Bridge Park"
+                        placeholderTextColor={colors.black}
+                        style={styles.input}
+                        editable={false}
+                      />
+                    </View>
+                    <View style={styles.inputContainer}>
+                      <Image
+                        source={images.locationImage}
+                        style={styles.locationImg}
+                      />
+                      <TextInput
+                        placeholder="Brooklyn Bridge Park"
+                        placeholderTextColor={colors.black}
+                        style={styles.input}
+                        editable={false}
+                      />
+                    </View>
                   </View>
                 </View>
 
@@ -787,7 +886,7 @@ const RideArriving = () => {
                   <View style={styles.row}>
                     <CustomButton
                       btnHeight={height * 0.07}
-                      btnWidth={width * 0.39}
+                      btnWidth={width * 0.4}
                       borderRadius={30}
                       text="SOS"
                       textColor={colors.white}
@@ -796,7 +895,7 @@ const RideArriving = () => {
                     />
                     <CustomButton
                       btnHeight={height * 0.07}
-                      btnWidth={width * 0.39}
+                      btnWidth={width * 0.4}
                       borderRadius={30}
                       text="End Ride"
                       textColor={colors.white}
@@ -1022,7 +1121,7 @@ const RideArriving = () => {
               >
                 <Image source={images.guide} />
                 <View style={styles.locationMain}>
-                  <CustomTextInput
+                  {/* <CustomTextInput
                     placeholder="Groklyn Bridge Park"
                     placeholderTextColor={colors.black}
                     borderColor={colors.brown}
@@ -1051,7 +1150,35 @@ const RideArriving = () => {
                       />
                     }
                     editable={false}
-                  />
+                  /> */}
+                  <View
+                    style={[styles.inputContainer, { width: width * 0.75 }]}
+                  >
+                    <Image
+                      source={images.locationImage}
+                      style={styles.locationImg}
+                    />
+                    <TextInput
+                      placeholder="Brooklyn Bridge Park"
+                      placeholderTextColor={colors.black}
+                      style={styles.input}
+                      editable={false}
+                    />
+                  </View>
+                  <View
+                    style={[styles.inputContainer, { width: width * 0.75 }]}
+                  >
+                    <Image
+                      source={images.locationImage}
+                      style={styles.locationImg}
+                    />
+                    <TextInput
+                      placeholder="Brooklyn Bridge Park"
+                      placeholderTextColor={colors.black}
+                      style={styles.input}
+                      editable={false}
+                    />
+                  </View>
                 </View>
               </View>
 
@@ -1155,6 +1282,24 @@ const RideArriving = () => {
 };
 
 const styles = StyleSheet.create({
+  inputContainer: {
+    width: width * 0.8,
+    height: height * 0.05,
+    borderWidth: 1,
+    borderColor: colors.brown,
+    borderRadius: 10,
+    backgroundColor: colors.white,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: width * 0.04,
+  },
+  input: {
+    paddingVertical: 10,
+    paddingLeft: width * 0.03,
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.sm,
+    width: width * 0.8,
+  },
   topHeaderContainer: {
     position: 'absolute',
     // top: height * 0.02,

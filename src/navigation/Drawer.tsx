@@ -155,8 +155,9 @@ const CustomDrawerContent = (props: any) => {
   ];
 
   const handleRoleModeNavigation = () => {
-    dispatch(removeUser());
-    dispatch(logout());
+    // dispatch(removeUser());
+    // dispatch(logout());
+    navigation.navigate('RoleSwitch');
   };
   return (
     <View style={styles.gradientContainer}>

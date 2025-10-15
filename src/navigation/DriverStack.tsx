@@ -25,6 +25,7 @@ import ContactUs from '../screens/Global/ContactUs';
 import DeleteAccount from '../screens/Global/DeleteAccount';
 import NotificationScreen from '../screens/Global/Notification';
 import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
+import RoleSwitch from '../screens/Global/RoleSwitch';
 import Setting from '../screens/Global/Setting';
 import TermsCondition from '../screens/Global/TermsConditions';
 
@@ -59,6 +60,7 @@ export type StackParamList = {
   SetPassword: undefined;
   EditProfile: undefined;
   Profile: undefined;
+  RoleSwitch: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -97,6 +99,7 @@ const DriverStack: React.FC = () => {
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="RoleSwitch" component={RoleSwitch} />
     </Stack.Navigator>
   );
 };

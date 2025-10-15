@@ -240,7 +240,7 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
               </View>
             </View>
             <View style={styles.locationMain}>
-              <CustomTextInput
+              {/* <CustomTextInput
                 placeholder="Groklyn Bridge Park"
                 placeholderTextColor={colors.black}
                 borderColor={colors.gray}
@@ -253,8 +253,30 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                     style={styles.locationImg}
                   />
                 }
+              /> */}
+              <GooglePlacesAutocompleteNew
+                onSelect={(placeDetails: any) => {
+                  console.log('Selected Place:', placeDetails);
+                }}
+                placeholder={'Brookly Bridge Park'}
+                style={{
+                  borderRadius: 10,
+                  padding: 10,
+                  width: width * 0.7,
+                }}
+                inputStyle={{
+                  borderRadius: 10,
+                  height: height * 0.045,
+                  color: colors.black,
+                }}
+                containerStyle={{
+                  height: height * 0.04,
+                  borderColor: colors.brown,
+                  borderRadius: 10,
+                  borderWidth: 0.9,
+                }}
               />
-              <CustomTextInput
+              {/* <CustomTextInput
                 placeholder="Groklyn Bridge Park"
                 placeholderTextColor={colors.black}
                 borderColor={colors.gray}
@@ -267,6 +289,30 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                     style={styles.locationImg}
                   />
                 }
+              /> */}
+              <GooglePlacesAutocompleteNew
+                onSelect={(placeDetails: any) => {
+                  console.log('Selected Place:', placeDetails);
+                }}
+                placeholder={'Brookly Bridge Park'}
+                style={{
+                  borderRadius: 10,
+                  padding: 10,
+                  width: width * 0.7,
+                }}
+                inputStyle={{
+                  borderRadius: 10,
+                  height: height * 0.045,
+                  color: colors.black,
+                  backgrounColor: colors.darkGray,
+                }}
+                containerStyle={{
+                  height: height * 0.04,
+                  borderColor: colors.brown,
+                  borderRadius: 10,
+                  borderWidth: 0.9,
+                  backgrounColor: colors.darkGray,
+                }}
               />
             </View>
             <View style={styles.headerBottomMain}>
@@ -557,7 +603,6 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                         // }
                       }}
                       style={{
-                        // backgroundColor: colors.white,
                         borderRadius: 30,
                         padding: 10,
                         width: width * 0.9,
@@ -566,6 +611,7 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                         backgroundColor: colors.white,
                         borderRadius: 30,
                         height: height * 0.06,
+                        color: colors.black,
                       }}
                     />
                   </View>
@@ -821,7 +867,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   locationMain: {
-    gap: height * 0.01,
+    // gap: height * 0.01,
     paddingTop: height * 0.025,
   },
   locationImg: {
@@ -837,7 +883,7 @@ const styles = StyleSheet.create({
   },
   reverseMain: {
     right: width * 0.06,
-    bottom: height * 0.079,
+    bottom: height * 0.09,
   },
   actionSheetMain: {
     borderTopLeftRadius: 45,
@@ -858,7 +904,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 45,
     borderTopRightRadius: 45,
     overflow: 'hidden',
-    height: height * 0.6,
+    height: height * 0.67,
     width: width,
   },
   gradientBackground: {
