@@ -251,7 +251,7 @@ const PaymentUser: React.FC<Props> = ({ navigation }) => {
           <TouchableOpacity
             style={[styles.methodMain]}
             activeOpacity={0.6}
-            // onPress={() => setSelectedMethod('visa')}
+          // onPress={() => setSelectedMethod('visa')}
           >
             <Image source={images.visa} />
             <View style={styles.methodTextMain}>
@@ -270,7 +270,7 @@ const PaymentUser: React.FC<Props> = ({ navigation }) => {
               // },
             ]}
             activeOpacity={0.7}
-            // onPress={() => setSelectedMethod('cash')}
+          // onPress={() => setSelectedMethod('cash')}
           >
             <Image source={images.cash} style={styles.cashIcon} />
             <View style={styles.methodTextMain}>
