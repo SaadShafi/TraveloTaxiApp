@@ -1,14 +1,20 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
-import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
 import LinearGradient from 'react-native-linear-gradient';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
-import CustomTextInput from '../../components/CustomTextInput';
 import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
@@ -29,7 +35,7 @@ const RideArrivingUser = () => {
   const fourthSheetRef = useRef<ActionSheetRef>(null);
   const mapRef = useRef<MapView>(null);
   const [timeLeft, setTimeLeft] = useState(10); // first sheet countdown
-  const [countdown, setCountdown] = useState(10); // 4:55 in seconds
+  const [countdown, setCountdown] = useState(900); // 4:55 in seconds
 
   const waitingTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const countdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -118,7 +124,7 @@ const RideArrivingUser = () => {
 
   const startCountdown = () => {
     if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
-    setCountdown(20); // reset 4:55
+    setCountdown(900); // reset 4:55
     countdownTimerRef.current = setInterval(() => {
       setCountdown(prev => {
         if (prev <= 1) {
@@ -191,7 +197,7 @@ const RideArrivingUser = () => {
           borderRadius: 3,
         }}
         gestureEnabled={true}
-        backgroundInteractionEnabled={true}
+        backgroundInteractionEnabled={false}
         overlayColor="transparent"
         enableOverDrag={false}
         closable={false}
@@ -299,7 +305,7 @@ const RideArrivingUser = () => {
           borderRadius: 3,
         }}
         gestureEnabled={true}
-        backgroundInteractionEnabled={true}
+        backgroundInteractionEnabled={false}
         overlayColor="transparent"
         enableOverDrag={false}
         closable={false}
@@ -405,7 +411,7 @@ const RideArrivingUser = () => {
           borderRadius: 3,
         }}
         gestureEnabled={true}
-        backgroundInteractionEnabled={true}
+        backgroundInteractionEnabled={false}
         overlayColor="transparent"
         enableOverDrag={false}
         closable={false}
@@ -553,7 +559,7 @@ const RideArrivingUser = () => {
           borderRadius: 3,
         }}
         gestureEnabled={true}
-        backgroundInteractionEnabled={true}
+        backgroundInteractionEnabled={false}
         overlayColor="transparent"
         enableOverDrag={false}
         closable={false}
@@ -574,7 +580,7 @@ const RideArrivingUser = () => {
                 <Image source={images.guide} style={styles.guide} />
 
                 <View style={styles.locationMain}>
-                  <CustomTextInput
+                  {/* <CustomTextInput
                     placeholder="Groklyn Bridge Park"
                     placeholderTextColor={colors.black}
                     borderColor={colors.brown}
@@ -588,8 +594,32 @@ const RideArrivingUser = () => {
                       />
                     }
                     editable={false}
-                  />
-                  <CustomTextInput
+                  /> */}
+                  <View style={styles.inputContainer}>
+                    <Image
+                      source={images.locationImage}
+                      style={styles.locationImg}
+                    />
+                    <TextInput
+                      placeholder="Brooklyn Bridge Park"
+                      placeholderTextColor={colors.black}
+                      style={styles.input}
+                      editable={false}
+                    />
+                  </View>
+                  <View style={styles.inputContainer}>
+                    <Image
+                      source={images.locationImage}
+                      style={styles.locationImg}
+                    />
+                    <TextInput
+                      placeholder="Brooklyn Bridge Park"
+                      placeholderTextColor={colors.black}
+                      style={styles.input}
+                      editable={false}
+                    />
+                  </View>
+                  {/* <CustomTextInput
                     placeholder="Groklyn Bridge Park"
                     placeholderTextColor={colors.black}
                     borderColor={colors.gray}
@@ -603,7 +633,7 @@ const RideArrivingUser = () => {
                       />
                     }
                     editable={false}
-                  />
+                  /> */}
                 </View>
               </View>
 
@@ -700,6 +730,24 @@ const RideArrivingUser = () => {
 };
 
 const styles = StyleSheet.create({
+  inputContainer: {
+    width: width * 0.8,
+    height: height * 0.05,
+    borderWidth: 1,
+    borderColor: colors.brown,
+    borderRadius: 10,
+    backgroundColor: colors.white,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: width * 0.04,
+  },
+  input: {
+    paddingVertical: 10,
+    paddingLeft: width * 0.03,
+    fontFamily: fontFamily.ClashDisplayMedium,
+    fontSize: fontSizes.sm,
+    width: width * 0.8,
+  },
   topHeaderContainer: {
     position: 'absolute',
     // top: height * 0.02,
@@ -779,6 +827,7 @@ const styles = StyleSheet.create({
     height: height * 0.5,
     width: width,
     bottom: height * 0.04,
+    position: 'absolute',
   },
   actionSheetThree: {
     borderTopLeftRadius: 45,

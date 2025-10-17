@@ -12,11 +12,13 @@ import {
 } from 'react-native';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
 import DatePicker from 'react-native-date-picker';
+// import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
+import GooglePlacesAutocompleteNew from '../../components/GooglePlacesAutoComplete';
 import TopHeader from '../../components/Topheader';
 import { StackParamList } from '../../navigation/UserStack';
 import { height, width } from '../../utilities';
@@ -26,8 +28,14 @@ import { fontSizes } from '../../utilities/fontsizes';
 type Props = NativeStackScreenProps<StackParamList, 'HomeUser'>;
 
 const HomeUser: React.FC<Props> = ({ navigation }) => {
+  const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
+  const [showLabelOptions, setShowLabelOptions] = useState(false);
+  const [customLabel, setCustomLabel] = useState('');
+  const [showCustomLabelInput, setShowCustomLabelInput] = useState(false);
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const secondSheetRef = useRef<ActionSheetRef>(null);
+  const addWorkRef = useRef<ActionSheetRef>(null);
   const [activeTab, setActiveTab] = useState<'bookNow' | 'preBooking'>(
     'bookNow',
   );
@@ -79,11 +87,16 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
     actionSheetRef.current?.show();
   }, []);
 
+  const handleAddWorkPress = () => {
+    actionSheetRef.current?.hide();
+    addWorkRef.current?.show();
+  };
+
   const BookNow = () => {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.bookNowMain}>
-          <View style={styles.contentContainer}>
+          <TouchableOpacity style={styles.contentContainer} activeOpacity={0.7}>
             <View style={styles.content}>
               <Image source={images.house} style={styles.img} />
               <View style={styles.textMain}>
@@ -91,8 +104,12 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                 <Text style={styles.textSec}>Location Goes Here</Text>
               </View>
             </View>
-          </View>
-          <View style={styles.contentContainer}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.contentContainer}
+            activeOpacity={0.7}
+            onPress={handleAddWorkPress}
+          >
             <View style={styles.content}>
               <Image source={images.building} style={styles.img} />
               <View style={styles.textMain}>
@@ -100,7 +117,7 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                 <Text style={styles.textSec}>Location Goes Here</Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
           <CustomButton
             btnHeight={height * 0.07}
             btnWidth={width * 0.8}
@@ -187,7 +204,7 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
             zoomEnabled
             rotateEnabled
             pitchEnabled
-            showsUserLocation={true}
+            showsUserLocation={false}
           >
             <Marker
               coordinate={{ latitude: 40.7003, longitude: -73.9967 }}
@@ -223,7 +240,7 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
               </View>
             </View>
             <View style={styles.locationMain}>
-              <CustomTextInput
+              {/* <CustomTextInput
                 placeholder="Groklyn Bridge Park"
                 placeholderTextColor={colors.black}
                 borderColor={colors.gray}
@@ -236,8 +253,30 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                     style={styles.locationImg}
                   />
                 }
+              /> */}
+              <GooglePlacesAutocompleteNew
+                onSelect={(placeDetails: any) => {
+                  console.log('Selected Place:', placeDetails);
+                }}
+                placeholder={'Brookly Bridge Park'}
+                style={{
+                  borderRadius: 10,
+                  padding: 10,
+                  width: width * 0.7,
+                }}
+                inputStyle={{
+                  borderRadius: 10,
+                  height: height * 0.045,
+                  color: colors.black,
+                }}
+                containerStyle={{
+                  height: height * 0.04,
+                  borderColor: colors.brown,
+                  borderRadius: 10,
+                  borderWidth: 0.9,
+                }}
               />
-              <CustomTextInput
+              {/* <CustomTextInput
                 placeholder="Groklyn Bridge Park"
                 placeholderTextColor={colors.black}
                 borderColor={colors.gray}
@@ -250,6 +289,30 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                     style={styles.locationImg}
                   />
                 }
+              /> */}
+              <GooglePlacesAutocompleteNew
+                onSelect={(placeDetails: any) => {
+                  console.log('Selected Place:', placeDetails);
+                }}
+                placeholder={'Brookly Bridge Park'}
+                style={{
+                  borderRadius: 10,
+                  padding: 10,
+                  width: width * 0.7,
+                }}
+                inputStyle={{
+                  borderRadius: 10,
+                  height: height * 0.045,
+                  color: colors.black,
+                  backgrounColor: colors.darkGray,
+                }}
+                containerStyle={{
+                  height: height * 0.04,
+                  borderColor: colors.brown,
+                  borderRadius: 10,
+                  borderWidth: 0.9,
+                  backgrounColor: colors.darkGray,
+                }}
               />
             </View>
             <View style={styles.headerBottomMain}>
@@ -483,6 +546,261 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
             </View>
           </ImageBackground>
         </ActionSheet>
+
+        <ActionSheet
+          ref={addWorkRef}
+          containerStyle={{
+            ...styles.actionSheetThird,
+            pointerEvents: 'box-none',
+          }}
+          snapPoints={[20, 50, 90]}
+          initialSnapIndex={0}
+          closeOnTouchBackdrop={false}
+          defaultOverlayOpacity={0.1}
+          indicatorStyle={{
+            backgroundColor: colors.lightBrown,
+            width: width * 0.3,
+            height: height * 0.006,
+            borderRadius: 3,
+          }}
+          gestureEnabled={true}
+          backgroundInteractionEnabled={true}
+          overlayColor="transparent"
+          enableOverDrag={true}
+          closable={true}
+          drawUnderStatusBar={true}
+          keyboardShouldPersistTaps="handled"
+          isModal={false}
+          safeAreaInsets={{ top: 0, left: 0, right: 0, bottom: 0 }}
+        >
+          <ImageBackground
+            source={images.ActionSheetBg}
+            style={styles.ActinSheetBg}
+            pointerEvents="none"
+          >
+            <View style={styles.gradientBackground}>
+              <View style={styles.ActionSheetContentMain}>
+                <View style={{ flex: 1 }}>
+                  <View style={styles.WorkTextMain}>
+                    <Text style={styles.selectText}>Add Work</Text>
+                  </View>
+                  <View>
+                    <GooglePlacesAutocompleteNew
+                      onSelect={(placeDetails: any) => {
+                        console.log('Selected Place:', placeDetails);
+                        // if (placeDetails?.lat && placeDetails?.lng) {
+                        //   setRegion({
+                        //     ...region,
+                        //     latitude: placeDetails.lat,
+                        //     longitude: placeDetails.lng,
+                        //   });
+                        //   mapRef.current?.animateToRegion({
+                        //     latitude: placeDetails.lat,
+                        //     longitude: placeDetails.lng,
+                        //     latitudeDelta: 0.01,
+                        //     longitudeDelta: 0.01,
+                        //   });
+                        // }
+                      }}
+                      style={{
+                        borderRadius: 30,
+                        padding: 10,
+                        width: width * 0.9,
+                      }}
+                      inputStyle={{
+                        backgroundColor: colors.white,
+                        borderRadius: 30,
+                        height: height * 0.06,
+                        color: colors.black,
+                      }}
+                    />
+                  </View>
+                  <View style={styles.selectOnMap}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: width * 0.02,
+                      }}
+                    >
+                      <Image source={images.pinPoint} />
+                      <Text style={styles.SelectOnMapText}>
+                        Or Select On Map
+                      </Text>
+                    </View>
+                    <View style={{ alignItems: 'center' }}>
+                      <TouchableOpacity activeOpacity={0.7}>
+                        <Text
+                          style={styles.SelectOnMapText}
+                          onPress={() => setShowLabelOptions(true)}
+                        >
+                          + Add A Label
+                        </Text>
+                      </TouchableOpacity>
+                      {selectedLabel && (
+                        <View
+                          style={{
+                            backgroundColor: colors.lightBrown,
+                            paddingVertical: 6,
+                            paddingHorizontal: 16,
+                            borderRadius: 20,
+                            marginTop: 8,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: colors.white,
+                              fontFamily: fontFamily.SfProDisplayRegular,
+                              fontSize: fontSizes.xsm,
+                            }}
+                          >
+                            {selectedLabel}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
+                  </View>
+                  {showLabelOptions && (
+                    <View style={styles.labelPopup}>
+                      <TouchableOpacity
+                        style={styles.circleContainer}
+                        onPress={() => {
+                          setSelectedLabel('Home');
+                          setShowLabelOptions(false);
+                        }}
+                      >
+                        <Image
+                          source={images.house}
+                          style={styles.circleIcon}
+                        />
+                        <Text style={styles.circleText}>Home</Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={styles.circleContainer}
+                        onPress={() => {
+                          setSelectedLabel('Work');
+                          setShowLabelOptions(false);
+                        }}
+                      >
+                        <Image
+                          source={images.building}
+                          style={styles.circleIcon}
+                        />
+                        <Text style={styles.circleText}>Work</Text>
+                      </TouchableOpacity>
+
+                      {/* <TouchableOpacity
+                        style={styles.circleContainer}
+                        onPress={() => {
+                          setSelectedLabel('Other');
+                          setShowLabelOptions(false);
+                        }}
+                      >
+                        <Image source={images.add} style={styles.circleIcon} />
+                        <Text style={styles.circleText}>Other</Text>
+                      </TouchableOpacity> */}
+                      <TouchableOpacity
+                        style={styles.circleContainer}
+                        onPress={() => {
+                          setShowCustomLabelInput(true);
+                          setShowLabelOptions(false);
+                        }}
+                      >
+                        <Image source={images.add} style={styles.circleIcon} />
+                        <Text style={styles.circleText}>Other</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                  {showCustomLabelInput && (
+                    <View
+                      style={{
+                        width: width * 0.8,
+                        alignItems: 'center',
+                        marginTop: height * 0.02,
+                        alignSelf: 'center',
+                      }}
+                    >
+                      <CustomTextInput
+                        placeholder="Enter custom label name"
+                        placeholderTextColor={colors.gray}
+                        inputWidth={width * 0.8}
+                        inputHeight={height * 0.06}
+                        backgroundColor={colors.white}
+                        borderColor={colors.lightBrown}
+                        borderWidth={1}
+                        borderRadius={25}
+                        value={customLabel}
+                        onChangeText={text => setCustomLabel(text)}
+                        onSubmitEditing={() => {
+                          if (customLabel.trim()) {
+                            setSelectedLabel(customLabel.trim());
+                            setCustomLabel('');
+                            setShowCustomLabelInput(false);
+                          }
+                        }}
+                        returnKeyType="done"
+                      />
+                    </View>
+                  )}
+                  <View style={styles.border} />
+                  <Text style={styles.savedLocText}>Saved Locations</Text>
+                  <View style={styles.savedLocMain}>
+                    {[1, 2].map((item, index) => (
+                      <View key={index} style={styles.savedLocContainer}>
+                        <View style={styles.locationContent}>
+                          <View>
+                            <Text style={styles.locTextOne}>
+                              742 Evergreen Terrace
+                            </Text>
+                            <Text style={styles.locTextSec}>
+                              Springfield, IL 62704, United States
+                            </Text>
+                          </View>
+
+                          <TouchableOpacity
+                            onPress={() =>
+                              setActiveDropdown(
+                                activeDropdown === index ? null : index,
+                              )
+                            }
+                          >
+                            <Image source={images.list} />
+                          </TouchableOpacity>
+                        </View>
+
+                        {activeDropdown === index && (
+                          <View style={styles.dropdownMenu}>
+                            <TouchableOpacity style={styles.dropdownItem}>
+                              <Text style={styles.dropdownText}>Edit</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.dropdownItem}>
+                              <Text
+                                style={[styles.dropdownText, { color: 'red' }]}
+                              >
+                                Delete
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        )}
+                      </View>
+                    ))}
+                  </View>
+                  <View style={styles.btnMainSec}>
+                    <CustomButton
+                      btnHeight={height * 0.07}
+                      btnWidth={width * 0.85}
+                      text="+ Add"
+                      textColor={colors.white}
+                      backgroundColor={colors.black}
+                      borderRadius={30}
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+          </ImageBackground>
+        </ActionSheet>
       </View>
     </KeyboardAvoidingView>
   );
@@ -549,7 +867,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   locationMain: {
-    gap: height * 0.01,
+    // gap: height * 0.01,
     paddingTop: height * 0.025,
   },
   locationImg: {
@@ -565,7 +883,7 @@ const styles = StyleSheet.create({
   },
   reverseMain: {
     right: width * 0.06,
-    bottom: height * 0.079,
+    bottom: height * 0.09,
   },
   actionSheetMain: {
     borderTopLeftRadius: 45,
@@ -580,6 +898,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 45,
     overflow: 'hidden',
     height: height * 0.4,
+    width: width,
+  },
+  actionSheetThird: {
+    borderTopLeftRadius: 45,
+    borderTopRightRadius: 45,
+    overflow: 'hidden',
+    height: height * 0.67,
     width: width,
   },
   gradientBackground: {
@@ -701,6 +1026,142 @@ const styles = StyleSheet.create({
   },
   btnMain: {
     top: height * 0.01,
+  },
+  WorkTextMain: {
+    alignItems: 'center',
+  },
+  selectOnMap: {
+    width: width * 0.75,
+    flexDirection: 'row',
+    marginTop: height * 0.01,
+    left: width * 0.08,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  SelectOnMapText: {
+    fontFamily: fontFamily.SfProDisplayRegular,
+    fontSize: fontSizes.xsm,
+    color: colors.black,
+    textDecorationLine: 'underline',
+  },
+  border: {
+    borderWidth: 0.6,
+    borderColor: colors.gray,
+    marginTop: height * 0.03,
+    width: width * 0.85,
+    left: width * 0.03,
+  },
+  savedLocText: {
+    fontFamily: fontFamily.SfProDisplayRegular,
+    fontSize: fontSizes.sm,
+    color: colors.black,
+    left: width * 0.035,
+    marginTop: height * 0.01,
+  },
+  savedLocMain: {
+    marginTop: height * 0.025,
+    alignItems: 'center',
+    gap: height * 0.02,
+  },
+  locTextOne: {
+    fontFamily: fontFamily.SfProDisplayMedium,
+    fontSize: fontSizes.sm,
+    color: colors.black,
+    fontWeight: 'bold',
+  },
+  locTextSec: {
+    fontFamily: fontFamily.SfProDisplayRegular,
+    fontSize: fontSizes.xsm,
+    color: colors.black,
+    fontWeight: 'light',
+  },
+  btnMainSec: {
+    alignItems: 'center',
+    top: height * 0.02,
+  },
+  dropdownItem: {
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+  },
+  dropdownText: {
+    fontSize: 14,
+    color: colors.black,
+  },
+  savedLocContainer: {
+    width: width * 0.85,
+    borderWidth: 0.7,
+    borderColor: colors.lightBrown,
+    borderRadius: 10,
+    backgroundColor: colors.white,
+    padding: 19,
+  },
+  locationContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  dropdownMenu: {
+    position: 'absolute',
+    marginTop: 10,
+    backgroundColor: colors.white,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.gray,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+    zIndex: 10,
+    width: width * 0.2,
+    left: width * 0.55,
+    top: height * 0.015,
+  },
+  overlayContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2000,
+  },
+  labelPopup: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(215, 215, 215, 0.9)',
+    borderRadius: 30,
+    paddingVertical: 20,
+    paddingHorizontal: 25,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: width * 0.85,
+    bottom: height * 0.035,
+    marginBottom: height * 0.02,
+  },
+  circleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: colors.white,
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  circleIcon: {
+    width: 25,
+    height: 25,
+    resizeMode: 'contain',
+    tintColor: colors.black,
+  },
+  circleText: {
+    fontSize: fontSizes.xsm,
+    color: colors.black,
+    fontFamily: fontFamily.SfProDisplayRegular,
+    marginTop: 5,
   },
 });
 

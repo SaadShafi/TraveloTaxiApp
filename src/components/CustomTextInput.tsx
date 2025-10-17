@@ -126,14 +126,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     position: 'relative',
-    // shadowColor: 'rgba(0, 0, 0, 0.3)',
-    // shadowOffset: {
-    // width: 5,
-    // height: 5,
-    // },
-    // shadowOpacity: 3,
-    // shadowRadius: 10,
-    // elevation: 9,
   },
   input: {
     flex: 1,

@@ -20,7 +20,9 @@ const images: { [key: string]: ImageSourcePropType } = {
   line: require('../Images/line.png'),
   camera: require('../Images/camera.png'),
   profGradient: require('../Images/ProfGradient.png'),
+  mask: require('../Images/Mask.png'),
   profile: require('../Images/profile.png'),
+  pencil: require('../Images/pencil.png'),
   secIcon: require('../Images/SecIcon.png'),
   drawerIcon: require('../Images/drawerIcon.png'),
   visa: require('../Images/visa.png'),
@@ -88,6 +90,11 @@ const images: { [key: string]: ImageSourcePropType } = {
   applePay: require('../Images/applePay.png'),
   checked: require('../Images/checked.png'),
   smile: require('../Images/smile.png'),
+  pinPoint: require('../Images/pinPoint.png'),
+  list: require('../Images/list.png'),
+  payment: require('../Images/payment.png'),
+  paymentCheck: require('../Images/paymentCheck.png'),
+  paymentSuccess: require('../Images/paymentSuccess.png'),
 };
 
 export default images;

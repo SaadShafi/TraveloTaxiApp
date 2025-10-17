@@ -1,6 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import CreateProfile from '../screens/Auth/CreateProfile';
+import EditProfile from '../screens/Auth/EditProfile';
+import Profile from '../screens/Auth/Profile';
+import SignIn from '../screens/Auth/SignIn';
 import WelcomeFirst from '../screens/Auth/WelcomeFirst';
 import WelcomeFourth from '../screens/Auth/WelcomeFourth';
 import WelcomeSec from '../screens/Auth/WelcomeSec';
@@ -22,6 +25,7 @@ import ContactUs from '../screens/Global/ContactUs';
 import DeleteAccount from '../screens/Global/DeleteAccount';
 import NotificationScreen from '../screens/Global/Notification';
 import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
+import RoleSwitch from '../screens/Global/RoleSwitch';
 import Setting from '../screens/Global/Setting';
 import TermsCondition from '../screens/Global/TermsConditions';
 
@@ -54,6 +58,9 @@ export type StackParamList = {
   SignUpEmail: undefined;
   OtpVerification: undefined;
   SetPassword: undefined;
+  EditProfile: undefined;
+  Profile: undefined;
+  RoleSwitch: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -89,6 +96,10 @@ const DriverStack: React.FC = () => {
       <Stack.Screen name="Chat" component={ChatMain} />
       <Stack.Screen name="CallMain" component={CallMain} />
       <Stack.Screen name="TermsCondition" component={TermsCondition} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="RoleSwitch" component={RoleSwitch} />
     </Stack.Navigator>
   );
 };

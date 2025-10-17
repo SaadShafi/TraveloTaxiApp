@@ -97,20 +97,6 @@ const DeleteAccount = () => {
         >
           <Text style={styles.reasonText}>Reason Goes Here!</Text>
         </TouchableOpacity>
-        {/* <CustomTextInput
-          placeholder="Other"
-          placeholderTextColor={colors.black}
-          inputWidth={width * 0.85}
-          inputHeight={height * 0.07}
-          backgroundColor={colors.lightGray}
-          borderColor={colors.darkGray}
-          borderRadius={30}
-          borderWidth={1}
-          keyboardType="default"
-          onPress={handleOtherSubmit}
-          value={otherReason}
-          onChangeText={setOtherReason}
-        /> */}
         <CustomTextInput
           placeholder="Other"
           placeholderTextColor={colors.black}
@@ -125,7 +111,7 @@ const DeleteAccount = () => {
           onChangeText={setOtherReason}
           onSubmitEditing={() => {
             if (otherReason.trim() !== '') {
-              setModalOpen(true); // open modal when user presses Enter
+              setModalOpen(true);
             } else {
               console.log('Please enter a reason before submitting');
             }

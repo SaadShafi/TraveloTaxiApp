@@ -1,12 +1,22 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { fontFamily } from '../../assets/Fonts';
 import images from '../../assets/Images';
 import TopHeader from '../../components/Topheader';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
+import { fontSizes } from '../../utilities/fontsizes';
 
 const Wallet = () => {
+  const navigation = useNavigation<NavigationProp<any>>();
   // Transaction data from your screenshot
   const transactionData = [
     { id: '1', name: 'Edward', time: 'Today at 09:20 am', amount: '$230.00' },
@@ -44,6 +54,13 @@ const Wallet = () => {
           <Text style={styles.balance}>Total Earnings</Text>
         </View>
       </View>
+      <TouchableOpacity
+        style={styles.bankDetailsMain}
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('BankDetails')}
+      >
+        <Text style={styles.bankDetailsText}>Edit Bank Details</Text>
+      </TouchableOpacity>
 
       <View style={styles.transactionHeader}>
         <Text style={styles.transaction}>Transactions</Text>
@@ -129,6 +146,16 @@ const styles = StyleSheet.create({
   listContent: {
     gap: height * 0.01,
     paddingBottom: height * 0.02,
+  },
+  bankDetailsMain: {
+    alignItems: 'center',
+    paddingVertical: height * 0.015,
+  },
+  bankDetailsText: {
+    fontFamily: fontFamily.SfProDisplayMedium,
+    fontSize: fontSizes.sm2,
+    color: colors.black,
+    textDecorationLine: 'underline',
   },
   transactionItemContainer: {
     backgroundColor: '#E6E6E6',
