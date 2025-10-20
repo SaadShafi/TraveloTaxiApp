@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {
   Image,
   Keyboard,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -21,10 +22,14 @@ import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import Toast from 'react-native-toast-message';
+import { apiHelper } from '../../services';
+import { useSelector } from 'react-redux';
 
 type Props = NativeStackScreenProps<StackParamList, 'SignUpEmail'>;
 
 const SignUpEmail: React.FC<Props> = ({ navigation }) => {
+  const role = useSelector((state: any) => state.role.selectedRole);
   const [name, setName] = useState('');
   const [isNameFocused, setIsNameFocused] = useState(false);
 
@@ -37,11 +42,14 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
   const [gender, setGender] = useState('');
   const [agree, setAgree] = useState(false);
 
+  const [password, setPassword] = useState('');
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
+  const [loading, setLoading] = useState(false);
   const genderOptions = [
     { name: 'Select Gender', id: '' },
-    { name: 'Male', id: 'male' },
-    { name: 'Female', id: 'female' },
-    { name: 'Other', id: 'other' },
+    { name: 'male', id: 'male' },
+    { name: 'female', id: 'female' },
   ];
 
   const dismissKeyboard = () => {
@@ -52,13 +60,60 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
   const isPhoneValid = phone.trim().length > 7;
   const isEmailValid = email.includes('@');
   const isGenderValid = gender !== '';
+  const isPasswordValid = password.trim().length >= 6;
   const isFormValid =
-    isNameValid && isPhoneValid && isEmailValid && isGenderValid && agree;
+    isNameValid && isPhoneValid && isEmailValid && isGenderValid && isPasswordValid && agree;
+
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    try {
+      const body = {
+        email: email,
+        gender: gender,
+        password: password,
+        role: role,
+      };
+
+      const { response, error } = await apiHelper(
+        "POST",
+        "auth/signup",
+        {},
+        body
+      );
+      console.log("Body sent to signUp Api: ", body);
+      console.log("Response from signUp Api: ", response);
+      if (response) {
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: response.data.message,
+        });
+        navigation.navigate("OtpVerification")
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Login Failed",
+          text2: "Something went wrong",
+        });
+      }
+    } catch (err) {
+      console.error("Unexpected Error", err);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "An unexpected error occurred",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={styles.container}>
-        <TopHeader isBack={true} navigation={navigation} />
+        <TopHeader isBack={true} />
         <View style={styles.headerMain}>
           <Text style={styles.signup}>Sign Up With Your</Text>
           <Text style={styles.signup}>Email Or Phone Number</Text>
@@ -111,6 +166,17 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
             onChangeText={setEmail}
             backgroundColor={colors.gray}
           />
+          <CustomTextInput
+            placeholder="*Enter your Password"
+            placeholderTextColor={colors.black}
+            borderColor={isPasswordFocused || password ? colors.brown : colors.gray}
+            borderRadius={30}
+            inputWidth={width * 0.85}
+            inputHeight={height * 0.06}
+            value={password}
+            onChangeText={setPassword}
+            isPassword={true}
+          />
           <CustomSelect
             inputWidth={width * 0.85}
             inputHeight={height * 0.06}
@@ -139,8 +205,6 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
                 innerIconStyle={{
                   borderRadius: 8,
                 }}
-                // text="By signing up, you agree to the Terms & Conditions and Privacy Policy"
-                // textStyle={styles.checkboxText}
                 onPress={() => setAgree(!agree)}
               />
             </View>
@@ -176,7 +240,8 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
               textColor={isFormValid ? colors.white : colors.black}
               borderRadius={30}
               disabled={!isFormValid}
-              onPress={() => navigation.navigate('OtpVerification')}
+              // onPress={() => navigation.navigate('OtpVerification')}
+              onPress={handleSubmit}
             />
           </View>
           <View>
