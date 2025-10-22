@@ -1,4 +1,4 @@
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, NavigationProp, useNavigation } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import {
@@ -26,20 +26,26 @@ import { RootState } from '../../redux/store';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import { apiHelper } from '../../services';
+import Toast from 'react-native-toast-message';
 
 type Props = NativeStackScreenProps<StackParamList, 'SignIn'>;
 
-const SignIn: React.FC<Props> = ({ navigation }) => {
+const SignIn = () => {
+  const navigation = useNavigation<NavigationProp<any>>();
   const selectedRole = useSelector(
     (state: RootState) => state.role.selectedRole,
   );
+  const User = useSelector((state: RootState) => state.role.user);
+  console.log('User from Redux in SignIn Screen:', User);
+  console.log('User email from Redux in SignIn Screen:', User.email);
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
-
+  const [loading, setLoading] = useState(false);
   const isFormValid = email.includes('@') && password.length > 5;
 
   useEffect(() => {
@@ -70,6 +76,50 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
       }),
     );
   };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    try {
+      const body = {
+        email: email,
+        password: password,
+        role: selectedRole,
+      }
+      const { response, error } = await apiHelper(
+        "POST",
+        "auth/login",
+        {},
+        body
+      );
+      console.log("Response from SignIn Api: ", response);
+      if (response) {
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: response.data.message,
+        });
+      }
+      dispatch(setLogin());
+      dispatch(setUser(response?.data.response.data.user));
+      console.log("User Data from API Response:", response?.data.response.data.user);
+      dispatch(setUserEmail(email));
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'AuthStack' }], // Reset to AuthStack
+        }),
+      );
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Success",
+        text2: error?.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -103,7 +153,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
           <TouchableOpacity
             activeOpacity={0.7}
             style={styles.forgotPassMain}
-            onPress={() => navigation.navigate('ForgotPassword')}
+            onPress={() => navigation.navigate('ForgotPassword', { email: User?.email })}
           >
             <Text style={styles.forgotPass}>Forget Password?</Text>
           </TouchableOpacity>
@@ -115,16 +165,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
             textColor={colors.white}
             borderRadius={30}
             disabled={!isFormValid}
-            // onPress={() => {
-            //   if (selectedRole === 'user') {
-            //     navigation.navigate('HomeUser');
-            //   } else if (selectedRole === 'driver') {
-            //     navigation.navigate('HomeDriver');
-            //   } else {
-            //     console.log('No Naviagtion screen found'); // fallback if no role
-            //   }
-            // }}
-            onPress={handleSignIn}
+            onPress={handleSubmit}
           />
           <View style={{ paddingVertical: height * 0.03 }}>
             <Image source={images.orLine} style={styles.orLine} />

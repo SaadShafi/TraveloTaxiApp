@@ -8,6 +8,7 @@ import WelcomeFirst from '../screens/Auth/WelcomeFirst';
 import WelcomeFourth from '../screens/Auth/WelcomeFourth';
 import WelcomeSec from '../screens/Auth/WelcomeSec';
 import BankDetails from '../screens/Driver/BankDetails';
+import BankDetailsAuth from '../screens/Auth/BankDetails';
 import HelpAndSupport from '../screens/Driver/HelpAndSupport';
 import History from '../screens/Driver/History';
 import HistoryDetailOne from '../screens/Driver/HistoryDetailOne';
@@ -32,6 +33,7 @@ import TermsCondition from '../screens/Global/TermsConditions';
 export type StackParamList = {
   HomeDriver: undefined;
   BankDetails: undefined;
+  BankDetailsAuth: undefined;
   History: undefined;
   HistoryDetailOne: undefined;
   HistoryDetailSec: undefined;
@@ -74,6 +76,7 @@ const DriverStack: React.FC = () => {
     >
       <Stack.Screen name="HomeDriver" component={HomeDriver} />
       <Stack.Screen name="BankDetails" component={BankDetails} />
+      <Stack.Screen name="BankDetailsAuth" component={BankDetailsAuth} />
       <Stack.Screen name="WelcomeFirst" component={WelcomeFirst} />
       <Stack.Screen name="WelcomeSec" component={WelcomeSec} />
       <Stack.Screen name="WelcomeFourth" component={WelcomeFourth} />

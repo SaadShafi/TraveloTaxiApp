@@ -14,7 +14,7 @@ instance.interceptors.request.use(
         const token = store.getState()?.role?.userAuthToken;
         // const lang = store.getState()?.role.languageSelect
         const lang = store.getState().role.languageSelect
-        console.log("Language Selected", lang)
+        // console.log("Language Selected", lang)
         console.log(token);
         store.dispatch(showLoader("loading"));
 
@@ -22,7 +22,6 @@ instance.interceptors.request.use(
         if (token) {
             (config.headers as AxiosRequestHeaders).Authorization = `Bearer ${token}`;
         }
-
         return config;
     },
     (error) => {

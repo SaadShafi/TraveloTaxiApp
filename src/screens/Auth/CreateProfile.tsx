@@ -36,6 +36,8 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
   const selectedRole = useSelector(
     (state: RootState) => state.role.selectedRole,
   );
+  const User = useSelector((state: RootState) => state.role.user);
+  console.log('User from Redux in CreateProfile Screen:', User);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -49,12 +51,6 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
-  // const [document, setDocument] = useState<{
-  //   name: string;
-  //   uri: string;
-  //   type?: string;
-  //   size?: number;
-  // } | null>(null);
   const [drivingLicense, setDrivingLicense] = useState(null);
   const [privateHireLicense, setPrivateHireLicense] = useState(null);
   const [logBook, setLogBook] = useState(null);
@@ -62,9 +58,6 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
   const [insurance, setInsurance] = useState(null);
   const [mot, setMot] = useState(null);
   const [hireAgreement, setHireAgreement] = useState(null);
-  // const [expiryDates, setExpiryDates] = useState<{ [key: string]: string }>({});
-  // const [openPicker, setOpenPicker] = useState<null | string>(null);
-  // Instead of boolean
   const [openPicker, setOpenPicker] = useState<string | null>(null);
   const [expiryDates, setExpiryDates] = useState<{ [key: string]: string }>({});
 
@@ -144,36 +137,6 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
     });
   };
 
-  // const handlePickDocument = async () => {
-  //   try {
-  //     // pick returns an array of files (even if one)
-  //     const results = await pick({
-  //       // types of files allowed
-  //       type: [types.allFiles],
-  //       // optionally: allowMultiple selection
-  //       allowMultiSelection: false,
-  //       // optionally: keep a local copy if needed
-  //       keepLocalCopy: true,
-  //     });
-
-  //     if (results && results.length > 0) {
-  //       const file = results[0];
-  //       setDocument({
-  //         name: file.name,
-  //         uri: file.uri,
-  //         type: file.type, // may or may not be defined
-  //         size: file.size, // size in bytes, if available
-  //       });
-  //     }
-  //   } catch (err: any) {
-  //     if (isCancel(err)) {
-  //       console.log('User cancelled document picker');
-  //     } else {
-  //       console.error('Document pick error:', err);
-  //     }
-  //   }
-  // };
-
   const handlePickDocument = async (setter: (file: any) => void) => {
     try {
       const results = await pick({
@@ -202,7 +165,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
 
   const toggleModalSec = () => {
     setModalVisible(false);
-    navigation.navigate('BankDetails');
+    navigation.navigate('BankDetailsAuth');
   };
 
   const UserScreens = useMemo(() => {
@@ -278,7 +241,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
             borderRadius={30}
             inputWidth={width * 0.85}
             inputHeight={height * 0.06}
-            value={email}
+            value={User?.email || email}
             onChangeText={setEmail}
             backgroundColor={colors.gray}
           />
@@ -515,12 +478,12 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
         placeholderTextColor={colors.darkGray}
         style={styles.AddExpiryDate}
         keyboardType="phone-pad"
-        // value={
-        //   expiryDates[fieldKey]
-        //     ? formatDateForDisplay(new Date(expiryDates[fieldKey]))
-        //     : ''
-        // }
-        // editable={false}
+      // value={
+      //   expiryDates[fieldKey]
+      //     ? formatDateForDisplay(new Date(expiryDates[fieldKey]))
+      //     : ''
+      // }
+      // editable={false}
       />
       {/* <TouchableOpacity
           activeOpacity={0.7}
@@ -679,7 +642,7 @@ const CreateProfile: React.FC<Props> = ({ navigation }) => {
               mode="date"
               onConfirm={handleDateConfirm}
               onCancel={() => setOpenStartPicker(false)}
-              // minimumDate={new Date()}
+            // minimumDate={new Date()}
             />
             <CustomSelect
               inputWidth={width * 0.85}

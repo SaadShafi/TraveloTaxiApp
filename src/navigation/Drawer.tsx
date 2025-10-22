@@ -4,7 +4,7 @@ import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native';
-import { useState } from 'react';
+import { use, useState } from 'react';
 import {
   Image,
   Modal,
@@ -31,6 +31,9 @@ const CustomDrawerContent = (props: any) => {
   const selectedRole = useSelector(
     (state: RootState) => state.role.selectedRole,
   );
+  const User = useSelector((state: RootState) => state.role.user);
+  console.log('User from Redux in Drawer:', User);
+  console.log("Email in Drawer:", User?.email);
   const navigation = useNavigation<NavigationProp<any>>();
   const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
@@ -159,6 +162,14 @@ const CustomDrawerContent = (props: any) => {
     // dispatch(logout());
     navigation.navigate('RoleSwitch');
   };
+
+  const truncateEmail = (email: string, maxLength: number = 17) => {
+    if (!email) return "info@yourmail.com";
+    if (email.length <= maxLength) return email;
+    return email.substring(0, maxLength) + '...';
+  };
+
+
   return (
     <View style={styles.gradientContainer}>
       <View style={styles.gradientTop} />
@@ -183,7 +194,7 @@ const CustomDrawerContent = (props: any) => {
           </TouchableOpacity>
           <View style={styles.profileTextContainer}>
             <Text style={styles.profileName}>Name</Text>
-            <Text style={styles.profileEmail}>info@yourmail.com</Text>
+            <Text style={styles.profileEmail}> {truncateEmail(User?.email)}</Text>
           </View>
         </View>
         <View style={styles.menuContainer}>

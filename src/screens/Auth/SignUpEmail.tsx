@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import {
   Image,
   Keyboard,
@@ -25,10 +25,12 @@ import { fontSizes } from '../../utilities/fontsizes';
 import Toast from 'react-native-toast-message';
 import { apiHelper } from '../../services';
 import { useSelector } from 'react-redux';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<StackParamList, 'SignUpEmail'>;
 
-const SignUpEmail: React.FC<Props> = ({ navigation }) => {
+const SignUpEmail = () => {
+  const navigation = useNavigation<NavigationProp<any>>();
   const role = useSelector((state: any) => state.role.selectedRole);
   const [name, setName] = useState('');
   const [isNameFocused, setIsNameFocused] = useState(false);
@@ -90,7 +92,9 @@ const SignUpEmail: React.FC<Props> = ({ navigation }) => {
           text1: "Success",
           text2: response.data.message,
         });
-        navigation.navigate("OtpVerification")
+        navigation.navigate("OtpVerification", {
+          email: email,
+        });
       } else {
         Toast.show({
           type: "error",

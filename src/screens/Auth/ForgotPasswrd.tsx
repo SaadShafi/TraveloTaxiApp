@@ -15,11 +15,18 @@ import { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { apiHelper } from '../../services';
+import Toast from 'react-native-toast-message';
 
 type Props = NativeStackScreenProps<StackParamList, 'ForgotPassword'>;
 
-const ForgotPassword: React.FC<Props> = ({ navigation }) => {
+const ForgotPassword = ({ route }) => {
+  const navigation = useNavigation<NavigationProp<any>>();
+  const Email = route.params.email;
+  console.log("Email passed to ForgotPassword screen:", Email);
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -28,6 +35,35 @@ const ForgotPassword: React.FC<Props> = ({ navigation }) => {
   const isEmail = email.includes('@');
   const isPhone = /^[0-9]+$/.test(email); // only digits allowed
   const isFormValid = isEmail || isPhone;
+
+  const handleForgeotPass = async () => {
+    setLoading(true);
+
+    try {
+      const body = {
+        email: Email,
+      }
+      const { response, error } = await apiHelper("POST", "auth/forgot-password", {}, body);
+      console.log("Forgot Password Response:", response);
+
+      if (response) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Password Reset Successfully',
+        });
+        navigation.navigate('PhoneVerification', { email: Email });
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Something went wrong. Please try again later.',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>

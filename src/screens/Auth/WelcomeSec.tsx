@@ -3,10 +3,13 @@ import { useState } from 'react';
 import {
   Image,
   Modal,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  Linking,
+  Alert,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { fontFamily } from '../../assets/Fonts';
@@ -25,9 +28,47 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(true);
   const [modalVisibleSec, setModalVisibleSec] = useState(false);
 
-  const handleUseLocation = () => {
-    setModalVisible(false);
+  const openLocationSettings = async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        // For iOS - open app settings where user can enable location
+        await Linking.openURL('app-settings:');
+      } else {
+        // For Android - open location settings
+        await Linking.openSettings();
+      }
+    } catch (error) {
+      console.error('Error opening location settings:', error);
+      // Fallback - open general settings
+      Linking.openSettings();
+    }
   };
+
+  const handleUseLocation = async () => {
+    try {
+      // Close the modal first
+      setModalVisible(false);
+
+      // Open device location settings
+      await openLocationSettings();
+
+      // After opening settings, show the role selection modal
+      // You might want to add a delay or handle this differently based on your flow
+      setTimeout(() => {
+        setModalVisibleSec(true);
+      }, 1000);
+
+    } catch (error) {
+      console.error('Error handling location permission:', error);
+      // If there's an error, still proceed to role selection
+      setModalVisible(false);
+      setModalVisibleSec(true);
+    }
+  };
+
+  // const handleUseLocation = () => {
+  //   setModalVisible(false);
+  // };
 
   const handleSkip = () => {
     setModalVisible(false);
@@ -85,7 +126,7 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
               backgroundColor={colors.brown}
               textColor={colors.white}
               borderRadius={30}
-              onPress={handleSkip}
+              onPress={handleUseLocation}
             />
 
             <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>

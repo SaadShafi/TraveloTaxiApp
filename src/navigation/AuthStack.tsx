@@ -25,6 +25,7 @@ import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
 import Setting from '../screens/Global/Setting';
 import TermsCondition from '../screens/Global/TermsConditions';
 import RideArrivingUser from '../screens/User/RideArrivingUser';
+import BankDetailsAuth from '../screens/Auth/BankDetails';
 
 export type StackParamList = {
   WelcomeFirst: undefined;
@@ -60,6 +61,7 @@ export type StackParamList = {
   TermsCondition: undefined;
   EditProfile: undefined;
   Profile: undefined;
+  BankDetailsAuth: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -95,6 +97,7 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="TermsCondition" component={TermsCondition} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="BankDetailsAuth" component={BankDetailsAuth} />
     </Stack.Navigator>
   );
 };
