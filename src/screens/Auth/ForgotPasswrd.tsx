@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import {
+  ActivityIndicator,
   Keyboard,
   StyleSheet,
   Text,
@@ -15,11 +16,18 @@ import { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import Toast from 'react-native-toast-message';
+import { apiHelper } from '../../services';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<StackParamList, 'ForgotPassword'>;
 
-const ForgotPassword: React.FC<Props> = ({ navigation }) => {
+const ForgotPassword = ({ route }) => {
+  const navigation = useNavigation<NavigationProp<any>>();
+  const Email = route.params.email;
+  console.log("EMail from the params in the forgot Password Screen!", Email)
   const [email, setEmail] = useState('');
+  const  [loading, setLoading] = useState(false)
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -29,13 +37,46 @@ const ForgotPassword: React.FC<Props> = ({ navigation }) => {
   const isPhone = /^[0-9]+$/.test(email); // only digits allowed
   const isFormValid = isEmail || isPhone;
 
+  const handleForgeotPass = async () => {
+    setLoading(true);
+
+    try {
+      const body = {
+        email: Email,
+      };
+      const { response, error } = await apiHelper(
+        'POST',
+        'auth/forgot-password',
+        {},
+        body,
+      );
+      console.log('Forgot Password Response:', response);
+
+      if (response) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Password Reset Successfully',
+        });
+        navigation.navigate('PhoneVerification', { email: Email });
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Something went wrong. Please try again later.',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1 }}>
         <TopHeader
           text="Forgot Password"
           isBack={true}
-          navigation={navigation}
         />
         <View style={styles.container}>
           <Text style={styles.textMain}>
@@ -61,10 +102,16 @@ const ForgotPassword: React.FC<Props> = ({ navigation }) => {
               textColor={colors.white}
               borderRadius={30}
               disabled={!isFormValid}
-              onPress={() => navigation.navigate('PhoneVerification')}
+              // onPress={() => navigation.navigate('PhoneVerification')}
+              onPress={handleForgeotPass}
             />
           </View>
         </View>
+        {loading && (
+          <View style={styles.loaderOverlay}>
+             <ActivityIndicator size="large" color={colors.brown} />
+          </View>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -83,6 +130,17 @@ const styles = StyleSheet.create({
   },
   btnMain: {
     top: height * 0.7,
+  },
+    loaderOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.3)', // semi-transparent background
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 9999,
   },
 });
 

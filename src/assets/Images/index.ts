@@ -95,6 +95,12 @@ const images: { [key: string]: ImageSourcePropType } = {
   payment: require('../Images/payment.png'),
   paymentCheck: require('../Images/paymentCheck.png'),
   paymentSuccess: require('../Images/paymentSuccess.png'),
+  traveloLogoV: require('../Images/traveloLogoV.png'),
+  cameraWhite: require('../Images/cameraWhite.png'),
+  upload: require('../Images/upload.png'),
+  eye: require('../Images/eye.png'),
+  eyeInvisible: require('../Images/eye-invisible.png'),
+  tickBlack: require('../Images/tickBlack.png'),
 };
 
 export default images;

@@ -1,6 +1,7 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   Keyboard,
   StyleSheet,
   Text,
@@ -17,28 +18,111 @@ import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import { apiHelper } from '../../services';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setToken, setUser, setUserEmail } from '../../redux/slice/roleSlice';
 
 type Props = NativeStackScreenProps<StackParamList, 'OtpVerification'>;
 
-const OtpVerification: React.FC<Props> = ({ navigation }) => {
+const OtpVerification = ({ route }) => {
+  const navigation = useNavigation<NavigationProp<any>>()
   const [otp, setOtp] = useState('');
-
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false)
   const isOtpValid = otp.length === 5;
+  const email = route.params?.email;
+  console.log('Email received in OtpVerification: ', email);
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      Toast.show({
-        type: 'custom_otp',
-        position: 'top',
-      });
-    }, 2000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     Toast.show({
+  //       type: 'custom_otp',
+  //       position: 'top',
+  //     });
+  //   }, 2000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+
+  const handleSubmitOtp = async (text: any) => {
+    setLoading(true);
+    const body = {
+      email: email,
+      otp: otp,
+    };
+
+    const { response, error } = await apiHelper(
+      'POST',
+      'auth/verify-otp',
+      {},
+      body,
+    );
+    console.log('Response from Otp Api: ', response?.data.response.data);
+    console.log('Body from Otp Api: ', body);
+    setLoading(false);
+
+    if (response?.data.response.data) {
+      dispatch(setToken(response.data.response.data.access_token));
+      console.log(
+        'Token to set in redux from OTP:',
+        response.data.response.data.access_token,
+      );
+      dispatch(setUser(response.data.response.data.user));
+      dispatch(setUserEmail(response.data.response.data.user.email));
+      console.log(
+        'Email from response: ',
+        response.data.response.data.user.email,
+      );
+      navigation.navigate('CreateProfile');
+
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: response.data.message,
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'error',
+        text2: 'invalidCode',
+      });
+    }
+    setOtp('');
+  };
+
+  const handelResendOtp = async () => {
+    const body = {
+      email: email,
+    };
+    console.log('Email in the resend Otp Screen', email);
+    const { response, error } = await apiHelper(
+      'POST',
+      'auth/resend-otp',
+      {},
+      body,
+    );
+    if (response) {
+      console.log('Response from the resend Otp Email', response.data.data);
+      Toast.show({
+        type: 'success',
+        text1: 'success',
+        text2: response.data.message,
+      });
+    } else {
+      console.log('Error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'error',
+        text2: 'errorCode',
+      });
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -73,7 +157,7 @@ const OtpVerification: React.FC<Props> = ({ navigation }) => {
           />
           <View style={styles.recieveMain}>
             <Text style={styles.recieveTextOne}>Didn't recieve the code?</Text>
-            <TouchableOpacity activeOpacity={0.6}>
+            <TouchableOpacity activeOpacity={0.6} onPress={handelResendOtp}>
               <Text style={styles.recieveTextTwo}>Resend Again</Text>
             </TouchableOpacity>
           </View>
@@ -87,10 +171,16 @@ const OtpVerification: React.FC<Props> = ({ navigation }) => {
               textColor={isOtpValid ? colors.white : colors.white}
               borderRadius={30}
               disabled={!isOtpValid}
-              onPress={() => navigation.navigate('SetPassword')}
+              // onPress={() => navigation.navigate('SetPassword')}
+              onPress={handleSubmitOtp}
             />
           </View>
         </View>
+        {loading && (
+          <View style={styles.loaderOverlay}>
+            <ActivityIndicator size="large" color={colors.brown} />
+          </View>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -152,6 +242,17 @@ const styles = StyleSheet.create({
     marginTop: height * 0.02,
     alignSelf: 'center',
   },
+  loaderOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 9999,
+  }
 });
 
 export default OtpVerification;

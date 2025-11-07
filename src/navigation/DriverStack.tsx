@@ -28,6 +28,7 @@ import PrivacyPolicy from '../screens/Global/PrivacyPolicy';
 import RoleSwitch from '../screens/Global/RoleSwitch';
 import Setting from '../screens/Global/Setting';
 import TermsCondition from '../screens/Global/TermsConditions';
+import BankDetailsAuth from '../screens/Auth/BankDetailAuth';
 
 export type StackParamList = {
   HomeDriver: undefined;
@@ -61,6 +62,7 @@ export type StackParamList = {
   EditProfile: undefined;
   Profile: undefined;
   RoleSwitch: undefined;
+  BankDetailsAuth: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -74,6 +76,7 @@ const DriverStack: React.FC = () => {
     >
       <Stack.Screen name="HomeDriver" component={HomeDriver} />
       <Stack.Screen name="BankDetails" component={BankDetails} />
+      <Stack.Screen name="BankDetailsAuth" component={BankDetailsAuth} />
       <Stack.Screen name="WelcomeFirst" component={WelcomeFirst} />
       <Stack.Screen name="WelcomeSec" component={WelcomeSec} />
       <Stack.Screen name="WelcomeFourth" component={WelcomeFourth} />

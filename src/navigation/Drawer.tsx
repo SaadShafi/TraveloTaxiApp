@@ -34,6 +34,8 @@ const CustomDrawerContent = (props: any) => {
   const navigation = useNavigation<NavigationProp<any>>();
   const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
+  const User = useSelector((state: RootState) => state.role.user)
+  console.log("User from redux in the Drawer!", User)
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
@@ -182,8 +184,8 @@ const CustomDrawerContent = (props: any) => {
             <Image source={images.drawerProf} style={styles.profileImage} />
           </TouchableOpacity>
           <View style={styles.profileTextContainer}>
-            <Text style={styles.profileName}>Name</Text>
-            <Text style={styles.profileEmail}>info@yourmail.com</Text>
+            <Text style={styles.profileName}>{ User?.full_name || "Name"}</Text>
+            <Text style={styles.profileEmail}>{ User?.email || "info@yourmail.com"}</Text>
           </View>
         </View>
         <View style={styles.menuContainer}>

@@ -16,16 +16,101 @@ import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import Toast from 'react-native-toast-message';
+import { apiHelper } from '../../services';
+import { useDispatch } from 'react-redux';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { setToken, setUser, setUserEmail } from '../../redux/slice/roleSlice';
 
 type Props = NativeStackScreenProps<StackParamList, 'PhoneVerification'>;
 
-const PhoneVerification: React.FC<Props> = ({ navigation }) => {
+const PhoneVerification = ({ route }) => {
+  const navigation = useNavigation<NavigationProp<any>>()
   const [otp, setOtp] = useState('');
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false)
+  const Email = route.params.email
+  console.log("Email from the params in the phone Verification screen!",Email)
 
   const isOtpValid = otp.length === 5;
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
+  };
+
+
+  const handleSubmitOtp = async (text: any) => {
+    setLoading(true);
+    const body = {
+      email: Email,
+      otp: otp,
+    };
+
+    const { response, error } = await apiHelper(
+      'POST',
+      'auth/verify-otp',
+      {},
+      body,
+    );
+    console.log('Response from Otp Api: ', response?.data.response.data);
+    console.log('Body from Otp Api: ', body);
+    setLoading(false);
+
+    if (response?.data.response.data) {
+      dispatch(setToken(response.data.response.data.access_token));
+      console.log(
+        'Token to set in redux from OTP:',
+        response.data.response.data.access_token,
+      );
+      dispatch(setUser(response.data.response.data.user));
+      dispatch(setUserEmail(response.data.response.data.user.email));
+      console.log(
+        'Email from response: ',
+        response.data.response.data.user.email,
+      );
+      navigation.navigate('SignIn');
+
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: response.data.message,
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'error',
+        text2: 'invalidCode',
+      });
+    }
+    setOtp('');
+  };
+
+  const handelResendOtp = async () => {
+    const body = {
+      email: Email,
+    };
+    console.log('Email in the resend Otp Screen', Email);
+    const { response, error } = await apiHelper(
+      'POST',
+      'auth/resend-otp',
+      {},
+      body,
+    );
+    if (response) {
+      console.log('Response from the resend Otp Email', response.data.data);
+      Toast.show({
+        type: 'success',
+        text1: 'success',
+        text2: response.data.message,
+      });
+    } else {
+      console.log('Error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'error',
+        text2: 'errorCode',
+      });
+    }
   };
 
   return (
@@ -34,7 +119,6 @@ const PhoneVerification: React.FC<Props> = ({ navigation }) => {
         <TopHeader
           text="Phone Verification"
           isBack={true}
-          navigation={navigation}
         />
         <View style={styles.otpContainer}>
           <Text style={styles.otpText}>Enter Your OTP</Text>
@@ -65,7 +149,7 @@ const PhoneVerification: React.FC<Props> = ({ navigation }) => {
           />
           <View style={styles.recieveMain}>
             <Text style={styles.recieveTextOne}>Didn't recieve the code?</Text>
-            <TouchableOpacity activeOpacity={0.6}>
+            <TouchableOpacity activeOpacity={0.6} onPress={handelResendOtp}>
               <Text style={styles.recieveTextTwo}>Resend Again</Text>
             </TouchableOpacity>
           </View>
@@ -79,7 +163,8 @@ const PhoneVerification: React.FC<Props> = ({ navigation }) => {
               textColor={isOtpValid ? colors.white : colors.white}
               borderRadius={30}
               disabled={!isOtpValid}
-              onPress={() => navigation.navigate('SetPassword')}
+              // onPress={() => navigation.navigate('SetPassword')}
+              onPress={handleSubmitOtp}
             />
           </View>
         </View>

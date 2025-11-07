@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import {
+  ActivityIndicator,
   Keyboard,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -12,13 +13,22 @@ import TopHeader from '../../components/Topheader';
 import { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import Toast from 'react-native-toast-message';
+import { apiHelper } from '../../services';
 
 type Props = NativeStackScreenProps<StackParamList, 'ChangePass'>;
 
-const ChangePassWord: React.FC<Props> = ({ navigation }) => {
+const ChangePassWord = () => {
+  const navigation = useNavigation<NavigationProp<any>>()
   const [oldPass, setOldPass] = useState('');
   const [password, setPassword] = useState('');
   const [rePass, setRePass] = useState('');
+  const [loading, setLoading] = useState(false)
+  const User = useSelector((state: RootState) => state.role.user)
+  console.log("USer from redux in the Change Password Screen!",User)
 
   const isFormValid =
     oldPass.trim().length > 0 &&
@@ -30,13 +40,40 @@ const ChangePassWord: React.FC<Props> = ({ navigation }) => {
     Keyboard.dismiss();
   };
 
+  const resetPassword = async () => {
+    setLoading(true);
+
+    try {
+      const body = {
+        password: password
+      }
+      const { response, error } = await apiHelper("PUT", "auth/reset-password", {}, body);
+      console.log("Change Password Response:", response);
+      if (response) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Password Changed Successfully',
+        });
+        navigation.goBack();
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to change password',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1 }}>
         <TopHeader
           text="Change Password"
           isBack={true}
-          navigation={navigation}
         />
         <View style={styles.container}>
           <View style={styles.inputMain}>
@@ -82,11 +119,17 @@ const ChangePassWord: React.FC<Props> = ({ navigation }) => {
                 textColor={colors.white}
                 borderRadius={30}
                 disabled={!isFormValid}
-                onPress={() => navigation.goBack()}
+                // onPress={() => navigation.goBack()}
+                onPress={resetPassword}
               />
             </View>
           </View>
         </View>
+        {loading && (
+            <View style={styles.loaderOverlay}>
+                <ActivityIndicator size="large" color={colors.brown} />
+            </View>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -100,6 +143,17 @@ const styles = StyleSheet.create({
   inputMain: {
     gap: height * 0.01,
     marginTop: height * 0.02,
+  },
+    loaderOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.3)', // semi-transparent background
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 9999,
   },
 });
 

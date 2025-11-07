@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Country } from '../../utilities/countries';
 
 interface ServiceItem {
   _id: string;
@@ -44,6 +45,7 @@ interface RoleState {
   specialOfferPrice: string;
   chatId: string;
   languageSelect: string;
+  countrySelect: Country | null;
 }
 
 const initialState: RoleState = {
@@ -70,6 +72,7 @@ const initialState: RoleState = {
   specialOfferPrice: '',
   chatId: '',
   languageSelect: '',
+  countrySelect: null,
 } satisfies RoleState as RoleState;
 
 const roleSlice = createSlice({
@@ -147,6 +150,9 @@ const roleSlice = createSlice({
     setLanguageSelect: (state, action) => {
       state.languageSelect = action.payload;
     },
+    setCountrySelect: (state, action: PayloadAction<Country>) => {
+      state.countrySelect = action.payload;
+    },
   },
 });
 
@@ -174,5 +180,6 @@ export const {
   setSpecialOfferName,
   setChatId,
   setLanguageSelect,
+  setCountrySelect
 } = roleSlice.actions;
 export default roleSlice.reducer;
