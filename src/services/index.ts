@@ -4,36 +4,18 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
-import { Platform } from 'react-native';
 import { hideLoader, showLoader } from '../redux/slice/screenSlice';
 import { store } from '../redux/store';
 
-export const getBaseURL = () => {
-  if (__DEV__) {
-    // For Android emulator
-    if (Platform.OS === 'android') {
-      return 'http://10.0.2.2:3000/';
-    }
-    // For iOS simulator and general development
-    return 'http://localhost:3000/';
-  }
-  // For production
-  //   return 'https://your-production-api.com/';
-};
-
 const instance = axios.create({
   baseURL: 'https://api.traveloservices.com/',
-  // baseURL: 'http://10.0.2.2:3000/',
-  // baseURL: getBaseURL(),
   timeout: 10000,
 });
 
 instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = store.getState()?.role?.userAuthToken;
-    // const lang = store.getState()?.role.languageSelect
     const lang = store.getState().role.languageSelect;
-    // console.log("Language Selected", lang)
     console.log(token);
     store.dispatch(showLoader('loading'));
 

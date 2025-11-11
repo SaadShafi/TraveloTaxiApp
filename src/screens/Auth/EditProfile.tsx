@@ -1,830 +1,3 @@
-// import { isCancel, pick, types } from '@react-native-documents/picker';
-// import { NavigationProp, useNavigation } from '@react-navigation/native';
-// import { useMemo, useState } from 'react';
-// import {
-//   Image,
-//   Keyboard,
-//   Modal,
-//   ScrollView,
-//   StyleSheet,
-//   Text,
-//   TextInput,
-//   TouchableOpacity,
-//   TouchableWithoutFeedback,
-//   View,
-// } from 'react-native';
-// import DatePicker from 'react-native-date-picker';
-// import ImagePicker from 'react-native-image-crop-picker';
-// import { useSelector } from 'react-redux';
-// import { fontFamily } from '../../assets/Fonts';
-// import images from '../../assets/Images';
-// import CustomButton from '../../components/CustomButton';
-// import CustomProfileImgModal from '../../components/CustomProfileImage';
-// import CustomSelect from '../../components/CustomSelect';
-// import CustomTextInput from '../../components/CustomTextInput';
-// import TopHeader from '../../components/Topheader';
-// import { RootState } from '../../redux/store';
-// import { height, width } from '../../utilities';
-// import { colors } from '../../utilities/colors';
-// import { fontSizes } from '../../utilities/fontsizes';
-
-// const EditProfile = () => {
-//   const navigation = useNavigation<NavigationProp<any>>();
-//   const [modalOpen, setModalOpen] = useState(false);
-//   const [profileImage, setProfileImage] = useState<string | null>(null);
-//   const selectedRole = useSelector(
-//     (state: RootState) => state.role.selectedRole,
-//   );
-//   const [name, setName] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [phone, setPhone] = useState('');
-//   const [street, setStreet] = useState('');
-//   const [isPhoneFocused, setIsPhoneFocused] = useState(false);
-//   const [gender, setGender] = useState('');
-//   const [city, setCity] = useState('');
-//   const [rideType, setRideType] = useState('');
-//   const [card, setCard] = useState('');
-//   const [startDate, setStartDate] = useState<Date | null>(null);
-//   const [modalVisible, setModalVisible] = useState(false);
-//   const [openStartPicker, setOpenStartPicker] = useState(false);
-//   const [drivingLicense, setDrivingLicense] = useState(null);
-//   const [privateHireLicense, setPrivateHireLicense] = useState(null);
-//   const [logBook, setLogBook] = useState(null);
-//   const [vehicleLicense, setVehicleLicense] = useState(null);
-//   const [insurance, setInsurance] = useState(null);
-//   const [mot, setMot] = useState(null);
-//   const [hireAgreement, setHireAgreement] = useState(null);
-
-//   const toggleModal = () => {
-//     setModalOpen(!modalOpen);
-//   };
-
-//   const uploadFromGallery = () => {
-//     ImagePicker.openPicker({
-//       width: 300,
-//       height: 400,
-//       cropping: true,
-//     }).then(image => {
-//       setProfileImage(image.path);
-//       toggleModal();
-//     });
-//   };
-
-//   const uploadFromCamera = () => {
-//     ImagePicker.openCamera({
-//       width: 300,
-//       height: 400,
-//       cropping: true,
-//     }).then(image => {
-//       setProfileImage(image.path);
-//       toggleModal();
-//     });
-//   };
-
-//   const isFormValid =
-//     name.length > 4 &&
-//     email.includes('@') &&
-//     phone.length > 7 &&
-//     street.length > 5;
-
-//   const dismissKeyboard = () => {
-//     Keyboard.dismiss();
-//   };
-
-//   const genderOptions = [
-//     { name: 'Select Gender', id: '' },
-//     { name: 'Male', id: 'male' },
-//     { name: 'Female', id: 'female' },
-//     { name: 'Other', id: 'other' },
-//   ];
-
-//   const cityOptions = [
-//     { name: 'Select City', id: '' },
-//     { name: 'Texas', id: 'texas' },
-//     { name: 'Misissippi', id: 'misissippi' },
-//     { name: 'New York', id: 'new york' },
-//     { name: 'Other', id: 'other' },
-//   ];
-
-//   const rideOptions = [
-//     { name: 'Select Ride Type', id: '' },
-//     { name: 'Bike', id: 'bike' },
-//     { name: 'Car', id: 'car' },
-//     { name: 'SUV', id: 'suv' },
-//   ];
-
-//   const toggleModalSec = () => {
-//     setModalVisible(false);
-//     navigation.goBack();
-//   };
-
-//   const formatDateForDisplay = (date: Date | null): string => {
-//     if (!date) return '';
-//     return date.toLocaleDateString('en-US', {
-//       year: 'numeric',
-//       month: 'short',
-//       day: 'numeric',
-//     });
-//   };
-
-//   const handlePickDocument = async (setter: (file: any) => void) => {
-//     try {
-//       const results = await pick({
-//         type: [types.allFiles],
-//         allowMultiSelection: false,
-//         keepLocalCopy: true,
-//       });
-
-//       if (results && results.length > 0) {
-//         const file = results[0];
-//         setter({
-//           name: file.name,
-//           uri: file.uri,
-//           type: file.type,
-//           size: file.size,
-//         });
-//       }
-//     } catch (err: any) {
-//       if (!isCancel(err)) console.error('Document pick error:', err);
-//     }
-//   };
-
-//   const handleDateConfirm = (selectedDate: Date) => {
-//     setOpenStartPicker(false);
-//     setStartDate(selectedDate);
-//   };
-
-//   const renderUploadField = (
-//     label: string,
-//     file: any,
-//     setter: (file: any) => void,
-//     fieldKey: string,
-//   ) => (
-//     <>
-//       <Text style={styles.label}>{label}</Text>
-//       <View style={styles.container}>
-//         <TouchableOpacity
-//           style={styles.button}
-//           onPress={() => handlePickDocument(setter)}
-//         >
-//           <Text style={styles.buttonText}>Choose File</Text>
-//         </TouchableOpacity>
-
-//         {!file && <Text style={styles.title}>No File Selected</Text>}
-
-//         {file && (
-//           <View style={styles.preview}>
-//             <Text style={styles.fileLabel}>Selected File:</Text>
-//             <Text style={styles.fileName}>{file.name}</Text>
-//             <Text style={styles.fileUri}>{file.uri}</Text>
-//             {file.type && <Text style={styles.fileUri}>Type: {file.type}</Text>}
-//             {file.size && (
-//               <Text style={styles.fileUri}>Size: {file.size} bytes</Text>
-//             )}
-//           </View>
-//         )}
-//       </View>
-//       <TextInput
-//         placeholder="*Add Expiry Date"
-//         placeholderTextColor={colors.darkGray}
-//         style={styles.AddExpiryDate}
-//         keyboardType="phone-pad"
-//       />
-//     </>
-//   );
-
-//   const UserFields = useMemo(() => {
-//     return (
-//       <View style={{ flex: 1, alignItems: 'center' }}>
-//         <View style={styles.imgMain}>
-//           <Image source={images.profGradient} style={styles.gradient} />
-//           <TouchableOpacity onPress={toggleModal} activeOpacity={0.7}>
-//             <View style={styles.profileImageWrapper}>
-//               {profileImage ? (
-//                 <Image
-//                   source={{ uri: profileImage }}
-//                   style={styles.profileImage}
-//                 />
-//               ) : (
-//                 <View style={styles.profMain}>
-//                   <Image source={images.profile} style={styles.profile} />
-//                   <View style={styles.cameraMain}>
-//                     <Image source={images.camera} style={styles.camera} />
-//                   </View>
-//                 </View>
-//               )}
-//             </View>
-//           </TouchableOpacity>
-//         </View>
-//         <View style={styles.inputMain}>
-//           <CustomTextInput
-//             placeholder="*Enter Your Name..."
-//             placeholderTextColor={colors.black}
-//             borderColor={colors.brown}
-//             borderRadius={30}
-//             inputWidth={width * 0.85}
-//             inputHeight={height * 0.06}
-//             value={name}
-//             onChangeText={setName}
-//             backgroundColor={colors.gray}
-//           />
-
-//           <View
-//             style={[
-//               styles.phoneRow,
-//               {
-//                 borderColor:
-//                   isPhoneFocused || phone ? colors.brown : colors.gray,
-//                 backgroundColor:
-//                   isPhoneFocused || phone ? colors.lightBrown : colors.gray,
-//               },
-//             ]}
-//           >
-//             <Image source={images.UK} style={styles.flag} />
-//             <Image source={images.line} style={styles.lineImg} />
-//             <TextInput
-//               style={styles.phoneInput}
-//               placeholder="+1"
-//               placeholderTextColor={colors.black}
-//               keyboardType="phone-pad"
-//               value={phone}
-//               onChangeText={setPhone}
-//               onFocus={() => setIsPhoneFocused(true)}
-//               onBlur={() => setIsPhoneFocused(false)}
-//             />
-//           </View>
-//           <CustomTextInput
-//             placeholder="*Enter Your Email..."
-//             placeholderTextColor={colors.black}
-//             borderColor={colors.brown}
-//             borderRadius={30}
-//             inputWidth={width * 0.85}
-//             inputHeight={height * 0.06}
-//             value={email}
-//             onChangeText={setEmail}
-//             backgroundColor={colors.gray}
-//           />
-//           <CustomTextInput
-//             placeholder="*Address"
-//             placeholderTextColor={colors.black}
-//             borderColor={colors.brown}
-//             borderRadius={30}
-//             inputWidth={width * 0.85}
-//             inputHeight={height * 0.06}
-//             value={street}
-//             onChangeText={setStreet}
-//             backgroundColor={colors.gray}
-//           />
-//           <CustomSelect
-//             inputWidth={width * 0.85}
-//             inputHeight={height * 0.06}
-//             selectElements={cityOptions}
-//             borderColor={city ? colors.brown : colors.gray}
-//             borderWidth={1}
-//             inputColor={city ? colors.lightBrown : colors.gray}
-//             borderRadius={30}
-//             onChangeText={value => setCity(value)}
-//             setSelectedElement={setCity}
-//             defaultValue=""
-//           />
-//           <CustomSelect
-//             inputWidth={width * 0.85}
-//             inputHeight={height * 0.06}
-//             selectElements={genderOptions}
-//             borderColor={gender ? colors.brown : colors.gray}
-//             borderWidth={1}
-//             inputColor={gender ? colors.lightBrown : colors.gray}
-//             borderRadius={30}
-//             onChangeText={value => setGender(value)}
-//             setSelectedElement={setGender}
-//             defaultValue=""
-//           />
-//         </View>
-//         <View style={styles.btnMain}>
-//           <CustomButton
-//             btnHeight={height * 0.065}
-//             btnWidth={width * 0.4}
-//             text="Cancel"
-//             backgroundColor={colors.black}
-//             textColor={colors.white}
-//             borderRadius={30}
-//           />
-//           <CustomButton
-//             btnHeight={height * 0.065}
-//             btnWidth={width * 0.4}
-//             text="Save"
-//             backgroundColor={isFormValid ? colors.brown : colors.gray}
-//             textColor={colors.white}
-//             borderRadius={30}
-//             disabled={!isFormValid}
-//             // onPress={() => navigation.navigate('Congratulation')}
-//             onPress={() => setModalVisible(true)}
-//           />
-//         </View>
-//         <CustomProfileImgModal
-//           modalOpen={modalOpen}
-//           toggleModal={toggleModal}
-//           camera={uploadFromCamera}
-//           gallery={uploadFromGallery}
-//         />
-//         <Modal
-//           animationType="fade"
-//           transparent={true}
-//           visible={modalVisible}
-//           onRequestClose={() => setModalVisible(false)}
-//         >
-//           <View style={styles.modalOverlay}>
-//             <View style={styles.modalContent}>
-//               <Text style={styles.modalText}>Profile Edited Successfully</Text>
-//               <Image source={images.checked} />
-//               <CustomButton
-//                 text="Confirm"
-//                 textColor={colors.white}
-//                 backgroundColor={colors.brown}
-//                 btnHeight={height * 0.06}
-//                 btnWidth={width * 0.75}
-//                 borderRadius={30}
-//                 onPress={toggleModalSec}
-//               />
-//             </View>
-//           </View>
-//         </Modal>
-//       </View>
-//     );
-//   }, [
-//     name,
-//     email,
-//     phone,
-//     street,
-//     gender,
-//     city,
-//     isPhoneFocused,
-//     isFormValid,
-//     profileImage,
-//     modalOpen,
-//     setModalOpen,
-//     modalVisible,
-//     setModalVisible,
-//   ]);
-
-//   const DriverFields = useMemo(() => {
-//     return (
-//       <View style={{ flex: 1, alignItems: 'center' }}>
-//         <ScrollView
-//           contentContainerStyle={{
-//             alignItems: 'center',
-//           }}
-//           showsVerticalScrollIndicator={false}
-//         >
-//           <View style={styles.imgMain}>
-//             <Image source={images.profGradient} style={styles.gradient} />
-//             <TouchableOpacity style={styles.profMain} activeOpacity={0.7}>
-//               <Image source={images.profile} style={styles.profile} />
-//               <View style={styles.cameraMain}>
-//                 <Image source={images.camera} style={styles.camera} />
-//               </View>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.inputMain}>
-//             <CustomTextInput
-//               placeholder="*Enter Your Name..."
-//               placeholderTextColor={colors.black}
-//               borderColor={colors.brown}
-//               borderRadius={30}
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               value={name}
-//               onChangeText={setName}
-//               backgroundColor={colors.gray}
-//             />
-
-//             <View
-//               style={[
-//                 styles.phoneRow,
-//                 {
-//                   borderColor:
-//                     isPhoneFocused || phone ? colors.brown : colors.gray,
-//                   backgroundColor:
-//                     isPhoneFocused || phone ? colors.lightBrown : colors.gray,
-//                 },
-//               ]}
-//             >
-//               <Image source={images.UK} style={styles.flag} />
-//               <Image source={images.line} style={styles.lineImg} />
-//               <TextInput
-//                 style={styles.phoneInput}
-//                 placeholder="+1"
-//                 placeholderTextColor={colors.black}
-//                 keyboardType="phone-pad"
-//                 value={phone}
-//                 onChangeText={setPhone}
-//                 onFocus={() => setIsPhoneFocused(true)}
-//                 onBlur={() => setIsPhoneFocused(false)}
-//               />
-//             </View>
-//             <CustomTextInput
-//               placeholder="*Enter Your Email..."
-//               placeholderTextColor={colors.black}
-//               borderColor={colors.brown}
-//               borderRadius={30}
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               value={email}
-//               onChangeText={setEmail}
-//               backgroundColor={colors.gray}
-//             />
-//             <CustomTextInput
-//               placeholder="*Address"
-//               placeholderTextColor={colors.black}
-//               borderColor={colors.brown}
-//               borderRadius={30}
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               value={street}
-//               onChangeText={setStreet}
-//               backgroundColor={colors.gray}
-//             />
-//             <CustomSelect
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               selectElements={cityOptions}
-//               borderColor={city ? colors.brown : colors.gray}
-//               borderWidth={1}
-//               inputColor={city ? colors.lightBrown : colors.gray}
-//               borderRadius={30}
-//               onChangeText={value => setCity(value)}
-//               setSelectedElement={setCity}
-//               defaultValue=""
-//             />
-//             <CustomSelect
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               selectElements={genderOptions}
-//               borderColor={gender ? colors.brown : colors.gray}
-//               borderWidth={1}
-//               inputColor={gender ? colors.lightBrown : colors.gray}
-//               borderRadius={30}
-//               onChangeText={value => setGender(value)}
-//               setSelectedElement={setGender}
-//               defaultValue=""
-//             />
-//             <CustomTextInput
-//               placeholder="*Date Of Birth"
-//               placeholderTextColor={colors.black}
-//               borderColor={colors.brown}
-//               borderRadius={30}
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               // value={street}
-//               // onChangeText={setStreet}
-//               backgroundColor={colors.gray}
-//               editable={false}
-//               value={formatDateForDisplay(startDate)}
-//               rightIcon={
-//                 <TouchableOpacity
-//                   activeOpacity={0.7}
-//                   onPress={() => setOpenStartPicker(true)}
-//                 >
-//                   <Image source={images.calendar} />
-//                 </TouchableOpacity>
-//               }
-//             />
-//             <DatePicker
-//               modal
-//               open={openStartPicker}
-//               date={startDate || new Date()}
-//               mode="date"
-//               onConfirm={handleDateConfirm}
-//               onCancel={() => setOpenStartPicker(false)}
-//               // minimumDate={new Date()}
-//             />
-//             <CustomSelect
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               selectElements={rideOptions}
-//               borderColor={rideType ? colors.brown : colors.gray}
-//               borderWidth={1}
-//               inputColor={rideType ? colors.lightBrown : colors.gray}
-//               borderRadius={30}
-//               onChangeText={value => setRideType(value)}
-//               setSelectedElement={setRideType}
-//               defaultValue=""
-//             />
-//             <CustomTextInput
-//               placeholder="*ID Card Number"
-//               placeholderTextColor={colors.black}
-//               borderColor={colors.brown}
-//               borderRadius={30}
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               value={card}
-//               onChangeText={setCard}
-//               backgroundColor={colors.gray}
-//             />
-//             <View>
-//               <Text style={styles.documentUploadText}>Document Uploads:</Text>
-//               {renderUploadField(
-//                 'Driving License:*',
-//                 drivingLicense,
-//                 setDrivingLicense,
-//                 'drivingLicense',
-//               )}
-//               {renderUploadField(
-//                 'Private Hire Driver License:*',
-//                 privateHireLicense,
-//                 setPrivateHireLicense,
-//                 'privateHireLicense',
-//               )}
-//               {renderUploadField(
-//                 'LogBook V5:*',
-//                 logBook,
-//                 setLogBook,
-//                 'logBook',
-//               )}
-//               {renderUploadField(
-//                 'Private Hire Vehicle License:*',
-//                 vehicleLicense,
-//                 setVehicleLicense,
-//                 'vehicleLicense',
-//               )}
-//               {renderUploadField(
-//                 'Insurance:*',
-//                 insurance,
-//                 setInsurance,
-//                 'insurance',
-//               )}
-//               {renderUploadField('MOT:*', mot, setMot, 'mot')}
-//               {renderUploadField(
-//                 'Hire Agreement (if Applicable):',
-//                 hireAgreement,
-//                 setHireAgreement,
-//                 'hireAgreement',
-//               )}
-//             </View>
-//           </View>
-//           <View style={styles.btnMain}>
-//             <CustomButton
-//               btnHeight={height * 0.075}
-//               btnWidth={width * 0.85}
-//               text="Continue"
-//               backgroundColor={isFormValid ? colors.brown : colors.black}
-//               textColor={colors.white}
-//               borderRadius={30}
-//               disabled={!isFormValid}
-//               // onPress={() => navigation.navigate('Congratulation')}
-//               onPress={() => setModalVisible(true)}
-//             />
-//           </View>
-//         </ScrollView>
-//         <CustomProfileImgModal
-//           modalOpen={modalOpen}
-//           toggleModal={toggleModal}
-//           camera={uploadFromCamera}
-//           gallery={uploadFromGallery}
-//         />
-//         <Modal
-//           animationType="fade"
-//           transparent={true}
-//           visible={modalVisible}
-//           onRequestClose={() => setModalVisible(false)}
-//         >
-//           <View style={styles.modalOverlay}>
-//             <View style={styles.modalContent}>
-//               <Text style={styles.modalText}>Profile Edited Successfully</Text>
-//               <Image source={images.approve} />
-//               <CustomButton
-//                 text="Confirm"
-//                 textColor={colors.white}
-//                 backgroundColor={colors.brown}
-//                 btnHeight={height * 0.06}
-//                 btnWidth={width * 0.75}
-//                 borderRadius={30}
-//                 onPress={toggleModalSec}
-//               />
-//             </View>
-//           </View>
-//         </Modal>
-//       </View>
-//     );
-//   }, [
-//     name,
-//     email,
-//     phone,
-//     street,
-//     gender,
-//     city,
-//     card,
-//     rideType,
-//     startDate,
-//     openStartPicker,
-//     isPhoneFocused,
-//     isFormValid,
-//     profileImage,
-//     modalOpen,
-//     setModalOpen,
-//     modalVisible,
-//     setModalVisible,
-//   ]);
-//   return (
-//     <TouchableWithoutFeedback onPress={dismissKeyboard}>
-//       <View style={{ flex: 1, backgroundColor: colors.white }}>
-//         <TopHeader text="Edit Profile" />
-//         {selectedRole === 'user' && UserFields}
-//         {selectedRole === 'driver' && DriverFields}
-//       </View>
-//     </TouchableWithoutFeedback>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   profileImageWrapper: {
-//     width: width * 0.4,
-//     // height: width * 0.4,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     bottom: height * 0.6,
-//   },
-//   profileImage: {
-//     width: width * 0.32,
-//     height: width * 0.32,
-//     resizeMode: 'cover',
-//   },
-//   defaultProfileImage: {
-//     // height: width * 0.4,
-//     bottom: height * 0.09,
-//     resizeMode: 'contain',
-//   },
-//   gradient: {
-//     height: height * 0.6,
-//     width: width * 0.8,
-//     resizeMode: 'contain',
-//     bottom: height * 0.07,
-//   },
-//   imgMain: {
-//     bottom: height * 0.09,
-//     alignItems: 'center',
-//   },
-//   profMain: {
-//     position: 'absolute',
-//     top: height * 0.12,
-//   },
-//   profile: {
-//     width: width * 0.99,
-//     height: height * 0.17,
-//     resizeMode: 'contain',
-//   },
-//   cameraMain: {
-//     position: 'absolute',
-//     left: width * 0.58,
-//     top: height * 0.099,
-//   },
-//   camera: {
-//     width: width * 0.09,
-//     height: height * 0.09,
-//     resizeMode: 'contain',
-//   },
-//   inputMain: {
-//     alignItems: 'center',
-//     bottom: height * 0.35,
-//     gap: height * 0.02,
-//   },
-//   phoneRow: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     borderColor: colors.gray,
-//     borderWidth: 1,
-//     borderRadius: 30,
-//     paddingHorizontal: 12,
-//     width: width * 0.85,
-//     height: height * 0.06,
-//   },
-//   flag: {
-//     width: width * 0.05,
-//     height: height * 0.015,
-//     marginRight: 8,
-//     borderRadius: 2,
-//   },
-//   phoneInput: {
-//     flex: 1,
-//     fontSize: fontSizes.xm2,
-//     color: colors.black,
-//   },
-//   lineImg: {
-//     height: height * 0.024,
-//     width: width * 0.01,
-//     resizeMode: 'contain',
-//   },
-//   btnMain: {
-//     justifyContent: 'space-around',
-//     alignItems: 'center',
-//     flexDirection: 'row',
-//     bottom: height * 0.3,
-//     // paddingHorizontal: width * 0.05,
-//     width: width * 0.85,
-//   },
-//   preview: {
-//     marginTop: height * 0.02,
-//     alignItems: 'center',
-//   },
-//   fileLabel: {
-//     // fontWeight: '600',
-//     fontSize: fontSizes.sm2,
-//   },
-//   fileName: {
-//     marginTop: height * 0.01,
-//     fontSize: fontSizes.sm,
-//     color: colors.darkGray,
-//   },
-//   fileUri: {
-//     marginTop: 4,
-//     fontSize: 12,
-//     color: colors.gray,
-//   },
-//   label: {
-//     fontFamily: fontFamily.ClashDisplayMedium,
-//     fontSize: fontSizes.sm2,
-//     color: colors.black,
-//     marginTop: height * 0.025,
-//   },
-//   modalOverlay: {
-//     flex: 1,
-//     backgroundColor: 'rgba(255, 252, 252, 0.9)',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: 30,
-//   },
-//   modalContent: {
-//     backgroundColor: colors.white,
-//     borderRadius: 16,
-//     width: width * 0.83,
-//     height: height * 0.25,
-//     alignItems: 'center',
-//     borderWidth: 0.9,
-//     borderColor: colors.black,
-//     padding: 20,
-//     gap: height * 0.02,
-//   },
-//   modalText: {
-//     fontFamily: fontFamily.ClashDisplayMedium,
-//     fontSize: fontSizes.md,
-//     color: colors.black,
-//   },
-//   paraMain: {
-//     alignItems: 'center',
-//     top: height * 0.02,
-//     marginBottom: height * 0.02,
-//   },
-//   container: {
-//     backgroundColor: colors.white,
-//     height: height * 0.065,
-//     width: width * 0.85,
-//     borderRadius: 30,
-//     marginTop: height * 0.02,
-//     borderColor: colors.darkGray,
-//     borderWidth: 1,
-//     flexDirection: 'row',
-//     paddingHorizontal: width * 0.05,
-//     alignItems: 'center',
-//     gap: width * 0.03,
-//   },
-//   title: {
-//     fontFamily: fontFamily.ClashDisplayMedium,
-//     fontSize: fontSizes.sm,
-//     color: colors.black,
-//   },
-//   button: {
-//     backgroundColor: colors.gray,
-//     height: height * 0.04,
-//     width: width * 0.27,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     borderRadius: 15,
-//     borderStyle: 'dashed',
-//     borderWidth: 2,
-//     borderColor: colors.darkGray,
-//   },
-//   buttonText: {
-//     color: colors.black,
-//     fontSize: fontSizes.sm,
-//   },
-//   documentUploadText: {
-//     fontFamily: fontFamily.ClashDisplayMedium,
-//     fontSize: fontSizes.lg,
-//     color: colors.black,
-//   },
-//   AddExpiryDate: {
-//     borderBottomWidth: 1,
-//     borderColor: colors.darkGray,
-//     marginTop: height * 0.01,
-//     fontSize: fontSizes.sm,
-//     color: colors.black,
-//   },
-// });
-
-// export default EditProfile;
-
-
-
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { isCancel, pick, types } from '@react-native-documents/picker';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
@@ -866,7 +39,7 @@ import { fontSizes } from '../../utilities/fontsizes';
 const EditProfile = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const [modalOpen, setModalOpen] = useState(false);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  // const [profileImage, setProfileImage] = useState<string | null>(null);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const selectedRole = useSelector(
@@ -874,26 +47,21 @@ const EditProfile = () => {
   );
   const User = useSelector((state: RootState) => state.role.user);
   console.log('User from Redux in EditProfile Screen:', User);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [street, setStreet] = useState('');
-  const [isPhoneFocused, setIsPhoneFocused] = useState(false);
-  const [gender, setGender] = useState('');
-  const [city, setCity] = useState('');
+  const [name, setName] = useState(User?.full_name || '');
+  const [email, setEmail] = useState(User?.email || '');
+  const [phone, setPhone] = useState(User?.phone_number || '');
+  const [street, setStreet] = useState(User?.address || '');
+  const [gender, setGender] = useState(User?.gender || '');
+  const [city, setCity] = useState(User?.city || '');
+  const [profileImage, setProfileImage] = useState<string | null>(
+    User?.profile_picture_url || null,
+  );
+   const [isPhoneFocused, setIsPhoneFocused] = useState(false);
   const [rideType, setRideType] = useState('');
   const [card, setCard] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [openStartPicker, setOpenStartPicker] = useState(false);
-  // const [drivingLicense, setDrivingLicense] = useState(null);
-  // const [privateHireLicense, setPrivateHireLicense] = useState(null);
-  // const [logBook, setLogBook] = useState(null);
-  // const [vehicleLicense, setVehicleLicense] = useState(null);
-  // const [insurance, setInsurance] = useState(null);
-  // const [mot, setMot] = useState(null);
-  // const [hireAgreement, setHireAgreement] = useState(null);
-  // const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [drivingLicense, setDrivingLicense] = useState<any[]>([]);
   const [privateHireLicense, setPrivateHireLicense] = useState<any[]>([]);
   const [logBook, setLogBook] = useState<any[]>([]);
@@ -927,12 +95,14 @@ const EditProfile = () => {
   const reduxSelectedCountry = useSelector(
     (state: RootState) => state.role.countrySelect || defaultCountry,
   );
+  const [showCityModal, setShowCityModal] = useState(false);
+    const [openExpiryDatePicker, setOpenExpiryDatePicker] = useState(false);
+  const [currentDateField, setCurrentDateField] = useState<string | null>(null);
 
   useEffect(() => {
     console.log('User from Redux in EditProfile Screen:', User);
   }, [User]);
 
-  // ✅ Helper: Ensure correct URL even if backend sends relative path
   const getFullImageUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith('http://') || path.startsWith('https://')) return path;
@@ -941,36 +111,6 @@ const EditProfile = () => {
       '',
     )}`;
   };
-
-  // ✅ Prefill fields from Redux user for BOTH roles
-  useEffect(() => {
-    if (User) {
-      console.log('Prefilling form with user data:', User);
-      setName(User.full_name || '');
-      setEmail(User.email || '');
-      setPhone(User.phone_number || '');
-      setStreet(User.address || '');
-      setGender(User.gender || '');
-      setCity(User.city || '');
-
-      // Set profile image for both roles
-      const profileImageUrl = getFullImageUrl(
-        User.profile_picture_url || User.profile_picture,
-      );
-      setProfileImage(profileImageUrl);
-
-      // Set additional driver fields if available
-      if (selectedRole === 'driver') {
-        setRideType(User.ride_type || '');
-        setCard(User.id_card_number || '');
-
-        // Set date of birth if available
-        if (User.date_of_birth) {
-          setStartDate(new Date(User.date_of_birth));
-        }
-      }
-    }
-  }, [User, selectedRole]);
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
@@ -1015,13 +155,50 @@ const EditProfile = () => {
     { name: 'Other', id: 'other' },
   ];
 
-  const cityOptions = [
-    { name: 'Select City', id: '' },
-    { name: 'Texas', id: 'texas' },
-    { name: 'Misissippi', id: 'misissippi' },
-    { name: 'New York', id: 'new york' },
-    { name: 'Other', id: 'other' },
-  ];
+  const cityOptions = useMemo(() => {
+    const countryName = reduxSelectedCountry.name.toLowerCase();
+    const popularCitiesByCountry = {
+      uk: [
+        { name: 'Select City', id: '' },
+        { name: 'London', id: 'london' },
+        { name: 'Manchester', id: 'manchester' },
+        { name: 'Birmingham', id: 'birmingham' },
+        { name: 'Other', id: 'other' },
+      ],
+      malta: [
+        { name: 'Select City', id: '' },
+        { name: 'Valletta', id: 'valletta' },
+        { name: 'Mdina', id: 'mdina' },
+        { name: 'Sliema', id: 'sliema' },
+        { name: 'Other', id: 'other' },
+      ],
+      pakistan: [
+        { name: 'Select City', id: '' },
+        { name: 'Karachi', id: 'karachi' },
+        { name: 'Lahore', id: 'lahore' },
+        { name: 'Islamabad', id: 'islamabad' },
+        { name: 'Other', id: 'other' },
+      ],
+    };
+
+    if (countryName.includes('uk') || countryName.includes('united kingdom')) {
+      return popularCitiesByCountry.uk;
+    } else if (countryName.includes('malta')) {
+      return popularCitiesByCountry.malta;
+    } else if (countryName.includes('pakistan')) {
+      return popularCitiesByCountry.pakistan;
+    } else {
+      return [{ name: 'Select City', id: '' }];
+    }
+  }, [reduxSelectedCountry]);
+
+  const handleCityChange = (value: string) => {
+    if (value === 'other') {
+      setShowCityModal(true);
+    } else {
+      setCity(value);
+    }
+  };
 
   const rideOptions = [
     { name: 'Select Ride Type', id: '' },
@@ -1046,56 +223,6 @@ const EditProfile = () => {
     });
   };
 
-  // const handlePickDocument = async (setter: (file: any) => void) => {
-  //   try {
-  //     const results = await pick({
-  //       type: [types.allFiles],
-  //       allowMultiSelection: false,
-  //       keepLocalCopy: true,
-  //     });
-
-  //     if (results && results.length > 0) {
-  //       const file = results[0];
-  //       setter({
-  //         name: file.name,
-  //         uri: file.uri,
-  //         type: file.type,
-  //         size: file.size,
-  //       });
-  //     }
-  //   } catch (err: any) {
-  //     if (!isCancel(err)) console.error('Document pick error:', err);
-  //   }
-  // };
-
-  const handlePickDocument = async (
-    setter: (files: any[]) => void,
-    currentFiles: any[] = [],
-  ) => {
-    try {
-      const results = await pick({
-        type: [types.allFiles, types.images, types.zip],
-        allowMultiSelection: true,
-        keepLocalCopy: true,
-      });
-
-      if (results && results.length > 0) {
-        const newFiles = results.map(file => ({
-          name: file.name,
-          uri: file.uri,
-          type: file.type,
-          size: file.size,
-          isImage: file.type?.startsWith('image/') || false,
-        }));
-
-        const allFiles = [...currentFiles, ...newFiles];
-        setter(allFiles);
-      }
-    } catch (err: any) {
-      if (!isCancel(err)) console.error('Document pick error:', err);
-    }
-  };
-
   const handleDateConfirm = (selectedDate: Date) => {
     setOpenStartPicker(false);
     setStartDate(selectedDate);
@@ -1107,64 +234,6 @@ const EditProfile = () => {
       setStartDate(selectedDate);
     }
   };
-
-  // const handleUpdateProfile = async () => {
-  //   setLoading(true);
-
-  //   try {
-  //     const formData = new FormData();
-
-  //     formData.append('full_name', User?.full_name || name);
-  //     formData.append('phone_number', phone);
-  //     formData.append('email', User?.email || email);
-  //     formData.append('address', street);
-  //     formData.append('city', city);
-  //     formData.append('gender', gender);
-  //     if (profileImage) {
-  //       const fileName = profileImage.split('/').pop() || 'photo.jpg';
-  //       const fileType = fileName.split('.').pop();
-
-  //       formData.append('profile_picture', {
-  //         uri: profileImage,
-  //         type: `image/${fileType}`,
-  //         name: fileName,
-  //       });
-  //     }
-
-  //     const { response, error } = await apiHelper(
-  //       'PUT',
-  //       'user/profile/update',
-  //       { 'Content-Type': 'multipart/form-data' },
-  //       formData,
-  //     );
-
-  //     console.log('FormData sent in Update Profile:', formData);
-  //     console.log('Response from Update Profile:', response?.data);
-
-  //     if (response?.data) {
-  //       Toast.show({
-  //         type: 'success',
-  //         text1: 'Success',
-  //         text2: 'Profile updated successfully!',
-  //       });
-  //       dispatch(setUser(response.data.response.data.user));
-  //       console.log(
-  //         'Dispatching User inn the Update Profile Screen!',
-  //         response.data.response.data.user,
-  //       );
-  //       navigation.goBack();
-  //     }
-  //   } catch (err) {
-  //     console.error('Create profile error:', err);
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: 'Error',
-  //       text2: 'Profile update failed',
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleUpdateProfile = async () => {
     if (!isFormValid) {
@@ -1266,44 +335,33 @@ const EditProfile = () => {
     }
   };
 
-  // const renderUploadField = (
-  //   label: string,
-  //   file: any,
-  //   setter: (file: any) => void,
-  //   fieldKey: string,
-  // ) => (
-  //   <>
-  //     <Text style={styles.label}>{label}</Text>
-  //     <View style={styles.container}>
-  //       <TouchableOpacity
-  //         style={styles.button}
-  //         onPress={() => handlePickDocument(setter)}
-  //       >
-  //         <Text style={styles.buttonText}>Choose File</Text>
-  //       </TouchableOpacity>
+  const handlePickDocument = async (
+    setter: (files: any[]) => void,
+    currentFiles: any[] = [],
+  ) => {
+    try {
+      const results = await pick({
+        type: [types.allFiles, types.images, types.zip],
+        allowMultiSelection: true,
+        keepLocalCopy: true,
+      });
 
-  //       {!file && <Text style={styles.title}>No File Selected</Text>}
+      if (results && results.length > 0) {
+        const newFiles = results.map(file => ({
+          name: file.name,
+          uri: file.uri,
+          type: file.type,
+          size: file.size,
+          isImage: file.type?.startsWith('image/') || false,
+        }));
 
-  //       {file && (
-  //         <View style={styles.preview}>
-  //           <Text style={styles.fileLabel}>Selected File:</Text>
-  //           <Text style={styles.fileName}>{file.name}</Text>
-  //           <Text style={styles.fileUri}>{file.uri}</Text>
-  //           {file.type && <Text style={styles.fileUri}>Type: {file.type}</Text>}
-  //           {file.size && (
-  //             <Text style={styles.fileUri}>Size: {file.size} bytes</Text>
-  //           )}
-  //         </View>
-  //       )}
-  //     </View>
-  //     <TextInput
-  //       placeholder="*Add Expiry Date"
-  //       placeholderTextColor={colors.darkGray}
-  //       style={styles.AddExpiryDate}
-  //       keyboardType="phone-pad"
-  //     />
-  //   </>
-  // );
+        // ✅ CHANGE THIS LINE - use functional update
+        setter(prevFiles => [...prevFiles, ...newFiles]);
+      }
+    } catch (err: any) {
+      if (!isCancel(err)) console.error('Document pick error:', err);
+    }
+  };
 
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
@@ -1335,8 +393,8 @@ const EditProfile = () => {
             height: image.height,
           }));
 
-          const allFiles = [...currentFiles, ...formattedFiles];
-          setter(allFiles);
+          // ✅ CHANGE THIS LINE - use functional update
+          setter(prevFiles => [...prevFiles, ...formattedFiles]);
         })
         .catch(error => {
           if (error.code !== 'E_PICKER_CANCELLED') {
@@ -1349,9 +407,9 @@ const EditProfile = () => {
   };
 
   const removeFile = useCallback(
-    (files: any[], setter: (files: any[]) => void, index: number) => {
-      const newFiles = files.filter((_, i) => i !== index);
-      setter(newFiles);
+    (setter: (files: any[]) => void, index: number) => {
+      // ✅ Use functional update to ensure we're working with latest state
+      setter(prevFiles => prevFiles.filter((_, i) => i !== index));
     },
     [],
   );
@@ -1417,7 +475,7 @@ const EditProfile = () => {
                 </View>
 
                 <TouchableOpacity
-                  onPress={() => removeFile(files, setter, index)}
+                  onPress={() => removeFile(setter, index)}
                   style={styles.removeButton}
                 >
                   <Text style={styles.removeButtonText}>×</Text>
@@ -1443,19 +501,28 @@ const EditProfile = () => {
               <Text style={styles.fileDetailText}>
                 Size: {formatFileSize(file.size)}
               </Text>
-
-              <TextInput
+              <CustomTextInput
                 placeholder={`*Add Expiry Date for ${file.name}`}
-                placeholderTextColor={colors.darkGray}
-                style={styles.fileExpiryDate}
-                keyboardType="phone-pad"
-                value={expiryDates[`${fieldKey}_${index}`] || ''}
-                onChangeText={text => {
-                  setExpiryDates(prev => ({
-                    ...prev,
-                    [`${fieldKey}_${index}`]: text,
-                  }));
-                }}
+                placeholderTextColor={colors.black}
+                borderColor={colors.brown}
+                borderRadius={30}
+                inputWidth={width * 0.75}
+                inputHeight={height * 0.055}
+                backgroundColor={colors.gray}
+                editable={false}
+                value={
+                  expiryDates[`${fieldKey}_${index}`]
+                    ? formatDateForDisplay(new Date(expiryDates[`${fieldKey}_${index}`])) 
+                    : ''
+                }
+                rightIcon={
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => handleExpiryDatePress(fieldKey, index)}
+                  >
+                    <Image source={images.calendar} style={styles.calendarIconSec} />
+                  </TouchableOpacity>
+                }
               />
             </View>
           ))}
@@ -1463,6 +530,21 @@ const EditProfile = () => {
       )}
     </>
   );
+
+  const handleExpiryDatePress = (fieldKey: string, index: number) => {
+    setCurrentDateField(`${fieldKey}_${index}`);
+    setOpenExpiryDatePicker(true);
+  };
+
+  const handleExpiryDateConfirm = (event: any, selectedDate?: Date) => {
+    setOpenExpiryDatePicker(false);
+    if (selectedDate && currentDateField) {
+      setExpiryDates(prev => ({
+        ...prev,
+        [currentDateField]: selectedDate.toISOString(), // Store as ISO string
+      }));
+    }
+  };
 
   const handleCountrySelect = useCallback(
     (country: Country) => {
@@ -1486,20 +568,17 @@ const EditProfile = () => {
             },
           ]}
         >
-          <TouchableOpacity
+          <Image source={reduxSelectedCountry.flag} style={styles.flag} />
+          {/* <TouchableOpacity
             style={styles.countrySelector}
-            onPress={() => setShowCountryDropdown(!showCountryDropdown)}
+            // onPress={() => setShowCountryDropdown(!showCountryDropdown)}
           >
-            <Image source={reduxSelectedCountry.flag} style={styles.flag} />
             <Image source={images.arrowDropDown} style={styles.icon} />
-          </TouchableOpacity>
-
+          </TouchableOpacity> */}
           <Image source={images.line} style={styles.lineImg} />
-
           <Text style={styles.countryCodeText}>
             {reduxSelectedCountry.dialCode}
           </Text>
-
           <TextInput
             style={styles.phoneInput}
             placeholder="Phone Number"
@@ -1514,40 +593,24 @@ const EditProfile = () => {
             onBlur={() => setIsPhoneFocused(false)}
           />
         </View>
-
         {showCountryDropdown && (
           <View style={styles.countryDropdown}>
-            <ScrollView
-              style={styles.dropdownScrollView}
-              nestedScrollEnabled={true}
-            >
-              {countries.map(country => (
-                <TouchableOpacity
-                  key={country.code}
-                  style={[
-                    styles.countryOption,
-                    reduxSelectedCountry.code === country.code &&
-                      styles.selectedCountryOption,
-                  ]}
-                  onPress={() => handleCountrySelect(country)}
-                >
-                  <Image source={country.flag} style={styles.dropdownFlag} />
-                  <Text style={styles.countryText}>{country.name}</Text>
-                  <Text style={styles.dialCodeText}>{country.dialCode}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+            {countries.map(country => (
+              <TouchableOpacity
+                key={country.code}
+                style={styles.countryOption}
+                onPress={() => handleCountrySelect(country)}
+              >
+                <Image source={country.flag} style={styles.dropdownFlag} />
+                <Text style={styles.countryText}>{country.name}</Text>
+                <Text style={styles.dialCodeText}>{country.dialCode}</Text>
+              </TouchableOpacity>
+            ))}
           </View>
         )}
       </View>
     ),
-    [
-      phone,
-      isPhoneFocused,
-      reduxSelectedCountry,
-      showCountryDropdown,
-      handleCountrySelect,
-    ],
+    [phone, isPhoneFocused, reduxSelectedCountry, showCountryDropdown],
   );
 
   const renderUKDocuments = () => (
@@ -1682,189 +745,6 @@ const EditProfile = () => {
     }
   };
 
-  // const UserFields = useMemo(() => {
-  //   return (
-  //     <View style={{ flex: 1, alignItems: 'center' }}>
-  //       <View style={styles.imgMain}>
-  //         <Image source={images.profGradient} style={styles.gradient} />
-  //         <TouchableOpacity onPress={toggleModal} activeOpacity={0.7}>
-  //           <View style={styles.profileImageWrapper}>
-  //             {/* {profileImage ? (
-  //               <Image
-  //                 source={{ uri: profileImage }}
-  //                 style={styles.profileImage}
-  //               />
-  //             ) : (
-  //               <View style={styles.profMain}>
-  //                 <Image source={images.profile} style={styles.profile} />
-  //                 <View style={styles.cameraMain}>
-  //                   <Image source={images.camera} style={styles.camera} />
-  //                 </View>
-  //               </View>
-  //             )} */}
-  //             <Image
-  //               source={profileImage ? { uri: profileImage } : images.profile}
-  //               style={styles.profileImage}
-  //               onError={() => setProfileImage(null)}
-  //             />
-  //             <View style={styles.cameraMain}>
-  //               <Image source={images.camera} style={styles.camera} />
-  //             </View>
-  //           </View>
-  //         </TouchableOpacity>
-  //       </View>
-  //       <View style={styles.inputMain}>
-  //         <CustomTextInput
-  //           placeholder="*Enter Your Name..."
-  //           placeholderTextColor={colors.black}
-  //           borderColor={colors.brown}
-  //           borderRadius={30}
-  //           inputWidth={width * 0.85}
-  //           inputHeight={height * 0.06}
-  //           value={name}
-  //           onChangeText={setName}
-  //           backgroundColor={colors.gray}
-  //         />
-
-  //         {/* <View
-  //           style={[
-  //             styles.phoneRow,
-  //             {
-  //               borderColor:
-  //                 isPhoneFocused || phone ? colors.brown : colors.gray,
-  //               backgroundColor:
-  //                 isPhoneFocused || phone ? colors.lightBrown : colors.gray,
-  //             },
-  //           ]}
-  //         >
-  //           <Image source={images.UK} style={styles.flag} />
-  //           <Image source={images.line} style={styles.lineImg} />
-  //           <TextInput
-  //             style={styles.phoneInput}
-  //             placeholder="+1"
-  //             placeholderTextColor={colors.black}
-  //             keyboardType="phone-pad"
-  //             value={phone}
-  //             onChangeText={setPhone}
-  //             onFocus={() => setIsPhoneFocused(true)}
-  //             onBlur={() => setIsPhoneFocused(false)}
-  //           />
-  //         </View> */}
-  //         {PhoneInputWithCountry}
-  //         <CustomTextInput
-  //           placeholder="*Enter Your Email..."
-  //           placeholderTextColor={colors.black}
-  //           borderColor={colors.brown}
-  //           borderRadius={30}
-  //           inputWidth={width * 0.85}
-  //           inputHeight={height * 0.06}
-  //           value={email}
-  //           onChangeText={setEmail}
-  //           backgroundColor={colors.gray}
-  //         />
-  //         <CustomTextInput
-  //           placeholder="*Address"
-  //           placeholderTextColor={colors.black}
-  //           borderColor={colors.brown}
-  //           borderRadius={30}
-  //           inputWidth={width * 0.85}
-  //           inputHeight={height * 0.06}
-  //           value={street}
-  //           onChangeText={setStreet}
-  //           backgroundColor={colors.gray}
-  //         />
-  //         <CustomSelect
-  //           inputWidth={width * 0.85}
-  //           inputHeight={height * 0.06}
-  //           selectElements={cityOptions}
-  //           borderColor={city ? colors.brown : colors.gray}
-  //           borderWidth={1}
-  //           inputColor={city ? colors.lightBrown : colors.gray}
-  //           borderRadius={30}
-  //           onChangeText={value => setCity(value)}
-  //           setSelectedElement={setCity}
-  //           defaultValue=""
-  //         />
-  //         <CustomSelect
-  //           inputWidth={width * 0.85}
-  //           inputHeight={height * 0.06}
-  //           selectElements={genderOptions}
-  //           borderColor={gender ? colors.brown : colors.gray}
-  //           borderWidth={1}
-  //           inputColor={gender ? colors.lightBrown : colors.gray}
-  //           borderRadius={30}
-  //           onChangeText={value => setGender(value)}
-  //           setSelectedElement={setGender}
-  //           defaultValue=""
-  //         />
-  //       </View>
-  //       <View style={styles.btnMain}>
-  //         <CustomButton
-  //           btnHeight={height * 0.065}
-  //           btnWidth={width * 0.4}
-  //           text="Cancel"
-  //           backgroundColor={colors.black}
-  //           textColor={colors.white}
-  //           borderRadius={30}
-  //         />
-  //         <CustomButton
-  //           btnHeight={height * 0.065}
-  //           btnWidth={width * 0.4}
-  //           text="Save"
-  //           backgroundColor={isFormValid ? colors.brown : colors.gray}
-  //           textColor={colors.white}
-  //           borderRadius={30}
-  //           disabled={!isFormValid}
-  //           // onPress={() => navigation.navigate('Congratulation')}
-  //           onPress={() => setModalVisible(true)}
-  //         />
-  //       </View>
-  //       <CustomProfileImgModal
-  //         modalOpen={modalOpen}
-  //         toggleModal={toggleModal}
-  //         camera={uploadFromCamera}
-  //         gallery={uploadFromGallery}
-  //       />
-  //       <Modal
-  //         animationType="fade"
-  //         transparent={true}
-  //         visible={modalVisible}
-  //         onRequestClose={() => setModalVisible(false)}
-  //       >
-  //         <View style={styles.modalOverlay}>
-  //           <View style={styles.modalContent}>
-  //             <Text style={styles.modalText}>Profile Edited Successfully</Text>
-  //             <Image source={images.checked} />
-  //             <CustomButton
-  //               text="Confirm"
-  //               textColor={colors.white}
-  //               backgroundColor={colors.brown}
-  //               btnHeight={height * 0.06}
-  //               btnWidth={width * 0.75}
-  //               borderRadius={30}
-  //               onPress={toggleModalSec}
-  //             />
-  //           </View>
-  //         </View>
-  //       </Modal>
-  //     </View>
-  //   );
-  // }, [
-  //   name,
-  //   email,
-  //   phone,
-  //   street,
-  //   gender,
-  //   city,
-  //   isPhoneFocused,
-  //   isFormValid,
-  //   profileImage,
-  //   modalOpen,
-  //   setModalOpen,
-  //   modalVisible,
-  //   setModalVisible,
-  // ]);
-
   const UserFields = useMemo(() => {
     return (
       <View style={{ flex: 1, alignItems: 'center' }}>
@@ -1930,9 +810,11 @@ const EditProfile = () => {
             borderWidth={1}
             inputColor={city ? colors.lightBrown : colors.gray}
             borderRadius={30}
-            onChangeText={value => setCity(value)}
+            // onChangeText={value => setCity(value)}
+             onChangeText={handleCityChange}
             setSelectedElement={setCity}
             defaultValue={city}
+            preselectedValue={city} 
           />
 
           <CustomSelect
@@ -1946,6 +828,7 @@ const EditProfile = () => {
             onChangeText={value => setGender(value)}
             setSelectedElement={setGender}
             defaultValue={gender}
+            preselectedValue={gender} 
           />
         </View>
         <View style={styles.btnMain}>
@@ -2036,7 +919,7 @@ const EditProfile = () => {
               </View>
             </TouchableOpacity>
           </View>
-          <View style={styles.inputMain}>
+          <View style={styles.inputMainSec}>
             <CustomTextInput
               placeholder="*Enter Your Name..."
               placeholderTextColor={colors.black}
@@ -2227,226 +1110,26 @@ const EditProfile = () => {
     setModalVisible,
   ]);
 
-  // const DriverFields = useMemo(() => {
-  //   return (
-  //     <View style={{ flex: 1, alignItems: 'center' }}>
-  //       <ScrollView
-  //         contentContainerStyle={{
-  //           alignItems: 'center',
-  //           paddingBottom: height * 0.05,
-  //         }}
-  //         showsVerticalScrollIndicator={false}
-  //       >
-  //         <View style={styles.imgMain}>
-  //           <Image source={images.profGradient} style={styles.gradient} />
-  //           <TouchableOpacity onPress={toggleModal} activeOpacity={0.7}>
-  //             <View style={styles.profileImageWrapper}>
-  //               <Image
-  //                 source={profileImage ? { uri: profileImage } : images.profile}
-  //                 style={styles.profileImage}
-  //                 onError={() => setProfileImage(null)}
-  //               />
-  //               <View style={styles.cameraMain}>
-  //                 <Image source={images.camera} style={styles.camera} />
-  //               </View>
-  //             </View>
-  //           </TouchableOpacity>
-  //         </View>
-  //         <View style={styles.inputMain}>
-  //           <CustomTextInput
-  //             placeholder="*Enter Your Name..."
-  //             placeholderTextColor={colors.black}
-  //             borderColor={colors.brown}
-  //             borderRadius={30}
-  //             inputWidth={width * 0.85}
-  //             inputHeight={height * 0.06}
-  //             value={name}
-  //             onChangeText={setName}
-  //             backgroundColor={colors.gray}
-  //           />
-
-  //           {PhoneInputWithCountry}
-
-  //           <CustomTextInput
-  //             placeholder="*Enter Your Email..."
-  //             placeholderTextColor={colors.black}
-  //             borderColor={colors.brown}
-  //             borderRadius={30}
-  //             inputWidth={width * 0.85}
-  //             inputHeight={height * 0.06}
-  //             value={email}
-  //             onChangeText={setEmail}
-  //             backgroundColor={colors.gray}
-  //           />
-
-  //           <CustomTextInput
-  //             placeholder="*Address"
-  //             placeholderTextColor={colors.black}
-  //             borderColor={colors.brown}
-  //             borderRadius={30}
-  //             inputWidth={width * 0.85}
-  //             inputHeight={height * 0.06}
-  //             value={street}
-  //             onChangeText={setStreet}
-  //             backgroundColor={colors.gray}
-  //           />
-
-  //           <CustomSelect
-  //             inputWidth={width * 0.85}
-  //             inputHeight={height * 0.06}
-  //             selectElements={cityOptions}
-  //             borderColor={city ? colors.brown : colors.gray}
-  //             borderWidth={1}
-  //             inputColor={city ? colors.lightBrown : colors.gray}
-  //             borderRadius={30}
-  //             onChangeText={value => setCity(value)}
-  //             setSelectedElement={setCity}
-  //             defaultValue={city}
-  //           />
-
-  //           <CustomSelect
-  //             inputWidth={width * 0.85}
-  //             inputHeight={height * 0.06}
-  //             selectElements={genderOptions}
-  //             borderColor={gender ? colors.brown : colors.gray}
-  //             borderWidth={1}
-  //             inputColor={gender ? colors.lightBrown : colors.gray}
-  //             borderRadius={30}
-  //             onChangeText={value => setGender(value)}
-  //             setSelectedElement={setGender}
-  //             defaultValue={gender}
-  //           />
-
-  //           <CustomTextInput
-  //             placeholder="*Date Of Birth"
-  //             placeholderTextColor={colors.black}
-  //             borderColor={colors.brown}
-  //             borderRadius={30}
-  //             inputWidth={width * 0.85}
-  //             inputHeight={height * 0.06}
-  //             backgroundColor={colors.gray}
-  //             editable={false}
-  //             value={formatDateForDisplay(startDate)}
-  //             rightIcon={
-  //               <TouchableOpacity
-  //                 activeOpacity={0.7}
-  //                 onPress={() => setOpenStartPicker(true)}
-  //               >
-  //                 <Image source={images.calendar} />
-  //               </TouchableOpacity>
-  //             }
-  //           />
-
-  //           {openStartPicker && (
-  //             <DateTimePicker
-  //               value={startDate || new Date()}
-  //               mode="date"
-  //               display="spinner"
-  //               onChange={handleDateChange}
-  //             />
-  //           )}
-
-  //           <CustomSelect
-  //             inputWidth={width * 0.85}
-  //             inputHeight={height * 0.06}
-  //             selectElements={rideOptions}
-  //             borderColor={rideType ? colors.brown : colors.gray}
-  //             borderWidth={1}
-  //             inputColor={rideType ? colors.lightBrown : colors.gray}
-  //             borderRadius={30}
-  //             onChangeText={value => setRideType(value)}
-  //             setSelectedElement={setRideType}
-  //             defaultValue={rideType}
-  //           />
-
-  //           <CustomTextInput
-  //             placeholder="*ID Card Number"
-  //             placeholderTextColor={colors.black}
-  //             borderColor={colors.brown}
-  //             borderRadius={30}
-  //             inputWidth={width * 0.85}
-  //             inputHeight={height * 0.06}
-  //             value={card}
-  //             onChangeText={setCard}
-  //             backgroundColor={colors.gray}
-  //           />
-
-  //           <View style={styles.documentSection}>
-  //             <Text style={styles.documentUploadText}>Document Uploads</Text>
-  //             <Text style={styles.documentNote}>
-  //               Note: Document updates are managed separately in the Documents
-  //               section.
-  //             </Text>
-  //           </View>
-  //         </View>
-  //         <View style={styles.btnMain}>
-  //           <CustomButton
-  //             btnHeight={height * 0.075}
-  //             btnWidth={width * 0.85}
-  //             text={loading ? 'Saving...' : 'Save Changes'}
-  //             backgroundColor={isFormValid ? colors.brown : colors.gray}
-  //             textColor={colors.white}
-  //             borderRadius={30}
-  //             disabled={!isFormValid || loading}
-  //             onPress={handleUpdateProfile}
-  //           />
-  //         </View>
-  //       </ScrollView>
-  //       <CustomProfileImgModal
-  //         modalOpen={modalOpen}
-  //         toggleModal={toggleModal}
-  //         camera={uploadFromCamera}
-  //         gallery={uploadFromGallery}
-  //       />
-  //       <Modal
-  //         animationType="fade"
-  //         transparent={true}
-  //         visible={modalVisible}
-  //         onRequestClose={() => setModalVisible(false)}
-  //       >
-  //         <View style={styles.modalOverlay}>
-  //           <View style={styles.modalContent}>
-  //             <Text style={styles.modalText}>Profile Updated Successfully</Text>
-  //             <Image source={images.checked} />
-  //             <CustomButton
-  //               text="Confirm"
-  //               textColor={colors.white}
-  //               backgroundColor={colors.brown}
-  //               btnHeight={height * 0.06}
-  //               btnWidth={width * 0.75}
-  //               borderRadius={30}
-  //               onPress={toggleModalSec}
-  //             />
-  //           </View>
-  //         </View>
-  //       </Modal>
-  //     </View>
-  //   );
-  // }, [
-  //   name,
-  //   email,
-  //   phone,
-  //   street,
-  //   gender,
-  //   city,
-  //   card,
-  //   rideType,
-  //   startDate,
-  //   openStartPicker,
-  //   isPhoneFocused,
-  //   isFormValid,
-  //   profileImage,
-  //   modalOpen,
-  //   modalVisible,
-  //   loading,
-  // ]);
-
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1, backgroundColor: colors.white }}>
         <TopHeader text="Edit Profile" />
         {selectedRole === 'user' && UserFields}
         {selectedRole === 'driver' && DriverFields}
+
+        {openExpiryDatePicker && (
+          <DateTimePicker
+            value={
+              expiryDates[currentDateField || '']
+                ? new Date(expiryDates[currentDateField || ''])
+                : new Date()
+            }
+            mode="date"
+            display="spinner"
+            onChange={handleExpiryDateConfirm}
+          />
+        )}
+
       </View>
     </TouchableWithoutFeedback>
   );
@@ -2461,8 +1144,8 @@ const styles = StyleSheet.create({
     bottom: height * 0.5,
   },
   profileImage: {
-    width: width * 0.32,
-    height: width * 0.32,
+    width: width * 0.36,
+    height: width * 0.36,
     resizeMode: 'cover',
     borderRadius: 70,
   },
@@ -2507,21 +1190,24 @@ const styles = StyleSheet.create({
   },
   inputMain: {
     alignItems: 'center',
-    bottom: height * 0.35,
+    bottom: height * 0.5,
+    gap: height * 0.02,
+  },
+  inputMainSec: {
+    alignItems: 'center',
+    bottom: height * 0.3,
     gap: height * 0.02,
   },
   btnMain: {
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
-    bottom: height * 0.45,
+    bottom: height * 0.4,
     width: width * 0.85,
   },
   btnMainSec: {
-    justifyContent: 'space-around',
     alignItems: 'center',
-    flexDirection: 'row',
-    bottom: height * 0.06,
+    bottom: height * 0.09,
     width: width * 0.85,
   },
   preview: {
@@ -2529,7 +1215,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   fileLabel: {
-    // fontWeight: '600',
     fontSize: fontSizes.sm2,
   },
   fileName: {

@@ -20,6 +20,7 @@ import type { StackParamList } from '../../navigation/AuthStack';
 import {
   setFullName,
   setLogin,
+  setToken,
   setUser,
   setUserEmail,
 } from '../../redux/slice/roleSlice';
@@ -37,7 +38,6 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
     (state: RootState) => state.role.selectedRole,
   );
   const User = useSelector((state: RootState) => state.role.user);
-  console.log("User from Redux in the SignIn Screen!",User);
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,7 +46,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
     Keyboard.dismiss();
   };
 
-  const isFormValid = email.includes('@') && password.length > 5;
+  const isFormValid = email.includes('@');
 
   useEffect(() => {
     console.log('Selected Role:', selectedRole);
@@ -92,28 +92,39 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
         {},
         body,
       );
-      console.log('Response from SignIn Api: ', response);
-      if (response) {
+      console.log('Response from SignIn Api: ', response?.data.response.data);
+      if (response?.data.response.data) {
         Toast.show({
           type: 'success',
           text1: 'Success',
           text2: response.data.message,
         });
-      }
-      dispatch(setLogin());
-      dispatch(setUser(response?.data.response.data.user));
-      console.log(
-        'User Data from API Response:',
-        response?.data.response.data.user,
-      );
-      dispatch(setUserEmail(email));
-      navigation.dispatch(
+        navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{ name: 'AuthStack' }], // Reset to AuthStack
+          routes: [{ name: 'AuthStack' }], 
         }),
-      );
+        );
+        dispatch(setLogin());
+        dispatch(setUserEmail(email));
+        dispatch(setUser(response?.data.response.data.user));
+        console.log(
+          'User Data from API Response:',
+          response?.data.response.data.user,
+        );
+        dispatch(setToken(response.data.response.data.access_token))
+        console.log("dispatching Token from the SIgnIn Screen", response.data.response.data.access_token)
+      }
+      else {
+        console.log("Error Message", error)
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: error
+        })
+      }
     } catch (error) {
+      console.log("Error",error)
       Toast.show({
         type: 'error',
         text1: 'Success',
@@ -201,6 +212,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
       </View>
     </TouchableWithoutFeedback>
   );
+  
 };
 
 const styles = StyleSheet.create({

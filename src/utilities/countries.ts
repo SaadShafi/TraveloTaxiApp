@@ -10,7 +10,7 @@ export const countries: Country[] = [
     code: 'UK',
     name: 'United Kingdom',
     dialCode: '+44',
-    flag: require('../assets/Images/UK.png'),
+    flag: require('../assets/Images/UKFlag.png'),
   },
   {
     code: 'PK',

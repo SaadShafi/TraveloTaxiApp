@@ -38,18 +38,6 @@ const OtpVerification = ({ route }) => {
     Keyboard.dismiss();
   };
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     Toast.show({
-  //       type: 'custom_otp',
-  //       position: 'top',
-  //     });
-  //   }, 2000);
-
-  //   return () => clearTimeout(timer);
-  // }, []);
-
-
   const handleSubmitOtp = async (text: any) => {
     setLoading(true);
     const body = {
@@ -171,7 +159,7 @@ const OtpVerification = ({ route }) => {
               textColor={isOtpValid ? colors.white : colors.white}
               borderRadius={30}
               disabled={!isOtpValid}
-              // onPress={() => navigation.navigate('SetPassword')}
+              // onPress={() => navigation.navigate('CreateProfile')}
               onPress={handleSubmitOtp}
             />
           </View>

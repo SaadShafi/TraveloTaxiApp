@@ -225,11 +225,6 @@ const RideArriving = () => {
               latitudeDelta: 0.01,
               longitudeDelta: 0.01,
             }}
-            // scrollEnabled
-            // zoomEnabled
-            // rotateEnabled
-            // pitchEnabled
-            // showsUserLocation={true}
             scrollEnabled={false}
             zoomEnabled={false}
             rotateEnabled={false}
@@ -249,8 +244,8 @@ const RideArriving = () => {
             ...styles.actionSheetMain,
             pointerEvents: 'box-none',
           }}
-          snapPoints={[20, 50, 90]}
-          initialSnapIndex={0}
+          snapPoints={[40, 50, 90]}
+          initialSnapIndex={1}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{
@@ -404,8 +399,8 @@ const RideArriving = () => {
             ...styles.actionSheetMain,
             pointerEvents: 'box-none',
           }}
-          snapPoints={[20, 50, 90]}
-          initialSnapIndex={0}
+          snapPoints={[40, 50, 90]}
+          initialSnapIndex={1}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{
@@ -564,8 +559,8 @@ const RideArriving = () => {
             ...styles.actionSheetThird,
             pointerEvents: 'box-none',
           }}
-          snapPoints={[20, 50, 90]}
-          initialSnapIndex={0}
+          snapPoints={[40, 50, 90]}
+          initialSnapIndex={1}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{
@@ -734,8 +729,8 @@ const RideArriving = () => {
             ...styles.actionSheetFourth,
             pointerEvents: 'box-none',
           }}
-          snapPoints={[20, 50, 90]}
-          initialSnapIndex={0}
+          snapPoints={[40, 50, 90]}
+          initialSnapIndex={1}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{

@@ -767,6 +767,9 @@ const Profile = () => {
     (state: RootState) => state.role.countrySelect || defaultCountry,
   );
   const User = useSelector((state: RootState) => state.role.user);
+  console.log("User from the Profile Screen!", User)
+  const token = useSelector((state: RootState) => state.role.token);
+  console.log("Token from the redux in the Profile Screen!", token)
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState('');
   const [name, setName] = useState('');
@@ -1176,8 +1179,8 @@ const Profile = () => {
         {},
         null,
       );
-      console.log('Fetch Profile Api Response!', response?.data);
-      if (response?.data) {
+      console.log('Fetch Profile Api Response!', response?.data.response.data);
+      if (response?.data.response.data) {
         Toast.show({
           type: 'success',
           text1: 'Success',
@@ -1185,7 +1188,6 @@ const Profile = () => {
         });
         setProfile(response.data.response.data);
         console.log('Profile State Update Result', response.data.response.data);
-        // setUser(response.data.response.data);
         dispatch(setUser(response.data.response.data));
       }
     } catch (error) {
@@ -1345,7 +1347,7 @@ const Profile = () => {
           {
             borderColor: isPhoneFocused || phone ? colors.brown : colors.gray,
             backgroundColor:
-              isPhoneFocused || phone ? colors.lightBrown : colors.gray,
+             colors.lightBrown ,
           },
         ]}
       >
@@ -1360,13 +1362,14 @@ const Profile = () => {
           placeholder="Phone Number"
           placeholderTextColor={colors.black}
           keyboardType="phone-pad"
-          value={profile?.phone_number || phone}
-          onChangeText={setPhone}
-          onFocus={() => {
-            setIsPhoneFocused(true);
-            setShowCountryDropdown(false);
-          }}
-          onBlur={() => setIsPhoneFocused(false)}
+          value={profile?.phone_number}
+          // onChangeText={setPhone}
+          // onFocus={() => {
+          //   setIsPhoneFocused(true);
+          //   setShowCountryDropdown(false);
+          // }}
+          // onBlur={() => setIsPhoneFocused(false)}
+          editable={false}
         />
       </View>
     );
@@ -1378,28 +1381,41 @@ const Profile = () => {
     handleCountrySelect,
   ]);
 
+
+   const getProfileImageUrl = (url?: string) => {
+    if (!url) return null;
+
+    const baseURL = 'https://api.traveloservices.com';
+
+    // If URL contains localhost or starts with /, fix it
+    if (url.includes('localhost') || url.startsWith('/')) {
+      const cleanUrl = url.replace('http://localhost:3000', '').replace(/^\/+/, '');
+      return `${baseURL}/${cleanUrl}`;
+    }
+
+    // Otherwise, return URL as-is
+    return url;
+  };
+
   const UserFields = () => {
     const [imageError, setImageError] = useState(false);
 
-    const getProfileImageUrl = (url?: string) => {
-      if (!url) return null;
-      let baseURL = getBaseURL()?.replace(/\/$/, ''); // remove trailing slash
-
-      // Replace localhost with base URL or fix relative paths
-      if (url.includes('localhost') || url.startsWith('/')) {
-        return `${baseURL}${url.replace('http://localhost:3000', '')}`;
-      }
-
-      return url;
-    };
-
     return (
       <View style={{ flex: 1, alignItems: 'center' }}>
-        {/* <View style={styles.imgMain}>
+        <View style={styles.imgMain}>
           <Image source={images.profGradient} style={styles.gradient} />
           <View style={styles.profileImageWrapper}>
             <View style={styles.profMain}>
-              <Image source={images.mask} style={styles.profile} />
+              {/* <Image source={images.mask} style={styles.profile} /> */}
+              <Image
+              source={
+                !imageError && (profile?.profile_picture_url || profile?.profile_picture)
+                  ? { uri: getProfileImageUrl(profile?.profile_picture_url || profile?.profile_picture) }
+                  : images.mask
+              }
+              onError={() => setImageError(true)}
+              style={styles.profile}
+            />
               <TouchableOpacity
                 style={styles.cameraMain}
                 activeOpacity={0.7}
@@ -1409,8 +1425,8 @@ const Profile = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </View> */}
-        <View style={styles.imgMain}>
+        </View>
+        {/* <View style={styles.imgMain}>
           <Image source={images.profGradient} style={styles.gradient} />
           <View style={styles.profileImageWrapper}>
             <View style={styles.profMain}>
@@ -1432,7 +1448,7 @@ const Profile = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </View> */}
         <View style={styles.inputMain}>
           <CustomTextInput
             placeholder="Travelo Taxi User"
@@ -1503,17 +1519,6 @@ const Profile = () => {
   const DriverFields = () => {
     const [imageError, setImageError] = useState(false);
 
-    const getProfileImageUrl = (url?: string) => {
-      if (!url) return null;
-      let baseURL = getBaseURL()?.replace(/\/$/, ''); // remove trailing slash
-
-      // Replace localhost with base URL or fix relative paths
-      if (url.includes('localhost') || url.startsWith('/')) {
-        return `${baseURL}${url.replace('http://localhost:3000', '')}`;
-      }
-
-      return url;
-    };
     return (
       <View style={{ flex: 1, alignItems: 'center' }}>
         <ScrollView
@@ -1522,10 +1527,19 @@ const Profile = () => {
           }}
           showsVerticalScrollIndicator={false}
         >
-          {/* <View style={styles.imgMain}>
+          <View style={styles.imgMain}>
             <Image source={images.profGradient} style={styles.gradient} />
             <View style={styles.profMain}>
-              <Image source={images.mask} style={styles.profile} />
+              {/* <Image source={images.mask} style={styles.profile} /> */}
+               <Image
+                source={
+                  !imageError && (profile?.profile_picture_url || profile?.profile_picture)
+                    ? { uri: getProfileImageUrl(profile?.profile_picture_url || profile?.profile_picture) }
+                    : images.mask
+                }
+                onError={() => setImageError(true)}
+                style={styles.profile}
+              />
               <TouchableOpacity
                 style={styles.cameraMain}
                 activeOpacity={0.7}
@@ -1534,9 +1548,9 @@ const Profile = () => {
                 <Image source={images.pencil} style={styles.camera} />
               </TouchableOpacity>
             </View>
-          </View> */}
+          </View>
 
-          <View style={styles.imgMain}>
+          {/* <View style={styles.imgMain}>
             <Image source={images.profGradient} style={styles.gradient} />
             <View style={styles.profileImageWrapper}>
               <View style={styles.profMain}>
@@ -1558,7 +1572,7 @@ const Profile = () => {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </View> */}
 
           <View style={styles.inputMain}>
             <CustomTextInput

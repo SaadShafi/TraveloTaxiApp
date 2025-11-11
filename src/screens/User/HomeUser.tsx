@@ -50,6 +50,20 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
     latitudeDelta: 0.015,
     longitudeDelta: 0.0121,
   });
+  const [stops, setStops] = useState<{ id: number; value: string }[]>([]);
+    const [locations, setLocations] = useState<[string, string]>(['Brooklyn Bridge Park', 'Brooklyn Bridge Park']);
+
+  const addStop = () => {
+    setStops(prev => [...prev, { id: Date.now(), value: '' }]);
+  };
+
+  const removeStop = (id: number) => {
+    setStops(prev => prev.filter(stop => stop.id !== id));
+  };
+
+  const reverseLocations = () => {
+    setLocations(prev => [prev[1], prev[0]]);
+  };
 
   const handleDateConfirm = (selectedDate: Date) => {
     setOpenStartPicker(false);
@@ -240,20 +254,6 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
               </View>
             </View>
             <View style={styles.locationMain}>
-              {/* <CustomTextInput
-                placeholder="Groklyn Bridge Park"
-                placeholderTextColor={colors.black}
-                borderColor={colors.gray}
-                borderRadius={10}
-                inputWidth={width * 0.65}
-                inputHeight={height * 0.047}
-                leftIcon={
-                  <Image
-                    source={images.locationImage}
-                    style={styles.locationImg}
-                  />
-                }
-              /> */}
               <GooglePlacesAutocompleteNew
                 onSelect={(placeDetails: any) => {
                   console.log('Selected Place:', placeDetails);
@@ -276,20 +276,6 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                   borderWidth: 0.9,
                 }}
               />
-              {/* <CustomTextInput
-                placeholder="Groklyn Bridge Park"
-                placeholderTextColor={colors.black}
-                borderColor={colors.gray}
-                borderRadius={10}
-                inputWidth={width * 0.65}
-                inputHeight={height * 0.047}
-                leftIcon={
-                  <Image
-                    source={images.locationImage}
-                    style={styles.locationImg}
-                  />
-                }
-              /> */}
               <GooglePlacesAutocompleteNew
                 onSelect={(placeDetails: any) => {
                   console.log('Selected Place:', placeDetails);
@@ -315,7 +301,7 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                 }}
               />
             </View>
-            <View style={styles.headerBottomMain}>
+            {/* <View style={styles.headerBottomMain}>
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -323,6 +309,7 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                   gap: width * 0.01,
                 }}
                 activeOpacity={0.7}
+                onPress={addStop}
               >
                 <Image source={images.add} />
                 <Text
@@ -335,9 +322,137 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                   Add Stop
                 </Text>
               </TouchableOpacity>
+              <View style={{ marginTop: height * 0.02 }}>
+                {stops.map((stop, index) => (
+                  <View
+                    key={stop.id}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginBottom: height * 0.01,
+                    }}
+                  >
+                    <GooglePlacesAutocompleteNew
+                      placeholder={`Stop ${index + 1}`}
+                      style={{
+                        borderRadius: 10,
+                        padding: 10,
+                        flex: 1,
+                      }}
+                      inputStyle={{
+                        borderRadius: 10,
+                        height: height * 0.045,
+                        color: colors.black,
+                      }}
+                      containerStyle={{
+                        borderColor: colors.brown,
+                        borderRadius: 10,
+                        borderWidth: 0.9,
+                      }}
+                      onSelect={(placeDetails: any) => {
+                        setStops(prev =>
+                          prev.map(s =>
+                            s.id === stop.id ? { ...s, value: placeDetails.name } : s,
+                          ),
+                        );
+                      }}
+                    />
+                    <TouchableOpacity
+                      onPress={() => removeStop(stop.id)}
+                      style={{
+                        marginLeft: 8,
+                        backgroundColor: 'red',
+                        borderRadius: 12,
+                        width: 24,
+                        height: 24,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text style={{ color: 'white', fontWeight: 'bold' }}>X</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
               <View style={styles.reverseMain}>
                 <Image source={images.reverse} />
               </View>
+            </View> */}
+            <View style={styles.headerBottomMain}>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: width * 0.01,
+                }}
+                activeOpacity={0.7}
+                onPress={addStop}
+              >
+                <Image source={images.add} />
+                <Text
+                  style={{
+                    color: colors.black,
+                    fontFamily: fontFamily.ClashDisplayMedium,
+                    fontSize: fontSizes.sm,
+                  }}
+                >
+                  Add Stop
+                </Text>
+              </TouchableOpacity>
+
+              {/* <View style={styles.reverseMain}>
+                <Image source={images.reverse} />
+              </View> */}
+              <TouchableOpacity 
+                style={styles.reverseMain}
+                onPress={reverseLocations}
+                activeOpacity={0.7}
+              >
+                <Image source={images.reverse} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Stops container - moved outside of headerBottomMain */}
+            <View style={styles.stopsContainer}>
+              {stops.map((stop, index) => (
+                <View
+                  key={stop.id}
+                  style={styles.stopItem}
+                >
+                  <GooglePlacesAutocompleteNew
+                    placeholder={`Add your Stop ${index + 1}`}
+                    style={{
+                      borderRadius: 10,
+                      padding: 10,
+                      width: width * 0.6,
+                    }}
+                    inputStyle={{
+                      borderRadius: 10,
+                      height: height * 0.045,
+                      color: colors.black,
+                    }}
+                    containerStyle={{
+                      height: height * 0.04,
+                      borderColor: colors.brown,
+                      borderRadius: 10,
+                      borderWidth: 0.9,
+                    }}
+                    onSelect={(placeDetails: any) => {
+                      setStops(prev =>
+                        prev.map(s =>
+                          s.id === stop.id ? { ...s, value: placeDetails.name } : s,
+                        ),
+                      );
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => removeStop(stop.id)}
+                    style={styles.removeStopButton}
+                  >
+                    <Text style={styles.removeStopText}>X</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
             </View>
           </View>
         </View>
@@ -347,8 +462,8 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
             ...styles.actionSheetMain,
             pointerEvents: 'box-none',
           }}
-          snapPoints={[20, 50, 90]}
-          initialSnapIndex={0}
+          snapPoints={[40, 50, 90]}
+          initialSnapIndex={1}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{
@@ -425,8 +540,8 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
             ...styles.actionSheetSec,
             pointerEvents: 'box-none',
           }}
-          snapPoints={[20, 50, 90]}
-          initialSnapIndex={0}
+          snapPoints={[40, 50, 90]}
+          initialSnapIndex={1}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{
@@ -553,8 +668,8 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
             ...styles.actionSheetThird,
             pointerEvents: 'box-none',
           }}
-          snapPoints={[20, 50, 90]}
-          initialSnapIndex={0}
+          snapPoints={[40, 50, 90]}
+          initialSnapIndex={1}
           closeOnTouchBackdrop={false}
           defaultOverlayOpacity={0.1}
           indicatorStyle={{
@@ -832,12 +947,20 @@ const styles = StyleSheet.create({
     left: width * 0.2,
     zIndex: 1000,
   },
+  // headerMain: {
+  //   bottom: height * 0.06,
+  //   width: width * 0.72,
+  //   borderRadius: 20,
+  //   padding: 10,
+  //   backgroundColor: 'rgba(255, 255, 255, 0.75)',
+  // },
   headerMain: {
     bottom: height * 0.06,
     width: width * 0.72,
     borderRadius: 20,
     padding: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    minHeight: height * 0.15, // Add minimum height to accommodate stops
   },
   greetingText: {
     color: colors.black,
@@ -882,8 +1005,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   reverseMain: {
+    position: 'absolute',
     right: width * 0.06,
-    bottom: height * 0.09,
+    bottom: height * 0.08,
+     padding: 8,
   },
   actionSheetMain: {
     borderTopLeftRadius: 45,
@@ -1163,6 +1288,47 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.SfProDisplayRegular,
     marginTop: 5,
   },
+  stopsContainer: {
+    width: '100%',
+    marginTop: height * 0.01,
+  },
+  stopItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: height * 0.01,
+    width: '100%',
+  },
+  stopInput: {
+    borderRadius: 10,
+    padding: 10,
+    flex: 1,
+  },
+  stopInputText: {
+    borderRadius: 10,
+    height: height * 0.045,
+    color: colors.black,
+  },
+  stopInputContainer: {
+    borderColor: colors.brown,
+    borderRadius: 10,
+    borderWidth: 0.9,
+    flex: 1,
+  },
+  removeStopButton: {
+    marginLeft: 8,
+    backgroundColor: 'red',
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  removeStopText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: fontSizes.xsm,
+  },
+
 });
 
 export default HomeUser;

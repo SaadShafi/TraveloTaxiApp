@@ -20,6 +20,9 @@ import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { defaultCountry } from '../../utilities/countries';
 
 type Props = NativeStackScreenProps<StackParamList, 'TripOptions'>;
 
@@ -31,6 +34,10 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
   const [showBidField, setShowBidField] = useState(false);
   const [selectedBookingType, setSelectedBookingType] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null);
+  const reduxSelectedCountry = useSelector(
+    (state: RootState) => state.role.countrySelect || defaultCountry,
+  );
+  console.log("Selected COuntry!", reduxSelectedCountry)
 
   const handleBidPress = () => {
     setShowBidField(true);
@@ -98,27 +105,7 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
               value={isEnabled}
             />
           </View>
-          {/* <View style={styles.vehicleMain}>
-            <Image source={images.bike} style={styles.vehicleImg} />
-            <View style={styles.vehicleDetails}>
-              <Text style={styles.vehicleType}>Bike</Text>
-              <Text style={styles.vehiclePrice}>$10.87</Text>
-            </View>
-          </View>
-          <View style={styles.vehicleMain}>
-            <Image source={images.car} style={styles.vehicleImg} />
-            <View style={styles.vehicleDetails}>
-              <Text style={styles.vehicleType}>4 Seater</Text>
-              <Text style={styles.vehiclePrice}>$10.87</Text>
-            </View>
-          </View>
-          <View style={styles.vehicleMain}>
-            <Image source={images.suv} style={styles.vehicleImg} />
-            <View style={styles.vehicleDetails}>
-              <Text style={styles.vehicleType}>5+ Seater</Text>
-              <Text style={styles.vehiclePrice}>$10.87</Text>
-            </View>
-          </View> */}
+          {reduxSelectedCountry?.name?.toLowerCase() === 'pakistan' && (
           <TouchableOpacity onPress={() => handleVehicleSelect('bike')}>
             <View
               style={[
@@ -147,6 +134,7 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
               </View>
             </View>
           </TouchableOpacity>
+          )}
           <TouchableOpacity onPress={() => handleVehicleSelect('car')}>
             <View
               style={[
@@ -203,49 +191,14 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
               </View>
             </View>
           </TouchableOpacity>
-          {/* { showBidField && (
-          <View style={[styles.cautionMain]}>
-            <View style={styles.bidMain}>
-              <Text style={{ color: colors.black }}>GBP $15.0-</Text>
-              <Text style={{ color: colors.black }}>Tap here to Bid</Text>
-            </View>
-            <TouchableOpacity onPress={() => setShowCaution(!showCaution)}>
-              <Image source={images.caution} style={styles.caution} />
-            </TouchableOpacity>
-          </View>
-          )} */}
-
           {showBidField && (
-            // <View
-            //   style={[
-            //     styles.cautionMain,
-            //     selectedBookingType === 'bid' && styles.selectedBidField,
-            //   ]}
-            // >
             <View style={styles.bidMain}>
-              {/* <Text
-                  style={[
-                    styles.bidText,
-                    selectedBookingType === 'bid' && styles.selectedBidText,
-                  ]}
-                >
-                  GBP $15.0-
-                </Text>
-                <Text
-                  style={[
-                    styles.bidText,
-                    selectedBookingType === 'bid' && styles.selectedBidText,
-                  ]}
-                >
-                  Tap here to Bid
-                </Text> */}
               <CustomTextInput
                 placeholder="GBP $15.0- GBP $15.0-Tap here to Bid"
                 placeholderTextColor={colors.black}
                 inputWidth={width * 0.85}
                 inputHeight={height * 0.065}
                 borderRadius={30}
-                // backgroundColor={colors.gray}
                 keyboardType="number-pad"
                 rightIcon={
                   <TouchableOpacity
@@ -262,7 +215,6 @@ const TripOptions: React.FC<Props> = ({ navigation }) => {
                 }
               />
             </View>
-            // </View>
           )}
 
           {showCaution && (

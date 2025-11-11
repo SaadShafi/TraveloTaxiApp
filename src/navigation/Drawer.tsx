@@ -8,6 +8,7 @@ import { useState } from 'react';
 import {
   Image,
   Modal,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -161,6 +162,7 @@ const CustomDrawerContent = (props: any) => {
     // dispatch(logout());
     navigation.navigate('RoleSwitch');
   };
+
   return (
     <View style={styles.gradientContainer}>
       <View style={styles.gradientTop} />
@@ -176,13 +178,30 @@ const CustomDrawerContent = (props: any) => {
           <Text style={styles.closeButtonText}> Close</Text>
         </TouchableOpacity>
         <View style={styles.profileSection}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{ right: width * 0.04 }}
             activeOpacity={0.7}
             onPress={() => navigation.navigate('Profile')}
           >
             <Image source={images.drawerProf} style={styles.profileImage} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+            <TouchableOpacity
+  style={{ right: width * 0.04 }}
+  activeOpacity={0.7}
+  onPress={() => navigation.navigate('Profile')}
+>
+  <Image
+    source={
+      User?.profile_picture
+        ? { uri: `https://api.traveloservices.com/uploads/profile-pictures/${User.profile_picture.replace(/^\//, '')}` }
+        : images.drawerProf // fallback image
+    }
+    style={styles.profileImage}
+    onError={(e) => console.log('❌ Image failed to load:', e.nativeEvent.error)}
+    onLoad={() => console.log('✅ Profile image loaded successfully')}
+  />
+</TouchableOpacity>
+
           <View style={styles.profileTextContainer}>
             <Text style={styles.profileName}>{ User?.full_name || "Name"}</Text>
             <Text style={styles.profileEmail}>{ User?.email || "info@yourmail.com"}</Text>

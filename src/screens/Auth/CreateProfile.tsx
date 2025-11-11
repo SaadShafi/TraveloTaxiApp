@@ -1,991 +1,3 @@
-// import { isCancel, pick, types } from '@react-native-documents/picker';
-// import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-// import { useEffect, useMemo, useState } from 'react';
-// import {
-//   Image,
-//   Keyboard,
-//   Modal,
-//   ScrollView,
-//   StyleSheet,
-//   Text,
-//   TextInput,
-//   TouchableOpacity,
-//   TouchableWithoutFeedback,
-//   View,
-// } from 'react-native';
-// import DatePicker from 'react-native-date-picker';
-// import ImagePicker from 'react-native-image-crop-picker';
-// import { useSelector } from 'react-redux';
-// import { fontFamily } from '../../assets/Fonts';
-// import images from '../../assets/Images';
-// import CustomButton from '../../components/CustomButton';
-// import CustomProfileImgModal from '../../components/CustomProfileImage';
-// import CustomSelect from '../../components/CustomSelect';
-// import CustomTextInput from '../../components/CustomTextInput';
-// import TopHeader from '../../components/Topheader';
-// import type { StackParamList } from '../../navigation/AuthStack';
-// import { RootState } from '../../redux/store';
-// import { height, width } from '../../utilities';
-// import { colors } from '../../utilities/colors';
-// import { fontSizes } from '../../utilities/fontsizes';
-
-// type Props = NativeStackScreenProps<StackParamList, 'CreateProfile'>;
-
-// const CreateProfile: React.FC<Props> = ({ navigation }) => {
-//   const [openStartPicker, setOpenStartPicker] = useState(false);
-//   const selectedRole = useSelector(
-//     (state: RootState) => state.role.selectedRole,
-//   );
-//   const [name, setName] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [phone, setPhone] = useState('');
-//   const [street, setStreet] = useState('');
-//   const [isPhoneFocused, setIsPhoneFocused] = useState(false);
-//   const [gender, setGender] = useState('');
-//   const [city, setCity] = useState('');
-//   const [rideType, setRideType] = useState('');
-//   const [card, setCard] = useState('');
-//   const [startDate, setStartDate] = useState<Date | null>(null);
-//   const [modalOpen, setModalOpen] = useState(false);
-//   const [profileImage, setProfileImage] = useState<string | null>(null);
-//   const [modalVisible, setModalVisible] = useState(false);
-//   const [drivingLicense, setDrivingLicense] = useState(null);
-//   const [privateHireLicense, setPrivateHireLicense] = useState(null);
-//   const [logBook, setLogBook] = useState(null);
-//   const [vehicleLicense, setVehicleLicense] = useState(null);
-//   const [insurance, setInsurance] = useState(null);
-//   const [mot, setMot] = useState(null);
-//   const [hireAgreement, setHireAgreement] = useState(null);
-//   const [openPicker, setOpenPicker] = useState<string | null>(null);
-//   const [expiryDates, setExpiryDates] = useState<{ [key: string]: string }>({});
-
-//   useEffect(() => {
-//     console.log('Selected Role in CreateProfile:', selectedRole);
-//   }, [selectedRole]);
-
-//   const dismissKeyboard = () => {
-//     Keyboard.dismiss();
-//   };
-
-//   const genderOptions = [
-//     { name: 'Select Gender', id: '' },
-//     { name: 'Male', id: 'male' },
-//     { name: 'Female', id: 'female' },
-//     { name: 'Other', id: 'other' },
-//   ];
-
-//   const cityOptions = [
-//     { name: 'Select City', id: '' },
-//     { name: 'Texas', id: 'texas' },
-//     { name: 'Misissippi', id: 'misissippi' },
-//     { name: 'New York', id: 'new york' },
-//     { name: 'Other', id: 'other' },
-//   ];
-
-//   const rideOptions = [
-//     { name: 'Select Ride Type', id: '' },
-//     { name: 'Bike', id: 'bike' },
-//     { name: 'Car', id: 'car' },
-//     { name: 'SUV', id: 'suv' },
-//   ];
-
-//   const handleDateConfirm = (selectedDate: Date) => {
-//     setOpenStartPicker(false);
-//     setStartDate(selectedDate);
-//   };
-
-//   const formatDateForDisplay = (date: Date | null): string => {
-//     if (!date) return '';
-//     return date.toLocaleDateString('en-US', {
-//       year: 'numeric',
-//       month: 'short',
-//       day: 'numeric',
-//     });
-//   };
-
-//   const isFormValid =
-//     name.length > 4 &&
-//     email.includes('@') &&
-//     phone.length > 7 &&
-//     street.length > 5;
-
-//   const toggleModal = () => {
-//     setModalOpen(!modalOpen);
-//   };
-
-//   const uploadFromGallery = () => {
-//     ImagePicker.openPicker({
-//       width: 300,
-//       height: 400,
-//       cropping: true,
-//     }).then(image => {
-//       setProfileImage(image.path);
-//       toggleModal();
-//     });
-//   };
-
-//   const uploadFromCamera = () => {
-//     ImagePicker.openCamera({
-//       width: 300,
-//       height: 400,
-//       cropping: true,
-//     }).then(image => {
-//       setProfileImage(image.path);
-//       toggleModal();
-//     });
-//   };
-
-//   const handlePickDocument = async (setter: (file: any) => void) => {
-//     try {
-//       const results = await pick({
-//         type: [types.allFiles],
-//         allowMultiSelection: false,
-//         keepLocalCopy: true,
-//       });
-
-//       if (results && results.length > 0) {
-//         const file = results[0];
-//         setter({
-//           name: file.name,
-//           uri: file.uri,
-//           type: file.type,
-//           size: file.size,
-//         });
-//       }
-//     } catch (err: any) {
-//       if (!isCancel(err)) console.error('Document pick error:', err);
-//     }
-//   };
-
-//   const formatDate = (date: Date) => {
-//     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-//   };
-
-//   const toggleModalSec = () => {
-//     setModalVisible(false);
-//     navigation.navigate('BankDetails');
-//   };
-
-//   const UserScreens = useMemo(() => {
-//     return (
-//       <View style={{ flex: 1, alignItems: 'center' }}>
-//         <View style={styles.imgMain}>
-//           <Image source={images.profGradient} style={styles.gradient} />
-//           <TouchableOpacity onPress={toggleModal} activeOpacity={0.7}>
-//             <View style={styles.profileImageWrapper}>
-//               {profileImage ? (
-//                 <Image
-//                   source={{ uri: profileImage }}
-//                   style={styles.profileImage}
-//                 />
-//               ) : (
-//                 <View style={styles.profMain}>
-//                   <Image source={images.profile} style={styles.profile} />
-//                   <View style={styles.cameraMain}>
-//                     <Image source={images.camera} style={styles.camera} />
-//                   </View>
-//                 </View>
-//               )}
-//             </View>
-//           </TouchableOpacity>
-//         </View>
-//         <View style={styles.inputMain}>
-//           <CustomTextInput
-//             placeholder="*Enter Your Name..."
-//             placeholderTextColor={colors.black}
-//             borderColor={colors.brown}
-//             borderRadius={30}
-//             inputWidth={width * 0.85}
-//             inputHeight={height * 0.06}
-//             value={name}
-//             onChangeText={setName}
-//             backgroundColor={colors.gray}
-//           />
-
-//           <View
-//             style={[
-//               styles.phoneRow,
-//               {
-//                 borderColor:
-//                   isPhoneFocused || phone ? colors.brown : colors.gray,
-//                 backgroundColor:
-//                   isPhoneFocused || phone ? colors.lightBrown : colors.gray,
-//               },
-//             ]}
-//           >
-//             <Image source={images.UK} style={styles.flag} />
-//             <Image source={images.line} style={styles.lineImg} />
-//             <TextInput
-//               style={styles.phoneInput}
-//               placeholder="+1"
-//               placeholderTextColor={colors.black}
-//               keyboardType="phone-pad"
-//               value={phone}
-//               onChangeText={setPhone}
-//               onFocus={() => setIsPhoneFocused(true)}
-//               onBlur={() => setIsPhoneFocused(false)}
-//             />
-//           </View>
-//           <CustomTextInput
-//             placeholder="*Enter Your Email..."
-//             placeholderTextColor={colors.black}
-//             borderColor={colors.brown}
-//             borderRadius={30}
-//             inputWidth={width * 0.85}
-//             inputHeight={height * 0.06}
-//             value={email}
-//             onChangeText={setEmail}
-//             backgroundColor={colors.gray}
-//           />
-//           <CustomTextInput
-//             placeholder="*Address"
-//             placeholderTextColor={colors.black}
-//             borderColor={colors.brown}
-//             borderRadius={30}
-//             inputWidth={width * 0.85}
-//             inputHeight={height * 0.06}
-//             value={street}
-//             onChangeText={setStreet}
-//             backgroundColor={colors.gray}
-//           />
-//           <CustomSelect
-//             inputWidth={width * 0.85}
-//             inputHeight={height * 0.06}
-//             selectElements={cityOptions}
-//             borderColor={city ? colors.brown : colors.gray}
-//             borderWidth={1}
-//             inputColor={city ? colors.lightBrown : colors.gray}
-//             borderRadius={30}
-//             onChangeText={value => setCity(value)}
-//             setSelectedElement={setCity}
-//             defaultValue=""
-//           />
-//           <CustomSelect
-//             inputWidth={width * 0.85}
-//             inputHeight={height * 0.06}
-//             selectElements={genderOptions}
-//             borderColor={gender ? colors.brown : colors.gray}
-//             borderWidth={1}
-//             inputColor={gender ? colors.lightBrown : colors.gray}
-//             borderRadius={30}
-//             onChangeText={value => setGender(value)}
-//             setSelectedElement={setGender}
-//             defaultValue=""
-//           />
-//         </View>
-//         <View style={styles.btnMain}>
-//           <CustomButton
-//             btnHeight={height * 0.065}
-//             btnWidth={width * 0.4}
-//             text="Cancel"
-//             backgroundColor={colors.black}
-//             textColor={colors.white}
-//             borderRadius={30}
-//           />
-//           <CustomButton
-//             btnHeight={height * 0.065}
-//             btnWidth={width * 0.4}
-//             text="Save"
-//             backgroundColor={isFormValid ? colors.brown : colors.gray}
-//             textColor={colors.white}
-//             borderRadius={30}
-//             disabled={!isFormValid}
-//             onPress={() => navigation.navigate('Congratulation')}
-//           />
-//         </View>
-//         <CustomProfileImgModal
-//           modalOpen={modalOpen}
-//           toggleModal={toggleModal}
-//           camera={uploadFromCamera}
-//           gallery={uploadFromGallery}
-//         />
-//       </View>
-//     );
-//   }, [
-//     name,
-//     email,
-//     phone,
-//     street,
-//     gender,
-//     city,
-//     isPhoneFocused,
-//     isFormValid,
-//     profileImage,
-//     modalOpen,
-//   ]);
-
-//   // const renderUploadField = (
-//   //   label: string,
-//   //   file: any,
-//   //   setter: (file: any) => void,
-//   //   fieldKey: string,
-//   // ) => (
-//   //   <>
-//   //     <Text style={styles.label}>{label}</Text>
-//   //     <View style={styles.container}>
-//   //       <TouchableOpacity
-//   //         style={styles.button}
-//   //         onPress={() => handlePickDocument(setter)}
-//   //       >
-//   //         <Text style={styles.buttonText}>Choose File</Text>
-//   //       </TouchableOpacity>
-
-//   //       {!file && <Text style={styles.title}>No File Selected</Text>}
-
-//   //       {file && (
-//   //         <View style={styles.preview}>
-//   //           <Text style={styles.fileLabel}>Selected File:</Text>
-//   //           <Text style={styles.fileName}>{file.name}</Text>
-//   //           <Text style={styles.fileUri}>{file.uri}</Text>
-//   //           {file.type && <Text style={styles.fileUri}>Type: {file.type}</Text>}
-//   //           {file.size && (
-//   //             <Text style={styles.fileUri}>Size: {file.size} bytes</Text>
-//   //           )}
-//   //         </View>
-//   //       )}
-//   //     </View>
-//   //     <TouchableOpacity onPress={() => setOpenPicker(fieldKey)}>
-//   //       <TextInput
-//   //         placeholder="*Add Expiry Date"
-//   //         placeholderTextColor={colors.darkGray}
-//   //         style={styles.AddExpiryDate}
-//   //         value={expiryDates[fieldKey] || ''}
-//   //         editable={false}
-//   //       />
-//   //     </TouchableOpacity>
-//   //     <DatePicker
-//   //       modal
-//   //       mode="date"
-//   //       open={openPicker === fieldKey}
-//   //       date={new Date()}
-//   //       onConfirm={date => {
-//   //         setOpenPicker(null);
-//   //         setExpiryDates(prev => ({ ...prev, [fieldKey]: formatDate(date) }));
-//   //       }}
-//   //       onCancel={() => setOpenPicker(null)}
-//   //     />
-//   //   </>
-//   // );
-
-//   // const renderUploadField = (
-//   //   label: string,
-//   //   file: any,
-//   //   setter: (file: any) => void,
-//   //   fieldKey: string,
-//   // ) => (
-//   //   <>
-//   //     <Text style={styles.label}>{label}</Text>
-//   //     <View style={styles.container}>
-//   //       <TouchableOpacity
-//   //         style={styles.button}
-//   //         onPress={() => handlePickDocument(setter)}
-//   //       >
-//   //         <Text style={styles.buttonText}>Choose File</Text>
-//   //       </TouchableOpacity>
-
-//   //       {!file && <Text style={styles.title}>No File Selected</Text>}
-
-//   //       {file && (
-//   //         <View style={styles.preview}>
-//   //           <Text style={styles.fileLabel}>Selected File:</Text>
-//   //           <Text style={styles.fileName}>{file.name}</Text>
-//   //           <Text style={styles.fileUri}>{file.uri}</Text>
-//   //           {file.type && <Text style={styles.fileUri}>Type: {file.type}</Text>}
-//   //           {file.size && (
-//   //             <Text style={styles.fileUri}>Size: {file.size} bytes</Text>
-//   //           )}
-//   //         </View>
-//   //       )}
-//   //     </View>
-
-//   //     {/* Expiry date field */}
-//   //     <TouchableOpacity onPress={() => setOpenPicker(fieldKey)}>
-//   //       <TextInput
-//   //         placeholder="*Add Expiry Date"
-//   //         placeholderTextColor={colors.darkGray}
-//   //         style={styles.AddExpiryDate}
-//   //         value={
-//   //           expiryDates[fieldKey]
-//   //             ? formatDate(new Date(expiryDates[fieldKey]))
-//   //             : ''
-//   //         }
-//   //         editable={false}
-//   //       />
-//   //     </TouchableOpacity>
-
-//   //     <DatePicker
-//   //       modal
-//   //       open={openPicker === fieldKey}
-//   //       date={
-//   //         expiryDates[fieldKey] ? new Date(expiryDates[fieldKey]) : new Date()
-//   //       }
-//   //       mode="date"
-//   //       onConfirm={date => {
-//   //         setOpenPicker(null);
-//   //         setExpiryDates(prev => ({
-//   //           ...prev,
-//   //           [fieldKey]: date.toISOString(),
-//   //         }));
-//   //       }}
-//   //       onCancel={() => setOpenPicker(null)}
-//   //     />
-//   //   </>
-//   // );
-
-//   const renderUploadField = (
-//     label: string,
-//     file: any,
-//     setter: (file: any) => void,
-//     fieldKey: string,
-//   ) => (
-//     <>
-//       <Text style={styles.label}>{label}</Text>
-//       <View style={styles.container}>
-//         <TouchableOpacity
-//           style={styles.button}
-//           onPress={() => handlePickDocument(setter)}
-//         >
-//           <Text style={styles.buttonText}>Choose File</Text>
-//         </TouchableOpacity>
-
-//         {!file && <Text style={styles.title}>No File Selected</Text>}
-
-//         {file && (
-//           <View style={styles.preview}>
-//             <Text style={styles.fileLabel}>Selected File:</Text>
-//             <Text style={styles.fileName}>{file.name}</Text>
-//             <Text style={styles.fileUri}>{file.uri}</Text>
-//             {file.type && <Text style={styles.fileUri}>Type: {file.type}</Text>}
-//             {file.size && (
-//               <Text style={styles.fileUri}>Size: {file.size} bytes</Text>
-//             )}
-//           </View>
-//         )}
-//       </View>
-
-//       {/* Expiry date field - FIXED: Properly set the field key when opening */}
-//       {/* <View style={styles.expiryDateContainer}> */}
-//       <TextInput
-//         placeholder="*Add Expiry Date"
-//         placeholderTextColor={colors.darkGray}
-//         style={styles.AddExpiryDate}
-//         keyboardType="phone-pad"
-//         // value={
-//         //   expiryDates[fieldKey]
-//         //     ? formatDateForDisplay(new Date(expiryDates[fieldKey]))
-//         //     : ''
-//         // }
-//         // editable={false}
-//       />
-//       {/* <TouchableOpacity
-//           activeOpacity={0.7}
-//           onPress={() => setOpenPicker(fieldKey)}
-//           style={styles.calendarIcon}
-//         >
-//           <Image source={images.calendar} />
-//         </TouchableOpacity> */}
-//       {/* </View> */}
-
-//       {/* <DatePicker
-//         modal
-//         open={openPicker === fieldKey}
-//         date={
-//           expiryDates[fieldKey] ? new Date(expiryDates[fieldKey]) : new Date()
-//         }
-//         mode="date"
-//         onConfirm={date => {
-//           setOpenPicker(null);
-//           setExpiryDates(prev => ({
-//             ...prev,
-//             [fieldKey]: date.toISOString(),
-//           }));
-//         }}
-//         onCancel={() => setOpenPicker(null)}
-//       /> */}
-//     </>
-//   );
-
-//   const DriverScreens = useMemo(() => {
-//     return (
-//       <View style={{ flex: 1, alignItems: 'center' }}>
-//         <ScrollView
-//           contentContainerStyle={{
-//             alignItems: 'center',
-//           }}
-//           showsVerticalScrollIndicator={false}
-//         >
-//           <View style={styles.imgMain}>
-//             <Image source={images.profGradient} style={styles.gradient} />
-//             <TouchableOpacity style={styles.profMain} activeOpacity={0.7}>
-//               <Image source={images.profile} style={styles.profile} />
-//               <View style={styles.cameraMain}>
-//                 <Image source={images.camera} style={styles.camera} />
-//               </View>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.inputMain}>
-//             <CustomTextInput
-//               placeholder="*Enter Your Name..."
-//               placeholderTextColor={colors.black}
-//               borderColor={colors.brown}
-//               borderRadius={30}
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               value={name}
-//               onChangeText={setName}
-//               backgroundColor={colors.gray}
-//             />
-
-//             <View
-//               style={[
-//                 styles.phoneRow,
-//                 {
-//                   borderColor:
-//                     isPhoneFocused || phone ? colors.brown : colors.gray,
-//                   backgroundColor:
-//                     isPhoneFocused || phone ? colors.lightBrown : colors.gray,
-//                 },
-//               ]}
-//             >
-//               <Image source={images.UK} style={styles.flag} />
-//               <Image source={images.line} style={styles.lineImg} />
-//               <TextInput
-//                 style={styles.phoneInput}
-//                 placeholder="+1"
-//                 placeholderTextColor={colors.black}
-//                 keyboardType="phone-pad"
-//                 value={phone}
-//                 onChangeText={setPhone}
-//                 onFocus={() => setIsPhoneFocused(true)}
-//                 onBlur={() => setIsPhoneFocused(false)}
-//               />
-//             </View>
-//             <CustomTextInput
-//               placeholder="*Enter Your Email..."
-//               placeholderTextColor={colors.black}
-//               borderColor={colors.brown}
-//               borderRadius={30}
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               value={email}
-//               onChangeText={setEmail}
-//               backgroundColor={colors.gray}
-//             />
-//             <CustomTextInput
-//               placeholder="*Address"
-//               placeholderTextColor={colors.black}
-//               borderColor={colors.brown}
-//               borderRadius={30}
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               value={street}
-//               onChangeText={setStreet}
-//               backgroundColor={colors.gray}
-//             />
-//             <CustomSelect
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               selectElements={cityOptions}
-//               borderColor={city ? colors.brown : colors.gray}
-//               borderWidth={1}
-//               inputColor={city ? colors.lightBrown : colors.gray}
-//               borderRadius={30}
-//               onChangeText={value => setCity(value)}
-//               setSelectedElement={setCity}
-//               defaultValue=""
-//             />
-//             <CustomSelect
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               selectElements={genderOptions}
-//               borderColor={gender ? colors.brown : colors.gray}
-//               borderWidth={1}
-//               inputColor={gender ? colors.lightBrown : colors.gray}
-//               borderRadius={30}
-//               onChangeText={value => setGender(value)}
-//               setSelectedElement={setGender}
-//               defaultValue=""
-//             />
-//             <CustomTextInput
-//               placeholder="*Date Of Birth"
-//               placeholderTextColor={colors.black}
-//               borderColor={colors.brown}
-//               borderRadius={30}
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               // value={street}
-//               // onChangeText={setStreet}
-//               backgroundColor={colors.gray}
-//               editable={false}
-//               value={formatDateForDisplay(startDate)}
-//               rightIcon={
-//                 <TouchableOpacity
-//                   activeOpacity={0.7}
-//                   onPress={() => setOpenStartPicker(true)}
-//                 >
-//                   <Image source={images.calendar} />
-//                 </TouchableOpacity>
-//               }
-//             />
-//             <DatePicker
-//               modal
-//               open={openStartPicker}
-//               date={startDate || new Date()}
-//               mode="date"
-//               onConfirm={handleDateConfirm}
-//               onCancel={() => setOpenStartPicker(false)}
-//               // minimumDate={new Date()}
-//             />
-//             <CustomSelect
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               selectElements={rideOptions}
-//               borderColor={rideType ? colors.brown : colors.gray}
-//               borderWidth={1}
-//               inputColor={rideType ? colors.lightBrown : colors.gray}
-//               borderRadius={30}
-//               onChangeText={value => setRideType(value)}
-//               setSelectedElement={setRideType}
-//               defaultValue=""
-//             />
-//             <CustomTextInput
-//               placeholder="*ID Card Number"
-//               placeholderTextColor={colors.black}
-//               borderColor={colors.brown}
-//               borderRadius={30}
-//               inputWidth={width * 0.85}
-//               inputHeight={height * 0.06}
-//               value={card}
-//               onChangeText={setCard}
-//               backgroundColor={colors.gray}
-//             />
-//             <View style={styles.DocumentUpload}>
-//               <Text style={styles.documentUploadText}>Document Uploads:</Text>
-//               {renderUploadField(
-//                 'Driving License:*',
-//                 drivingLicense,
-//                 setDrivingLicense,
-//                 'drivingLicense',
-//               )}
-//               {renderUploadField(
-//                 'Private Hire Driver License:*',
-//                 privateHireLicense,
-//                 setPrivateHireLicense,
-//                 'privateHireLicense',
-//               )}
-//               {renderUploadField(
-//                 'LogBook V5:*',
-//                 logBook,
-//                 setLogBook,
-//                 'logBook',
-//               )}
-//               {renderUploadField(
-//                 'Private Hire Vehicle License:*',
-//                 vehicleLicense,
-//                 setVehicleLicense,
-//                 'vehicleLicense',
-//               )}
-//               {renderUploadField(
-//                 'Insurance:*',
-//                 insurance,
-//                 setInsurance,
-//                 'insurance',
-//               )}
-//               {renderUploadField('MOT:*', mot, setMot, 'mot')}
-//               {renderUploadField(
-//                 'Hire Agreement (if Applicable):',
-//                 hireAgreement,
-//                 setHireAgreement,
-//                 'hireAgreement',
-//               )}
-//             </View>
-//           </View>
-//           <View style={styles.btnMain}>
-//             <CustomButton
-//               btnHeight={height * 0.075}
-//               btnWidth={width * 0.85}
-//               text="Continue"
-//               backgroundColor={isFormValid ? colors.brown : colors.black}
-//               textColor={colors.white}
-//               borderRadius={30}
-//               disabled={!isFormValid}
-//               // onPress={() => navigation.navigate('Congratulation')}
-//               onPress={() => setModalVisible(true)}
-//             />
-//           </View>
-//         </ScrollView>
-//         <CustomProfileImgModal
-//           modalOpen={modalOpen}
-//           toggleModal={toggleModal}
-//           camera={uploadFromCamera}
-//           gallery={uploadFromGallery}
-//         />
-//         <Modal
-//           animationType="fade"
-//           transparent={true}
-//           visible={modalVisible}
-//           onRequestClose={() => setModalVisible(false)}
-//         >
-//           <View style={styles.modalOverlay}>
-//             <View style={styles.modalContent}>
-//               <Text style={styles.modalText}>Admin Approval</Text>
-//               <Image source={images.approve} />
-//               <View style={styles.paraMain}>
-//                 <Text style={styles.modalText}>Your Request Has Been</Text>
-//                 <Text style={styles.modalText}>Accepted! </Text>
-//               </View>
-//               <CustomButton
-//                 text="Confirm"
-//                 textColor={colors.white}
-//                 backgroundColor={colors.brown}
-//                 btnHeight={height * 0.06}
-//                 btnWidth={width * 0.75}
-//                 borderRadius={30}
-//                 onPress={toggleModalSec}
-//               />
-//             </View>
-//           </View>
-//         </Modal>
-//       </View>
-//     );
-//   }, [
-//     name,
-//     email,
-//     phone,
-//     street,
-//     gender,
-//     city,
-//     card,
-//     rideType,
-//     startDate,
-//     openStartPicker,
-//     isPhoneFocused,
-//     isFormValid,
-//     profileImage,
-//     modalOpen,
-//     setModalOpen,
-//     modalVisible,
-//     setModalVisible,
-//   ]);
-
-//   return (
-//     <TouchableWithoutFeedback onPress={dismissKeyboard}>
-//       <View style={{ flex: 1, backgroundColor: colors.white }}>
-//         <TopHeader text="Profile" isBack={true} />
-//         {selectedRole === 'user' && UserScreens}
-//         {selectedRole === 'driver' && DriverScreens}
-//       </View>
-//     </TouchableWithoutFeedback>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   expiryDateContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginTop: height * 0.01,
-//   },
-//   calendarIcon: {
-//     position: 'absolute',
-//     right: 15,
-//     top: '50%',
-//     marginTop: -height * 0.015, // Center vertically
-//   },
-//   calendarImage: {
-//     width: width * 0.06,
-//     height: height * 0.03,
-//     resizeMode: 'contain',
-//   },
-//   profileImageWrapper: {
-//     width: width * 0.4,
-//     // height: width * 0.4,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     bottom: height * 0.6,
-//   },
-//   profileImage: {
-//     width: width * 0.32,
-//     height: width * 0.32,
-//     resizeMode: 'cover',
-//   },
-//   defaultProfileImage: {
-//     // height: width * 0.4,
-//     bottom: height * 0.09,
-//     resizeMode: 'contain',
-//   },
-//   imgMain: {
-//     bottom: height * 0.09,
-//     alignItems: 'center',
-//   },
-//   profMain: {
-//     position: 'absolute',
-//     top: height * 0.12,
-//   },
-//   profile: {
-//     width: width * 0.99,
-//     height: height * 0.17,
-//     resizeMode: 'contain',
-//   },
-//   cameraMain: {
-//     position: 'absolute',
-//     left: width * 0.58,
-//     top: height * 0.099,
-//   },
-//   camera: {
-//     width: width * 0.09,
-//     height: height * 0.09,
-//     resizeMode: 'contain',
-//   },
-//   inputMain: {
-//     alignItems: 'center',
-//     bottom: height * 0.35,
-//     gap: height * 0.02,
-//   },
-//   phoneRow: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     borderColor: colors.gray,
-//     borderWidth: 1,
-//     borderRadius: 30,
-//     paddingHorizontal: 12,
-//     width: width * 0.85,
-//     height: height * 0.06,
-//   },
-//   flag: {
-//     width: width * 0.05,
-//     height: height * 0.015,
-//     marginRight: 8,
-//     borderRadius: 2,
-//   },
-//   phoneInput: {
-//     flex: 1,
-//     fontSize: fontSizes.xm2,
-//     color: colors.black,
-//   },
-//   lineImg: {
-//     height: height * 0.024,
-//     width: width * 0.01,
-//     resizeMode: 'contain',
-//   },
-//   gradient: {
-//     height: height * 0.6,
-//     width: width * 0.8,
-//     resizeMode: 'contain',
-//     bottom: height * 0.07,
-//   },
-//   btnMain: {
-//     justifyContent: 'space-around',
-//     alignItems: 'center',
-//     flexDirection: 'row',
-//     bottom: height * 0.3,
-//     // paddingHorizontal: width * 0.05,
-//     width: width * 0.85,
-//   },
-//   DocumentUpload: {},
-//   documentUploadText: {
-//     fontFamily: fontFamily.ClashDisplayMedium,
-//     fontSize: fontSizes.lg,
-//     color: colors.black,
-//   },
-//   container: {
-//     backgroundColor: colors.white,
-//     height: height * 0.065,
-//     width: width * 0.85,
-//     borderRadius: 30,
-//     marginTop: height * 0.02,
-//     borderColor: colors.darkGray,
-//     borderWidth: 1,
-//     flexDirection: 'row',
-//     paddingHorizontal: width * 0.05,
-//     alignItems: 'center',
-//     gap: width * 0.03,
-//   },
-//   title: {
-//     fontFamily: fontFamily.ClashDisplayMedium,
-//     fontSize: fontSizes.sm,
-//     color: colors.black,
-//   },
-//   button: {
-//     backgroundColor: colors.gray,
-//     height: height * 0.04,
-//     width: width * 0.27,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     borderRadius: 15,
-//     borderStyle: 'dashed',
-//     borderWidth: 2,
-//     borderColor: colors.darkGray,
-//   },
-//   buttonText: {
-//     color: colors.black,
-//     fontSize: fontSizes.sm,
-//   },
-//   preview: {
-//     marginTop: height * 0.02,
-//     alignItems: 'center',
-//   },
-//   fileLabel: {
-//     // fontWeight: '600',
-//     fontSize: fontSizes.sm2,
-//   },
-//   fileName: {
-//     marginTop: height * 0.01,
-//     fontSize: fontSizes.sm,
-//     color: colors.darkGray,
-//   },
-//   fileUri: {
-//     marginTop: 4,
-//     fontSize: 12,
-//     color: colors.gray,
-//   },
-//   AddExpiryDate: {
-//     borderBottomWidth: 1,
-//     borderColor: colors.darkGray,
-//     marginTop: height * 0.01,
-//     fontSize: fontSizes.sm,
-//     color: colors.black,
-//   },
-//   label: {
-//     fontFamily: fontFamily.ClashDisplayMedium,
-//     fontSize: fontSizes.sm2,
-//     color: colors.black,
-//     marginTop: height * 0.025,
-//   },
-//   modalOverlay: {
-//     flex: 1,
-//     backgroundColor: 'rgba(255, 252, 252, 0.9)',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: 30,
-//   },
-//   modalContent: {
-//     backgroundColor: colors.white,
-//     borderRadius: 16,
-//     width: width * 0.83,
-//     height: height * 0.34,
-//     alignItems: 'center',
-//     borderWidth: 0.9,
-//     borderColor: colors.black,
-//     padding: 20,
-//     gap: height * 0.02,
-//   },
-//   modalText: {
-//     fontFamily: fontFamily.ClashDisplayMedium,
-//     fontSize: fontSizes.md,
-//     color: colors.black,
-//   },
-//   paraMain: {
-//     alignItems: 'center',
-//     top: height * 0.02,
-//     marginBottom: height * 0.02,
-//   },
-// });
-
-// export default CreateProfile;
-
-
-
-
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { isCancel, pick, types } from '@react-native-documents/picker';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
@@ -1026,7 +38,6 @@ import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { defaultCountry, type Country } from '../../utilities/countries';
 import { fontSizes } from '../../utilities/fontsizes';
-
 
 const CreateProfile = () => {
   const navigation = useNavigation<NavigationProp<any>>();
@@ -1082,9 +93,18 @@ const CreateProfile = () => {
   const [drivingLicensePaperBack, setDrivingLicensePaperBack] = useState<any[]>(
     [],
   );
-  const [openPicker, setOpenPicker] = useState<string | null>(null);
-  const [expiryDates, setExpiryDates] = useState<{ [key: string]: string }>({});
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const [showCityModal, setShowCityModal] = useState(false);
+  const [citySearch, setCitySearch] = useState('');
+  const [openDatePicker, setOpenDatePicker] = useState(false);
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const [tempSelectedDate, setTempSelectedDate] = useState<Date>(new Date());
+  const [openExpiryDatePicker, setOpenExpiryDatePicker] = useState(false);
+  const [currentDateField, setCurrentDateField] = useState<string | null>(null);
+  const [expiryDates, setExpiryDates] = useState<{ [key: string]: string }>({});
+
+    const isFormValid = name && email && phone && street && gender && city;
+    const isFormValidSec = name && email && phone && street && gender && city && card && rideType && profileImage;
 
   useEffect(() => {
     console.log('Selected Role in CreateProfile:', selectedRole);
@@ -1102,20 +122,181 @@ const CreateProfile = () => {
     { name: 'Other', id: 'other' },
   ];
 
-  const cityOptions = [
-    { name: 'Select City', id: '' },
-    { name: 'Texas', id: 'texas' },
-    { name: 'Misissippi', id: 'misissippi' },
-    { name: 'New York', id: 'new york' },
-    { name: 'Other', id: 'other' },
-  ];
+  const fullCitiesByCountry: { [key: string]: { name: string; id: string }[] } = {
+    uk: [
+      { name: 'London', id: 'london' },
+      { name: 'Manchester', id: 'manchester' },
+      { name: 'Birmingham', id: 'birmingham' },
+      { name: 'Leeds', id: 'leeds' },
+      { name: 'Glasgow', id: 'glasgow' },
+      { name: 'Liverpool', id: 'liverpool' },
+      { name: 'Bristol', id: 'bristol' },
+      { name: 'Sheffield', id: 'sheffield' },
+      { name: 'Edinburgh', id: 'edinburgh' },
+      { name: 'Cardiff', id: 'cardiff' },
+      { name: 'Coventry', id: 'coventry' },
+      { name: 'Leicester', id: 'leicester' },
+      { name: 'Nottingham', id: 'nottingham' },
+      { name: 'Newcastle', id: 'newcastle' },
+      { name: 'Brighton', id: 'brighton' },
+      { name: 'Portsmouth', id: 'portsmouth' },
+      { name: 'Southampton', id: 'southampton' },
+      { name: 'Norwich', id: 'norwich' },
+      { name: 'Aberdeen', id: 'aberdeen' },
+      { name: 'York', id: 'york' },
+      { name: 'Cambridge', id: 'cambridge' },
+      { name: 'Oxford', id: 'oxford' },
+      { name: 'Bath', id: 'bath' },
+      { name: 'Exeter', id: 'exeter' },
+      { name: 'Plymouth', id: 'plymouth' },
+      { name: 'Derby', id: 'derby' },
+      { name: 'Wolverhampton', id: 'wolverhampton' },
+      { name: 'Swansea', id: 'swansea' },
+      { name: 'Dundee', id: 'dundee' },
+      { name: 'Middlesbrough', id: 'middlesbrough' }
+    ],
+    malta: [
+      { name: 'Valletta', id: 'valletta' },
+      { name: 'Mdina', id: 'mdina' },
+      { name: 'Sliema', id: 'sliema' },
+      { name: 'St. Julian\'s', id: 'stjulians' },
+      { name: 'Birgu', id: 'birgu' },
+      { name: 'Senglea', id: 'senglea' },
+      { name: 'Cospicua', id: 'cospicua' },
+      { name: 'Rabat', id: 'rabat' },
+      { name: 'Mosta', id: 'mosta' },
+      { name: 'Qormi', id: 'qormi' },
+      { name: 'Zebbug', id: 'zebbug' },
+      { name: 'Siggiewi', id: 'siggiewi' },
+      { name: 'Zurrieq', id: 'zurrieq' },
+      { name: 'Tarxien', id: 'tarxien' },
+      { name: 'Paola', id: 'paola' },
+      { name: 'Naxxar', id: 'naxxar' },
+      { name: 'Marsa', id: 'marsa' },
+      { name: 'Hamrun', id: 'hamrun' },
+      { name: 'Gzira', id: 'gzira' },
+      { name: 'Birkirkara', id: 'birkirkara' },
+      { name: 'Attard', id: 'attard' },
+      { name: 'Balzan', id: 'balzan' },
+      { name: 'Lija', id: 'lija' },
+      { name: 'Marsaxlokk', id: 'marsaxlokk' },
+      { name: 'Mellieha', id: 'mellieha' },
+      { name: 'Mgarr', id: 'mgarr' },
+      { name: 'Mqabba', id: 'mqabba' },
+      { name: 'Msida', id: 'msida' },
+      { name: 'Mtarfa', id: 'mtarfa' },
+      { name: 'Pembroke', id: 'pembroke' }
+    ],
+    pakistan: [
+      { name: 'Karachi', id: 'karachi' },
+      { name: 'Lahore', id: 'lahore' },
+      { name: 'Islamabad', id: 'islamabad' },
+      { name: 'Faisalabad', id: 'faisalabad' },
+      { name: 'Rawalpindi', id: 'rawalpindi' },
+      { name: 'Multan', id: 'multan' },
+      { name: 'Gujranwala', id: 'gujranwala' },
+      { name: 'Peshawar', id: 'peshawar' },
+      { name: 'Quetta', id: 'quetta' },
+      { name: 'Sargodha', id: 'sargodha' },
+      { name: 'Sialkot', id: 'sialkot' },
+      { name: 'Bahawalpur', id: 'bahawalpur' },
+      { name: 'Sukkur', id: 'sukkur' },
+      { name: 'Jhang', id: 'jhang' },
+      { name: 'Larkana', id: 'larkana' },
+      { name: 'Gujrat', id: 'gujrat' },
+      { name: 'Mardan', id: 'mardan' },
+      { name: 'Kasur', id: 'kasur' },
+      { name: 'Dera Ghazi Khan', id: 'deraghazikhan' },
+      { name: 'Sahiwal', id: 'sahiwal' },
+      { name: 'Nawabshah', id: 'nawabshah' },
+      { name: 'Mirpur Khas', id: 'mirpurkhas' },
+      { name: 'Okara', id: 'okara' },
+      { name: 'Mingora', id: 'mingora' },
+      { name: 'Chiniot', id: 'chiniot' },
+      { name: 'Kamoke', id: 'kamoke' },
+      { name: 'Hyderabad', id: 'hyderabad' },
+      { name: 'Abbottabad', id: 'abbottabad' },
+      { name: 'Wah Cantonment', id: 'wahcantonment' },
+      { name: 'Rahim Yar Khan', id: 'rahimyarkhan' }
+    ],
+  };
 
-  const rideOptions = [
-    { name: 'Select Ride Type', id: '' },
-    { name: 'Bike', id: 'bike' },
-    { name: 'Car', id: 'car' },
-    { name: 'SUV', id: 'suv' },
-  ];
+  const popularCitiesByCountry: { [key: string]: { name: string; id: string }[] } = {
+    uk: [
+      { name: 'Select City', id: '' },
+      { name: 'London', id: 'london' },
+      { name: 'Manchester', id: 'manchester' },
+      { name: 'Birmingham', id: 'birmingham' },
+      { name: 'Other', id: 'other' },
+    ],
+    malta: [
+      { name: 'Select City', id: '' },
+      { name: 'Valletta', id: 'valletta' },
+      { name: 'Mdina', id: 'mdina' },
+      { name: 'Sliema', id: 'sliema' },
+      { name: 'Other', id: 'other' },
+    ],
+    pakistan: [
+      { name: 'Select City', id: '' },
+      { name: 'Karachi', id: 'karachi' },
+      { name: 'Lahore', id: 'lahore' },
+      { name: 'Islamabad', id: 'islamabad' },
+      { name: 'Other', id: 'other' },
+    ],
+  };
+
+  const cityOptions = useMemo(() => {
+    const countryName = reduxSelectedCountry.name.toLowerCase();
+    let popularCities = [{ name: 'Select City', id: '' }];
+
+    if (countryName.includes('united kingdom') || countryName.includes('uk')) {
+      popularCities = popularCitiesByCountry.uk;
+    } else if (countryName.includes('malta')) {
+      popularCities = popularCitiesByCountry.malta;
+    } else if (countryName.includes('pakistan')) {
+      popularCities = popularCitiesByCountry.pakistan;
+    }
+
+    return popularCities;
+  }, [reduxSelectedCountry]);
+
+  const handleCityChange = (value: string) => {
+    if (value === 'other') {
+      setShowCityModal(true); // Open modal with full city list
+    } else {
+      setCity(value);
+    }
+  };
+
+  const rideOptions = useMemo(() => {
+    const countryName = reduxSelectedCountry.name.toLowerCase();
+
+    const options = [{ name: 'Select Ride Type', id: '' }];
+
+    if (selectedRole === 'driver' && countryName.includes('pakistan')) {
+      options.push({ name: 'Bike', id: 'bike' });
+    }
+
+    // Common options for all drivers
+    options.push({ name: 'Car', id: 'car' }, { name: 'SUV', id: 'suv' });
+
+    return options;
+  }, [selectedRole, reduxSelectedCountry]);
+
+  const handleExpiryDatePress = (fieldKey: string, index: number) => {
+    setCurrentDateField(`${fieldKey}_${index}`);
+    setOpenExpiryDatePicker(true);
+  };
+
+  const handleExpiryDateConfirm = (event: any, selectedDate?: Date) => {
+    setOpenExpiryDatePicker(false);
+    if (selectedDate && currentDateField) {
+      setExpiryDates(prev => ({
+        ...prev,
+        [currentDateField]: selectedDate.toISOString(), // Store as ISO string
+      }));
+    }
+  };
 
   const handleDateConfirm = (event: any, selectedDate?: Date) => {
     setOpenStartPicker(false);
@@ -1132,13 +313,6 @@ const CreateProfile = () => {
       day: 'numeric',
     });
   };
-
-  // const isFormValid =
-  //   name.length > 4 &&
-  //   email.includes('@') &&
-  //   phone.length > 7 &&
-  //   street.length > 5;
-  const isFormValid = name && email && phone && street;
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
@@ -1186,8 +360,8 @@ const CreateProfile = () => {
           isImage: file.type?.startsWith('image/') || false,
         }));
 
-        const allFiles = [...currentFiles, ...newFiles];
-        setter(allFiles);
+        // ✅ CHANGE THIS LINE - use functional update
+        setter(prevFiles => [...prevFiles, ...newFiles]);
       }
     } catch (err: any) {
       if (!isCancel(err)) console.error('Document pick error:', err);
@@ -1224,8 +398,8 @@ const CreateProfile = () => {
             height: image.height,
           }));
 
-          const allFiles = [...currentFiles, ...formattedFiles];
-          setter(allFiles);
+          // ✅ CHANGE THIS LINE - use functional update
+          setter(prevFiles => [...prevFiles, ...formattedFiles]);
         })
         .catch(error => {
           if (error.code !== 'E_PICKER_CANCELLED') {
@@ -1238,9 +412,9 @@ const CreateProfile = () => {
   };
 
   const removeFile = useCallback(
-    (files: any[], setter: (files: any[]) => void, index: number) => {
-      const newFiles = files.filter((_, i) => i !== index);
-      setter(newFiles);
+    (setter: (files: any[]) => void, index: number) => {
+      // ✅ Use functional update to ensure we're working with latest state
+      setter(prevFiles => prevFiles.filter((_, i) => i !== index));
     },
     [],
   );
@@ -1256,7 +430,7 @@ const CreateProfile = () => {
   const toggleModalSec = () => {
     setModalVisible(false);
     // handleCreateProfile();
-    // navigation.navigate('BankDetailsAuth');
+    navigation.navigate('BankDetailsAuth');
   };
 
   const renderUploadField = (
@@ -1320,7 +494,7 @@ const CreateProfile = () => {
                 </View>
 
                 <TouchableOpacity
-                  onPress={() => removeFile(files, setter, index)}
+                  onPress={() => removeFile(setter, index)}
                   style={styles.removeButton}
                 >
                   <Text style={styles.removeButtonText}>×</Text>
@@ -1346,19 +520,28 @@ const CreateProfile = () => {
               <Text style={styles.fileDetailText}>
                 Size: {formatFileSize(file.size)}
               </Text>
-
-              <TextInput
+              <CustomTextInput
                 placeholder={`*Add Expiry Date for ${file.name}`}
-                placeholderTextColor={colors.darkGray}
-                style={styles.fileExpiryDate}
-                keyboardType="phone-pad"
-                value={expiryDates[`${fieldKey}_${index}`] || ''}
-                onChangeText={text => {
-                  setExpiryDates(prev => ({
-                    ...prev,
-                    [`${fieldKey}_${index}`]: text,
-                  }));
-                }}
+                placeholderTextColor={colors.black}
+                borderColor={colors.brown}
+                borderRadius={30}
+                inputWidth={width * 0.75}
+                inputHeight={height * 0.055}
+                backgroundColor={colors.gray}
+                editable={false}
+                value={
+                  expiryDates[`${fieldKey}_${index}`]
+                    ? formatDateForDisplay(new Date(expiryDates[`${fieldKey}_${index}`])) 
+                    : ''
+                }
+                rightIcon={
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => handleExpiryDatePress(fieldKey, index)}
+                  >
+                    <Image source={images.calendar} style={styles.calendarIconSec} />
+                  </TouchableOpacity>
+                }
               />
             </View>
           ))}
@@ -1366,24 +549,24 @@ const CreateProfile = () => {
       )}
     </>
   );
-
+  
   const renderUKDocuments = () => (
     <>
       {renderUploadField(
-        'Driving License:*',
+        'Driving License:*(Front & Back)',
         drivingLicense,
         setDrivingLicense,
         'drivingLicense',
       )}
       {renderUploadField(
-        'Private Hire Driver License:*',
+        'Private Hire Driver License:*(Front & Back)',
         privateHireLicense,
         setPrivateHireLicense,
         'privateHireLicense',
       )}
       {renderUploadField('LogBook V5:*', logBook, setLogBook, 'logBook')}
       {renderUploadField(
-        'Private Hire Vehicle License:*',
+        'Private Hire Vehicle License:*(Front & Back)',
         vehicleLicense,
         setVehicleLicense,
         'vehicleLicense',
@@ -1408,17 +591,17 @@ const CreateProfile = () => {
         'transportOperatorsLicense',
       )}
       {renderUploadField(
-        'Driving License Front:*',
+        'Driving License:*(Front & Back)',
         drivingLicenseFront,
         setDrivingLicenseFront,
         'drivingLicenseFront',
       )}
-      {renderUploadField(
+      {/* {renderUploadField(
         'Driving License Back:*',
         drivingLicenseBack,
         setDrivingLicenseBack,
         'drivingLicenseBack',
-      )}
+      )} */}
       {renderUploadField(
         'Bank Statement:*',
         bankStatement,
@@ -1432,17 +615,17 @@ const CreateProfile = () => {
         'driversTagLicense',
       )}
       {renderUploadField(
-        'ID Card Front:*',
+        'ID Card:*(Front & Back)',
         idCardFront,
         setIdCardFront,
         'idCardFront',
       )}
-      {renderUploadField(
+      {/* {renderUploadField(
         'ID Card Back:*',
         idCardBack,
         setIdCardBack,
         'idCardBack',
-      )}
+      )} */}
       {renderUploadField(
         'VAT Certificate:',
         vatCertificate,
@@ -1455,17 +638,17 @@ const CreateProfile = () => {
   const renderPakistanDocuments = () => (
     <>
       {renderUploadField(
-        'ID Card Front:*',
+        'ID Card:*(Front & Back)',
         idCardFrontPK,
         setIdCardFrontPK,
         'idCardFrontPK',
       )}
-      {renderUploadField(
+      {/* {renderUploadField(
         'ID Card Back:*',
         idCardBackPK,
         setIdCardBackPK,
         'idCardBackPK',
-      )}
+      )} */}
       {renderUploadField(
         'Vehicle Registration Paper:*',
         vehicleRegistrationPaper,
@@ -1473,17 +656,17 @@ const CreateProfile = () => {
         'vehicleRegistrationPaper',
       )}
       {renderUploadField(
-        'Driving License Paper Front:*',
+        'Driving License Paper:*(Front & Back)',
         drivingLicensePaperFront,
         setDrivingLicensePaperFront,
         'drivingLicensePaperFront',
       )}
-      {renderUploadField(
+      {/* {renderUploadField(
         'Driving License Paper Back:*',
         drivingLicensePaperBack,
         setDrivingLicensePaperBack,
         'drivingLicensePaperBack',
-      )}
+      )} */}
     </>
   );
 
@@ -1507,7 +690,7 @@ const CreateProfile = () => {
           {
             borderColor: isPhoneFocused || phone ? colors.brown : colors.gray,
             backgroundColor:
-              isPhoneFocused || phone ? colors.lightBrown : colors.gray,
+              colors.lightBrown,
           },
         ]}
       >
@@ -1593,7 +776,7 @@ const CreateProfile = () => {
         }
       }
     } catch (err) {
-      console.error('Create profile error:', err);
+      console.log('Create profile error:', err);
       Toast.show({
         type: 'error',
         text1: 'Error',
@@ -1659,7 +842,7 @@ const CreateProfile = () => {
             backgroundColor={colors.gray}
           />
           <CustomTextInput
-            placeholder="*Address"
+            placeholder="*Address/Post-Code"
             placeholderTextColor={colors.black}
             borderColor={colors.brown}
             borderRadius={30}
@@ -1669,7 +852,7 @@ const CreateProfile = () => {
             onChangeText={setStreet}
             backgroundColor={colors.gray}
           />
-          <CustomSelect
+          {/* <CustomSelect
             inputWidth={width * 0.85}
             inputHeight={height * 0.06}
             selectElements={cityOptions}
@@ -1680,6 +863,18 @@ const CreateProfile = () => {
             onChangeText={value => setCity(value)}
             setSelectedElement={setCity}
             defaultValue=""
+          /> */}
+          <CustomSelect
+            inputWidth={width * 0.85}
+            inputHeight={height * 0.06}
+            selectElements={cityOptions}
+            borderColor={city ? colors.brown : colors.gray}
+            borderWidth={1}
+            inputColor={city ? colors.lightBrown : colors.gray}
+            borderRadius={30}
+            onChangeText={handleCityChange} // ✅ Use the new handler
+            setSelectedElement={setCity}
+            defaultValue={city || ''}
           />
           {/* <CustomSelect
             inputWidth={width * 0.85}
@@ -1720,11 +915,11 @@ const CreateProfile = () => {
             btnHeight={height * 0.065}
             btnWidth={width * 0.4}
             text="Save"
-            backgroundColor={colors.brown}
-            // backgroundColor={isFormValid ? colors.brown : colors.gray}
+            // backgroundColor={colors.brown}
+            backgroundColor={isFormValid ? colors.brown : colors.gray}
             textColor={colors.white}
             borderRadius={30}
-            // disabled={!isFormValid}
+            disabled={!isFormValid}
             // onPress={() => navigation.navigate('Congratulation')}
             onPress={handleCreateProfile}
           />
@@ -1740,6 +935,46 @@ const CreateProfile = () => {
             <ActivityIndicator size="large" color={colors.brown} />
           </View>
         )}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showCityModal}
+          onRequestClose={() => setShowCityModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <TextInput
+                placeholder="Search city..."
+                value={citySearch}
+                onChangeText={setCitySearch}
+                style={styles.searchInput}
+              />
+              <ScrollView>
+                {(fullCitiesByCountry[reduxSelectedCountry.name.toLowerCase()] || [])
+                  .filter(cityObj => cityObj.name.toLowerCase().includes(citySearch.toLowerCase()))
+                  .map(cityObj => (
+                    <TouchableOpacity
+                      key={cityObj.id}
+                      onPress={() => {
+                        setCity(cityObj.name);
+                        setShowCityModal(false);
+                        setCitySearch('');
+                      }}
+                      style={styles.cityOption}
+                    >
+                      <Text>{cityObj.name}</Text>
+                    </TouchableOpacity>
+                  ))}
+              </ScrollView>
+              <CustomButton
+                text="Close"
+                backgroundColor={colors.black}
+                textColor={colors.white}
+                onPress={() => setShowCityModal(false)}
+              />
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }, [
@@ -1816,7 +1051,7 @@ const CreateProfile = () => {
               editable={false}
             />
             <CustomTextInput
-              placeholder="*Address"
+              placeholder="*Address/Post-Code"
               placeholderTextColor={colors.black}
               borderColor={colors.brown}
               borderRadius={30}
@@ -1838,18 +1073,6 @@ const CreateProfile = () => {
               setSelectedElement={setCity}
               defaultValue=""
             />
-            {/* <CustomSelect
-              inputWidth={width * 0.85}
-              inputHeight={height * 0.06}
-              selectElements={genderOptions}
-              borderColor={gender ? colors.brown : colors.gray}
-              borderWidth={1}
-              inputColor={gender ? colors.lightBrown : colors.gray}
-              borderRadius={30}
-              onChangeText={value => setGender(value)}
-              setSelectedElement={setGender}
-              defaultValue=""
-            /> */}
             <CustomSelect
               inputWidth={width * 0.85}
               inputHeight={height * 0.06}
@@ -1923,11 +1146,10 @@ const CreateProfile = () => {
               btnHeight={height * 0.075}
               btnWidth={width * 0.85}
               text="Continue"
-              backgroundColor={colors.brown}
+              backgroundColor={isFormValidSec ? colors.brown : colors.gray}
               textColor={colors.white}
               borderRadius={30}
-              // disabled={!isFormValid}
-              // onPress={() => setModalVisible(true)}
+              disabled={!isFormValidSec}
               onPress={handleDriverContinue}
             />
           </View>
@@ -1978,7 +1200,7 @@ const CreateProfile = () => {
     startDate,
     openStartPicker,
     isPhoneFocused,
-    isFormValid,
+    isFormValidSec,
     profileImage,
     modalOpen,
     modalVisible,
@@ -1992,12 +1214,95 @@ const CreateProfile = () => {
         <TopHeader text="Profile" isBack={true} />
         {selectedRole === 'user' && UserScreens}
         {selectedRole === 'driver' && DriverScreens}
+
+        {openExpiryDatePicker && (
+          <DateTimePicker
+            value={
+              expiryDates[currentDateField || '']
+                ? new Date(expiryDates[currentDateField || ''])
+                : new Date()
+            }
+            mode="date"
+            display="spinner"
+            onChange={handleExpiryDateConfirm}
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  datePickerModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  datePickerContainer: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    padding: 20,
+    margin: 20,
+    width: width * 0.9,
+    alignItems: 'center',
+  },
+  datePickerTitle: {
+    fontSize: fontSizes.lg,
+    fontFamily: fontFamily.ClashDisplayMedium,
+    color: colors.black,
+    marginBottom: 15,
+  },
+  datePicker: {
+    width: '100%',
+    height: 200,
+  },
+  datePickerButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 20,
+  },
+  datePickerButton: {
+    flex: 0.48,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cancelButton: {
+    backgroundColor: colors.gray,
+  },
+  confirmButton: {
+    backgroundColor: colors.brown,
+  },
+  cancelButtonText: {
+    color: colors.black,
+    fontSize: fontSizes.sm,
+    fontFamily: fontFamily.ClashDisplayMedium,
+  },
+  confirmButtonText: {
+    color: colors.white,
+    fontSize: fontSizes.sm,
+    fontFamily: fontFamily.ClashDisplayMedium,
+  },
+  searchInput: {
+    width: '100%',
+    height: 45,
+    borderColor: colors.gray,
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    backgroundColor: colors.lightGray,
+    color: colors.black,
+  },
+  cityOption: {
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderBottomColor: colors.gray,
+    borderBottomWidth: 0.5,
+  },
   countrySelector: {
     padding: 8,
   },
@@ -2067,7 +1372,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15,
     top: '50%',
-    marginTop: -height * 0.015, // Center vertically
+    marginTop: -height * 0.015,
+  },
+  calendarIconSec: {
+    width: width * 0.05,
+    resizeMode: "contain"
   },
   calendarImage: {
     width: width * 0.06,
@@ -2076,7 +1385,6 @@ const styles = StyleSheet.create({
   },
   profileImageWrapper: {
     width: width * 0.4,
-    // height: width * 0.4,
     justifyContent: 'center',
     alignItems: 'center',
     bottom: height * 0.6,
@@ -2094,7 +1402,6 @@ const styles = StyleSheet.create({
     borderRadius: 70,
   },
   defaultProfileImage: {
-    // height: width * 0.4,
     bottom: height * 0.09,
     resizeMode: 'contain',
   },
@@ -2141,7 +1448,6 @@ const styles = StyleSheet.create({
     height: height * 0.024,
     width: width * 0.01,
     resizeMode: 'contain',
-    // left: width * 0.01,
     padding: 8,
   },
   gradient: {
@@ -2396,6 +1702,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 9999,
+  },
+
+  expiryDateContainer: {
+    marginTop: 10,
+    marginBottom: 12,
+  },
+  dateFieldTouchable: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: colors.lightGray,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    backgroundColor: colors.gray,
+  },
+  expiryDateText: {
+    fontFamily: fontFamily.Jakarta,
+    color: colors.black,
+    flex: 1,
   },
 });
 

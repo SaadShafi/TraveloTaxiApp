@@ -101,6 +101,7 @@ const images: { [key: string]: ImageSourcePropType } = {
   eye: require('../Images/eye.png'),
   eyeInvisible: require('../Images/eye-invisible.png'),
   tickBlack: require('../Images/tickBlack.png'),
+  UkFlag: require("../Images/UKFlag.png")
 };
 
 export default images;

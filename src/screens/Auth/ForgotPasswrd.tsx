@@ -34,7 +34,7 @@ const ForgotPassword = ({ route }) => {
   };
 
   const isEmail = email.includes('@');
-  const isPhone = /^[0-9]+$/.test(email); // only digits allowed
+  const isPhone = /^[0-9]+$/.test(email); 
   const isFormValid = isEmail || isPhone;
 
   const handleForgeotPass = async () => {
@@ -42,7 +42,8 @@ const ForgotPassword = ({ route }) => {
 
     try {
       const body = {
-        email: Email,
+        email: "Demo@email.com",
+        // email: Email,
       };
       const { response, error } = await apiHelper(
         'POST',

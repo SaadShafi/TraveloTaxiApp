@@ -14,6 +14,8 @@ import { fontFamily } from '../assets/Fonts';
 import { height, width } from '../utilities';
 import { colors } from '../utilities/colors';
 import { fontSizes } from '../utilities/fontsizes';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 interface CustomProfImgModalProps {
   modalOpen: boolean;
@@ -31,6 +33,9 @@ const CustomProfileImgModal: React.FC<CustomProfImgModalProps> = ({
   const [animatedHeight] = useState(new Animated.Value(0));
   const [uploadScale] = useState(new Animated.Value(1));
   const [cameraScale] = useState(new Animated.Value(1));
+    const selectedRole = useSelector(
+    (state: RootState) => state.role.selectedRole,
+  );
 
   const animatePress = (anim: Animated.Value, callback: () => void) => {
     Animated.sequence([
@@ -86,6 +91,7 @@ const CustomProfileImgModal: React.FC<CustomProfImgModalProps> = ({
       <View style={{ height: height, width: width }}>
         <Animated.View style={[styles.callModal, { height: animatedHeight }]}>
           <View style={styles.btnMain}>
+            {selectedRole === "user" && (
             <View style={styles.uploadMain}>
               <AntDesign
                 name="upload"
@@ -105,6 +111,7 @@ const CustomProfileImgModal: React.FC<CustomProfImgModalProps> = ({
                 Upload Photo
               </Animated.Text>
             </View>
+            )}
             <View style={styles.cameraMain}>
               <AntDesign
                 name="camera"

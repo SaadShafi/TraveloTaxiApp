@@ -28,6 +28,118 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'RideArrivingUser'>;
 
 const RideArrivingUser = () => {
+  // const navigation = useNavigation<NavigationProp<any>>();
+  // const arrivingSheetRef = useRef<ActionSheetRef>(null);
+  // const secondSheetRef = useRef<ActionSheetRef>(null);
+  // const thirdSheetRef = useRef<ActionSheetRef>(null);
+  // const fourthSheetRef = useRef<ActionSheetRef>(null);
+  // const mapRef = useRef<MapView>(null);
+  // const [timeLeft, setTimeLeft] = useState(10); // first sheet countdown
+  // const [countdown, setCountdown] = useState(900); // 4:55 in seconds
+
+  // const waitingTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // const countdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // useEffect(() => {
+  //   arrivingSheetRef.current?.show();
+
+  //   // First ActionSheet auto close after 10s
+  //   waitingTimerRef.current = setInterval(() => {
+  //     setTimeLeft(prev => {
+  //       if (prev <= 1) {
+  //         clearInterval(waitingTimerRef.current!);
+  //         arrivingSheetRef.current?.hide();
+  //         setTimeout(() => {
+  //           secondSheetRef.current?.show();
+  //           setTimeout(() => {
+  //             secondSheetRef.current?.hide();
+  //             setTimeout(() => {
+  //               thirdSheetRef.current?.show();
+  //             }, 500);
+  //           }, 5000);
+  //         }, 500);
+  //         return 0;
+  //       }
+  //       return prev - 1;
+  //     });
+  //   }, 1000);
+
+  //   return () => {
+  //     if (waitingTimerRef.current) clearInterval(waitingTimerRef.current);
+  //     if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+  //   };
+  // }, []);
+
+  // const formatTime = (seconds: number) => {
+  //   const mins = Math.floor(seconds / 60);
+  //   const secs = seconds % 60;
+  //   return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  // };
+
+  // const handleBackdropPressOnCompletedSheet = () => {
+  //   // Check if the ref exists and the sheet is open before calling the method
+  //   if (secondSheetRef.current) {
+  //     // Call snapToIndex(0) to move the sheet to the '20%' snap point (index 0)
+  //     secondSheetRef.current.snapToIndex(0);
+
+  //     // NOTE: If you want it to snap to the second point (50%), use snapToIndex(1).
+  //   }
+  // };
+
+  // const handleBackdropPressOnFirstSheet = () => {
+  //   if (arrivingSheetRef.current) {
+  //     arrivingSheetRef.current.snapToIndex(0);
+  //   }
+  // };
+
+  // const handleBackdropPressOnSecondSheet = () => {
+  //   if (secondSheetRef.current) {
+  //     secondSheetRef.current.snapToIndex(0);
+  //   }
+  // };
+
+  // const handleBackdropPressOnThirdSheet = () => {
+  //   if (thirdSheetRef.current) {
+  //     thirdSheetRef.current.snapToIndex(0);
+  //   }
+  // };
+
+  // const handleBackdropPressOnFourthSheet = () => {
+  //   if (fourthSheetRef.current) {
+  //     fourthSheetRef.current.snapToIndex(0);
+  //   }
+  // };
+
+  // const handleOkImComingPress = () => {
+  //   thirdSheetRef.current?.hide();
+  //   setTimeout(() => {
+  //     fourthSheetRef.current?.show();
+  //     startCountdown(); // start countdown when 4th sheet opens
+  //   }, 300); // Reduced timeout for smoother transition
+  // };
+
+  // const startCountdown = () => {
+  //   if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+  //   setCountdown(900); // reset 4:55
+  //   countdownTimerRef.current = setInterval(() => {
+  //     setCountdown(prev => {
+  //       if (prev <= 1) {
+  //         clearInterval(countdownTimerRef.current!);
+  //         // Navigate to payment screen when countdown ends
+  //         setTimeout(() => {
+  //           fourthSheetRef.current?.hide();
+  //           setTimeout(() => {
+  //             navigation.navigate('PaymentUser');
+  //           }, 300);
+  //         }, 500);
+  //         return 0;
+  //       }
+  //       return prev - 1;
+  //     });
+  //   }, 1000);
+  // };
+
+
   const navigation = useNavigation<NavigationProp<any>>();
   const arrivingSheetRef = useRef<ActionSheetRef>(null);
   const secondSheetRef = useRef<ActionSheetRef>(null);
@@ -124,7 +236,7 @@ const RideArrivingUser = () => {
 
   const startCountdown = () => {
     if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
-    setCountdown(900); // reset 4:55
+    setCountdown(300); // reset 4:55
     countdownTimerRef.current = setInterval(() => {
       setCountdown(prev => {
         if (prev <= 1) {
@@ -144,7 +256,6 @@ const RideArrivingUser = () => {
   };
 
   return (
-    // <ImageBackground source={images.Maptwo} style={styles.mapImg}>
     <View style={{ flex: 1 }}>
       <View style={[styles.topHeaderContainer, { pointerEvents: 'box-none' }]}>
         <TopHeader isMenu={true} />
@@ -161,11 +272,6 @@ const RideArrivingUser = () => {
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}
-          // scrollEnabled
-          // zoomEnabled
-          // rotateEnabled
-          // pitchEnabled
-          // showsUserLocation={true}
           scrollEnabled={false}
           zoomEnabled={false}
           rotateEnabled={false}
@@ -185,7 +291,7 @@ const RideArrivingUser = () => {
           ...styles.actionSheetOne,
           pointerEvents: 'box-none',
         }}
-        snapPoints={[20, 50, 90]}
+        snapPoints={[40, 50, 90]}
         initialSnapIndex={1}
         closeOnTouchBackdrop={false}
         onTouchBackdrop={handleBackdropPressOnFirstSheet}
@@ -293,7 +399,7 @@ const RideArrivingUser = () => {
           ...styles.actionSheetTwo,
           pointerEvents: 'box-none',
         }}
-        snapPoints={[20, 50, 90]}
+        snapPoints={[40, 50, 90]}
         initialSnapIndex={1}
         closeOnTouchBackdrop={false}
         onTouchBackdrop={handleBackdropPressOnSecondSheet}
@@ -399,7 +505,7 @@ const RideArrivingUser = () => {
           ...styles.actionSheetThree,
           pointerEvents: 'box-none',
         }}
-        snapPoints={[20, 50, 90]}
+        snapPoints={[40, 50, 90]}
         initialSnapIndex={1}
         closeOnTouchBackdrop={false}
         onTouchBackdrop={handleBackdropPressOnThirdSheet}
@@ -547,7 +653,7 @@ const RideArrivingUser = () => {
           ...styles.actionSheetFourth,
           pointerEvents: 'box-none',
         }}
-        snapPoints={[20, 50, 90]}
+        snapPoints={[40, 50, 90]}
         initialSnapIndex={1}
         closeOnTouchBackdrop={false}
         onTouchBackdrop={handleBackdropPressOnFourthSheet}
@@ -725,7 +831,6 @@ const RideArrivingUser = () => {
         </ImageBackground>
       </ActionSheet>
     </View>
-    // </ImageBackground>
   );
 };
 
@@ -827,7 +932,6 @@ const styles = StyleSheet.create({
     height: height * 0.5,
     width: width,
     bottom: height * 0.04,
-    position: 'absolute',
   },
   actionSheetThree: {
     borderTopLeftRadius: 45,
