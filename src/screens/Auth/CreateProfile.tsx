@@ -103,7 +103,7 @@ const CreateProfile = () => {
   const [currentDateField, setCurrentDateField] = useState<string | null>(null);
   const [expiryDates, setExpiryDates] = useState<{ [key: string]: string }>({});
 
-    const isFormValid = name && email && phone && street && gender && city;
+    // const isFormValid = name && email && phone && street && gender && city;
     const isFormValidSec = name && email && phone && street && gender && city && card && rideType && profileImage;
 
   useEffect(() => {
@@ -914,13 +914,12 @@ const CreateProfile = () => {
           <CustomButton
             btnHeight={height * 0.065}
             btnWidth={width * 0.4}
-            text="Save"
-            // backgroundColor={colors.brown}
-            backgroundColor={isFormValid ? colors.brown : colors.gray}
+            text="Savee"
+            backgroundColor={colors.brown}
+            // backgroundColor={isFormValid ? colors.brown : colors.gray}
             textColor={colors.white}
             borderRadius={30}
-            disabled={!isFormValid}
-            // onPress={() => navigation.navigate('Congratulation')}
+            // disabled={!isFormValid}
             onPress={handleCreateProfile}
           />
         </View>
@@ -985,7 +984,7 @@ const CreateProfile = () => {
     gender,
     city,
     isPhoneFocused,
-    isFormValid,
+    // isFormValid,
     profileImage,
     modalOpen,
     User,

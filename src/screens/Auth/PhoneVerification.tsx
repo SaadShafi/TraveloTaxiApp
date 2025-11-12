@@ -68,7 +68,7 @@ const PhoneVerification = ({ route }) => {
         'Email from response: ',
         response.data.response.data.user.email,
       );
-      navigation.navigate('SignIn');
+      navigation.navigate('SetPassword');
 
       Toast.show({
         type: 'success',

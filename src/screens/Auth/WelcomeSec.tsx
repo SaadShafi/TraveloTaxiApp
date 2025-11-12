@@ -48,83 +48,18 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* <ImageBackground source={images.simpleBg} style={styles.bgImg}> */}
-      {/* <View style={styles.logoMain}>
-        <Image source={images.logo} style={styles.logo} />
-      </View>
-      <View style={styles.vectormain}>
-        <Image source={images.Vector} style={styles.vectorimg} />
-      </View> */}
       <Modal
         animationType="fade"
         transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Image source={images.secIcon} />
-
-            <View>
-              <Text style={styles.modalTitleOne}>Enable</Text>
-              <Text style={styles.modalTitleTwo}>Your Location</Text>
-            </View>
-            <View style={styles.modalDescriptionMain}>
-              <Text style={styles.modalDescription}>
-                Lorem ipsum dolor sit amet, consectetur
-              </Text>
-              <Text style={styles.modalDescription}>
-                adipiscing elit, sed do eiusmod.
-              </Text>
-            </View>
-
-            <CustomButton
-              btnHeight={height * 0.06}
-              btnWidth={width * 0.7}
-              text="Use My Location"
-              backgroundColor={colors.brown}
-              textColor={colors.white}
-              borderRadius={30}
-              onPress={handleSkip}
-            />
-
-            <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
-              <Text style={styles.skipButtonText}>Skip For Now</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisibleSec}
-        onRequestClose={() => setModalVisibleSec(false)}
+        // visible={modalVisibleSec}
+        visible={true}
+        onRequestClose={() => setModalVisibleSec(true)}
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.contentMain}>
               <Text style={styles.selectText}>Select One</Text>
               <View style={styles.btnMain}>
-                {/* <CustomButton
-                  btnHeight={height * 0.06}
-                  btnWidth={width * 0.7}
-                  text="User"
-                  backgroundColor={colors.brown}
-                  textColor={colors.white}
-                  borderRadius={30}
-                  // onPress={handleNavigation}
-                  onPress={() => handleRoleSelect('user')}
-                />
-                <CustomButton
-                  btnHeight={height * 0.06}
-                  btnWidth={width * 0.7}
-                  text="Driver"
-                  backgroundColor={colors.brown}
-                  textColor={colors.white}
-                  borderRadius={30}
-                  onPress={() => handleRoleSelect('driver')}
-                /> */}
                 <TouchableOpacity
                   style={styles.btn}
                   activeOpacity={0.7}
@@ -146,7 +81,6 @@ const WelcomeSec: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
       </Modal>
-      {/* </ImageBackground> */}
     </View>
   );
 };
@@ -265,3 +199,46 @@ const styles = StyleSheet.create({
 });
 
 export default WelcomeSec;
+
+
+
+
+// <Modal
+//         animationType="fade"
+//         transparent={true}
+//         visible={modalVisible}
+//         onRequestClose={() => setModalVisible(false)}
+//       >
+//         <View style={styles.modalOverlay}>
+//           <View style={styles.modalContent}>
+//             <Image source={images.secIcon} />
+
+//             <View>
+//               <Text style={styles.modalTitleOne}>Enable</Text>
+//               <Text style={styles.modalTitleTwo}>Your Location</Text>
+//             </View>
+//             <View style={styles.modalDescriptionMain}>
+//               <Text style={styles.modalDescription}>
+//                 Lorem ipsum dolor sit amet, consectetur
+//               </Text>
+//               <Text style={styles.modalDescription}>
+//                 adipiscing elit, sed do eiusmod.
+//               </Text>
+//             </View>
+
+//             <CustomButton
+//               btnHeight={height * 0.06}
+//               btnWidth={width * 0.7}
+//               text="Use My Location"
+//               backgroundColor={colors.brown}
+//               textColor={colors.white}
+//               borderRadius={30}
+//               onPress={handleSkip}
+//             />
+
+//             <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
+//               <Text style={styles.skipButtonText}>Skip For Now</Text>
+//             </TouchableOpacity>
+//           </View>
+//         </View>
+//       </Modal>

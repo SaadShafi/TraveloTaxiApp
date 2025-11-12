@@ -1,4 +1,4 @@
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, NavigationProp, useNavigation } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import {
@@ -30,10 +30,18 @@ import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
 import Toast from 'react-native-toast-message';
 import { apiHelper } from '../../services';
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId: '724928842281-u3ihlb6eb4i9oo50k3rpnsb5lqjkh3dm.apps.googleusercontent.com', // ✅ CORRECT ONE
+  offlineAccess: true,
+});
 
 type Props = NativeStackScreenProps<StackParamList, 'SignIn'>;
 
-const SignIn: React.FC<Props> = ({ navigation }) => {
+const SignIn: React.FC<Props> = () => {
+  const navigation = useNavigation<NavigationProp<any>>()
   const selectedRole = useSelector(
     (state: RootState) => state.role.selectedRole,
   );
@@ -41,9 +49,13 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const dismissKeyboard = () => {
     Keyboard.dismiss();
+  };
+  const isProfileComplete = (firebaseUser: FirebaseAuthTypes.User) => {
+    return !!(firebaseUser.displayName && firebaseUser.email && firebaseUser.phoneNumber);
   };
 
   const isFormValid = email.includes('@');
@@ -53,26 +65,21 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
   }, [selectedRole]);
 
   const handleSignIn = () => {
-    // Mock user data for development
     const mockUser = {
       email: email,
       fullName: 'Test User',
       role: selectedRole || 'user',
     };
-
-    // Update Redux state
     dispatch(setLogin());
     dispatch(setUser(mockUser));
     dispatch(setUserEmail(email));
     dispatch(setFullName(mockUser.fullName));
 
     console.log('Mock login successful');
-
-    // Reset to AuthStack - the MainNavigator will automatically show Drawer
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{ name: 'AuthStack' }], // Reset to AuthStack
+        routes: [{ name: 'AuthStack' }],
       }),
     );
   };
@@ -100,10 +107,10 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
           text2: response.data.message,
         });
         navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'AuthStack' }], 
-        }),
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'AuthStack' }],
+          }),
         );
         dispatch(setLogin());
         dispatch(setUserEmail(email));
@@ -124,7 +131,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
         })
       }
     } catch (error) {
-      console.log("Error",error)
+      console.log("Error", error)
       Toast.show({
         type: 'error',
         text1: 'Success',
@@ -134,6 +141,131 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
       setLoading(false);
     }
   };
+
+  // const GoogleSignIn = async () => {
+  // setGoogleLoading(true);
+  // try {
+  //   // Check Play Services
+  //   await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+
+  //   // Sign in with Google
+  //   const { idToken } = await GoogleSignin.signIn();
+  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  //   const userCredential = await auth().signInWithCredential(googleCredential);
+
+  //   const firebaseUser = userCredential.user;
+
+  //   // Build user object
+  //   const userData = {
+  //     uid: firebaseUser.uid,
+  //     email: firebaseUser.email || '',
+  //     displayName: firebaseUser.displayName || 'Google User',
+  //     phoneNumber: firebaseUser.phoneNumber || '',
+  //     photoURL: firebaseUser.photoURL || '',
+  //     role: selectedRole || 'user',
+  //     isGoogleUser: true,
+  //   };
+
+  //   // Save to Redux
+  //   dispatch(setUser(userData));
+  //   dispatch(setLogin());
+  //   dispatch(setUserEmail(userData.email));
+  //   dispatch(setFullName(userData.displayName));
+
+  //   // Check profile completeness
+  //   const profileComplete = isProfileComplete(firebaseUser);
+
+  //   if (profileComplete) {
+  //     // ✅ Profile complete → navigate to Home
+  //     navigation.dispatch(
+  //       CommonActions.reset({
+  //         index: 0,
+  //         routes: [{ name: 'Home' }],
+  //       })
+  //     );
+  //   } else {
+  //     // ❌ Profile incomplete → navigate to CreateProfile / SignUpEmail pre-filled
+  //     navigation.navigate('CreateProfile', { googleUser: userData });
+  //   }
+
+  //   Toast.show({
+  //     type: 'success',
+  //     text1: 'Google Sign-In Successful',
+  //   });
+  // } catch (error: any) {
+  //   console.log('Google Sign-In Error:', error);
+  //   Toast.show({
+  //     type: 'error',
+  //     text1: 'Google Sign-In Failed',
+  //     text2: error.message || 'Unexpected error occurred',
+  //   });
+  // } finally {
+  //   setGoogleLoading(false);
+  // }
+  // };
+
+  const GoogleSignIn = async () => {
+    setGoogleLoading(true);
+    try {
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+
+      // Sign in with Google
+      const userInfo = await GoogleSignin.signIn();
+
+      // Firebase user is already signed in
+      const firebaseUser = auth().currentUser;
+
+      if (!firebaseUser) throw new Error("Firebase user not found");
+
+      // Build user object for Redux
+      const userData = {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email || '',
+        displayName: firebaseUser.displayName || 'Google User',
+        phoneNumber: firebaseUser.phoneNumber || '',
+        photoURL: firebaseUser.photoURL || '',
+        role: selectedRole || 'user',
+        isGoogleUser: true,
+      };
+
+      // Save user in Redux
+      dispatch(setUser(userData));
+      dispatch(setLogin());
+      dispatch(setUserEmail(userData.email));
+      dispatch(setFullName(userData.displayName));
+
+      // Check if profile is complete (phoneNumber can be used as required)
+      const profileComplete = !!(firebaseUser.displayName && firebaseUser.email && firebaseUser.phoneNumber);
+
+      if (profileComplete) {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'Home' }],
+          })
+        );
+      } else {
+        // Navigate to CreateProfile to fill missing fields
+        navigation.navigate('CreateProfile', { googleUser: userData });
+      }
+
+      Toast.show({
+        type: 'success',
+        text1: 'Google Sign-In Successful',
+      });
+    } catch (error: any) {
+      console.log('Google Sign-In Error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Google Sign-In Failed',
+        text2: error.message || 'Unexpected error occurred',
+      });
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -167,8 +299,8 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
           <TouchableOpacity
             activeOpacity={0.7}
             style={styles.forgotPassMain}
-            onPress={() => 
-              navigation.navigate('ForgotPassword', { email: User?.email})
+            onPress={() =>
+              navigation.navigate('ForgotPassword', { email: User?.email })
             }
           >
             <Text style={styles.forgotPass}>Forget Password?</Text>
@@ -186,9 +318,19 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
           <View style={{ paddingVertical: height * 0.03 }}>
             <Image source={images.orLine} style={styles.orLine} />
           </View>
-          <TouchableOpacity style={styles.belowBtn}>
-            <Image source={images.googleIcon} style={styles.googleIcon} />
-            <Text style={styles.belowSignInText}>Sign Up with Gmail</Text>
+          <TouchableOpacity
+            style={styles.belowBtn}
+            onPress={GoogleSignIn}
+            disabled={googleLoading}
+          >
+            {googleLoading ? (
+              <ActivityIndicator size="small" color={colors.brown} />
+            ) : (
+              <>
+                <Image source={images.googleIcon} style={styles.googleIcon} />
+                <Text style={styles.belowSignInText}>Sign In with Google</Text>
+              </>
+            )}
           </TouchableOpacity>
           <TouchableOpacity style={styles.belowBtn}>
             <Image source={images.appleIcon} style={styles.googleIcon} />
@@ -212,7 +354,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
       </View>
     </TouchableWithoutFeedback>
   );
-  
+
 };
 
 const styles = StyleSheet.create({

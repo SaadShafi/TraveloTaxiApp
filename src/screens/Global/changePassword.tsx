@@ -45,9 +45,10 @@ const ChangePassWord = () => {
 
     try {
       const body = {
-        password: password
+        old_password: oldPass,
+        new_password: password
       }
-      const { response, error } = await apiHelper("PUT", "auth/reset-password", {}, body);
+      const { response, error } = await apiHelper("PUT", "user/change-password", {}, body);
       console.log("Change Password Response:", response);
       if (response) {
         Toast.show({

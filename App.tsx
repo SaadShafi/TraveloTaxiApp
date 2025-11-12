@@ -21,31 +21,10 @@ import { colors } from './src/utilities/colors';
 
 const Stack = createNativeStackNavigator();
 
-// function AppNavigator() {
-//   const isLoggedIn = useSelector((state: any) => state.role.isLogin);
-//   const selectedRole = useSelector((state: any) => state.role.selectedRole);
-
-//   // Use explicit return with NO extra spaces
-//   if (isLoggedIn && selectedRole) {
-//     return (
-//       <Stack.Navigator screenOptions={{ headerShown: false }}>
-//         <Stack.Screen name="MainApp" component={Drawer} />
-//       </Stack.Navigator>
-//     );
-//   }
-
-//   return (
-//     <Stack.Navigator screenOptions={{ headerShown: false }}>
-//       <Stack.Screen name="Auth" component={AuthStack} />
-//     </Stack.Navigator>
-//   );
-// }
-
 function AppNavigator() {
   const isLoggedIn = useSelector((state: any) => state.role.isLogin);
   const selectedRole = useSelector((state: any) => state.role.selectedRole);
 
-  // Return the component directly, no navigator wrapper
   if (isLoggedIn && selectedRole) {
     return <Drawer />;
   }
@@ -61,7 +40,6 @@ function App() {
       <Provider store={store}>
         <NavigationContainer>
           <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-          {/* <AuthStack /> */}
           <AppNavigator />
           <Toast
             config={{

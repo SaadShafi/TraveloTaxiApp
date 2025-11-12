@@ -92,6 +92,7 @@ const CustomProfileImgModal: React.FC<CustomProfImgModalProps> = ({
         <Animated.View style={[styles.callModal, { height: animatedHeight }]}>
           <View style={styles.btnMain}>
             {selectedRole === "user" && (
+              <View style={styles.btnMain}>
             <View style={styles.uploadMain}>
               <AntDesign
                 name="upload"
@@ -110,6 +111,27 @@ const CustomProfileImgModal: React.FC<CustomProfImgModalProps> = ({
               >
                 Upload Photo
               </Animated.Text>
+            </View>
+            <View style={styles.cameraMain}>
+              <AntDesign
+                name="camera"
+                color={colors.gray}
+                size={width * 0.07}
+                style={styles.icon}
+              />
+              {/* <Text onPress={camera} style={styles.modalTextSec}>
+                Use Camera
+              </Text> */}
+              <Animated.Text
+                onPress={() => animatePress(cameraScale, camera)}
+                style={[
+                  styles.modalTextSec,
+                  { transform: [{ scale: cameraScale }] },
+                ]}
+              >
+                Use Camera
+              </Animated.Text>
+            </View>
             </View>
             )}
             <View style={styles.cameraMain}>

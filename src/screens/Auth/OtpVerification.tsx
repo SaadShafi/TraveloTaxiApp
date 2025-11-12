@@ -172,6 +172,7 @@ const OtpVerification = ({ route }) => {
       </View>
     </TouchableWithoutFeedback>
   );
+  
 };
 
 const styles = StyleSheet.create({

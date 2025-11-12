@@ -17,6 +17,10 @@ import type { StackParamList } from '../../navigation/AuthStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import Toast from 'react-native-toast-message';
+import { apiHelper } from '../../services';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 type Props = NativeStackScreenProps<StackParamList, 'SetPassword'>;
 
@@ -24,6 +28,9 @@ const setPassword: React.FC<Props> = ({ navigation, route }) => {
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const Email = useSelector((state: RootState) => state.role.userEmail)
+  console.log("Email from Redux in SetPass screen!", Email)
 
   const isFormValid = password.length > 0 && rePassword.length > 0;
 
@@ -55,6 +62,35 @@ const setPassword: React.FC<Props> = ({ navigation, route }) => {
       navigation.navigate('CreateProfile');
     }
   };
+  
+    const resetPassword = async () => {
+      setLoading(true);
+  
+      try {
+        const body = {
+          old_password: password,
+          new_password: rePassword
+        }
+        const { response, error } = await apiHelper("PUT", "user/change-password", {}, body);
+        console.log("Change Password Response:", response);
+        if (response) {
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: 'Password Changed Successfully',
+          });
+          navigation.navigate("SignIn");
+        }
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Failed to change password',
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
 
   return (
     <TouchableWithoutFeedback onPress={bgPress}>
@@ -102,7 +138,7 @@ const setPassword: React.FC<Props> = ({ navigation, route }) => {
             backgroundColor={isFormValid ? colors.brown : colors.black}
             textColor={colors.white}
             borderRadius={30}
-            onPress={handleRegister}
+            onPress={resetPassword}
             // onPress={toggleModal}
             // onPress={() => navigation.navigate("CreateProfile")}
             disabled={!isFormValid}

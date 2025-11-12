@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "724928842281",
+    "project_id": "taxiapp-c573a",
+    "storage_bucket": "taxiapp-c573a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724928842281:android:7d47f5e6c7ba21bc27ea38",
+        "android_client_info": {
+          "package_name": "com.travelotaxiapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "724928842281-nh3nt4cgjg1fdplm23uumaovshrqvh7h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.travelotaxiapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "724928842281-u3ihlb6eb4i9oo50k3rpnsb5lqjkh3dm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbVRF4GQXUf29jyCrTWmbQY1hX1lXl7MU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "724928842281-u3ihlb6eb4i9oo50k3rpnsb5lqjkh3dm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "724928842281-52rtv2ldfv3u79rtkm3hei49innhuuj2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.TraveloTaxiApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

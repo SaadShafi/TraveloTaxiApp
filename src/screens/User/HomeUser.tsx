@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  PermissionsAndroid
 } from 'react-native';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
 import DatePicker from 'react-native-date-picker';
@@ -24,10 +25,13 @@ import { StackParamList } from '../../navigation/UserStack';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import Geolocation from '@react-native-community/geolocation';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<StackParamList, 'HomeUser'>;
 
-const HomeUser: React.FC<Props> = ({ navigation }) => {
+const HomeUser: React.FC<Props> = () => {
+  const navigation = useNavigation<NavigationProp<any>>();
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
   const [showLabelOptions, setShowLabelOptions] = useState(false);
@@ -44,14 +48,205 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<Date | null>(null);
   const [openTimePicker, setOpenTimePicker] = useState(false);
-  const [region, setRegion] = useState({
-    latitude: 40.7029,
-    longitude: -73.9922,
-    latitudeDelta: 0.015,
-    longitudeDelta: 0.0121,
+  // const [region, setRegion] = useState({
+  //   latitude: 40.7029,
+  //   longitude: -73.9922,
+  //   latitudeDelta: 0.015,
+  //   longitudeDelta: 0.0121,
+  // });
+  const [userLocation, setUserLocation] = useState({
+    // latitude: 40.7003,
+    // longitude: -73.9967,
+    // latitudeDelta: 0.015,
+    // longitudeDelta: 0.0121,
+    latitude: 40.7589,  // Times Square, NYC - very visible location
+  longitude: -73.9851,
+  latitudeDelta: 0.01,
+  longitudeDelta: 0.01,
   });
+  const [draggablePin, setDraggablePin] = useState({
+    // latitude: 40.7029,
+    // longitude: -73.9922,
+     latitude: 40.7614,  // Near Times Square
+  longitude: -73.9776,
+  });
+  const [isTracking, setIsTracking] = useState(true); // Track if we're following user location
   const [stops, setStops] = useState<{ id: number; value: string }[]>([]);
-    const [locations, setLocations] = useState<[string, string]>(['Brooklyn Bridge Park', 'Brooklyn Bridge Park']);
+  const [locations, setLocations] = useState<[string, string]>(['Brooklyn Bridge Park', 'Brooklyn Bridge Park']);
+
+  // ADD: Get user's current location
+  // const getUserLocation = () => {
+  //   Geolocation.getCurrentPosition(
+  //     position => {
+  //       const { latitude, longitude } = position.coords;
+  //       const newLocation = {
+  //         latitude,
+  //         longitude,
+  //         latitudeDelta: 0.015,
+  //         longitudeDelta: 0.0121,
+  //       };
+
+  //       setUserLocation(newLocation);
+  //       setDraggablePin({ latitude, longitude });
+
+  //       // Center map on user location
+  //       if (mapRef.current && isTracking) {
+  //         mapRef.current.animateToRegion(newLocation, 1000);
+  //       }
+  //     },
+  //     error => {
+  //       console.log('Error getting location:', error);
+  //       // Fallback to default location if GPS fails
+  //       setUserLocation({
+  //         latitude: 40.7003,
+  //         longitude: -73.9967,
+  //         latitudeDelta: 0.015,
+  //         longitudeDelta: 0.0121,
+  //       });
+  //     },
+  //     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+  //   );
+  // };
+  const getUserLocation = () => {
+    console.log('Getting user location...'); // Debug log
+    
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        const newLocation = {
+          latitude,
+          longitude,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        };
+
+        console.log('User location found:', newLocation); // Debug log
+
+        setUserLocation(newLocation);
+        setDraggablePin({ latitude, longitude });
+
+        // Center map on user location
+        if (mapRef.current && isTracking) {
+          mapRef.current.animateToRegion(newLocation, 1000);
+        }
+      },
+      error => {
+        console.log('Error getting location:', error.code, error.message); // More detailed error
+        // Fallback to default location if GPS fails
+        const fallbackLocation = {
+          latitude: 40.7003,
+          longitude: -73.9967,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        };
+        console.log('Using fallback location:', fallbackLocation); // Debug log
+        setUserLocation(fallbackLocation);
+        setDraggablePin({ latitude: 40.7029, longitude: -73.9922 });
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  };
+
+  // ADD: Watch user location for real-time updates
+  const watchUserLocation = () => {
+    const watchId = Geolocation.watchPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        const newLocation = {
+          latitude,
+          longitude,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        };
+
+        setUserLocation(newLocation);
+
+        // Update draggable pin only if we're tracking user
+        if (isTracking) {
+          setDraggablePin({ latitude, longitude });
+
+          // Center map on user location
+          if (mapRef.current) {
+            mapRef.current.animateToRegion(newLocation, 1000);
+          }
+        }
+      },
+      error => console.log('Error watching location:', error),
+      {
+        enableHighAccuracy: true,
+        distanceFilter: 10, // Update every 10 meters
+        interval: 5000,
+        fastestInterval: 2000
+      }
+    );
+
+    return watchId;
+  };
+
+  // ADD: Handle draggable pin movement
+  const handlePinDrag = (e: any) => {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+    setDraggablePin({ latitude, longitude });
+    setIsTracking(false); // Stop tracking user when pin is manually moved
+  };
+
+  // ADD: Center map on user location
+  const centerOnUserLocation = () => {
+    if (mapRef.current) {
+      mapRef.current.animateToRegion(userLocation, 1000);
+      setIsTracking(true);
+      // Reset draggable pin to user location
+      setDraggablePin({
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+      });
+    }
+  };
+
+  // ADD: Request location permission
+const requestLocationPermission = async () => {
+  if (Platform.OS === 'android') {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Location Permission',
+          message: 'This app needs access to your location to show your position on the map.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Location permission granted');
+        getUserLocation();
+      } else {
+        console.log('Location permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  } else {
+    // iOS handles permissions through Info.plist
+    getUserLocation();
+  }
+};
+
+  useEffect(() => {
+    actionSheetRef.current?.show();
+    requestLocationPermission();
+
+    // // ADD: Initialize location services when component mounts
+    // getUserLocation();
+    // const watchId = watchUserLocation();
+
+    // // ADD: Cleanup location watcher when component unmounts
+    // return () => {
+    //   if (watchId) {
+    //     Geolocation.clearWatch(watchId);
+    //   }
+    // };
+  }, []);
 
   const addStop = () => {
     setStops(prev => [...prev, { id: Date.now(), value: '' }]);
@@ -97,9 +292,9 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
     });
   };
 
-  useEffect(() => {
-    actionSheetRef.current?.show();
-  }, []);
+  // useEffect(() => {
+  //   actionSheetRef.current?.show();
+  // }, []);
 
   const handleAddWorkPress = () => {
     actionSheetRef.current?.hide();
@@ -203,17 +398,12 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
     >
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
+        {/* <View style={{ flex: 1 }}>
           <MapView
             ref={mapRef}
             provider={PROVIDER_GOOGLE}
             style={{ flex: 1 }}
-            initialRegion={{
-              latitude: 40.7003,
-              longitude: -73.9967,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
-            }}
+            initialRegion={userLocation}
             scrollEnabled
             zoomEnabled
             rotateEnabled
@@ -221,12 +411,149 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
             showsUserLocation={false}
           >
             <Marker
+              coordinate={{
+                latitude: userLocation.latitude,
+                longitude: userLocation.longitude,
+              }}
+              title="Your Location"
+              description="Your current position"
+              tracksViewChanges={false}
+            >
+              <View style={styles.liveLocationMarker}>
+                <View style={styles.liveLocationPulse} />
+                <View style={styles.liveLocationDot} />
+              </View>
+            </Marker>
+
+            <Marker
+              coordinate={draggablePin}
+              title="Selected Location"
+              description="Drag to adjust your pickup point"
+              draggable
+              onDrag={handlePinDrag}
+              onDragEnd={handlePinDrag}
+            >
+              <View style={styles.draggablePin}>
+                <Image
+                  source={images.pinPoint} 
+                  style={styles.draggablePinImage}
+                />
+                <View style={styles.draggablePinPoint} />
+              </View>
+            </Marker>
+
+            <Marker
               coordinate={{ latitude: 40.7003, longitude: -73.9967 }}
               title="Brooklyn Bridge Park"
               description="New York"
             />
           </MapView>
+          <TouchableOpacity
+            style={styles.centerLocationButton}
+            onPress={centerOnUserLocation}
+            activeOpacity={0.7}
+          >
+            <Image
+              source={images.pinPoint} 
+              style={styles.centerLocationIcon}
+            />
+          </TouchableOpacity>
+        </View> */}
+         <View style={{ flex: 1 }}>
+          {/* FIX: Use initialRegion with userLocation and remove duplicate region prop */}
+          <MapView
+            ref={mapRef}
+            provider={PROVIDER_GOOGLE}
+            style={{ flex: 1 }}
+            initialRegion={userLocation}
+            scrollEnabled
+            zoomEnabled
+            rotateEnabled
+            pitchEnabled
+            showsUserLocation={false}
+          >
+            {/* <Marker
+              coordinate={{
+                latitude: userLocation.latitude,
+                longitude: userLocation.longitude,
+              }}
+              title="Your Location"
+              description="Your current position"
+            >
+              <View style={styles.liveLocationMarker}>
+                <View style={styles.liveLocationPulse} />
+                <View style={styles.liveLocationDot} />
+              </View>
+            </Marker>
+
+            <Marker
+              coordinate={draggablePin}
+              title="Selected Location"
+              description="Drag to adjust your pickup point"
+              draggable
+              onDrag={handlePinDrag}
+              onDragEnd={handlePinDrag}
+            >
+              <View style={styles.draggablePin}>
+                <Image
+                  source={images.pinPoint}
+                  style={styles.draggablePinImage}
+                />
+                <View style={styles.draggablePinPoint} />
+              </View>
+            </Marker>
+
+           
+            <Marker
+              coordinate={{ latitude: 40.7003, longitude: -73.9967 }}
+              title="Brooklyn Bridge Park"
+              description="New York"
+            /> */}
+
+            {/* Test with default marker first */}
+          <Marker
+            coordinate={{
+              latitude: userLocation.latitude,
+              longitude: userLocation.longitude,
+            }}
+            title="Your Location"
+            description="Your current position"
+            pinColor="blue" // Use default blue pin
+          />
+
+          {/* Test with default marker for draggable pin */}
+          <Marker
+            coordinate={draggablePin}
+            title="Selected Location"
+            description="Drag to adjust your pickup point"
+            draggable
+            onDrag={handlePinDrag}
+            onDragEnd={handlePinDrag}
+            pinColor="red" // Use default red pin
+          />
+
+          {/* Original Brooklyn Bridge Park marker */}
+          <Marker
+            coordinate={{ latitude: 40.7003, longitude: -73.9967 }}
+            title="Brooklyn Bridge Park"
+            description="New York"
+            pinColor="green" // Use default green pin
+          />
+          </MapView>
+
+          {/* Center location button */}
+          <TouchableOpacity
+            style={styles.centerLocationButton}
+            onPress={centerOnUserLocation}
+            activeOpacity={0.7}
+          >
+            <Image
+              source={images.pinPoint}
+              style={styles.centerLocationIcon}
+            />
+          </TouchableOpacity>
         </View>
+
         <View style={styles.topHeaderContainer} pointerEvents="box-none">
           <TopHeader isMenu={true} />
         </View>
@@ -255,8 +582,25 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
             </View>
             <View style={styles.locationMain}>
               <GooglePlacesAutocompleteNew
+                // onSelect={(placeDetails: any) => {
+                //   console.log('Selected Place:', placeDetails);
+                // }}
                 onSelect={(placeDetails: any) => {
                   console.log('Selected Place:', placeDetails);
+                  // ADD: Update draggable pin when place is selected
+                  if (placeDetails?.geometry?.location) {
+                    const { lat, lng } = placeDetails.geometry.location;
+                    setDraggablePin({ latitude: lat, longitude: lng });
+                    setIsTracking(false);
+                    if (mapRef.current) {
+                      mapRef.current.animateToRegion({
+                        latitude: lat,
+                        longitude: lng,
+                        latitudeDelta: 0.015,
+                        longitudeDelta: 0.0121,
+                      }, 1000);
+                    }
+                  }
                 }}
                 placeholder={'Brookly Bridge Park'}
                 style={{
@@ -277,8 +621,25 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                 }}
               />
               <GooglePlacesAutocompleteNew
+                // onSelect={(placeDetails: any) => {
+                //   console.log('Selected Place:', placeDetails);
+                // }}
                 onSelect={(placeDetails: any) => {
                   console.log('Selected Place:', placeDetails);
+                  // ADD: Update draggable pin when place is selected
+                  if (placeDetails?.geometry?.location) {
+                    const { lat, lng } = placeDetails.geometry.location;
+                    setDraggablePin({ latitude: lat, longitude: lng });
+                    setIsTracking(false);
+                    if (mapRef.current) {
+                      mapRef.current.animateToRegion({
+                        latitude: lat,
+                        longitude: lng,
+                        latitudeDelta: 0.015,
+                        longitudeDelta: 0.0121,
+                      }, 1000);
+                    }
+                  }
                 }}
                 placeholder={'Brookly Bridge Park'}
                 style={{
@@ -403,7 +764,7 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
               {/* <View style={styles.reverseMain}>
                 <Image source={images.reverse} />
               </View> */}
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.reverseMain}
                 onPress={reverseLocations}
                 activeOpacity={0.7}
@@ -456,6 +817,7 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
             </View>
           </View>
         </View>
+
         <ActionSheet
           ref={actionSheetRef}
           containerStyle={{
@@ -703,19 +1065,6 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                     <GooglePlacesAutocompleteNew
                       onSelect={(placeDetails: any) => {
                         console.log('Selected Place:', placeDetails);
-                        // if (placeDetails?.lat && placeDetails?.lng) {
-                        //   setRegion({
-                        //     ...region,
-                        //     latitude: placeDetails.lat,
-                        //     longitude: placeDetails.lng,
-                        //   });
-                        //   mapRef.current?.animateToRegion({
-                        //     latitude: placeDetails.lat,
-                        //     longitude: placeDetails.lng,
-                        //     latitudeDelta: 0.01,
-                        //     longitudeDelta: 0.01,
-                        //   });
-                        // }
                       }}
                       style={{
                         borderRadius: 30,
@@ -804,17 +1153,6 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
                         />
                         <Text style={styles.circleText}>Work</Text>
                       </TouchableOpacity>
-
-                      {/* <TouchableOpacity
-                        style={styles.circleContainer}
-                        onPress={() => {
-                          setSelectedLabel('Other');
-                          setShowLabelOptions(false);
-                        }}
-                      >
-                        <Image source={images.add} style={styles.circleIcon} />
-                        <Text style={styles.circleText}>Other</Text>
-                      </TouchableOpacity> */}
                       <TouchableOpacity
                         style={styles.circleContainer}
                         onPress={() => {
@@ -916,12 +1254,78 @@ const HomeUser: React.FC<Props> = ({ navigation }) => {
             </View>
           </ImageBackground>
         </ActionSheet>
+
       </View>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  liveLocationMarker: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+  },
+  liveLocationPulse: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: 'rgba(0, 122, 255, 0.3)',
+    position: 'absolute',
+  },
+  liveLocationDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#007AFF',
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  draggablePin: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+  },
+  draggablePinImage: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
+    tintColor: colors.brown,
+  },
+  draggablePinPoint: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.lightBrown,
+    position: 'absolute',
+    bottom: 3,
+  },
+  centerLocationButton: {
+    position: 'absolute',
+    bottom: height * 0.4,
+    right: width * 0.05,
+    backgroundColor: 'white',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  centerLocationIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+    tintColor: colors.brown,
+  },
+
+
   map: {
     ...StyleSheet.absoluteFillObject,
   },
@@ -1008,7 +1412,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: width * 0.06,
     bottom: height * 0.08,
-     padding: 8,
+    padding: 8,
   },
   actionSheetMain: {
     borderTopLeftRadius: 45,
@@ -1316,7 +1720,7 @@ const styles = StyleSheet.create({
   },
   removeStopButton: {
     marginLeft: 8,
-    backgroundColor: 'red',
+    backgroundColor: colors.brown,
     borderRadius: 12,
     width: 24,
     height: 24,

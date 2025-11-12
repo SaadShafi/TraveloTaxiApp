@@ -19,15 +19,21 @@ import { fontSizes } from '../../utilities/fontsizes';
 import Toast from 'react-native-toast-message';
 import { apiHelper } from '../../services';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 type Props = NativeStackScreenProps<StackParamList, 'ForgotPassword'>;
 
-const ForgotPassword = ({ route }) => {
+const ForgotPassword = () => {
   const navigation = useNavigation<NavigationProp<any>>();
-  const Email = route.params.email;
-  console.log("EMail from the params in the forgot Password Screen!", Email)
+  // const Email = route.params.email;
+  // console.log("EMail from the params in the forgot Password Screen!", Email)
   const [email, setEmail] = useState('');
   const  [loading, setLoading] = useState(false)
+  const SelectedRole = useSelector((state: RootState) => state.role.selectedRole)
+  console.log("SelectedRole in the Forgot Password Screen!", SelectedRole)
+  const Email = useSelector((state: RootState) => state.role.userEmail)
+  console.log("EMail from the params in the forgot Password Screen!", Email)
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -42,8 +48,7 @@ const ForgotPassword = ({ route }) => {
 
     try {
       const body = {
-        email: "Demo@email.com",
-        // email: Email,
+        email: Email,
       };
       const { response, error } = await apiHelper(
         'POST',
@@ -52,6 +57,7 @@ const ForgotPassword = ({ route }) => {
         body,
       );
       console.log('Forgot Password Response:', response);
+      console.log('Forgot Password body:', body);
 
       if (response) {
         Toast.show({

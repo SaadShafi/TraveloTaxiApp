@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -23,7 +23,7 @@ import CustomSelect from '../../components/CustomSelect';
 import CustomTextInput from '../../components/CustomTextInput';
 import TopHeader from '../../components/Topheader';
 import type { StackParamList } from '../../navigation/AuthStack';
-import { setCountrySelect } from '../../redux/slice/roleSlice';
+import { setCountrySelect, setUser, setUserEmail } from '../../redux/slice/roleSlice';
 import { RootState } from '../../redux/store';
 import { apiHelper } from '../../services';
 import { height, width } from '../../utilities';
@@ -34,6 +34,14 @@ import {
   type Country,
 } from '../../utilities/countries';
 import { fontSizes } from '../../utilities/fontsizes';
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId: '724928842281-u3ihlb6eb4i9oo50k3rpnsb5lqjkh3dm.apps.googleusercontent.com', // ✅ CORRECT ONE
+  offlineAccess: true,
+});
+
 
 const SignUpEmail = () => {
   const navigation = useNavigation<NavigationProp<any>>();
@@ -61,7 +69,8 @@ const SignUpEmail = () => {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  
+  const [userMock, setUserMock] = useState<FirebaseAuthTypes.User | null>(null)
+
   const genderOptions = [
     { name: 'Select Gender', id: '' },
     { name: 'male', id: 'male' },
@@ -180,6 +189,8 @@ const SignUpEmail = () => {
         navigation.navigate('OtpVerification', {
           email: email,
         });
+        // setEmail(email)
+        setUserEmail(email)
       } else {
         Toast.show({
           type: 'error',
@@ -197,6 +208,120 @@ const SignUpEmail = () => {
       setLoading(false);
     }
   };
+
+  const GoogleSignIn = async () => {
+    setGoogleLoading(true);
+    try {
+      console.log('=== MINIMAL GOOGLE SIGN-IN ATTEMPT ===');
+
+      GoogleSignin.configure({
+        webClientId: '724928842281-u3ihlb6eb4i9oo50k3rpnsb5lqjkh3dm.apps.googleusercontent.com', // ✅ CORRECT WEB CLIENT ID
+        offlineAccess: true,
+      });
+
+      console.log('Checking Play Services...');
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      console.log('Play Services OK');
+
+      console.log('Attempting sign in...');
+      const userInfo = await GoogleSignin.signIn();
+      console.log('Sign in response received:', userInfo);
+
+      // ✅ Handle both structures (old/new versions of react-native-google-signin)
+      const idToken = userInfo.idToken || userInfo.data?.idToken;
+
+      if (idToken) {
+        console.log('ID Token received, proceeding to Firebase...');
+
+        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+        const userCredential = await auth().signInWithCredential(googleCredential);
+        const user = userCredential.user;
+          // Pre-fill name and email fields
+        if (user.displayName) setName(user.displayName);
+        if (user.email) setEmail(user.email);
+
+        const userData = {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          phoneNumber: user.phoneNumber,
+          role: role,
+        };
+
+        dispatch(setUser(userData));
+
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Google Sign-In successful!',
+        });
+
+        // navigation.navigate('CreateProfile');
+      } else {
+        console.log('No ID token found in userInfo:', userInfo);
+        throw new Error('Authentication failed - missing ID token');
+      }
+
+    } catch (error: any) {
+      console.log('=== MINIMAL SIGN-IN ERROR ===');
+      console.log('Error code:', error.code);
+      console.log('Error message:', error.message);
+      console.log('Full error:', JSON.stringify(error, null, 2));
+
+      let errorMessage = 'Sign-in failed';
+
+      if (error.code === 'DEVELOPER_ERROR') {
+        errorMessage = 'App configuration error. Check:\n• SHA-1 fingerprint\n• Package name\n• OAuth client configuration';
+      } else if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        errorMessage = 'Sign-in cancelled';
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        errorMessage = 'Sign-in already in progress';
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        errorMessage = 'Google Play Services not available';
+      } else {
+        errorMessage = error.message || 'Unknown error occurred';
+      }
+
+      Toast.show({
+        type: 'error',
+        text1: 'Google Sign-In Failed',
+        text2: errorMessage,
+      });
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+  const debugGoogleConfiguration = async () => {
+    try {
+      console.log('=== GOOGLE SIGN-IN DEBUG INFO ===');
+
+      // Check if configured
+      console.log('GoogleSignin configured status:', GoogleSignin.configured);
+
+      // Check if signed in
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      console.log('Is currently signed in:', isSignedIn);
+
+      // Try to get current user
+      const currentUser = await GoogleSignin.getCurrentUser();
+      console.log('Current user info:', currentUser);
+
+      // Check Play Services
+      const playServicesAvailable = await GoogleSignin.hasPlayServices();
+      console.log('Play Services available:', playServicesAvailable);
+
+      console.log('=== DEBUG COMPLETE ===');
+
+    } catch (error) {
+      console.log('Debug error:', error);
+    }
+  };
+
+  useEffect(() => {
+    debugGoogleConfiguration();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -304,7 +429,7 @@ const SignUpEmail = () => {
             borderRadius={30}
             disabled={!isFormValid}
             onPress={handleSubmit}
-            onPress={() => navigation.navigate('OtpVerification')}
+            // onPress={() => navigation.navigate('OtpVerification')}
           />
         </View>
         <View>
@@ -321,10 +446,17 @@ const SignUpEmail = () => {
             <TouchableOpacity
               style={styles.belowBtn}
               activeOpacity={0.7}
-              // onPress={GoogleSignIn}
+              onPress={GoogleSignIn}
+              disabled={googleLoading}
             >
-              <Image source={images.googleIcon} style={styles.googleIcon} />
-              <Text style={styles.belowSignInText}>Sign Up with Gmail</Text>
+              {googleLoading ? (
+                <ActivityIndicator size="small" color={colors.brown} />
+              ) : (
+                <>
+                  <Image source={images.googleIcon} style={styles.googleIcon} />
+                  <Text style={styles.belowSignInText}>Sign Up with Google</Text>
+                </>
+              )}
             </TouchableOpacity>
             <TouchableOpacity style={styles.belowBtn} activeOpacity={0.7}>
               <Image source={images.appleIcon} style={styles.googleIcon} />
