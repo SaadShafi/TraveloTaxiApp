@@ -26,7 +26,7 @@ import CustomTextInput from '../../components/CustomTextInput';
 import TopHeader from '../../components/Topheader';
 import { setCountrySelect, setUser } from '../../redux/slice/roleSlice';
 import { RootState } from '../../redux/store';
-import { apiHelper, getBaseURL } from '../../services';
+import { apiHelper } from '../../services';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import {
@@ -39,7 +39,6 @@ import { fontSizes } from '../../utilities/fontsizes';
 const EditProfile = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const [modalOpen, setModalOpen] = useState(false);
-  // const [profileImage, setProfileImage] = useState<string | null>(null);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const selectedRole = useSelector(
@@ -102,15 +101,6 @@ const EditProfile = () => {
   useEffect(() => {
     console.log('User from Redux in EditProfile Screen:', User);
   }, [User]);
-
-  const getFullImageUrl = (path: string | null | undefined) => {
-    if (!path) return null;
-    if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    return `${getBaseURL()}uploads/profile-pictures/${path.replace(
-      /^\/+/,
-      '',
-    )}`;
-  };
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
@@ -200,17 +190,32 @@ const EditProfile = () => {
     }
   };
 
-  const rideOptions = [
-    { name: 'Select Ride Type', id: '' },
-    { name: 'Bike', id: 'bike' },
-    { name: 'Car', id: 'car' },
-    { name: 'SUV', id: 'suv' },
-  ];
+  // const rideOptions = [
+  //   { name: 'Select Ride Type', id: '' },
+  //   { name: 'Bike', id: 'bike' },
+  //   { name: 'Car', id: 'car' },
+  //   { name: 'SUV', id: 'suv' },
+  // ];
+
+    const rideOptions = useMemo(() => {
+      const countryName = reduxSelectedCountry.name.toLowerCase();
+  
+      const options = [{ name: 'Select Ride Type', id: '' }];
+  
+      if (selectedRole === 'driver' && countryName.includes('pakistan')) {
+        options.push({ name: 'Bike', id: 'bike' });
+      }
+  
+      // Common options for all drivers
+      options.push({ name: 'Car', id: 'car' }, { name: 'SUV', id: 'suv' });
+  
+      return options;
+    }, [selectedRole, reduxSelectedCountry]);
 
   const toggleModalSec = () => {
     setModalVisible(false);
     // navigation.goBack();
-    navigation.navigate('HomeUser');
+    navigation.navigate('HomeDriver');
     // handleUpdateProfile();
   };
 
@@ -269,16 +274,6 @@ const EditProfile = () => {
           name: fileName,
         } as any);
       }
-
-      // // Driver-specific fields (only basic info, no documents)
-      // if (selectedRole === 'driver') {
-      //   if (startDate) {
-      //     formData.append('date_of_birth', startDate.toISOString());
-      //   }
-      //   formData.append('ride_type', rideType);
-      //   formData.append('id_card_number', card);
-      //   // Note: Document uploads are excluded from this update
-      // }
 
       console.log('Updating profile with formData:', {
         name,
@@ -745,6 +740,11 @@ const EditProfile = () => {
     }
   };
 
+  const handleContinuePress = () => {
+    handleUpdateProfile();
+    setModalVisible(true)
+  }
+
   const UserFields = useMemo(() => {
     return (
       <View style={{ flex: 1, alignItems: 'center' }}>
@@ -987,6 +987,7 @@ const EditProfile = () => {
               inputHeight={height * 0.06}
               backgroundColor={colors.gray}
               editable={false}
+              // value={formatDateForDisplay(startDate)}
               value={formatDateForDisplay(startDate)}
               rightIcon={
                 <TouchableOpacity
@@ -1056,7 +1057,8 @@ const EditProfile = () => {
               borderRadius={30}
               disabled={!isFormValid}
               // onPress={() => navigation.navigate('Congratulation')}
-              onPress={() => setModalVisible(true)}
+              // onPress={() => setModalVisible(true)}
+              onPress={handleContinuePress}
             />
           </View>
         </ScrollView>

@@ -27,6 +27,7 @@ import { colors } from '../utilities/colors';
 import { fontSizes } from '../utilities/fontsizes';
 import DriverStack from './DriverStack';
 import UserStack from './UserStack';
+import Toast from 'react-native-toast-message';
 
 const CustomDrawerContent = (props: any) => {
   const selectedRole = useSelector(
@@ -49,6 +50,12 @@ const CustomDrawerContent = (props: any) => {
 
     // Close any modals
     setModalOpen(false);
+
+    Toast.show({
+      type: 'success',
+      text1: 'Success',
+      text2: 'Profile Logged out Successfully',
+    });
 
     // Navigate back to auth stack
     navigation.dispatch(
@@ -164,9 +171,9 @@ const CustomDrawerContent = (props: any) => {
   };
 
   const truncateText = (text: string, maxLength: number) => {
-  if (!text) return '';
-  return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
-};
+    if (!text) return '';
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  };
 
   return (
     <View style={styles.gradientContainer}>
@@ -192,7 +199,7 @@ const CustomDrawerContent = (props: any) => {
               source={
                 User?.profile_picture
                   ? { uri: `https://api.traveloservices.com/uploads/profile-pictures/${User.profile_picture.replace(/^\//, '')}` }
-                  : images.drawerProf 
+                  : images.drawerProf
               }
               style={styles.profileImage}
               onError={(e) => console.log('❌ Image failed to load:', e.nativeEvent.error)}

@@ -33,7 +33,7 @@ const CustomProfileImgModal: React.FC<CustomProfImgModalProps> = ({
   const [animatedHeight] = useState(new Animated.Value(0));
   const [uploadScale] = useState(new Animated.Value(1));
   const [cameraScale] = useState(new Animated.Value(1));
-    const selectedRole = useSelector(
+  const selectedRole = useSelector(
     (state: RootState) => state.role.selectedRole,
   );
 
@@ -93,67 +93,61 @@ const CustomProfileImgModal: React.FC<CustomProfImgModalProps> = ({
           <View style={styles.btnMain}>
             {selectedRole === "user" && (
               <View style={styles.btnMain}>
-            <View style={styles.uploadMain}>
-              <AntDesign
-                name="upload"
-                color={colors.gray}
-                size={width * 0.07}
-                style={styles.icon}
-              />
-              <Animated.Text
-                // onPress={gallery}
-                onPress={() => animatePress(uploadScale, gallery)}
-                // style={styles.modalTextSec}>
-                style={[
-                  styles.modalTextSec,
-                  { transform: [{ scale: uploadScale }] },
-                ]}
-              >
-                Upload Photo
-              </Animated.Text>
-            </View>
-            <View style={styles.cameraMain}>
-              <AntDesign
-                name="camera"
-                color={colors.gray}
-                size={width * 0.07}
-                style={styles.icon}
-              />
-              {/* <Text onPress={camera} style={styles.modalTextSec}>
-                Use Camera
-              </Text> */}
-              <Animated.Text
-                onPress={() => animatePress(cameraScale, camera)}
-                style={[
-                  styles.modalTextSec,
-                  { transform: [{ scale: cameraScale }] },
-                ]}
-              >
-                Use Camera
-              </Animated.Text>
-            </View>
-            </View>
+                <View style={styles.uploadMain}>
+                  <AntDesign
+                    name="upload"
+                    color={colors.gray}
+                    size={width * 0.07}
+                    style={styles.icon}
+                  />
+                  <Animated.Text
+                    onPress={() => animatePress(uploadScale, gallery)}
+                    style={[
+                      styles.modalTextSec,
+                      { transform: [{ scale: uploadScale }] },
+                    ]}
+                  >
+                    Upload Photo
+                  </Animated.Text>
+                </View>
+                <View style={styles.cameraMain}>
+                  <AntDesign
+                    name="camera"
+                    color={colors.gray}
+                    size={width * 0.07}
+                    style={styles.icon}
+                  />
+                  <Animated.Text
+                    onPress={() => animatePress(cameraScale, camera)}
+                    style={[
+                      styles.modalTextSec,
+                      { transform: [{ scale: cameraScale }] },
+                    ]}
+                  >
+                    Use Camera
+                  </Animated.Text>
+                </View>
+              </View>
             )}
-            <View style={styles.cameraMain}>
-              <AntDesign
-                name="camera"
-                color={colors.gray}
-                size={width * 0.07}
-                style={styles.icon}
-              />
-              {/* <Text onPress={camera} style={styles.modalTextSec}>
-                Use Camera
-              </Text> */}
-              <Animated.Text
-                onPress={() => animatePress(cameraScale, camera)}
-                style={[
-                  styles.modalTextSec,
-                  { transform: [{ scale: cameraScale }] },
-                ]}
-              >
-                Use Camera
-              </Animated.Text>
-            </View>
+            {selectedRole === "driver" && (
+              <View style={styles.cameraMain}>
+                <AntDesign
+                  name="camera"
+                  color={colors.gray}
+                  size={width * 0.07}
+                  style={styles.icon}
+                />
+                <Animated.Text
+                  onPress={() => animatePress(cameraScale, camera)}
+                  style={[
+                    styles.modalTextSec,
+                    { transform: [{ scale: cameraScale }] },
+                  ]}
+                >
+                  Use Camera
+                </Animated.Text>
+              </View>
+            )}
           </View>
         </Animated.View>
       </View>

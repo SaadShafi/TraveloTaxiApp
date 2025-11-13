@@ -265,8 +265,6 @@ const SignIn: React.FC<Props> = () => {
     }
   };
 
-
-
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={{ flex: 1, alignItems: 'center' }}>

@@ -617,19 +617,19 @@ const Profile = () => {
               backgroundColor={colors.gray}
             />
             <CustomTextInput
-              placeholder="12-12-1990"
+              placeholder="Date Of Birth"
               placeholderTextColor={colors.black}
               borderColor={colors.brown}
               borderRadius={30}
               inputWidth={width * 0.85}
               inputHeight={height * 0.06}
-              backgroundColor={colors.gray}
+              backgroundColor={colors.lightBrown}
               editable={false}
               value={formatDateForDisplay(startDate)}
               rightIcon={<Image source={images.calendar} />}
             />
             <CustomTextInput
-              placeholder="Bike"
+              placeholder="Ride Type"
               placeholderTextColor={colors.black}
               borderColor={colors.brown}
               borderRadius={30}
@@ -638,10 +638,10 @@ const Profile = () => {
               value={rideType}
               onChangeText={setRideType}
               editable={false}
-              backgroundColor={colors.gray}
+              backgroundColor={colors.lightBrown}
             />
             <CustomTextInput
-              placeholder="32132-213123-123123"
+              placeholder="Card ID Number"
               placeholderTextColor={colors.black}
               borderColor={colors.brown}
               borderRadius={30}
@@ -649,7 +649,7 @@ const Profile = () => {
               inputHeight={height * 0.06}
               value={card}
               onChangeText={setCard}
-              backgroundColor={colors.gray}
+              backgroundColor={colors.lightBrown}
               editable={false}
             />
             <View>

@@ -78,6 +78,8 @@ const CreateProfile = () => {
   const [drivingLicenseFront, setDrivingLicenseFront] = useState<any[]>([]);
   const [drivingLicenseBack, setDrivingLicenseBack] = useState<any[]>([]);
   const [bankStatement, setBankStatement] = useState<any[]>([]);
+  const [jobsPlusEngagementLetter, setJobsPlusEngagementLetter] = useState<any[]>([]);
+  const [policeConduct, setPoliceConduct] = useState<any[]>([]);
   const [driversTagLicense, setDriversTagLicense] = useState<any[]>([]);
   const [idCardFront, setIdCardFront] = useState<any[]>([]);
   const [idCardBack, setIdCardBack] = useState<any[]>([]);
@@ -103,13 +105,30 @@ const CreateProfile = () => {
   const [currentDateField, setCurrentDateField] = useState<string | null>(null);
   const [expiryDates, setExpiryDates] = useState<{ [key: string]: string }>({});
 
-    // const isFormValid = name && email && phone && street && gender && city;
-    const isFormValidSec = name && email && phone && street && gender && city && card && rideType && profileImage;
+    const isFormValid =
+  (name || User?.full_name) &&
+  (email || User?.email) &&
+  (phone || User?.phone_number) &&
+  (street || User?.street) &&
+  (gender || User?.gender) &&
+  (city || User?.city);
+    const isFormValidSec = name && email && phone && street && gender && city && card && rideType;
 
   useEffect(() => {
     console.log('Selected Role in CreateProfile:', selectedRole);
     console.log('Selected Country:', reduxSelectedCountry.name);
   }, [selectedRole, reduxSelectedCountry]);
+
+  useEffect(() => {
+  if (User) {
+    setName(User.full_name || '');
+    setEmail(User.email || '');
+    setPhone(User.phone_number || '');
+    setGender(User.gender || '');
+    setCity(User.city || '');      // if available
+    setStreet(User.address || ''); // if available
+  }
+}, [User]);
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -596,12 +615,6 @@ const CreateProfile = () => {
         setDrivingLicenseFront,
         'drivingLicenseFront',
       )}
-      {/* {renderUploadField(
-        'Driving License Back:*',
-        drivingLicenseBack,
-        setDrivingLicenseBack,
-        'drivingLicenseBack',
-      )} */}
       {renderUploadField(
         'Bank Statement:*',
         bankStatement,
@@ -620,17 +633,23 @@ const CreateProfile = () => {
         setIdCardFront,
         'idCardFront',
       )}
-      {/* {renderUploadField(
-        'ID Card Back:*',
-        idCardBack,
-        setIdCardBack,
-        'idCardBack',
-      )} */}
       {renderUploadField(
         'VAT Certificate:',
         vatCertificate,
         setVatCertificate,
         'vatCertificate',
+      )}
+      {renderUploadField(
+        'Police Conduct:*',
+        policeConduct,
+        setPoliceConduct,
+        'policeConduct',
+      )}
+      {renderUploadField(
+        'Jobsplus Engagement Letter:*',
+        jobsPlusEngagementLetter,
+        setJobsPlusEngagementLetter,
+        'jobsPlusEngagementLetter',
       )}
     </>
   );
@@ -825,7 +844,8 @@ const CreateProfile = () => {
             borderRadius={30}
             inputWidth={width * 0.85}
             inputHeight={height * 0.06}
-            value={User?.full_name || name}
+            // value={User?.full_name || name}
+            value={name}
             onChangeText={setName}
             backgroundColor={colors.gray}
           />
@@ -837,7 +857,8 @@ const CreateProfile = () => {
             borderRadius={30}
             inputWidth={width * 0.85}
             inputHeight={height * 0.06}
-            value={User?.email || email}
+            // value={User?.email || email}
+            value={email}
             onChangeText={setEmail}
             backgroundColor={colors.gray}
           />
@@ -852,18 +873,6 @@ const CreateProfile = () => {
             onChangeText={setStreet}
             backgroundColor={colors.gray}
           />
-          {/* <CustomSelect
-            inputWidth={width * 0.85}
-            inputHeight={height * 0.06}
-            selectElements={cityOptions}
-            borderColor={city ? colors.brown : colors.gray}
-            borderWidth={1}
-            inputColor={city ? colors.lightBrown : colors.gray}
-            borderRadius={30}
-            onChangeText={value => setCity(value)}
-            setSelectedElement={setCity}
-            defaultValue=""
-          /> */}
           <CustomSelect
             inputWidth={width * 0.85}
             inputHeight={height * 0.06}
@@ -872,22 +881,10 @@ const CreateProfile = () => {
             borderWidth={1}
             inputColor={city ? colors.lightBrown : colors.gray}
             borderRadius={30}
-            onChangeText={handleCityChange} // ✅ Use the new handler
+            onChangeText={handleCityChange} 
             setSelectedElement={setCity}
             defaultValue={city || ''}
           />
-          {/* <CustomSelect
-            inputWidth={width * 0.85}
-            inputHeight={height * 0.06}
-            selectElements={genderOptions}
-            borderColor={gender ? colors.brown : colors.gray}
-            borderWidth={1}
-            inputColor={gender ? colors.lightBrown : colors.gray}
-            borderRadius={30}
-            onChangeText={value => setGender(value)}
-            setSelectedElement={setGender}
-            defaultValue=""
-          /> */}
           <CustomSelect
             inputWidth={width * 0.85}
             inputHeight={height * 0.06}
@@ -898,7 +895,8 @@ const CreateProfile = () => {
             borderRadius={30}
             onChangeText={value => setGender(value)}
             setSelectedElement={setGender}
-            preselectedValue={gender || User?.gender || null} // ✅ prefill gender
+            // preselectedValue={User?.gender || gender} 
+            preselectedValue={gender} 
             placeholder="Select Gender"
           />
         </View>
@@ -914,12 +912,12 @@ const CreateProfile = () => {
           <CustomButton
             btnHeight={height * 0.065}
             btnWidth={width * 0.4}
-            text="Savee"
-            backgroundColor={colors.brown}
-            // backgroundColor={isFormValid ? colors.brown : colors.gray}
+            text="Save"
+            // backgroundColor={colors.brown}
+            backgroundColor={isFormValid ? colors.brown : colors.gray}
             textColor={colors.white}
             borderRadius={30}
-            // disabled={!isFormValid}
+            disabled={!isFormValid}
             onPress={handleCreateProfile}
           />
         </View>
@@ -984,7 +982,7 @@ const CreateProfile = () => {
     gender,
     city,
     isPhoneFocused,
-    // isFormValid,
+    isFormValid,
     profileImage,
     modalOpen,
     User,
@@ -1031,7 +1029,7 @@ const CreateProfile = () => {
               borderRadius={30}
               inputWidth={width * 0.85}
               inputHeight={height * 0.06}
-              value={User?.full_name || name}
+              value={name}
               onChangeText={setName}
               backgroundColor={colors.gray}
               editable={false}
@@ -1044,7 +1042,7 @@ const CreateProfile = () => {
               borderRadius={30}
               inputWidth={width * 0.85}
               inputHeight={height * 0.06}
-              value={User?.email || email}
+              value={email}
               onChangeText={setEmail}
               backgroundColor={colors.gray}
               editable={false}
@@ -1082,7 +1080,7 @@ const CreateProfile = () => {
               borderRadius={30}
               onChangeText={value => setGender(value)}
               setSelectedElement={setGender}
-              preselectedValue={gender || User?.gender || null}
+              preselectedValue={gender}
               placeholder="Select Gender"
             />
             <CustomTextInput
