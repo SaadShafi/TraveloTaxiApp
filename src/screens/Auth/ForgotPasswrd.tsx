@@ -32,8 +32,8 @@ const ForgotPassword = () => {
   const  [loading, setLoading] = useState(false)
   const SelectedRole = useSelector((state: RootState) => state.role.selectedRole)
   console.log("SelectedRole in the Forgot Password Screen!", SelectedRole)
-  const Email = useSelector((state: RootState) => state.role.userEmail)
-  console.log("EMail from the params in the forgot Password Screen!", Email)
+  // const Email = useSelector((state: RootState) => state.role.userEmail)
+  // console.log("EMail from the params in the forgot Password Screen!", Email)
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -48,7 +48,8 @@ const ForgotPassword = () => {
 
     try {
       const body = {
-        email: Email,
+        // email: Email,
+        email: email,
       };
       const { response, error } = await apiHelper(
         'POST',
@@ -65,7 +66,7 @@ const ForgotPassword = () => {
           text1: 'Success',
           text2: 'Password Reset Successfully',
         });
-        navigation.navigate('PhoneVerification', { email: Email });
+        navigation.navigate('PhoneVerification', { email: email });
       }
     } catch (error) {
       Toast.show({

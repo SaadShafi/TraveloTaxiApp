@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { CommonActions, NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
   Image,
@@ -19,6 +19,8 @@ import { removeUser } from '../../redux/slice/roleSlice';
 import { height, width } from '../../utilities';
 import { colors } from '../../utilities/colors';
 import { fontSizes } from '../../utilities/fontsizes';
+import Toast from 'react-native-toast-message';
+import { apiHelper } from '../../services';
 
 const DeleteAccount = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,6 +28,7 @@ const DeleteAccount = () => {
   const [otherReason, setOtherReason] = useState('');
   const navigation = useNavigation<NavigationProp<any>>();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const toggleModal = () => {
     setModalOpen(true);
@@ -33,7 +36,8 @@ const DeleteAccount = () => {
 
   const toggleModalSec = () => {
     setModalOpen(false);
-    setModalOpenSec(true);
+    // setModalOpenSec(true);
+    deleteAcc();
   };
 
   const handleOtherSubmit = () => {
@@ -49,6 +53,37 @@ const DeleteAccount = () => {
     setModalOpenSec(false);
     dispatch(removeUser());
     dispatch(logout());
+  };
+
+const deleteAcc = async () => {
+    const { response, error } = await apiHelper(
+      "DELETE",
+      "user/account/delete",
+      {},
+      {}
+    );
+    if (response) {
+      console.log(response.data);
+      Toast.show({
+        text1: "Success",
+        text2: "User Deleted Successfully",
+        type: "success",
+      });
+      dispatch(removeUser());
+      navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'AuthStack' }],
+      }),
+    );
+    } else {
+      console.error("Error", error);
+      Toast.show({
+        text1: "Error",
+        text2: "Error Occured while Deleting User",
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -157,31 +192,6 @@ const DeleteAccount = () => {
           </View>
         </View>
       </Modal>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalOpenSec}
-        onRequestClose={() => setModalOpenSec(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={[styles.modalContainer, { gap: height * 0.02 }]}>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.modalTitle}>Account Deleted</Text>
-              <Text style={styles.modalTitle}>Successfully!</Text>
-            </View>
-            <Image source={images.success} style={styles.img} />
-            <CustomButton
-              text="Back to Home"
-              textColor={colors.white}
-              btnHeight={height * 0.055}
-              btnWidth={width * 0.7}
-              backgroundColor={colors.brown}
-              borderRadius={30}
-              onPress={handleHomeNavigation}
-            />
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };
@@ -246,3 +256,32 @@ const styles = StyleSheet.create({
 });
 
 export default DeleteAccount;
+
+
+
+
+      // <Modal
+      //   animationType="fade"
+      //   transparent={true}
+      //   visible={modalOpenSec}
+      //   onRequestClose={() => setModalOpenSec(false)}
+      // >
+      //   <View style={styles.modalOverlay}>
+      //     <View style={[styles.modalContainer, { gap: height * 0.02 }]}>
+      //       <View style={{ alignItems: 'center' }}>
+      //         <Text style={styles.modalTitle}>Account Deleted</Text>
+      //         <Text style={styles.modalTitle}>Successfully!</Text>
+      //       </View>
+      //       <Image source={images.success} style={styles.img} />
+      //       <CustomButton
+      //         text="Back to Home"
+      //         textColor={colors.white}
+      //         btnHeight={height * 0.055}
+      //         btnWidth={width * 0.7}
+      //         backgroundColor={colors.brown}
+      //         borderRadius={30}
+      //         onPress={handleHomeNavigation}
+      //       />
+      //     </View>
+      //   </View>
+      // </Modal>

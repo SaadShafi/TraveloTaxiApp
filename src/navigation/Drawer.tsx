@@ -44,11 +44,9 @@ const CustomDrawerContent = (props: any) => {
   };
 
   const handleLogout = () => {
-    // Reset both auth and role states
     dispatch(removeUser());
     dispatch(logout());
 
-    // Close any modals
     setModalOpen(false);
 
     Toast.show({
@@ -57,7 +55,6 @@ const CustomDrawerContent = (props: any) => {
       text2: 'Profile Logged out Successfully',
     });
 
-    // Navigate back to auth stack
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

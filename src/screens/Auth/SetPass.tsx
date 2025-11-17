@@ -45,23 +45,23 @@ const setPassword: React.FC<Props> = ({ navigation, route }) => {
     setModalVisible(false);
   };
 
-  const handleRegister = () => {
-    // Get the navigation state
-    const state = navigation.getState();
-    const routes = state.routes;
-    const prevRoute = routes[routes.length - 2];
-    console.log('Navigation Routes:', routes);
-    console.log('Previous Route Object:', prevRoute);
-    console.log('Navigation State:', state);
-    console.log('Previous Route:', prevRoute?.name);
+  // const handleRegister = () => {
+  //   // Get the navigation state
+  //   const state = navigation.getState();
+  //   const routes = state.routes;
+  //   const prevRoute = routes[routes.length - 2];
+  //   console.log('Navigation Routes:', routes);
+  //   console.log('Previous Route Object:', prevRoute);
+  //   console.log('Navigation State:', state);
+  //   console.log('Previous Route:', prevRoute?.name);
 
-    if (prevRoute?.name === 'PhoneVerification') {
-      setModalVisible(true);
-    } else {
-      // Otherwise go to CreateProfile
-      navigation.navigate('CreateProfile');
-    }
-  };
+  //   if (prevRoute?.name === 'PhoneVerification') {
+  //     setModalVisible(true);
+  //   } else {
+  //     // Otherwise go to CreateProfile
+  //     navigation.navigate('CreateProfile');
+  //   }
+  // };
   
     const resetPassword = async () => {
       setLoading(true);
